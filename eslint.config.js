@@ -6,19 +6,13 @@ import tseslint from 'typescript-eslint'
 import prettierPlugin from 'eslint-plugin-prettier'
 import testingLibrary from 'eslint-plugin-testing-library'
 import jestDom from 'eslint-plugin-jest-dom'
+import reactPlugin from 'eslint-plugin-react' // React 플러그인 추가
 
-export default tseslint.config(
+export default [
   { ignores: ['dist'] },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
   {
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommended,
-      'plugin:prettier/recommended',
-      'airbnb',
-      'next/core-web-vitals',
-      'plugin:testing-library/react',
-      'plugin:jest-dom/recommended',
-    ],
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
@@ -35,6 +29,7 @@ export default tseslint.config(
       },
     },
     plugins: {
+      react: reactPlugin, // React 플러그인 등록
       prettier: prettierPlugin,
       '@typescript-eslint': tseslint.plugin,
       'react-hooks': reactHooks,
@@ -87,5 +82,5 @@ export default tseslint.config(
       'react/require-default-props': 'off',
       'import/no-unresolved': 'off',
     },
-  }
-)
+  },
+]
