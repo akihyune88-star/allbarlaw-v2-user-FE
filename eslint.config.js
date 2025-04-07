@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import prettierPlugin from 'eslint-plugin-prettier'
 import testingLibrary from 'eslint-plugin-testing-library'
 import jestDom from 'eslint-plugin-jest-dom'
-import reactPlugin from 'eslint-plugin-react' // React 플러그인 추가
+import reactPlugin from 'eslint-plugin-react'
 
 export default [
   { ignores: ['dist'] },
@@ -26,10 +26,13 @@ export default [
       },
       parserOptions: {
         ecmaVersion: 'latest',
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
     plugins: {
-      react: reactPlugin, // React 플러그인 등록
+      react: reactPlugin,
       prettier: prettierPlugin,
       '@typescript-eslint': tseslint.plugin,
       'react-hooks': reactHooks,
@@ -37,9 +40,31 @@ export default [
       'testing-library': testingLibrary,
       'jest-dom': jestDom,
     },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+
+      // 사용하지 않는 import 및 변수 감지 (강화된 설정)
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+          caughtErrors: 'all',
+        },
+      ],
+      'react/jsx-uses-react': 'error',
+      'react/jsx-uses-vars': 'error',
+
       // 공통
       'template-curly-spacing': ['error', 'never'],
       'prettier/prettier': 0,
@@ -53,20 +78,6 @@ export default [
       'object-curly-newline': 'off',
       'operator-linebreak': 'off',
       'prefer-const': 'off',
-
-      // 사용하지 않는 import 감지 설정 추가
-      'no-unused-vars': 'off', // 기본 규칙 비활성화
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          // TypeScript 버전으로 대체
-          vars: 'all',
-          args: 'after-used',
-          ignoreRestSiblings: true,
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-        },
-      ],
 
       // front 전용설정
       'import/extensions': 'off',
