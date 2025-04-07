@@ -54,6 +54,20 @@ export default [
       'operator-linebreak': 'off',
       'prefer-const': 'off',
 
+      // 사용하지 않는 import 감지 설정 추가
+      'no-unused-vars': 'off', // 기본 규칙 비활성화
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          // TypeScript 버전으로 대체
+          vars: 'all',
+          args: 'after-used',
+          ignoreRestSiblings: true,
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
+
       // front 전용설정
       'import/extensions': 'off',
       'implicit-arrow-linebreak': 'off',
