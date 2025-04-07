@@ -2,7 +2,9 @@ import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
+// typescript-eslint 임포트 방식 수정
+import * as tseslint from '@typescript-eslint/eslint-plugin'
+import * as tsParser from '@typescript-eslint/parser'
 import prettierPlugin from 'eslint-plugin-prettier'
 import testingLibrary from 'eslint-plugin-testing-library'
 import jestDom from 'eslint-plugin-jest-dom'
@@ -11,7 +13,17 @@ import reactPlugin from 'eslint-plugin-react'
 export default [
   { ignores: ['dist'] },
   js.configs.recommended,
-  ...tseslint.configs.recommended,
+  // typescript-eslint 설정 방식 수정
+  {
+    files: ['**/*.{ts,tsx}'],
+    plugins: { '@typescript-eslint': tseslint },
+    languageOptions: {
+      parser: tsParser,
+    },
+    rules: {
+      ...tseslint.configs.recommended.rules,
+    },
+  },
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -34,7 +46,7 @@ export default [
     plugins: {
       react: reactPlugin,
       prettier: prettierPlugin,
-      '@typescript-eslint': tseslint.plugin,
+      '@typescript-eslint': tseslint,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'testing-library': testingLibrary,
