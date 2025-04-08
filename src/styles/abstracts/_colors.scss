@@ -1,0 +1,119 @@
+$color-background-grey: #f6f3ef;
+$color-text-description-grey: #8e8e8e;
+$color-canlenar-select: #48d38a;
+
+$color-text-black: #2c2d2e;
+$color-text-grey: #c9c9c9;
+$color-text-white: #ffffff;
+$color-point-OR: #ff6a25;
+$color-point-OR-24: #ff6a253d;
+$color-point-OR-12: #ff6a251f;
+
+// black
+$color-black-80: #2c2d2ecc;
+$color-black-50: #2c2d2e80;
+$color-black-30: #2c2d2e4d;
+$color-black-20: #2c2d2e33;
+$color-black-12: #2c2d2e1f;
+$color-black-8: #2c2d2e14;
+$color-black-4: #2c2d2e0a;
+
+// green
+$color-green: #0dc268;
+$color-green-24: #0dc2683d;
+$color-green-12: #0dc2681f;
+
+// yellow
+$color-yellow: #ffae00;
+$color-yellow-24: #ffae003d;
+$color-yellow-12: #ffae001f;
+
+// red
+$color-red: #ff3300;
+$color-red-24: #ff33003d;
+$color-red-8: #ff330014;
+
+// blue
+$color-blue: #2787f5;
+$color-blue-24: #2787f53d;
+$color-blue-12: #2787f51f;
+
+// richpink
+$color-richpink: #ff2d54;
+$color-richpink-24: #ff2d543d;
+$color-richpink-12: #ff2d541f;
+
+// purple
+$color-purple: #8034fa;
+$color-purple-24: #8034fa3d;
+$color-purple-12: #8034fa1f;
+
+// pink
+$color-pink: #ff7ea0;
+$color-pink-24: #ff7ea03d;
+$color-pink-12: #ff7ea01f;
+
+// lightpurple
+$color-lightpurple: #cdb5ff;
+
+// 주요 컬러
+$color-primary-50: #e6f1ff;
+$color-primary-100: #b3d1ff;
+$color-primary-200: #80b2ff;
+$color-primary-300: #4d92ff;
+$color-primary-400: #1a73ff;
+$color-primary-500: #0059e6;
+$color-primary-600: #0047b8;
+$color-primary-700: #00358a;
+$color-primary-800: #00235c;
+$color-primary-900: #00122e;
+
+// 중립 컬러
+$color-neutral-50: #f9fafb;
+$color-neutral-100: #f3f4f6;
+$color-neutral-200: #e5e7eb;
+$color-neutral-300: #d1d5db;
+$color-neutral-400: #9ca3af;
+$color-neutral-500: #6b7280;
+$color-neutral-600: #4b5563;
+$color-neutral-700: #374151;
+$color-neutral-800: #1f2937;
+$color-neutral-900: #111827;
+
+// 기능 컬러
+$color-success: #10b981;
+$color-warning: #f59e0b;
+$color-error: #ef4444;
+$color-info: #3b82f6;
+
+// 시맨틱 컬러 (용도에 따른 컬러)
+$text-color-primary: $color-neutral-900;
+$text-color-secondary: $color-neutral-700;
+$text-color-tertiary: $color-neutral-500;
+$text-color-disabled: $color-neutral-400;
+
+$background-color-primary: #ffffff;
+$background-color-secondary: $color-neutral-50;
+$background-color-tertiary: $color-neutral-100;
+
+$border-color-light: $color-neutral-200;
+$border-color-medium: $color-neutral-300;
+$border-color-dark: $color-neutral-400;
+
+// 컬러 맵 (사용하기 쉽게 맵으로 정의)
+$colors: (
+  "primary": (
+    "base": $color-primary-500,
+    "light": $color-primary-300,
+    "dark": $color-primary-700,
+  ),
+  "neutral": (
+    "base": $color-neutral-500,
+    "light": $color-neutral-300,
+    "dark": $color-neutral-700,
+  ),
+  "success": $color-success,
+  "warning": $color-warning,
+  "error": $color-error,
+  "info": $color-info,
+);
