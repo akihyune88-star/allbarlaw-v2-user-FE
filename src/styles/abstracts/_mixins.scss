@@ -2,18 +2,11 @@
 @use 'colors' as *;
 @use 'breakpoints' as *;
 // 반응형 디자인을 위한 믹스인
-
+// 미디어 쿼리 믹스인
+// 선택 사항: 믹스인도 업데이트
 @mixin breakpoint($point) {
   @if $point == 'mobile' or $point == $breakpoint-mobile {
     @media (min-width: $breakpoint-mobile) {
-      @content;
-    }
-  } @else if $point == 'tablet' or $point == $breakpoint-tablet {
-    @media (min-width: $breakpoint-tablet) {
-      @content;
-    }
-  } @else if $point == 'laptop' or $point == $breakpoint-laptop {
-    @media (min-width: $breakpoint-laptop) {
       @content;
     }
   } @else if $point == 'desktop' or $point == $breakpoint-desktop {
