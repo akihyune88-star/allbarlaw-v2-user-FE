@@ -3,8 +3,9 @@ import SvgIcon from '../SvgIcon'
 import InputBox from '../inputBox/InputBox'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
 
-const PcHeader = () => {
+const DesktopHeader = () => {
   const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState('')
 
@@ -12,7 +13,7 @@ const PcHeader = () => {
     <header className={styles['desktop-container']}>
       <div className={styles['inner-container']}>
         <div className={styles['header-top']}>
-          <SvgIcon name='pcLogoHorizon' className={styles['header-logo']} onClick={() => navigate('/')} />
+          <SvgIcon name='pcLogoHorizon' className={styles['header-logo']} onClick={() => navigate(ROUTER.MAIN)} />
           <div className={styles['search-form']}>
             <InputBox
               placeholder='검색은 여기에 해주세요'
@@ -22,8 +23,8 @@ const PcHeader = () => {
             />
           </div>
           <nav className={styles['user-navigation']}>
-            <SvgIcon name='login' onClick={() => navigate('/login')} />
-            <SvgIcon name='mypage' />
+            <SvgIcon name='login' onClick={() => navigate(ROUTER.LOGIN)} />
+            <SvgIcon name='mypage' onClick={() => navigate(ROUTER.MYPAGE)} />
           </nav>
         </div>
         <nav className={styles['main-navigation']}>1111</nav>
@@ -32,4 +33,4 @@ const PcHeader = () => {
   )
 }
 
-export default PcHeader
+export default DesktopHeader

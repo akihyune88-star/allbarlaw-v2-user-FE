@@ -1,10 +1,10 @@
 import MobileHeader from './MobileHeader'
-import PcHeader from './PcHeader'
+import DesktopHeader from './DesktopHeader'
 
 const Header = () => {
   return (
     <>
-      <PcHeader />
+      <DesktopHeader />
       <MobileHeader />
     </>
   )
