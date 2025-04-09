@@ -1,15 +1,17 @@
 import styles from '@/components/header/header.module.scss'
 import SvgIcon from '../SvgIcon'
+import { useNavigate } from 'react-router-dom'
 
 const MobileHeader = () => {
+  const navigate = useNavigate()
   return (
-    <div className={styles['mobile-container']}>
+    <header className={styles['mobile-container']}>
       <SvgIcon name='search' />
-      <SvgIcon name='mobileLogo' />
+      <SvgIcon name='mobileLogo' onClick={() => navigate('/')} />
       <button>
         <span>로그인/가입</span>
       </button>
-    </div>
+    </header>
   )
 }
 
