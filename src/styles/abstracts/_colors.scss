@@ -1,60 +1,41 @@
-$color-background-grey: #f6f3ef;
-$color-text-description-grey: #8e8e8e;
-$color-canlenar-select: #48d38a;
+// key
+$color-green-01: #20bf62;
+$color-green-02: #23735d;
+$color-green-hover: #20bf62;
 
-$color-text-black: #2c2d2e;
-$color-text-grey: #c9c9c9;
-$color-text-white: #ffffff;
-$color-point-OR: #ff6a25;
-$color-point-OR-24: #ff6a253d;
-$color-point-OR-12: #ff6a251f;
+// text
+$color-text-black: #333333;
+$color-text-index: #6e6e6e;
+$color-text-caption: #999999;
 
-// black
-$color-black-80: #2c2d2ecc;
-$color-black-50: #2c2d2e80;
-$color-black-30: #2c2d2e4d;
-$color-black-20: #2c2d2e33;
-$color-black-12: #2c2d2e1f;
-$color-black-8: #2c2d2e14;
-$color-black-4: #2c2d2e0a;
+// Icon
+$color-icon-black: #333333;
+$color-icon-gray: #dddddd;
+$color-icon-gray-50: #bebebe;
+$color-icon-darkgray: #6a6a6a;
+$color-icon-green: #20bf62;
+$color-icon-puregreen: #4cd65f;
+$color-icon-lightgreen: #c3e85b;
+$color-icon-darkgreen: #23735d;
 
-// green
-$color-green: #0dc268;
-$color-green-24: #0dc2683d;
-$color-green-12: #0dc2681f;
+//Bg
+$color-bg-black: #000000;
+$color-bg-gray-01: #eeeeee;
+$color-bg-gray-02: #f6f7fb;
+$color-bg-gray-03: #f7f7f7;
+$color-bg-gray-disable: #c7c7c7;
+$color-bg-gradient-01: #c5e1d1;
 
-// yellow
-$color-yellow: #ffae00;
-$color-yellow-24: #ffae003d;
-$color-yellow-12: #ffae001f;
+//Color
+$color-white: #ffffff;
+$color-02-orange: #e3872c;
+$color-03-sky: #2cd1e3;
+$color-04-blue: #2c69e3;
+$color-07-black: #504e4f;
 
-// red
-$color-red: #ff3300;
-$color-red-24: #ff33003d;
-$color-red-8: #ff330014;
-
-// blue
-$color-blue: #2787f5;
-$color-blue-24: #2787f53d;
-$color-blue-12: #2787f51f;
-
-// richpink
-$color-richpink: #ff2d54;
-$color-richpink-24: #ff2d543d;
-$color-richpink-12: #ff2d541f;
-
-// purple
-$color-purple: #8034fa;
-$color-purple-24: #8034fa3d;
-$color-purple-12: #8034fa1f;
-
-// pink
-$color-pink: #ff7ea0;
-$color-pink-24: #ff7ea03d;
-$color-pink-12: #ff7ea01f;
-
-// lightpurple
-$color-lightpurple: #cdb5ff;
+//line
+$color-line-divider: #f6f6f6;
+$color-line-borderbox: #d9d9d9;
 
 // 주요 컬러
 $color-primary-50: #e6f1ff;
@@ -83,7 +64,7 @@ $color-neutral-900: #111827;
 // 기능 컬러
 $color-success: #10b981;
 $color-warning: #f59e0b;
-$color-error: #ef4444;
+$color-error: #ff0000;
 $color-info: #3b82f6;
 
 // 시맨틱 컬러 (용도에 따른 컬러)
@@ -99,21 +80,3 @@ $background-color-tertiary: $color-neutral-100;
 $border-color-light: $color-neutral-200;
 $border-color-medium: $color-neutral-300;
 $border-color-dark: $color-neutral-400;
-
-// 컬러 맵 (사용하기 쉽게 맵으로 정의)
-$colors: (
-  "primary": (
-    "base": $color-primary-500,
-    "light": $color-primary-300,
-    "dark": $color-primary-700,
-  ),
-  "neutral": (
-    "base": $color-neutral-500,
-    "light": $color-neutral-300,
-    "dark": $color-neutral-700,
-  ),
-  "success": $color-success,
-  "warning": $color-warning,
-  "error": $color-error,
-  "info": $color-info,
-);
