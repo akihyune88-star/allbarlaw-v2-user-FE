@@ -4,6 +4,12 @@
 $font-primary: 'SUTE', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
 $font-secondary: 'Roboto', sans-serif;
 
+$breakpoint-mobile: 576px;
+$breakpoint-tablet: 768px;
+$breakpoint-laptop: 992px;
+$breakpoint-desktop: 1200px;
+$breakpoint-wide: 1400px;
+
 // 폰트 사이즈
 $font-size-base: 16px;
 $font-size-xs: 12px;

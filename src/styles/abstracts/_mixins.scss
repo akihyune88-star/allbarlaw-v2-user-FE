@@ -1,31 +1,31 @@
 @use 'variables' as *;
 @use 'colors' as *;
-
+@use 'breakpoints' as *;
 // 반응형 디자인을 위한 믹스인
+
 @mixin breakpoint($point) {
-  @if $point == sm {
-    @media (min-width: $breakpoint-sm) {
+  @if $point == 'mobile' or $point == $breakpoint-mobile {
+    @media (min-width: $breakpoint-mobile) {
       @content;
     }
-  } @else if $point == md {
-    @media (min-width: $breakpoint-md) {
+  } @else if $point == 'tablet' or $point == $breakpoint-tablet {
+    @media (min-width: $breakpoint-tablet) {
       @content;
     }
-  } @else if $point == lg {
-    @media (min-width: $breakpoint-lg) {
+  } @else if $point == 'laptop' or $point == $breakpoint-laptop {
+    @media (min-width: $breakpoint-laptop) {
       @content;
     }
-  } @else if $point == xl {
-    @media (min-width: $breakpoint-xl) {
+  } @else if $point == 'desktop' or $point == $breakpoint-desktop {
+    @media (min-width: $breakpoint-desktop) {
       @content;
     }
-  } @else if $point == xxl {
-    @media (min-width: $breakpoint-xxl) {
+  } @else if $point == 'wide' or $point == $breakpoint-wide {
+    @media (min-width: $breakpoint-wide) {
       @content;
     }
   }
 }
-
 // 글꼴 크기 설정 믹스인
 @mixin font-size($size, $weight: null) {
   @if $size == xs {

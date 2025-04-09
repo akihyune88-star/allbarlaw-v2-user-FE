@@ -17,7 +17,7 @@ const App = () => {
       <div className='card'>
         <p className='caption3-10'>올바로 2.0 법률 해결사 Allbarlaw</p>
       </div>
-      <p>올바로 2.0 법률 해결사 Allbarlaw</p>
+      <p className={styles['mobile-only']}>올바로 2.0 법률 해결사 Allbarlaw</p>
     </>
   )
 }
