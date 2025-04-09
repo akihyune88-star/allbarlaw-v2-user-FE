@@ -7,8 +7,8 @@ const App = () => {
   return (
     <div className={styles.container}>
       <BoxProgressBar />
+      <Header />
       <div className={styles['inner-container']}>
-        <Header />
         <Outlet /> {/* 여기에 자식 라우트가 렌더링됩니다 */}
       </div>
     </div>

@@ -4,6 +4,7 @@ import InputBox from '../inputBox/InputBox'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
+import HeaderNavigation from './HeaderNavigation'
 
 const DesktopHeader = () => {
   const navigate = useNavigate()
@@ -27,7 +28,7 @@ const DesktopHeader = () => {
             <SvgIcon name='mypage' onClick={() => navigate(ROUTER.MYPAGE)} />
           </nav>
         </div>
-        <nav className={styles['main-navigation']}>1111</nav>
+        <HeaderNavigation />
       </div>
     </header>
   )
