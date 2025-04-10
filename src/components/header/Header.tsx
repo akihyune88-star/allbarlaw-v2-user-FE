@@ -1,6 +1,6 @@
-import MobileHeader from './MobileHeader'
-import DesktopHeader from './DesktopHeader'
+import DesktopHeader from '@/components/header/components/DesktopHeader'
 import styles from '@/components/header/header.module.scss'
+import MobileHeader from '@/components/header/components/MobileHeader'
 
 const Header = () => {
   return (

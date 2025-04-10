@@ -1,6 +1,6 @@
 import styles from '@/components/header/header.module.scss'
-import SvgIcon from '../SvgIcon'
-import InputBox from '../inputBox/InputBox'
+import SvgIcon from '../../SvgIcon'
+import InputBox from '../../inputBox/InputBox'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'

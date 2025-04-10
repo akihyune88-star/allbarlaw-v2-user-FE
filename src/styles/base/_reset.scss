@@ -48,7 +48,16 @@ ol {
 }
 
 /* 버튼 스타일 리셋 */
-button,
+button {
+  padding: 0;
+  margin: 0;
+  border: none;
+  box-sizing: border-box;
+  font: inherit;
+  text-align: left;
+  display: block;
+  height: 100%; /* Match parent height */
+}
 input,
 select,
 textarea {
