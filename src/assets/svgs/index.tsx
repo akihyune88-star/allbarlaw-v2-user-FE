@@ -6,5 +6,6 @@ import pcLogoHorizon from '@/assets/svgs/pc-logo-horizon.svg?react'
 import login from '@/assets/svgs/login.svg?react'
 import mypage from '@/assets/svgs/mypage.svg?react'
 import send from '@/assets/svgs/send.svg?react'
+import menu from '@/assets/svgs/menu.svg?react'
 
-export { react, loginRound, search, mobileLogo, pcLogoHorizon, login, mypage, send }
+export { react, loginRound, search, mobileLogo, pcLogoHorizon, login, mypage, send, menu }

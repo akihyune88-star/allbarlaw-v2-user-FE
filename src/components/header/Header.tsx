@@ -1,12 +1,13 @@
-import MobileHeader from './MobileHeader'
-import PcHeader from './PcHeader'
+import DesktopHeader from '@/components/header/components/DesktopHeader'
+import styles from '@/components/header/header.module.scss'
+import MobileHeader from '@/components/header/components/MobileHeader'
 
 const Header = () => {
   return (
-    <header>
-      <PcHeader />
+    <div className={styles.container}>
+      <DesktopHeader />
       <MobileHeader />
-    </header>
+    </div>
   )
 }
 

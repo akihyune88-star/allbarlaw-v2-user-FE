@@ -1,0 +1,10 @@
+.progress-bar {
+  display: none;
+  height: 0.25rem;
+  width: 100%;
+  background-color: $color-green-01;
+
+  @include breakpoint($breakpoint-desktop) {
+    display: block;
+  }
+}
