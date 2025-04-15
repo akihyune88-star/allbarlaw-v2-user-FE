@@ -1,9 +1,10 @@
+import MainSideBar from '@/container/main/MainSideBar'
 import { Outlet } from 'react-router-dom'
 
 function Main() {
   return (
     <div>
-      <h1>Main Page</h1>
+      <MainSideBar />
       <Outlet />
     </div>
   )

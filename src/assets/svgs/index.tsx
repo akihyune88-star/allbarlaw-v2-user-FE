@@ -7,5 +7,6 @@ import login from '@/assets/svgs/login.svg?react'
 import mypage from '@/assets/svgs/mypage.svg?react'
 import send from '@/assets/svgs/send.svg?react'
 import menu from '@/assets/svgs/menu.svg?react'
+import arrowSmall from '@/assets/svgs/arrow-s.svg?react'
 
-export { react, loginRound, search, mobileLogo, pcLogoHorizon, login, mypage, send, menu }
+export { react, loginRound, search, mobileLogo, pcLogoHorizon, login, mypage, send, menu, arrowSmall }
