@@ -3,7 +3,7 @@ import MainSideBar from '@/container/main/mainSideBar/MainSideBar'
 
 function MainLayout() {
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
       <MainSideBar />
       <Outlet />
     </div>
