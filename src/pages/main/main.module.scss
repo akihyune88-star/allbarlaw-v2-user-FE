@@ -1,0 +1,10 @@
+.main-container {
+  width: 100%;
+  background-color: $color-bg-gray-02;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 1.6875rem 1.5rem;
+  gap: 6.75rem;
+}
