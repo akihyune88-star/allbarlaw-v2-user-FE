@@ -1,0 +1,5 @@
+.container {
+  @media (min-width: $breakpoint-desktop) {
+    display: none;
+  }
+}
