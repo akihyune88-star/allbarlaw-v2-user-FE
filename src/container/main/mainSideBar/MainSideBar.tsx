@@ -14,7 +14,7 @@ const MainSideBar = () => {
   }
 
   return (
-    <div className={styles.sidebarContainer}>
+    <aside className={styles['sidebar-container']}>
       <SideBar
         categories={sideBarList}
         selectedMainCategory={maincategory}
@@ -22,7 +22,7 @@ const MainSideBar = () => {
         onMainCategoryClick={handleMainCategoryClick}
         onSubCategoryClick={setSubcategory}
       />
-    </div>
+    </aside>
   )
 }
 

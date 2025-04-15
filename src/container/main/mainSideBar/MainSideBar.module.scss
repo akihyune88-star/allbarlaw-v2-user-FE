@@ -1,5 +1,5 @@
-.sidebarContainer {
-  @media (max-width: 768px) {
+.sidebar-container {
+  @media (max-width: $breakpoint-desktop) {
     display: none;
   }
 }
