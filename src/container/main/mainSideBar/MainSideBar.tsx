@@ -1,6 +1,6 @@
 import SideBar, { SideBarList } from '@/components/sideBar/SideBar'
 import { useCategoryStore } from '@/store/useCategoryStore'
-import styles from './MainSideBar.module.scss'
+import styles from './main-side-bar.module.scss'
 
 const MainSideBar = () => {
   const { maincategory, subcategory, setMaincategory, setSubcategory } = useCategoryStore()
