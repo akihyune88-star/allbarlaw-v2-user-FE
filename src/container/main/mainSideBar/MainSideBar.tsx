@@ -1,6 +1,6 @@
 import SideBar, { SideBarList } from '@/components/sideBar/SideBar'
-
 import { useCategoryStore } from '@/store/useCategoryStore'
+import styles from './MainSideBar.module.scss'
 
 const MainSideBar = () => {
   const { maincategory, subcategory, setMaincategory, setSubcategory } = useCategoryStore()
@@ -14,13 +14,15 @@ const MainSideBar = () => {
   }
 
   return (
-    <SideBar
-      categories={sideBarList}
-      selectedMainCategory={maincategory}
-      selectedSubCategory={subcategory}
-      onMainCategoryClick={handleMainCategoryClick}
-      onSubCategoryClick={setSubcategory}
-    />
+    <div className={styles.sidebarContainer}>
+      <SideBar
+        categories={sideBarList}
+        selectedMainCategory={maincategory}
+        selectedSubCategory={subcategory}
+        onMainCategoryClick={handleMainCategoryClick}
+        onSubCategoryClick={setSubcategory}
+      />
+    </div>
   )
 }
 

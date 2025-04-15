@@ -1,7 +1,7 @@
 import MainSideBar from '@/container/main/MainSideBar'
 import { Outlet } from 'react-router-dom'
 
-function Main() {
+function MainLayout() {
   return (
     <div>
       <MainSideBar />
@@ -10,4 +10,4 @@ function Main() {
   )
 }
 
-export default Main
+export default MainLayout
