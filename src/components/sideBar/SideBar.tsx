@@ -1,0 +1,88 @@
+import styles from '@/components/sideBar/main-side-bar.module.scss'
+import SvgIcon from '../SvgIcon'
+import { COLOR } from '@/styles/color'
+
+type SubcategoryType = {
+  id: number
+  subcategoryName: string
+}
+
+type CategoryType = {
+  id: number
+  categoryName: string
+  subcategories: SubcategoryType[]
+}
+
+export type SideBarList = CategoryType[]
+
+interface SideBarProps {
+  categories: SideBarList
+  selectedMainCategory: number | null
+  selectedSubCategory: number | null
+  onMainCategoryClick: (id: number) => void
+  onSubCategoryClick: (id: number) => void
+}
+
+const SideBar = ({
+  categories,
+  selectedMainCategory,
+  selectedSubCategory,
+  onMainCategoryClick,
+  onSubCategoryClick,
+}: SideBarProps) => {
+  return (
+    <nav className={styles.container} aria-label='카테고리 네비게이션'>
+      <ul className={styles['category-list']}>
+        {categories.map(category => (
+          <CategoryItem
+            key={category.id}
+            category={category}
+            isActive={selectedMainCategory === category.id}
+            onClick={() => onMainCategoryClick(category.id)}
+            selectedSubCategory={selectedSubCategory}
+            onSubCategoryClick={onSubCategoryClick}
+          />
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+interface CategoryItemProps {
+  category: SideBarList[number]
+  isActive: boolean
+  onClick: () => void
+  selectedSubCategory: number | null
+  onSubCategoryClick: (id: number) => void
+}
+
+const CategoryItem = ({ category, isActive, onClick, selectedSubCategory, onSubCategoryClick }: CategoryItemProps) => {
+  return (
+    <li className={styles['category-list-item']}>
+      <div className={styles['category-list-header']}>
+        <h3 className={`${styles.categoryName} ${isActive ? styles.active : ''}`} onClick={onClick}>
+          {category.categoryName}
+        </h3>
+        {isActive && (
+          <SvgIcon name='arrowSmall' color={COLOR.green_01} size={16} style={{ transform: 'rotate(180deg)' }} />
+        )}
+      </div>
+      {isActive && (
+        <ul className={styles['subcategory-list']}>
+          {category.subcategories.map(subcategory => (
+            <li
+              key={subcategory.id}
+              className={styles['subcategory-item']}
+              style={{ backgroundColor: selectedSubCategory === subcategory.id ? COLOR.bg_gray_02 : 'transparent' }}
+              onClick={() => onSubCategoryClick(subcategory.id)}
+            >
+              <span>{subcategory.subcategoryName}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
+  )
+}
+
+export default SideBar
