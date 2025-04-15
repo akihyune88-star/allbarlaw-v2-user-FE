@@ -19,6 +19,7 @@
     font-size: $font-size-xs;
     font-weight: $font-weight-semibold;
     color: $color-text-index;
+    background-color: $color-white;
   }
 
   @include breakpoint($breakpoint-desktop) {
