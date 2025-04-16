@@ -1,14 +1,18 @@
 import { Outlet } from 'react-router-dom'
 import styles from '@/pages/subMain/sub-main.module.scss'
 import SubMenuNavigation from '@/container/subMain/SubMenuNavigation'
+import CategoryTitle from '@/container/subMain/CategoryTitle'
+
 const SubMain = () => {
   return (
     <div style={{ width: '100%' }}>
-      <div className={styles['header-container']}>
-        <h1>타이틀</h1>
+      <header className={styles['header-container']}>
+        <CategoryTitle />
         <SubMenuNavigation />
-      </div>
-      <Outlet />
+      </header>
+      <main className={styles['main-container']}>
+        <Outlet />
+      </main>
     </div>
   )
 }
