@@ -18,17 +18,13 @@
   align-items: center;
   gap: 0.5rem;
 
-  h1 {
+  h2 {
     display: flex;
+    font-size: 1rem;
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
     margin: 0;
-  }
-
-  h2 {
-    margin: 0;
-    font-size: 1.25rem;
   }
 
   .arrow-icon {
