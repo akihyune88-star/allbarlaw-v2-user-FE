@@ -9,6 +9,6 @@ export const ROUTER = {
   LAWYER_SEARCH: '/lawyer-search',
   LAW_FIRM: '/law-firm',
   MAIN: '/',
-  SUB_MAIN: '/sub/:subCategoryId',
+  SUB_MAIN: '/:subCategoryId',
   NOT_FOUND: '*',
 }

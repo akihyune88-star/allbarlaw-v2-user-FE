@@ -7,7 +7,7 @@ export const SUB_MENU_LIST = [
   {
     name: '변호사의 글',
     itemWidth: 84,
-    path: '/blog',
+    path: '/blogList',
   },
   {
     name: '변호사의 영상',
