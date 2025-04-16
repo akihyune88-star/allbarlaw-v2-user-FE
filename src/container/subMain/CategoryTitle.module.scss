@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 .category-title {
   position: relative;
   width: 100%;
@@ -69,7 +71,7 @@
   }
 
   &:hover {
-    background-color: darken($color-bg-gray-02, 5%);
+    background-color: color.adjust($color-bg-gray-02, $lightness: -5%);
   }
 
   &.selected {
