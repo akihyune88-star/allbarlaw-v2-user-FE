@@ -27,7 +27,7 @@ const CategoryTitle = () => {
       {/* Mobile View */}
       <div className={styles['mobile-title']}>
         <h1 onClick={toggleCategory}>
-          {mainCategory}{' '}
+          {mainCategory}
           <SvgIcon
             name='arrowSmall'
             className={`${styles['arrow-icon']} ${isCategoryOpen ? styles.open : ''}`}
