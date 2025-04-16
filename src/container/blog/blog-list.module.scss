@@ -1,0 +1,109 @@
+.list-container {
+  display: flex;
+  flex-direction: column;
+  background-color: $color-white;
+  border-radius: 0.5rem;
+
+  padding: 1.5rem;
+}
+
+.blog-header {
+  display: flex;
+  justify-content: space-between;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: $font-weight-regular;
+    white-space: pre-line;
+    color: $color-green-01;
+    line-height: 1.2;
+  }
+
+  h2:nth-child(2) {
+    display: none;
+  }
+}
+
+.nav-list {
+  display: flex;
+  align-items: flex-end;
+
+  .sort-case {
+    display: flex;
+    gap: 1rem;
+
+    color: $color-text-index;
+    font-weight: $font-weight-regular;
+    font-size: 0.875rem;
+
+    li {
+      cursor: pointer;
+
+      &.active {
+        font-weight: $font-weight-extra-bold;
+        color: $color-text-black;
+      }
+    }
+  }
+}
+
+.blog-list {
+  margin-top: 1.5rem;
+}
+
+.blog-item {
+  height: 10.4375rem;
+  border-top: 1px solid $color-line-divider;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .blog-content {
+    width: 33.875rem;
+    padding: 1.5rem 0;
+
+    h3 {
+      font-size: 1rem;
+      font-weight: $font-weight-semibold;
+    }
+    p {
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+      font-size: 0.8125rem;
+    }
+  }
+
+  .blog-item-img {
+    width: 7.5rem;
+    height: 7.5rem;
+    border-radius: 0.25rem;
+  }
+}
+
+// 모바일 스타일
+
+.blog-header-mobile {
+  display: none;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .list-container {
+    padding: 0;
+    background-color: $color-bg-gray-02;
+  }
+
+  .blog-header {
+    display: none;
+  }
+
+  .blog-header-mobile {
+    display: block;
+
+    p {
+      margin-top: 1.0625rem;
+      font-size: 0.875rem;
+      color: $color-text-caption;
+      font-weight: $font-weight-semibold;
+    }
+  }
+}
