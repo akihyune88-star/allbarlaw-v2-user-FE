@@ -2,10 +2,6 @@
   display: flex;
   flex-direction: column;
   gap: 1.625rem;
-
-  @media (max-width: $breakpoint-desktop) {
-    display: none;
-  }
 }
 
 .banner-section {
@@ -51,5 +47,59 @@
     border: 1px solid $color-line-borderbox;
 
     font-size: 0.875rem;
+  }
+}
+
+//여기에 모바일 스타일만 따로 정의하고 싶어
+// 모바일 스타일
+@media (max-width: $breakpoint-desktop) {
+  .container {
+    display: none;
+  }
+
+  .button-wrapper {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    gap: 1rem;
+    padding: 0.5rem 0;
+    white-space: nowrap;
+
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+
+    button {
+      width: 10rem;
+      height: 5rem;
+      background-color: $color-white;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0.875rem 0.9375rem 0.875rem 1rem;
+
+      border: 1px solid $color-line-borderbox;
+      border-radius: 0.5rem;
+
+      span {
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+        color: $color-text-index;
+      }
+    }
+  }
+
+  .mobile-banner-image {
+  }
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .mobile-container {
+    display: none;
   }
 }

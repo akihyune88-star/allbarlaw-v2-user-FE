@@ -20,7 +20,7 @@ const DesktopHeader = () => {
               placeholder='검색은 여기에 해주세요'
               value={searchValue}
               onChange={e => setSearchValue(e.target.value)}
-              iconType='search'
+              icon={<SvgIcon name='search' style={{ marginRight: 13 }} />}
             />
           </div>
           <nav className={styles['user-navigation']}>
