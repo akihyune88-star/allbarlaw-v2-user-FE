@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
-import styles from '@/components/header/header.module.scss'
+import styles from '@/container/header/header.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 
 const MobileHeader = () => {

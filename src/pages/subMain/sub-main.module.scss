@@ -1,0 +1,16 @@
+.header-container {
+  height: 154px;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 3rem;
+
+  h1 {
+    padding-left: 1.625rem;
+    font-size: 1.875rem;
+    font-weight: $font-weight-extra-bold;
+  }
+  border-bottom: 1px solid $color-line-divider;
+}

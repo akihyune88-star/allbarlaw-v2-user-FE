@@ -49,7 +49,7 @@ const MainNavigation = () => {
           </button>
         </div>
         <img
-          className={styles['mobile-banner-image']}
+          className={styles['mobile-banner-image                                                    ']}
           src={'https://cdn.crowdpic.net/detail-thumb/thumb_d_1EB6F3DBBA8C2AF2FE8041A572E46140.jpg'}
           alt='변호사 홍보 배너'
         />
