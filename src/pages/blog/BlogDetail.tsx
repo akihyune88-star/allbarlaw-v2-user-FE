@@ -29,8 +29,6 @@ const AILoading = () => {
 }
 
 const BlogDetailHeader = ({ title }: BlogHeaderProps) => {
-  console.log(title)
-
   return (
     <div className={styles['blog-detail-header']}>
       <h1>{title}</h1>
