@@ -50,9 +50,13 @@ const BlogItem = ({ item }: { item: BlogCase }) => {
       <div className={styles['blog-content']}>
         <h3>{item.title}</h3>
         <p>{item.summaryContents}</p>
-        <span>
-          {item.lawyer} 변호사 [{item.lawfirm}]
-        </span>
+        <span className={styles.lawyer}>{item.lawyer} 변호사</span>{' '}
+        <span className={styles.lawfirm}>[{item.lawfirm}]</span>
+        <div className={styles['blog-item-tag']}>
+          <button>재산범죄</button>
+          <button>형사기타</button>
+          <button>사기</button>
+        </div>
       </div>
       <div>
         <img

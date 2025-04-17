@@ -4,9 +4,9 @@
 }
 
 .blog-section {
+  will-change: autodm;
   display: flex;
   flex-direction: column;
-
   width: 49.875rem;
   gap: 1.5rem;
 }
