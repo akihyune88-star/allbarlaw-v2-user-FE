@@ -10,5 +10,7 @@ export const ROUTER = {
   LAW_FIRM: '/law-firm',
   MAIN: '/',
   SUB_MAIN: '/:subCategoryId',
+  BLOG: '/blog',
+  BLOG_DETAIL: '/blog/:blogId',
   NOT_FOUND: '*',
-}
+} as const

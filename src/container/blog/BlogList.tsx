@@ -2,6 +2,7 @@ import styles from '@/container/blog/blog-list.module.scss'
 import { exampleBlogData, SORT_CASE } from './constants'
 import { useState } from 'react'
 import { BlogCase } from '@/types/blogTypes'
+import { useNavigate, useParams } from 'react-router-dom'
 
 type SortItem = {
   key: string
@@ -17,10 +18,10 @@ type BlogHeaderProps = {
 
 const BlogHeader = ({ onClick, activeKey, totalBlogCount, recentBlogCount }: BlogHeaderProps) => {
   return (
-    <>
+    <header>
       <div className={styles['blog-header']}>
         <h2>{`변호사가 작성한 글 안에서\n 내 문제의 해결방법을 찾으세요.`}</h2>
-        <nav className={styles['nav-list']}>
+        <nav className={styles['nav-list']} aria-label='블로그 정렬'>
           <ul className={styles['sort-case']}>
             {SORT_CASE.map((item: SortItem) => (
               <li
@@ -40,13 +41,24 @@ const BlogHeader = ({ onClick, activeKey, totalBlogCount, recentBlogCount }: Blo
           전체 {totalBlogCount.toLocaleString()}개 / 최근 한달 {recentBlogCount.toLocaleString()}개
         </p>
       </div>
-    </>
+    </header>
   )
 }
 
 const BlogItem = ({ item }: { item: BlogCase }) => {
+  const navigate = useNavigate()
+  const { categoryId } = useParams()
+
+  const handleClick = () => {
+    const path = categoryId ? `/${categoryId}/blog/${item.id}` : `/blog/${item.id}`
+
+    navigate(path, {
+      state: { blogItem: item },
+    })
+  }
+
   return (
-    <div className={styles['blog-item']}>
+    <article className={styles['blog-item']} onClick={handleClick}>
       <div className={styles['blog-content']}>
         <h3>{item.title}</h3>
         <p>{item.summaryContents}</p>
@@ -58,14 +70,14 @@ const BlogItem = ({ item }: { item: BlogCase }) => {
           <button>사기</button>
         </div>
       </div>
-      <div>
+      <figure>
         <img
           className={styles['blog-item-img']}
           src='https://www.monthlypeople.com/news/photo/202003/21217_12862_5312.png'
           alt='blog-item-image'
         />
-      </div>
-    </div>
+      </figure>
+    </article>
   )
 }
 
@@ -77,14 +89,14 @@ const BlogList = () => {
   }
 
   return (
-    <div className={styles['list-container']}>
+    <main className={styles['list-container']}>
       <BlogHeader onClick={handleSortCase} activeKey={sortCase} totalBlogCount={2147} recentBlogCount={4142} />
-      <div className={styles['blog-list']}>
+      <section className={styles['blog-list']} aria-label='블로그 목록'>
         {exampleBlogData.blogCases.map(_blogItem => (
-          <BlogItem item={_blogItem} />
+          <BlogItem key={_blogItem.id} item={_blogItem} />
         ))}
-      </div>
-    </div>
+      </section>
+    </main>
   )
 }
 

@@ -15,6 +15,7 @@ import LegalDictionary from '@/pages/LegalDictionary'
 import LawyerSearch from '@/pages/LawyerSearch'
 import LawFirm from '@/pages/LawFirm'
 import BlogLayout from '@/pages/blog/Blog'
+import BlogDetail from '@/pages/blog/BlogDetail'
 
 const router = createBrowserRouter([
   {
@@ -40,7 +41,14 @@ const router = createBrowserRouter([
               },
             ],
           },
-          // 필요한 만큼 추가 가능
+          {
+            path: ':categoryId/blog/:blogId',
+            element: <BlogDetail />,
+          },
+          {
+            path: 'blog/:blogId',
+            element: <BlogDetail />,
+          },
         ],
       },
       {
