@@ -1,16 +1,26 @@
 import SideBar, { SideBarList } from '@/components/sideBar/SideBar'
 import { useCategoryStore } from '@/store/useCategoryStore'
-import styles from './MainSideBar.module.scss'
+import styles from './main-side-bar.module.scss'
+import { useNavigate } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
 
 const MainSideBar = () => {
+  const navigate = useNavigate()
   const { maincategory, subcategory, setMaincategory, setSubcategory } = useCategoryStore()
 
   const handleMainCategoryClick = (id: number) => {
     setMaincategory(id)
     const selectedCategory = sideBarList.find(category => category.id === id)
     if (selectedCategory && selectedCategory.subcategories.length > 0) {
-      setSubcategory(selectedCategory.subcategories[0].id)
+      const firstSubCategoryId = selectedCategory.subcategories[0].id
+      setSubcategory(firstSubCategoryId)
+      navigate(`${ROUTER.SUB_MAIN.replace(':subCategoryId', firstSubCategoryId.toString())}`)
     }
+  }
+
+  const handleSubCategoryClick = (id: number) => {
+    setSubcategory(id)
+    navigate(`${ROUTER.SUB_MAIN.replace(':subCategoryId', id.toString())}`)
   }
 
   return (
@@ -20,7 +30,7 @@ const MainSideBar = () => {
         selectedMainCategory={maincategory}
         selectedSubCategory={subcategory}
         onMainCategoryClick={handleMainCategoryClick}
-        onSubCategoryClick={setSubcategory}
+        onSubCategoryClick={handleSubCategoryClick}
       />
     </aside>
   )

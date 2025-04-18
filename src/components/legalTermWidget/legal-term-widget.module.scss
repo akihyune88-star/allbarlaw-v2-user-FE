@@ -1,0 +1,53 @@
+.legal-term-widget {
+  background-color: $color-white;
+  border: 1px solid $color-line-borderbox;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  h1 {
+    font-size: 1.25rem;
+    font-weight: $font-weight-bold;
+    color: $color-text-black;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    background-color: $color-white;
+
+    gap: 0.5rem; // 8px
+
+    span {
+      font-size: 1rem;
+      font-weight: $font-weight-semibold;
+
+      color: $color-icon-darkgreen;
+    }
+  }
+
+  .tag-list {
+    display: flex;
+    flex-direction: column;
+
+    p {
+      margin: 0;
+      font-size: 0.75rem;
+      line-height: 0.75rem;
+      color: $color-text-index;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .legal-term-widget {
+    .tag-list {
+      p {
+        line-height: 1.25rem;
+      }
+    }
+  }
+}

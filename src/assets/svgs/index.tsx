@@ -8,5 +8,24 @@ import mypage from '@/assets/svgs/mypage.svg?react'
 import send from '@/assets/svgs/send.svg?react'
 import menu from '@/assets/svgs/menu.svg?react'
 import arrowSmall from '@/assets/svgs/arrow-s.svg?react'
+import arrowTail from '@/assets/svgs/arrow-tail.svg?react'
+import share from '@/assets/svgs/share.svg?react'
+import save from '@/assets/svgs/save.svg?react'
+import refresh from '@/assets/svgs/refresh.svg?react'
 
-export { react, loginRound, search, mobileLogo, pcLogoHorizon, login, mypage, send, menu, arrowSmall }
+export {
+  react,
+  loginRound,
+  search,
+  mobileLogo,
+  pcLogoHorizon,
+  login,
+  mypage,
+  send,
+  menu,
+  arrowSmall,
+  arrowTail,
+  share,
+  save,
+  refresh,
+}

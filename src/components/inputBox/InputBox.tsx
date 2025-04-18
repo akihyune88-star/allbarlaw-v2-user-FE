@@ -1,6 +1,5 @@
 // InputBox.jsx
 import React from 'react'
-import SvgIcon from '../SvgIcon'
 import styles from './inputBox.module.scss'
 
 type InputBoxProps = {
@@ -8,7 +7,7 @@ type InputBoxProps = {
   placeholder?: string
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  iconType?: 'search' | 'send' | 'none'
+  icon?: React.ReactNode
   disabled?: boolean
   className?: string
 }
@@ -18,21 +17,10 @@ const InputBox = ({
   placeholder = '',
   value = '',
   onChange = () => {},
-  iconType = 'none',
+  icon,
   disabled = false,
   className = '',
 }: InputBoxProps) => {
-  const renderIcon = () => {
-    switch (iconType) {
-      case 'search':
-        return <SvgIcon name='search' className={styles.icon} />
-      case 'send':
-        return <SvgIcon name='send' className={styles.icon} />
-      default:
-        return null
-    }
-  }
-
   return (
     <div className={`${styles['input-container']} ${className}`}>
       <input
@@ -43,7 +31,7 @@ const InputBox = ({
         onChange={onChange}
         disabled={disabled}
       />
-      {renderIcon()}
+      {icon}
     </div>
   )
 }

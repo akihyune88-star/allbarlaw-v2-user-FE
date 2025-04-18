@@ -1,6 +1,6 @@
-import styles from '@/components/header/header.module.scss'
-import SvgIcon from '../../SvgIcon'
-import InputBox from '../../inputBox/InputBox'
+import styles from '@/container/header/header.module.scss'
+import SvgIcon from '../../../components/SvgIcon'
+import InputBox from '../../../components/inputBox/InputBox'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
@@ -20,7 +20,7 @@ const DesktopHeader = () => {
               placeholder='검색은 여기에 해주세요'
               value={searchValue}
               onChange={e => setSearchValue(e.target.value)}
-              iconType='search'
+              icon={<SvgIcon name='search' style={{ marginRight: 13 }} />}
             />
           </div>
           <nav className={styles['user-navigation']}>

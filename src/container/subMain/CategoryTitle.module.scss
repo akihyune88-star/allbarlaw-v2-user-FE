@@ -1,0 +1,111 @@
+@use 'sass:color';
+
+.category-title {
+  position: relative;
+  width: 100%;
+}
+
+// Desktop view (default)
+.desktop-title {
+  display: none;
+  font-size: 1.875rem;
+  font-weight: 800;
+}
+
+// Mobile view (default)
+.mobile-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  h2 {
+    display: flex;
+    font-size: 1rem;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .arrow-icon {
+    transition: transform 0.3s ease;
+    transform: rotate(-90deg);
+
+    &.open {
+      transform: rotate(0deg);
+    }
+  }
+}
+
+// Category Dropdown Panel
+.category-panel {
+  padding-top: 1rem;
+  padding-bottom: 32px;
+  width: 100%;
+  background: white;
+}
+
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.category-chip {
+  padding: 0.375rem 1rem;
+  background-color: $color-white;
+  border: 1px solid $color-line-borderbox;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s ease;
+
+  span {
+    font-weight: $font-weight-semibold;
+    font-size: 0.75rem;
+    color: $color-text-caption;
+  }
+
+  &:hover {
+    background-color: color.adjust($color-bg-gray-02, $lightness: -5%);
+  }
+
+  &.selected {
+    background-color: rgba($color-bg-black, 0.7);
+    border-color: rgba($color-bg-black, 0.7);
+    color: white;
+
+    span {
+      color: white;
+    }
+  }
+}
+
+// Mobile styles
+@media (max-width: $breakpoint-desktop) {
+  .category-title {
+    padding: 1.0625rem 1.25rem 0.5rem;
+  }
+}
+
+// Desktop styles
+@media (min-width: $breakpoint-desktop) {
+  .category-title {
+    padding-top: 3rem;
+    padding-left: 1.625rem;
+    padding-bottom: 2.625rem;
+  }
+
+  .desktop-title {
+    display: block;
+  }
+
+  .mobile-title {
+    display: none;
+  }
+}
+
+.category-container {
+  background-color: $color-bg-gray-02;
+  display: flex;
+}

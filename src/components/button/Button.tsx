@@ -3,7 +3,7 @@ import React, { ButtonHTMLAttributes, ReactNode } from 'react'
 import styles from '@/components/button/button.module.scss'
 
 // 버튼 변형 타입 정의
-type ButtonVariant = 'primary' | 'secondary' | 'success' | 'outline' | 'gray' | 'light' | 'vt'
+type ButtonVariant = 'primary' | 'secondary' | 'success' | 'outline' | 'gray' | 'light' | 'share' | 'save'
 
 // 버튼 크기 타입 정의
 type ButtonSize = 'small' | 'medium' | 'large'

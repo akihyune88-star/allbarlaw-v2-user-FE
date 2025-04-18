@@ -5,6 +5,17 @@ import Login from '@/pages/Login'
 import Mypage from '@/pages/Mypage'
 import { ROUTER } from './routerConstant'
 import MainLayout from '@/pages/MainLayout'
+import Main from '@/pages/main/Main'
+import SubMain from '@/pages/subMain/SubMain'
+import Support from '@/pages/Support'
+import AboutPage from '@/pages/AboutPage'
+import BaroTalk from '@/pages/BaroTalk'
+import LegalKnowledge from '@/pages/LegalKnowledge'
+import LegalDictionary from '@/pages/LegalDictionary'
+import LawyerSearch from '@/pages/LawyerSearch'
+import LawFirm from '@/pages/LawFirm'
+import BlogLayout from '@/pages/blog/Blog'
+import BlogDetail from '@/pages/blog/BlogDetail'
 
 const router = createBrowserRouter([
   {
@@ -13,19 +24,31 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {
-        path: '', // 이렇게 비워두면 ROUTER.MAIN과 동일한 경로를 의미
+        path: '',
         element: <MainLayout />,
         children: [
-          // // 여기에 Main 하위의 중첩 라우트를 추가
-          // {
-          //   path: 'sub-route1', // ROUTER.MAIN/sub-route1 경로로 접근 가능
-          //   element: <SubRoute1 />, // 해당 컴포넌트는 따로 만들어야함
-          // },
-          // {
-          //   path: 'sub-route2', // ROUTER.MAIN/sub-route2 경로로 접근 가능
-          //   element: <SubRoute2 />,
-          // },
-          // // 필요한 만큼 추가 가능
+          {
+            path: '',
+            element: <Main />,
+          },
+          {
+            path: ':categoryId',
+            element: <SubMain />,
+            children: [
+              {
+                path: 'blog',
+                element: <BlogLayout />,
+              },
+            ],
+          },
+          {
+            path: ':categoryId/blog/:blogId',
+            element: <BlogDetail />,
+          },
+          {
+            path: 'blog/:blogId',
+            element: <BlogDetail />,
+          },
         ],
       },
       {
@@ -35,6 +58,34 @@ const router = createBrowserRouter([
       {
         path: ROUTER.MYPAGE,
         element: <Mypage />,
+      },
+      {
+        path: ROUTER.SUPPORT,
+        element: <Support />,
+      },
+      {
+        path: ROUTER.ABOUT,
+        element: <AboutPage />,
+      },
+      {
+        path: ROUTER.BARO_TALK,
+        element: <BaroTalk />,
+      },
+      {
+        path: ROUTER.LEGAL_KNOWLEDGE,
+        element: <LegalKnowledge />,
+      },
+      {
+        path: ROUTER.LEGAL_DICTIONARY,
+        element: <LegalDictionary />,
+      },
+      {
+        path: ROUTER.LAWYER_SEARCH,
+        element: <LawyerSearch />,
+      },
+      {
+        path: ROUTER.LAW_FIRM,
+        element: <LawFirm />,
       },
     ],
   },

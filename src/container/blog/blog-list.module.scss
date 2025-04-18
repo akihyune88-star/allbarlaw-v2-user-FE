@@ -1,0 +1,205 @@
+.list-container {
+  display: flex;
+  flex-direction: column;
+  background-color: $color-white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.blog-header {
+  display: flex;
+  justify-content: space-between;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: $font-weight-regular;
+    white-space: pre-line;
+    color: $color-green-01;
+    line-height: 1.2;
+  }
+
+  h2:nth-child(2) {
+    display: none;
+  }
+}
+
+.nav-list {
+  display: flex;
+  align-items: flex-end;
+
+  .sort-case {
+    display: flex;
+    gap: 1rem;
+
+    color: $color-text-index;
+    font-weight: $font-weight-regular;
+    font-size: 0.875rem;
+
+    li {
+      cursor: pointer;
+
+      &.active {
+        font-weight: $font-weight-extra-bold;
+        color: $color-text-black;
+      }
+    }
+  }
+}
+
+.blog-list {
+  margin-top: 1.5rem;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid $color-line-divider;
+  margin: 16px 0;
+  padding: 0;
+  width: 100%;
+  height: 1px;
+  background: none;
+}
+
+.blog-item {
+  border-top: 1px solid $color-line-divider;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  cursor: pointer;
+
+  .blog-content {
+    width: 33.875rem;
+    padding: 1.5rem 0 1.4375rem 0;
+
+    h3 {
+      font-size: 1rem;
+      font-weight: $font-weight-semibold;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    p {
+      margin-top: 0.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.8125rem;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lawfirm,
+    .lawyer {
+      font-size: 1rem;
+      font-weight: $font-weight-semibold;
+      color: $color-green-01;
+    }
+
+    .blog-item-tag {
+      display: none !important;
+    }
+  }
+
+  .blog-item-img {
+    width: 7.5rem;
+    height: 7.5rem;
+    border-radius: 0.25rem;
+  }
+}
+
+// 모바일 스타일
+.blog-header-mobile {
+  display: none;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .list-container {
+    padding: 0;
+    background-color: $color-bg-gray-02;
+  }
+
+  .blog-header {
+    display: none;
+  }
+
+  .blog-header-mobile {
+    display: block;
+
+    p {
+      margin-top: 1.0625rem;
+      font-size: 0.875rem;
+      color: $color-text-caption;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  .blog-list {
+    background-color: $color-white;
+    padding: 24px 1.25rem;
+    border-radius: 0.5rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .blog-item {
+    border-top: none;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    cursor: default;
+
+    .blog-content {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      h3 {
+        font-size: 0.9375rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      p {
+        display: none !important;
+      }
+
+      .blog-item-tag {
+        display: flex !important;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+
+        button {
+          background-color: $color-white;
+          border: 1px solid $color-line-borderbox;
+          border-radius: 0.625rem;
+          padding: 0.3438rem 0.5rem;
+          font-size: 0.75rem;
+          color: $color-text-index;
+        }
+      }
+    }
+
+    .lawfirm {
+      display: none;
+    }
+
+    .blog-item-img {
+      width: 5rem;
+      height: 5rem;
+      min-width: 5rem;
+      min-height: 5rem;
+      object-fit: cover;
+    }
+  }
+}

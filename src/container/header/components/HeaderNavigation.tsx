@@ -1,4 +1,4 @@
-import styles from '@/components/header/header.module.scss'
+import styles from '@/container/header/header.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { MENU_LIST } from '../constants'
 

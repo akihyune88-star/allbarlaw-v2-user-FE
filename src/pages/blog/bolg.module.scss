@@ -1,0 +1,33 @@
+.blog-container {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.blog-section {
+  will-change: autodm;
+  display: flex;
+  flex-direction: column;
+  width: 49.875rem;
+  gap: 1.5rem;
+}
+
+.blog-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .blog-container {
+    flex-direction: column;
+  }
+
+  .blog-section {
+    width: 100%;
+    gap: 1.875rem;
+  }
+
+  .blog-aside {
+    display: none;
+  }
+}

@@ -1,0 +1,61 @@
+.ai-recommender {
+  display: flex;
+  width: 15.625rem;
+  flex-direction: column;
+  background-color: $color-white;
+
+  border-radius: 0.5rem; //8px
+  border: 1px solid rgba($color-green-01, 0.3);
+  padding: 1.4688rem 1.5rem; //23.5px 24px
+}
+
+.section-title {
+  font-size: 1.25rem; //20px
+  font-weight: $font-weight-extra-bold;
+  color: $color-icon-darkgreen;
+}
+
+.tag-section {
+  .tag-list {
+    padding: 0.5rem 0 0.75rem 0; // 8px 0 12px 0
+    display: flex;
+    flex-wrap: wrap;
+
+    span {
+      margin-right: 0.5rem; // 8px
+      font-size: 0.8125rem; // 13px
+      color: $color-text-index;
+    }
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    background-color: $color-white;
+
+    gap: 0.5rem; // 8px
+
+    span {
+      font-size: 1rem;
+      font-weight: $font-weight-semibold;
+
+      color: $color-icon-darkgreen;
+    }
+  }
+}
+
+.lawyer-section {
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .lawyer-list {
+    margin-top: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
