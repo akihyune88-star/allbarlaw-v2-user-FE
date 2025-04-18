@@ -41,3 +41,13 @@
     }
   }
 }
+
+@media (max-width: $breakpoint-desktop) {
+  .legal-term-widget {
+    .tag-list {
+      p {
+        line-height: 1.25rem;
+      }
+    }
+  }
+}

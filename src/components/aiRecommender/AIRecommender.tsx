@@ -21,13 +21,20 @@ const TagSection = ({ tagList }: { tagList: string[] }) => {
   )
 }
 
-const LawyerItem = ({ lawyerList }: { lawyerList: AIRecommenderLawyerItem[] }) => {
+export const LawyerItem = ({
+  lawyerList,
+  divider = false,
+}: {
+  lawyerList: AIRecommenderLawyerItem[]
+  divider?: boolean
+}) => {
   return (
     <section className={styles['lawyer-section']}>
       <header>
         <h2 className={styles['section-title']}>AI 추천 변호사</h2>
         <SvgIcon name='refresh' />
       </header>
+      {divider && <Divider />}
       <div className={styles['lawyer-list']}>
         {lawyerList.map(lawyer => (
           <LawyerHorizon
