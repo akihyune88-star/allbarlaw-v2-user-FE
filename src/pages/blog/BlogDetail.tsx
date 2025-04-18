@@ -5,6 +5,9 @@ import Button from '@/components/button/Button'
 import SvgIcon from '@/components/SvgIcon'
 import BlogDetailContents from '@/container/blog/BlogDetailContents'
 import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
+import BlogDetailSideBar from '@/container/blog/BlogDetailSideBar'
+import { useEffect, useState } from 'react'
+import AILoading from '@/components/aiLoading/AILoading'
 
 type BlogHeaderProps = {
   title: string
@@ -45,24 +48,36 @@ const BlogNavigationBar = () => {
   )
 }
 
-const BlogDetailSideBar = () => {
-  return <div className={styles['blog-detail-side-bar']}>블로그디테일사이드바</div>
-}
-
 const BlogDetail = () => {
   const { state } = useLocation()
   const { blogItem } = state as { blogItem: BlogCase }
+
+  const [showLoading, setShowLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false)
+    }, 5000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <div className={styles['blog-detail-container']}>
       <BlogDetailHeader title={blogItem.title} />
       <div className={styles['blog-detail-body']}>
         <div>
-          <BlogDetailContents summaryContents={blogItem.summaryContents} tagList={blogItem.tagList} />
-          <BlogNavigationBar />
-          <AIBlogCarousel />
+          {showLoading ? (
+            <AILoading />
+          ) : (
+            <>
+              <BlogDetailContents summaryContents={blogItem.summaryContents} tagList={blogItem.tagList} />
+              <BlogNavigationBar />
+              <AIBlogCarousel />
+            </>
+          )}
         </div>
-        <BlogDetailSideBar />
+        <BlogDetailSideBar showLoading={showLoading} />
       </div>
     </div>
   )

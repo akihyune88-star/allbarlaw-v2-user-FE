@@ -107,15 +107,6 @@
 
 //* 모바일 스타일
 @media (max-width: $breakpoint-desktop) {
-  .skeleton-container {
-    .skeleton-header {
-      span {
-        font-size: 1.25rem;
-      }
-      margin-bottom: 1.3125rem;
-    }
-  }
-
   .blog-detail-header {
     display: flex;
     flex-direction: column;
@@ -150,5 +141,9 @@
 
   .blog-navigation-bar {
     padding: 1.0625rem 0;
+  }
+
+  .blog-detail-content {
+    width: 100%;
   }
 }
