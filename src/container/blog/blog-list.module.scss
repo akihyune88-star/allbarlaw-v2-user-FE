@@ -177,6 +177,7 @@
       .blog-item-tag {
         display: flex !important;
         gap: 0.5rem;
+        flex-wrap: wrap;
 
         button {
           background-color: $color-white;
