@@ -1,8 +1,12 @@
 import styles from '@/container/header/header.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { MENU_LIST } from '../constants'
+import { useNavigate } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
 
 const HeaderNavigation = () => {
+  const navigation = useNavigate()
+
   return (
     <div className={styles['navigation-container']}>
       <div className={styles['category']}>
@@ -16,7 +20,7 @@ const HeaderNavigation = () => {
           </button>
         ))}
       </div>
-      <div className={styles['chat-btn']}>
+      <div className={styles['chat-btn']} onClick={() => navigation(ROUTER.REQUEST_BARO_TALK)}>
         <button>바로톡</button>
       </div>
     </div>

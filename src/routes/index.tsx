@@ -9,13 +9,13 @@ import Main from '@/pages/main/Main'
 import SubMain from '@/pages/subMain/SubMain'
 import Support from '@/pages/Support'
 import AboutPage from '@/pages/AboutPage'
-import BaroTalk from '@/pages/BaroTalk'
 import LegalKnowledge from '@/pages/LegalKnowledge'
 import LegalDictionary from '@/pages/LegalDictionary'
 import LawyerSearch from '@/pages/LawyerSearch'
 import LawFirm from '@/pages/LawFirm'
 import BlogLayout from '@/pages/blog/Blog'
 import BlogDetail from '@/pages/blog/BlogDetail'
+import RequestBaroTalk from '@/pages/baroTalk/RequestBaroTalk'
 
 const router = createBrowserRouter([
   {
@@ -46,8 +46,8 @@ const router = createBrowserRouter([
             element: <BlogDetail />,
           },
           {
-            path: 'blog/:blogId',
-            element: <BlogDetail />,
+            path: ROUTER.REQUEST_BARO_TALK,
+            element: <RequestBaroTalk />,
           },
         ],
       },
@@ -66,10 +66,6 @@ const router = createBrowserRouter([
       {
         path: ROUTER.ABOUT,
         element: <AboutPage />,
-      },
-      {
-        path: ROUTER.BARO_TALK,
-        element: <BaroTalk />,
       },
       {
         path: ROUTER.LEGAL_KNOWLEDGE,
