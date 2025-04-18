@@ -1,0 +1,19 @@
+.blog-detail-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 15.625rem;
+
+  section {
+    position: relative;
+    width: 100%;
+  }
+
+  .lawyer-section {
+    z-index: 1;
+  }
+
+  .ai-section {
+    z-index: 0;
+  }
+}
