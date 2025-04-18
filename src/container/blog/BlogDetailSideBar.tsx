@@ -1,6 +1,7 @@
 import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LawyerVertical from '@/components/lawyer/LawyerVertical'
 import styles from './blog-detail-sidebar.module.scss'
+import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 
 const BlogDetailSideBar = ({ showLoading }: { showLoading: boolean }) => {
   return (
@@ -17,8 +18,18 @@ const BlogDetailSideBar = ({ showLoading }: { showLoading: boolean }) => {
       {showLoading ? (
         <div />
       ) : (
-        <section className={styles['ai-section']}>
+        <section className={styles['recommend-section']}>
           <AIRecommender />
+          <div style={{ height: 16 }} />
+          <LegalTermWidget
+            lagalTermList={[
+              '사기죄 [詐欺罪]',
+              '업무방해죄 [業務妨害罪]',
+              '절도죄 [窃盜罪]',
+              '법정대리인 [法定代理人]',
+              '위법성 조각사유 [違法性 阻却事由]',
+            ]}
+          />
         </section>
       )}
     </aside>
