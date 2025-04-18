@@ -6,4 +6,5 @@ export interface BlogCase {
   lawfirm: string
   isKeep: boolean
   thumbnail: string
+  tagList: string[]
 }

@@ -1,0 +1,125 @@
+//* 블로그 디테일 로딩 스켈레톤
+.skeleton-container {
+  padding: 1.5rem;
+  height: 18.5625rem;
+
+  .skeleton-header {
+    span {
+      font-size: 1.5rem;
+      font-weight: $font-weight-extra-bold;
+      color: $color-green-01;
+    }
+    margin-bottom: 2.5625rem;
+  }
+
+  .skeleton-content {
+    .skeleton-paragraph {
+      position: relative;
+      height: 16px;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, rgba(32, 191, 98, 0.5) 0%, rgba(32, 191, 98, 0.2) 100%);
+      background-size: 200% 100%;
+      border-radius: 4px;
+      animation: shimmer 1.5s infinite linear;
+
+      &:first-child {
+        margin-bottom: 27px;
+      }
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.blog-detail-content {
+  width: 49.875rem;
+  border-radius: 0.5rem;
+  background-color: $color-white;
+}
+
+.blog-detail-content-wrapper {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: $font-weight-extra-bold;
+    color: $color-text-black;
+  }
+
+  .summary {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    white-space: pre-line;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .lawyer-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+
+    .lawyer-item {
+      position: relative;
+      padding-left: 10px; /* 불릿+간격 공간 확보 */
+
+      &::before {
+        content: '•';
+        position: absolute;
+        left: 0.25rem;
+        color: $color-text-black;
+        font-size: 0.875rem;
+      }
+
+      span {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        word-break: keep-all;
+      }
+    }
+  }
+
+  .tag-list {
+    display: flex;
+    margin-top: 1rem;
+    gap: 1rem;
+
+    span {
+      font-size: 0.875rem;
+      color: $color-text-index;
+    }
+  }
+}
+
+.line-driver {
+  border: none;
+  border-top: 1px solid $color-line-divider;
+  margin: 16px 0; /* 상하 여백 16px 적용 */
+  padding: 0;
+}
+
+//* 모바일 스타일
+@media (max-width: $breakpoint-desktop) {
+  .skeleton-container {
+    .skeleton-header {
+      span {
+        font-size: 1.25rem;
+      }
+      margin-bottom: 1.3125rem;
+    }
+  }
+
+  .blog-detail-content {
+    width: 100%;
+  }
+}

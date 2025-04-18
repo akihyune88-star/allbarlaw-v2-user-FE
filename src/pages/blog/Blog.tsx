@@ -1,6 +1,7 @@
 import styles from '@/pages/blog/bolg.module.scss'
 import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
 import BlogList from '@/container/blog/BlogList'
+import AIRecommender from '@/components/aiRecommender/AIRecommender'
 
 const BlogLayout = () => {
   return (
@@ -11,7 +12,7 @@ const BlogLayout = () => {
       </section>
       <aside>
         <section>
-          <span>추천태그 /변호사</span>
+          <AIRecommender />
         </section>
         <section>
           <span>법률사전</span>

@@ -3,6 +3,7 @@ import { exampleBlogData, SORT_CASE } from './constants'
 import { useState } from 'react'
 import { BlogCase } from '@/types/blogTypes'
 import { useNavigate, useParams } from 'react-router-dom'
+import { getBlogSummaryText } from '@/utils/blogTextFormatter'
 
 type SortItem = {
   key: string
@@ -49,6 +50,8 @@ const BlogItem = ({ item }: { item: BlogCase }) => {
   const navigate = useNavigate()
   const { categoryId } = useParams()
 
+  const summaryContents = getBlogSummaryText(item.summaryContents)
+
   const handleClick = () => {
     const path = categoryId ? `/${categoryId}/blog/${item.id}` : `/blog/${item.id}`
 
@@ -61,7 +64,7 @@ const BlogItem = ({ item }: { item: BlogCase }) => {
     <article className={styles['blog-item']} onClick={handleClick}>
       <div className={styles['blog-content']}>
         <h3>{item.title}</h3>
-        <p>{item.summaryContents}</p>
+        <p>{summaryContents}</p>
         <span className={styles.lawyer}>{item.lawyer} 변호사</span>{' '}
         <span className={styles.lawfirm}>[{item.lawfirm}]</span>
         <div className={styles['blog-item-tag']}>
