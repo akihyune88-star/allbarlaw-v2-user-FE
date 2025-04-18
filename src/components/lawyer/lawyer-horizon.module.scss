@@ -1,0 +1,40 @@
+.lawyer-horizon {
+  display: flex;
+  align-items: center;
+
+  &.x-small {
+    .name {
+      font-size: 0.9375rem;
+      font-weight: $font-weight-semibold;
+    }
+
+    .lawfirm {
+    }
+
+    gap: 0.5rem;
+
+    img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+
+    .description {
+      font-size: 0.6875rem; //11px
+      color: $color-text-index;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &.small {
+    // small 스타일
+  }
+
+  &.large {
+    // large 스타일
+  }
+}
