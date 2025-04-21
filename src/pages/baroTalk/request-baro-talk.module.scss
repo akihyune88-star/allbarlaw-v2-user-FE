@@ -5,6 +5,15 @@
 .input-container {
   background-color: $color-bg-gray-02;
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: $main-content-width;
 }
 
 @media (max-width: $breakpoint-desktop) {
