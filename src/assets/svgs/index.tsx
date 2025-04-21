@@ -12,6 +12,7 @@ import arrowTail from '@/assets/svgs/arrow-tail.svg?react'
 import share from '@/assets/svgs/share.svg?react'
 import save from '@/assets/svgs/save.svg?react'
 import refresh from '@/assets/svgs/refresh.svg?react'
+import check from '@/assets/svgs/check.svg?react'
 
 export {
   react,
@@ -28,4 +29,5 @@ export {
   share,
   save,
   refresh,
+  check,
 }
