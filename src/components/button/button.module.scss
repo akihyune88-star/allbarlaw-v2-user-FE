@@ -7,10 +7,18 @@
   transition: all 0.2s ease;
   font-family: inherit;
   cursor: pointer;
+  border-radius: 0.625rem;
+
+  height: 2.5rem;
 
   &:focus {
     outline: none;
   }
+}
+
+// Rounded style
+.rounded {
+  border-radius: 999px; // 더 심한 보더레디우스 (pill 형태)
 }
 
 // Size variations
@@ -20,64 +28,54 @@
 }
 
 .medium {
-  padding: 0.5rem 1.25rem;
-  font-size: 1rem;
+  width: 6.625rem;
+  height: 2.5rem;
+  font-size: 0.75rem;
 }
 
 .large {
-  padding: 0.75rem 1.5rem;
-  font-size: 1.125rem;
+  padding: 0.7188rem 1.5rem;
+
+  font-size: 0.875rem;
+  font-weight: $font-weight-semibold;
 }
 
 // Variant styles
-.success {
-  background-color: #10b981; // green-500
-  color: white;
-  border: none;
+.primary {
+  background-color: $color-white;
+  border: 1px solid rgba($color-green-01, 0.3);
+  color: $color-green-01;
+  padding: 0.7813rem 0;
 
-  &:hover:not(.disabled) {
-    background-color: #059669; // green-600
-  }
-}
-
-.outline {
-  background-color: white;
-  color: #10b981; // green-500
-  border: 1px solid #10b981; // green-500
-
-  &:hover:not(.disabled) {
-    background-color: rgba(16, 185, 129, 0.05); // green-50
+  &.disabled {
+    background-color: $color-white;
+    border: 1px solid $color-line-borderbox;
+    color: $color-text-caption;
   }
 }
 
 .secondary {
-  background-color: white;
-  color: #374151; // gray-700
+  background-color: rgba($color-bg-black, 0.7);
+  color: $color-white; // gray-700
   border: 1px solid #d1d5db; // gray-300
 
-  &:hover:not(.disabled) {
-    background-color: #f9fafb; // gray-50
+  &.disabled {
+    background-color: $color-white;
+    border: 1px solid rgba($color-bg-black, 0.7);
+    color: $color-text-black !important;
   }
 }
 
-.gray {
-  background-color: #e5e7eb; // gray-200
-  color: #374151; // gray-700
-  border: none;
-
-  &:hover:not(.disabled) {
-    background-color: #d1d5db; // gray-300
-  }
+.fill {
+  background-color: $color-green-01;
+  color: $color-white;
 }
 
-.primary {
-  background-color: #374151; // gray-700
-  color: white;
-  border: none;
-
-  &:hover:not(.disabled) {
-    background-color: #1f2937; // gray-800
-  }
+.normal {
+  background-color: $color-white;
+  color: $color-green-01;
+  border: 1px solid $color-green-01;
+  border-radius: 0.5rem;
 }
 
 .light {
@@ -115,7 +113,12 @@
 
 // Disabled state
 .disabled {
-  opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+// 버튼 타입별 disabled 스타일은 해당 타입 클래스 내에서 &.disabled로 정의
+// 타입별 스타일이 없는 경우에만 기본 opacity 적용
+button:not(.primary):not(.secondary):not(.share):not(.save).disabled {
+  opacity: 0.5;
 }
