@@ -19,7 +19,7 @@
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba($color-green-01, 0.15); // Light green background
+  background-color: rgba($color-green-01, 0.15);
   z-index: 1;
   border-radius: 10px;
 }
@@ -27,7 +27,7 @@
 .progress-bar {
   position: absolute;
   height: 4px;
-  background-color: $color-green-01; // Using the same green as in the design
+  background-color: $color-green-01;
   transition: width 0.3s ease;
   top: 50%;
   transform: translateY(-50%);

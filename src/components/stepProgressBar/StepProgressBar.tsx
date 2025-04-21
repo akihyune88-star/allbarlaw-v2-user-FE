@@ -13,11 +13,9 @@ const StepProgressBar: React.FC<StepProgressBarProps> = ({ steps, currentStep, c
 
   return (
     <div className={`${styles['step-progress-container']} ${className}`}>
-      {/* Progress track and bar */}
       <div className={styles['progress-track']} />
       <div className={styles['progress-bar']} style={{ width: `${progressPercentage}%` }} />
 
-      {/* Steps dots */}
       {Array.from({ length: steps }).map((_, index) => {
         const stepNumber = index + 1
         const isActive = stepNumber === currentStep
