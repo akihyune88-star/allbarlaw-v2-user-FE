@@ -1,0 +1,78 @@
+@use '@/styles/abstracts/colors' as *;
+@use '@/styles/abstracts/mixins' as *;
+@use '@/styles/abstracts/breakpoints' as *;
+
+.step-progress-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  height: 1.5rem;
+}
+
+.progress-track {
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba($color-green-01, 0.15); // Light green background
+  z-index: 1;
+}
+
+.progress-bar {
+  position: absolute;
+  height: 4px;
+  background-color: $color-green-01; // Using the same green as in the design
+  transition: width 0.3s ease;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  left: 0;
+}
+
+.step {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.step-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: $color-green-01;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &.active {
+    width: 16px;
+    height: 16px;
+  }
+
+  &.inactive {
+    background-color: $color-green-01;
+  }
+
+  &.completed {
+    background-color: $color-green-01;
+  }
+}
+
+.step-label {
+  position: absolute;
+  top: 36px;
+  font-size: 14px;
+  white-space: nowrap;
+  color: $color-text-black;
+  display: none;
+
+  @include breakpoint($breakpoint-desktop) {
+    display: block;
+  }
+}
