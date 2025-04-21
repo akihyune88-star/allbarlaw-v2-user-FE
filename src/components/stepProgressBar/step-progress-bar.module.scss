@@ -21,6 +21,7 @@
   transform: translateY(-50%);
   background-color: rgba($color-green-01, 0.15); // Light green background
   z-index: 1;
+  border-radius: 10px;
 }
 
 .progress-bar {
@@ -32,6 +33,7 @@
   transform: translateY(-50%);
   z-index: 2;
   left: 0;
+  border-radius: 10px;
 }
 
 .step {
@@ -53,6 +55,19 @@
   &.active {
     width: 16px;
     height: 16px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background-color: white;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 
   &.inactive {
