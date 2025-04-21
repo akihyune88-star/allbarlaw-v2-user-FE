@@ -46,7 +46,7 @@ const CategorySelector = ({ selection, onMainCategoryClick, onSubCategoryClick }
     <nav className={styles['desktop-container']} aria-label='카테고리 네비게이션'>
       <section className={styles['category-section']}>
         <header className={styles.title}>대분류</header>
-        <div className={styles.desktopView}>
+        <div>
           <ul className={styles.grid}>
             {categoryList.map(category => (
               <li
@@ -63,7 +63,7 @@ const CategorySelector = ({ selection, onMainCategoryClick, onSubCategoryClick }
 
       <section className={styles['category-section']}>
         <header className={styles.title}>소분류</header>
-        <div className={styles.desktopView}>
+        <div>
           <ul className={styles.grid}>
             {selection.mainCategoryId &&
               categoryList
