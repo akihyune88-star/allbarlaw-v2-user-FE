@@ -7,7 +7,8 @@
   padding: 1.5rem;
 }
 
-// @media (max-width: $breakpoint-desktop) {
-//   .input-container {
-//   }
-// }
+@media (max-width: $breakpoint-desktop) {
+  .input-container {
+    padding: 1rem 1.25rem;
+  }
+}

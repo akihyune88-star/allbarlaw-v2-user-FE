@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { useCategoryStore } from '@/store/useCategoryStore'
 import styles from './category-selector.module.scss'
+import Divider from '@/components/divider/Divider'
+import SvgIcon from '@/components/SvgIcon'
 
 type CategorySelectorProps = {
   selection: {
@@ -11,27 +13,42 @@ type CategorySelectorProps = {
   onSubCategoryClick: (subCategoryId: number) => void
 }
 
+type DropdownType = 'main' | 'sub' | null
+
 const CategorySelector = ({ selection, onMainCategoryClick, onSubCategoryClick }: CategorySelectorProps) => {
   const { categoryList } = useCategoryStore()
-  const [mainDropdownOpen, setMainDropdownOpen] = useState(false)
-  const [subDropdownOpen, setSubDropdownOpen] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<DropdownType>(null)
   const mainDropdownRef = useRef<HTMLDivElement>(null)
   const subDropdownRef = useRef<HTMLDivElement>(null)
 
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (mainDropdownRef.current && !mainDropdownRef.current.contains(event.target as Node)) {
-        setMainDropdownOpen(false)
-      }
-      if (subDropdownRef.current && !subDropdownRef.current.contains(event.target as Node)) {
-        setSubDropdownOpen(false)
+      if (
+        mainDropdownRef.current &&
+        !mainDropdownRef.current.contains(event.target as Node) &&
+        subDropdownRef.current &&
+        !subDropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpenDropdown(null)
+      } else if (
+        mainDropdownRef.current &&
+        !mainDropdownRef.current.contains(event.target as Node) &&
+        openDropdown === 'main'
+      ) {
+        setOpenDropdown(null)
+      } else if (
+        subDropdownRef.current &&
+        !subDropdownRef.current.contains(event.target as Node) &&
+        openDropdown === 'sub'
+      ) {
+        setOpenDropdown(null)
       }
     }
 
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+  }, [openDropdown])
 
   useEffect(() => {
     if (categoryList && categoryList.length > 0 && selection.mainCategoryId === null) {
@@ -46,12 +63,12 @@ const CategorySelector = ({ selection, onMainCategoryClick, onSubCategoryClick }
 
   const handleMainCategorySelect = (categoryId: number) => {
     onMainCategoryClick(categoryId)
-    setMainDropdownOpen(false)
+    setOpenDropdown(null)
   }
 
   const handleSubCategorySelect = (subCategoryId: number) => {
     onSubCategoryClick(subCategoryId)
-    setSubDropdownOpen(false)
+    setOpenDropdown(null)
   }
 
   return (
@@ -96,40 +113,47 @@ const CategorySelector = ({ selection, onMainCategoryClick, onSubCategoryClick }
           </div>
         </section>
       </nav>
-      {/* 모바일뷰 */}
 
+      {/* 모바일뷰 */}
       <nav className={styles['mobile-container']} aria-label='카테고리 네비게이션'>
         <div className={styles['mobile-view']} ref={mainDropdownRef}>
-          <div className={styles['drop-down']} onClick={() => setMainDropdownOpen(!mainDropdownOpen)}>
-            <span>{selectedMainCategory?.categoryName || '주 카테고리'}</span>
+          <h2>대분류</h2>
+          <div className={styles['drop-down']} onClick={() => setOpenDropdown(openDropdown === 'main' ? null : 'main')}>
+            <span className={styles['category-span']}>{selectedMainCategory?.categoryName || '주 카테고리'}</span>
+            <SvgIcon name='arrowSmall' />
           </div>
-          {mainDropdownOpen && (
-            <ul className={styles.dropdownMenu}>
+          {openDropdown === 'main' && (
+            <ul className={styles['drop-down-menu']}>
               {categoryList.map(category => (
                 <li
                   key={category.id}
                   className={selection.mainCategoryId === category.id ? styles.activeItem : ''}
                   onClick={() => handleMainCategorySelect(category.id)}
                 >
-                  {category.categoryName}
+                  <span className={styles['category-span']}>{category.categoryName}</span>
                 </li>
               ))}
             </ul>
           )}
         </div>
-        <div className={styles.mobileView} ref={subDropdownRef}>
-          <div className={styles['drop-down']} onClick={() => setSubDropdownOpen(!subDropdownOpen)}>
-            <span>{selectedSubCategory?.subcategoryName || '서브카테고리'}</span>
+        <Divider padding={24} />
+        <div className={styles['mobile-view']} ref={subDropdownRef}>
+          <h2>소분류</h2>
+          <div className={styles['drop-down']} onClick={() => setOpenDropdown(openDropdown === 'sub' ? null : 'sub')}>
+            <span className={styles['category-span']}>
+              {selectedSubCategory?.subcategoryName || '소분류를 선택해주세요'}
+            </span>
+            <SvgIcon name='arrowSmall' />
           </div>
-          {subDropdownOpen && selectedMainCategory && (
-            <ul className={styles.dropdownMenu}>
+          {openDropdown === 'sub' && selectedMainCategory && (
+            <ul className={styles['drop-down-menu']}>
               {selectedMainCategory.subcategories.map(sub => (
                 <li
                   key={sub.id}
                   className={selection.subCategoryId === sub.id ? styles.activeItem : ''}
                   onClick={() => handleSubCategorySelect(sub.id)}
                 >
-                  {sub.subcategoryName}
+                  <span className={styles['category-span']}>{sub.subcategoryName}</span>
                 </li>
               ))}
             </ul>
