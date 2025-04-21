@@ -1,25 +1,6 @@
 import { create } from 'zustand'
 import { CategoryList } from '@/types/categoryTypes'
 
-interface CategoryStoreState {
-  cagegoryList: CategoryList
-  maincategory: number | null
-  subcategory: number | null
-  setMaincategory: (id: number | null) => void
-  setSubcategory: (id: number | null) => void
-}
-
-export const useCategoryStore = create<CategoryStoreState>()(set => ({
-  maincategory: null,
-  subcategory: null,
-  cagegoryList: category,
-
-  //* set 함수
-  setMaincategory: id => set({ maincategory: id }),
-  setSubcategory: id => set({ subcategory: id }),
-  setCagegoryList: (list: CategoryList) => set({ cagegoryList: list }),
-}))
-
 const category = [
   {
     id: 2,
@@ -156,3 +137,22 @@ const category = [
     ],
   },
 ]
+
+interface CategoryStoreState {
+  categoryList: CategoryList
+  maincategory: number | null
+  subcategory: number | null
+  setMaincategory: (id: number | null) => void
+  setSubcategory: (id: number | null) => void
+}
+
+export const useCategoryStore = create<CategoryStoreState>()(set => ({
+  maincategory: null,
+  subcategory: null,
+  categoryList: category,
+
+  //* set 함수
+  setMaincategory: id => set({ maincategory: id }),
+  setSubcategory: id => set({ subcategory: id }),
+  setCategoryList: (list: CategoryList) => set({ categoryList: list }),
+}))

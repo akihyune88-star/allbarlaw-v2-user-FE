@@ -1,3 +1,12 @@
+import CategorySelector from '@/container/baroTalk/CategorySelector'
+import styles from '@/pages/baroTalk/request-baro-talk.module.scss'
+import { useState } from 'react'
+
+interface CategorySelection {
+  mainCategoryId: number | null
+  subCategoryId: number | null
+}
+
 const TitleHeader = () => {
   return (
     <header>
@@ -7,9 +16,35 @@ const TitleHeader = () => {
 }
 
 const RequestBaroTalk = () => {
+  const [selectedCategory, setSelectedCategory] = useState<CategorySelection>({
+    mainCategoryId: null,
+    subCategoryId: null,
+  })
+
+  const handleMainCategoryClick = (categoryId: number) => {
+    setSelectedCategory({
+      mainCategoryId: categoryId,
+      subCategoryId: null,
+    })
+  }
+
+  const handleSubCategoryClick = (subCategoryId: number) => {
+    setSelectedCategory(prev => ({
+      ...prev,
+      subCategoryId,
+    }))
+  }
+
   return (
-    <div>
+    <div className={styles['request-baro-talk']}>
       <TitleHeader />
+      <div className={styles['input-container']}>
+        <CategorySelector
+          selection={selectedCategory}
+          onMainCategoryClick={handleMainCategoryClick}
+          onSubCategoryClick={handleSubCategoryClick}
+        />
+      </div>
     </div>
   )
 }

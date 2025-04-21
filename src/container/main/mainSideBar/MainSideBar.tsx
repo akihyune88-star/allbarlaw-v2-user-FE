@@ -6,11 +6,11 @@ import { ROUTER } from '@/routes/routerConstant'
 
 const MainSideBar = () => {
   const navigate = useNavigate()
-  const { maincategory, subcategory, setMaincategory, setSubcategory, cagegoryList } = useCategoryStore()
+  const { maincategory, subcategory, setMaincategory, setSubcategory, categoryList } = useCategoryStore()
 
   const handleMainCategoryClick = (id: number) => {
     setMaincategory(id)
-    const selectedCategory = cagegoryList.find(category => category.id === id)
+    const selectedCategory = categoryList?.find(category => category.id === id)
     if (selectedCategory && selectedCategory.subcategories.length > 0) {
       const firstSubCategoryId = selectedCategory.subcategories[0].id
       setSubcategory(firstSubCategoryId)
@@ -23,10 +23,14 @@ const MainSideBar = () => {
     navigate(`${ROUTER.SUB_MAIN.replace(':subCategoryId', id.toString())}`)
   }
 
+  if (!categoryList) {
+    return null // or a loading state
+  }
+
   return (
     <aside className={styles['sidebar-container']}>
       <SideBar
-        categories={cagegoryList}
+        categories={categoryList}
         selectedMainCategory={maincategory}
         selectedSubCategory={subcategory}
         onMainCategoryClick={handleMainCategoryClick}
