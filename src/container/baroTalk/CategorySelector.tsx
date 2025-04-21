@@ -13,7 +13,19 @@ type CategorySelectorProps = {
 }
 
 const CategorySelector = ({ selection, onMainCategoryClick, onSubCategoryClick }: CategorySelectorProps) => {
-  const { openDropdown, mainDropdownRef, subDropdownRef, toggleDropdown, closeDropdown } = useDropdown()
+  const {
+    openDropdown,
+    mainDropdownRef,
+    subDropdownRef,
+    mainDropdownMenuRef,
+    subDropdownMenuRef,
+    toggleDropdown,
+    closeDropdown,
+  } = useDropdown({
+    mainCategoryId: selection.mainCategoryId,
+    subCategoryId: selection.subCategoryId,
+    activeItemClassName: styles.activeItem,
+  })
 
   const { categoryList, selectedMainCategory, selectedSubCategory } = useCategories(selection, onMainCategoryClick)
 
@@ -75,7 +87,7 @@ const CategorySelector = ({ selection, onMainCategoryClick, onSubCategoryClick }
   const renderDropdownMenu = (type: DropdownType) => {
     if (type === 'main' && openDropdown === 'main') {
       return (
-        <ul className={styles['drop-down-menu']}>
+        <ul className={styles['drop-down-menu']} ref={mainDropdownMenuRef}>
           {categoryList.map(category => (
             <li
               key={category.id}
@@ -91,7 +103,7 @@ const CategorySelector = ({ selection, onMainCategoryClick, onSubCategoryClick }
 
     if (type === 'sub' && openDropdown === 'sub' && selectedMainCategory) {
       return (
-        <ul className={styles['drop-down-menu']}>
+        <ul className={styles['drop-down-menu']} ref={subDropdownMenuRef}>
           {selectedMainCategory.subcategories.map(sub => (
             <li
               key={sub.id}

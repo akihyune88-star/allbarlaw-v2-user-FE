@@ -2,15 +2,24 @@ import { useState, useRef, useEffect } from 'react'
 
 export type DropdownType = 'main' | 'sub' | null
 
+interface UseDropdownProps {
+  mainCategoryId: number | null
+  subCategoryId: number | null
+  activeItemClassName: string
+}
+
 /**
  * 드롭다운 관련 로직을 관리하는 커스텀 훅
  *
+ * @param props 드롭다운 설정 옵션
  * @returns 드롭다운 상태와 제어 함수들
  */
-export const useDropdown = () => {
+export const useDropdown = ({ mainCategoryId, subCategoryId, activeItemClassName }: UseDropdownProps) => {
   const [openDropdown, setOpenDropdown] = useState<DropdownType>(null)
   const mainDropdownRef = useRef<HTMLDivElement>(null)
   const subDropdownRef = useRef<HTMLDivElement>(null)
+  const mainDropdownMenuRef = useRef<HTMLUListElement>(null)
+  const subDropdownMenuRef = useRef<HTMLUListElement>(null)
 
   // 드롭다운 열기/닫기 토글 함수
   const toggleDropdown = (type: DropdownType) => {
@@ -51,10 +60,36 @@ export const useDropdown = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [openDropdown])
 
+  // 드롭다운 메뉴가 열릴 때 선택된 항목으로 스크롤
+  useEffect(() => {
+    if (openDropdown === 'main' && mainDropdownMenuRef.current && mainCategoryId) {
+      const selectedItem = mainDropdownMenuRef.current.querySelector(`.${activeItemClassName}`)
+      if (selectedItem) {
+        setTimeout(() => {
+          selectedItem.scrollIntoView({ block: 'center', behavior: 'smooth' })
+        }, 100)
+      }
+    }
+  }, [openDropdown, mainCategoryId, activeItemClassName])
+
+  // 소분류 드롭다운 메뉴가 열릴 때 선택된 항목으로 스크롤
+  useEffect(() => {
+    if (openDropdown === 'sub' && subDropdownMenuRef.current && subCategoryId) {
+      const selectedItem = subDropdownMenuRef.current.querySelector(`.${activeItemClassName}`)
+      if (selectedItem) {
+        setTimeout(() => {
+          selectedItem.scrollIntoView({ block: 'center', behavior: 'smooth' })
+        }, 100)
+      }
+    }
+  }, [openDropdown, subCategoryId, activeItemClassName])
+
   return {
     openDropdown,
     mainDropdownRef,
     subDropdownRef,
+    mainDropdownMenuRef,
+    subDropdownMenuRef,
     toggleDropdown,
     closeDropdown,
   }
