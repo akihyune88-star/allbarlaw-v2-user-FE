@@ -14,34 +14,6 @@ interface CategorySelection {
   subCategoryId: number | null
 }
 
-const renderNavButtons = (isMobile: boolean) => {
-  if (isMobile) {
-    return (
-      <nav className={styles['button-container']}>
-        <StepProgressBar steps={3} currentStep={1} className={styles['progress-bar']} />
-        <div className={styles['button-wrapper']}>
-          <Button variant='normal'>취소</Button>
-          <Button variant='fill' size='large' style={{ width: 120 }}>
-            저장 및 다음
-          </Button>
-        </div>
-      </nav>
-    )
-  } else {
-    return (
-      <nav className={styles['button-container']}>
-        <Button variant='normal'>취소</Button>
-        <div className={styles['progress-wrapper']}>
-          <StepProgressBar steps={3} currentStep={1} className={styles['progress-bar']} />
-        </div>
-        <Button variant='fill' size='large'>
-          저장 및 다음
-        </Button>
-      </nav>
-    )
-  }
-}
-
 const RequestBaroTalk = () => {
   const [selectedCategory, setSelectedCategory] = useState<CategorySelection>({
     mainCategoryId: null,
@@ -64,6 +36,34 @@ const RequestBaroTalk = () => {
     }))
   }
 
+  const renderButton = () => {
+    if (isMobile) {
+      return (
+        <div className={styles['button-container']}>
+          <StepProgressBar steps={3} currentStep={1} className={styles['progress-bar']} />
+          <div className={styles['button-wrapper']}>
+            <Button variant='normal'>취소</Button>
+            <Button variant='fill' size='large' style={{ width: 120 }}>
+              저장 및 다음
+            </Button>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div className={styles['button-container']}>
+          <Button variant='normal'>취소</Button>
+          <div className={styles['progress-wrapper']}>
+            <StepProgressBar steps={3} currentStep={1} className={styles['progress-bar']} />
+          </div>
+          <Button variant='fill' size='large'>
+            저장 및 다음
+          </Button>
+        </div>
+      )
+    }
+  }
+
   return (
     <div className={styles['request-baro-talk']}>
       <RequestHeader
@@ -72,31 +72,18 @@ const RequestBaroTalk = () => {
         description='채팅상담 및 답변내용은 법률지식인에 공개될 수 있습니다.'
       />
 
-      <main className={styles['input-container']}>
-        {!isMobile && <p className={styles['instruction-text']}>상담을 위해 아래 항목을 선택해주세요.</p>}
-
-        <section className={styles['form-section']}>
-          <CategorySelector
-            selection={selectedCategory}
-            onMainCategoryClick={handleMainCategoryClick}
-            onSubCategoryClick={handleSubCategoryClick}
-          />
-        </section>
-
-        <section className={styles['form-section']}>
-          <ConsultationStatusSelector />
-        </section>
-
-        <section className={styles['form-section']}>
-          <RequestTypeSelector />
-        </section>
-
-        <section className={styles['form-section']}>
-          <LawyerPreferenceSelector />
-        </section>
-
-        {renderNavButtons(isMobile)}
-      </main>
+      <div className={styles['input-container']}>
+        {!isMobile && <p>상담을 위해 아래 항목을 선택해주세요.</p>}
+        <CategorySelector
+          selection={selectedCategory}
+          onMainCategoryClick={handleMainCategoryClick}
+          onSubCategoryClick={handleSubCategoryClick}
+        />
+        <ConsultationStatusSelector />
+        <RequestTypeSelector />
+        <LawyerPreferenceSelector />
+        {renderButton()}
+      </div>
     </div>
   )
 }
