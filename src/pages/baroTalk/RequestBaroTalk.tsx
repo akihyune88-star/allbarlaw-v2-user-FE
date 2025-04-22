@@ -13,12 +13,23 @@ interface CategorySelection {
   subCategoryId: number | null
 }
 
-const TitleHeader = () => {
-  return (
-    <header>
-      <h1>법률 상담하기</h1>
-    </header>
-  )
+const PageHeader = () => {
+  const isMobile = useMediaQuery('(max-width: 1200px)')
+
+  if (isMobile) {
+    return (
+      <header className={styles['page-header']}>
+        <h1>채팅상담 신청</h1>
+        <p>채팅상담 및 답변내용은 법률지식인에 공개될 수 있습니다.</p>
+      </header>
+    )
+  } else {
+    return (
+      <header className={styles['page-header']}>
+        <h1>법률 상담하기</h1>
+      </header>
+    )
+  }
 }
 
 const RequestBaroTalk = () => {
@@ -43,10 +54,10 @@ const RequestBaroTalk = () => {
     }))
   }
 
-  const renderButton = () => {
+  const renderNavButtons = () => {
     if (isMobile) {
       return (
-        <div className={styles['button-container']}>
+        <nav className={styles['button-container']}>
           <StepProgressBar steps={3} currentStep={1} className={styles['progress-bar']} />
           <div className={styles['button-wrapper']}>
             <Button variant='normal'>취소</Button>
@@ -54,11 +65,11 @@ const RequestBaroTalk = () => {
               저장 및 다음
             </Button>
           </div>
-        </div>
+        </nav>
       )
     } else {
       return (
-        <div className={styles['button-container']}>
+        <nav className={styles['button-container']}>
           <Button variant='normal'>취소</Button>
           <div className={styles['progress-wrapper']}>
             <StepProgressBar steps={3} currentStep={1} className={styles['progress-bar']} />
@@ -66,27 +77,40 @@ const RequestBaroTalk = () => {
           <Button variant='fill' size='large'>
             저장 및 다음
           </Button>
-        </div>
+        </nav>
       )
     }
   }
 
   return (
     <div className={styles['request-baro-talk']}>
-      <TitleHeader />
+      <PageHeader />
 
-      <div className={styles['input-container']}>
-        <p>상담을 위해 아래 항목을 선택해주세요.</p>
-        <CategorySelector
-          selection={selectedCategory}
-          onMainCategoryClick={handleMainCategoryClick}
-          onSubCategoryClick={handleSubCategoryClick}
-        />
-        <ConsultationStatusSelector />
-        <RequestTypeSelector />
-        <LawyerPreferenceSelector />
-        {renderButton()}
-      </div>
+      <main className={styles['input-container']}>
+        {!isMobile && <p className={styles['instruction-text']}>상담을 위해 아래 항목을 선택해주세요.</p>}
+
+        <section className={styles['form-section']}>
+          <CategorySelector
+            selection={selectedCategory}
+            onMainCategoryClick={handleMainCategoryClick}
+            onSubCategoryClick={handleSubCategoryClick}
+          />
+        </section>
+
+        <section className={styles['form-section']}>
+          <ConsultationStatusSelector />
+        </section>
+
+        <section className={styles['form-section']}>
+          <RequestTypeSelector />
+        </section>
+
+        <section className={styles['form-section']}>
+          <LawyerPreferenceSelector />
+        </section>
+
+        {renderNavButtons()}
+      </main>
     </div>
   )
 }
