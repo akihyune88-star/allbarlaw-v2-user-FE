@@ -5,15 +5,6 @@
   width: 100%;
 }
 
-.page-header {
-  padding: 1.4375rem 0 1.25rem 1.625rem;
-
-  h1 {
-    font-size: 1.875rem;
-    font-weight: $font-weight-extra-bold;
-  }
-}
-
 .input-container {
   background-color: $color-bg-gray-02;
   padding: 1.5rem;
@@ -50,22 +41,6 @@
 }
 
 @media (max-width: $breakpoint-desktop) {
-  .page-header {
-    padding: 1.5rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.0625rem;
-
-    h1 {
-      font-size: 1.25rem;
-    }
-
-    p {
-      font-size: 0.8125rem;
-      line-height: 1.5rem;
-    }
-  }
-
   .input-container {
     padding: 1rem 1.25rem;
   }
