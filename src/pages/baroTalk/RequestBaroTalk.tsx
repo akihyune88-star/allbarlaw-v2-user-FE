@@ -4,6 +4,7 @@ import CategorySelector from '@/container/baroTalk/CategorySelector'
 import ConsultationStatusSelector from '@/container/baroTalk/ConsultationStatusSelector'
 import LawyerPreferenceSelector from '@/container/baroTalk/LawyerPreferenceSelector'
 import RequestTypeSelector from '@/container/baroTalk/RequestTypeSelector'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import styles from '@/pages/baroTalk/request-baro-talk.module.scss'
 import { useState } from 'react'
 
@@ -26,6 +27,8 @@ const RequestBaroTalk = () => {
     subCategoryId: null,
   })
 
+  const isMobile = useMediaQuery('(max-width: 1200px)')
+
   const handleMainCategoryClick = (categoryId: number) => {
     setSelectedCategory({
       mainCategoryId: categoryId,
@@ -38,6 +41,34 @@ const RequestBaroTalk = () => {
       ...prev,
       subCategoryId,
     }))
+  }
+
+  const renderButton = () => {
+    if (isMobile) {
+      return (
+        <div className={styles['button-container']}>
+          <StepProgressBar steps={3} currentStep={1} className={styles['progress-bar']} />
+          <div className={styles['button-wrapper']}>
+            <Button variant='normal'>취소</Button>
+            <Button variant='fill' size='large' style={{ width: 120 }}>
+              저장 및 다음
+            </Button>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div className={styles['button-container']}>
+          <Button variant='normal'>취소</Button>
+          <div className={styles['progress-wrapper']}>
+            <StepProgressBar steps={3} currentStep={1} className={styles['progress-bar']} />
+          </div>
+          <Button variant='fill' size='large'>
+            저장 및 다음
+          </Button>
+        </div>
+      )
+    }
   }
 
   return (
@@ -54,15 +85,7 @@ const RequestBaroTalk = () => {
         <ConsultationStatusSelector />
         <RequestTypeSelector />
         <LawyerPreferenceSelector />
-        <div className={styles['button-container']}>
-          <Button variant='normal'>취소</Button>
-          <div style={{ width: 282 }}>
-            <StepProgressBar steps={3} currentStep={2} className={styles['progress-bar']} />
-          </div>
-          <Button variant='fill' size='large'>
-            저장 및 다음
-          </Button>
-        </div>
+        {renderButton()}
       </div>
     </div>
   )
