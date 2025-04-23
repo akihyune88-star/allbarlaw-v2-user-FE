@@ -7,6 +7,8 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 1.5rem;
+  height: 100%;
+  box-sizing: border-box;
 
   .header {
     display: flex;
@@ -20,16 +22,20 @@
   }
 
   .input-container {
+    flex: 1;
+    height: 100%;
+
     textarea {
       width: 100%;
       height: 100%;
       background-color: $color-bg-gray-02;
       border-radius: 0.5rem;
       padding: 1.5rem;
-
       font-size: 0.875rem;
-
       resize: none;
+      border: none;
+      outline: none;
+      box-sizing: border-box;
     }
   }
 

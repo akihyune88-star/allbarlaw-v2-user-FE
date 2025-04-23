@@ -20,7 +20,7 @@
 }
 
 .progress-bar {
-  width: 282px;
+  width: 282px !important;
 
   @media (max-width: 80rem) {
     width: 17.625rem;

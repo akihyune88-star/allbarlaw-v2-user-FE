@@ -13,6 +13,7 @@ export const ROUTER = {
   BLOG: '/blog',
   BLOG_DETAIL: '/blog/:blogId',
   REQUEST_BARO_TALK: '/request-baro-talk',
+  CONSULTATION_CONTENT_FORM: '/consultation-content-form',
 
   NOT_FOUND: '*',
 } as const
