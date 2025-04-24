@@ -9,7 +9,7 @@ const App = () => {
       <BoxProgressBar />
       <Header />
       <div className={styles['inner-container']}>
-        <Outlet /> {/* 여기에 자식 라우트가 렌더링됩니다 */}
+        <Outlet />
       </div>
     </div>
   )

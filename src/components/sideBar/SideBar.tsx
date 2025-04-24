@@ -1,55 +1,18 @@
 import styles from '@/components/sideBar/main-side-bar.module.scss'
 import SvgIcon from '../SvgIcon'
 import { COLOR } from '@/styles/color'
-
-type SubcategoryType = {
-  id: number
-  subcategoryName: string
-}
-
-type CategoryType = {
-  id: number
-  categoryName: string
-  subcategories: SubcategoryType[]
-}
-
-export type SideBarList = CategoryType[]
+import { CategoryList } from '@/types/categoryTypes'
 
 interface SideBarProps {
-  categories: SideBarList
+  categories: CategoryList
   selectedMainCategory: number | null
   selectedSubCategory: number | null
   onMainCategoryClick: (id: number) => void
   onSubCategoryClick: (id: number) => void
 }
 
-const SideBar = ({
-  categories,
-  selectedMainCategory,
-  selectedSubCategory,
-  onMainCategoryClick,
-  onSubCategoryClick,
-}: SideBarProps) => {
-  return (
-    <nav className={styles.container} aria-label='카테고리 네비게이션'>
-      <ul className={styles['category-list']}>
-        {categories.map(category => (
-          <CategoryItem
-            key={category.id}
-            category={category}
-            isActive={selectedMainCategory === category.id}
-            onClick={() => onMainCategoryClick(category.id)}
-            selectedSubCategory={selectedSubCategory}
-            onSubCategoryClick={onSubCategoryClick}
-          />
-        ))}
-      </ul>
-    </nav>
-  )
-}
-
 interface CategoryItemProps {
-  category: SideBarList[number]
+  category: CategoryList[number]
   isActive: boolean
   onClick: () => void
   selectedSubCategory: number | null
@@ -82,6 +45,31 @@ const CategoryItem = ({ category, isActive, onClick, selectedSubCategory, onSubC
         </ul>
       )}
     </li>
+  )
+}
+
+const SideBar = ({
+  categories,
+  selectedMainCategory,
+  selectedSubCategory,
+  onMainCategoryClick,
+  onSubCategoryClick,
+}: SideBarProps) => {
+  return (
+    <nav className={styles.container} aria-label='카테고리 네비게이션'>
+      <ul className={styles['category-list']}>
+        {categories.map(category => (
+          <CategoryItem
+            key={category.id}
+            category={category}
+            isActive={selectedMainCategory === category.id}
+            onClick={() => onMainCategoryClick(category.id)}
+            selectedSubCategory={selectedSubCategory}
+            onSubCategoryClick={onSubCategoryClick}
+          />
+        ))}
+      </ul>
+    </nav>
   )
 }
 

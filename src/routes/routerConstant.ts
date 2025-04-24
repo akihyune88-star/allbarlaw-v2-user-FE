@@ -12,5 +12,8 @@ export const ROUTER = {
   SUB_MAIN: '/:subCategoryId',
   BLOG: '/blog',
   BLOG_DETAIL: '/blog/:blogId',
+  REQUEST_BARO_TALK: '/request-baro-talk',
+  CONSULTATION_CONTENT_FORM: '/consultation-content-form',
+  BARO_TALK_LAWYER_SELECTION: '/baro-talk-lawyer-selection',
   NOT_FOUND: '*',
 } as const

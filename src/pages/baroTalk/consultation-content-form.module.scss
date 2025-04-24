@@ -1,0 +1,31 @@
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-body-gap {
+  composes: form-body from global;
+  gap: 32px;
+}
+
+/* 단순히 컨테이너 높이만 지정 */
+.input-wrapper {
+  &-title {
+    height: 13.5rem;
+  }
+
+  &-description {
+    height: 21.5625rem;
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .content-wrapper {
+    flex-direction: column-reverse;
+  }
+
+  .form-body-gap {
+    gap: 1rem;
+  }
+}
