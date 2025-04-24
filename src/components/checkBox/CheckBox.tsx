@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from './check-box.module.scss'
 import SvgIcon from '../SvgIcon'
 
@@ -29,10 +29,23 @@ const CheckBox = ({
   gapUnit = 'rem',
 }: CheckBoxProps) => {
   const [selectedValues, setSelectedValues] = useState<string[]>(defaultValues)
+  const isFirstRender = useRef(true)
 
   useEffect(() => {
-    // defaultValues가 변경되면 selectedValues 업데이트
-    setSelectedValues(defaultValues)
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
+    // 이전 값과 새 값이 다른 경우에만 상태 업데이트
+    const isEqual =
+      defaultValues.length === selectedValues.length &&
+      defaultValues.every(val => selectedValues.includes(val)) &&
+      selectedValues.every(val => defaultValues.includes(val))
+
+    if (!isEqual) {
+      setSelectedValues(defaultValues)
+    }
   }, [defaultValues])
 
   const handleChange = (value: string) => {

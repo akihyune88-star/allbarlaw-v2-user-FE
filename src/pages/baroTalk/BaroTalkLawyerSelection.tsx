@@ -3,10 +3,19 @@ import styles from '@/pages/baroTalk/baro-talk-lawyer-selection.module.scss'
 import { Lawyer } from '@/types/lawyerTypes'
 import { useCallback, useMemo, useState } from 'react'
 import LawyersList from '@/container/baroTalk/LawyersList'
+import Input from '@/components/input/Input'
+import CheckBox from '@/components/checkBox'
+import ProgressButton from '@/components/progressButton/ProgressButton'
+import { useNavigate } from 'react-router-dom'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const BaroTalkLawyerSelection = () => {
+  const navigate = useNavigate()
   const [lawyers, _setLawyers] = useState<Lawyer[]>(lawyersMockData)
   const [selectedLawyers, setSelectedLawyers] = useState<Lawyer[]>([])
+  const [agreementChecked, setAgreementChecked] = useState<string[]>([])
+
+  const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const filteredLawyers = useMemo(
     () => lawyers.filter(lawyer => !selectedLawyers.some(sl => sl.id === lawyer.id)),
@@ -33,8 +42,15 @@ const BaroTalkLawyerSelection = () => {
   }, [])
 
   const handleRefresh = useCallback(() => {
-    // 추후 API 호출 등을 통해 변호사 목록을 새로고침하는 로직 추가
     console.log('새로고침 요청')
+  }, [])
+
+  const handleCancel = useCallback(() => {
+    navigate(-1)
+  }, [])
+
+  const handleCheckboxChange = useCallback((values: string[]) => {
+    setAgreementChecked(values)
   }, [])
 
   return (
@@ -45,13 +61,37 @@ const BaroTalkLawyerSelection = () => {
         description={`상담을 희망하는 변호사를 선택해주세요.\n변호사는 최대 4명까지 선택할 수 있습니다.`}
       />
       <section className={`form-body ${styles['body-gap']}`}>
-        <LawyersList type='selected' lawyers={selectedLawyers} onLawyerClick={handleRemoveLawyer} />
-        <LawyersList
-          type='recommended'
-          lawyers={filteredLawyers}
-          onLawyerClick={handleLawyerClick}
-          onRefresh={handleRefresh}
-        />
+        {!isMobile && (
+          <p className={styles['description-text']}>
+            {`상담을 희망하는 변호사를 선택해주세요. 
+            변호사는 최대 4명까지 선택할 수 있습니다.`}
+          </p>
+        )}
+        <div className={styles['lawyer-selection-box']}>
+          <LawyersList type='selected' lawyers={selectedLawyers} onLawyerClick={handleRemoveLawyer} />
+          <LawyersList
+            type='recommended'
+            lawyers={filteredLawyers}
+            onLawyerClick={handleLawyerClick}
+            onRefresh={handleRefresh}
+          />
+          <Input
+            title='상담 신청시 필수 안내사항 입니다.'
+            className={styles['notice-input']}
+            placeholder={noticeInputMockData}
+            textAreaStyle={{ fontSize: isMobile ? 12 : 14 }}
+            footerChildren={
+              <CheckBox
+                options={[{ value: 'notice', label: '질문 유의사항을 모두 확인했으며, 동의합니다.' }]}
+                name='notice'
+                className={styles['notice-checkbox']}
+                defaultValues={agreementChecked}
+                onChange={handleCheckboxChange}
+              />
+            }
+          />
+          <ProgressButton steps={3} currentStep={3} onCancel={handleCancel} onNext={handleCancel} />
+        </div>
       </section>
     </main>
   )
@@ -149,3 +189,13 @@ export const lawyersMockData: Lawyer[] = [
     description: '행정법 전문 변호사로 정부 기관을 상대로 한 소송과 환경, 도시계획 관련 법률 자문을 전문으로 합니다.',
   },
 ]
+
+const noticeInputMockData = `•상담을 신청하시면, 상담내용을 공개하는 것으로 간주하며, 언제든지 마이페이지에서 공개/비공개로 바꿀 수 있습니다.
+•상담내용을 비공개로 할 경우, 답변이 늦어질 수 있습니다.
+•상담글을 작성할 경우 사람을 특정할 수 있는 정보 또는 개인정보를 노출하지 마세요.
+•다음과 같은 내용이 포함되어 있다면 상담내용이 삭제되거나, 계정 정지 될 수 있습니다. 
+1. 링크, 계정, 전화번호, 주민번호, 주소등이 포함될 경우 
+2. 법률문제 해결을 위한 상담 내용이 아닐 경우 
+3. 동일한 내용의 상담이 2개 이상 등록 될 경우 
+4. 타인 비방(개인/변호사)의 글
+•질문이후 24시간 이내 채팅이 이루어 집니다.`

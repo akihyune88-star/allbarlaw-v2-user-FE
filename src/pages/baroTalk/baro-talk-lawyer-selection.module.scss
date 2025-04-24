@@ -2,73 +2,47 @@
   gap: 2rem;
 }
 
+.description-text {
+  margin-bottom: -8px !important;
+  white-space: pre-line;
+
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  color: $color-text-black;
+}
+
 .lawyer-selection-box {
+  width: $main-content-width;
   display: flex;
   flex-direction: column;
+  gap: 2rem;
+}
 
-  gap: 1rem;
+.notice-input {
+  width: 100%;
+  height: 356px;
 
-  &-header {
-    padding: 0.875rem 1.375rem 0.875rem 1rem;
-    display: flex;
-    background-color: $color-white;
-    border-radius: 0.5rem;
-
-    justify-content: space-between;
-    align-items: center;
-
-    h3 {
-      font-size: 1rem;
-      font-weight: $font-weight-extra-bold;
-    }
-
-    button {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background-color: transparent;
-      outline: none;
-
-      font-size: 0.875rem;
-      color: $color-green-01;
-      font-weight: $font-weight-semibold;
-    }
-  }
-
-  &.selected-lawyers {
-    .lawyer-selection-box-header {
-      background-color: $color-green-01;
-
-      h3 {
-        color: $color-white;
-
-        span {
-          margin-left: 24px;
-        }
-      }
-    }
-
-    .lawyer-list {
-      border: 1px solid $color-green-01;
-    }
+  .footer {
+    padding: 0;
   }
 }
 
-.lawyer-list {
-  background-color: $color-white;
-  border-radius: 0.5rem;
-
-  &-item {
-    padding: 1.75rem 0 1.5rem 3.5rem; //28px 0 24px 56px
-
-    border-bottom: 1px solid $color-line-divider;
-  }
+// This class will be added in the component for mobile devices
+.mobile-input-button-spacing {
+  margin-bottom: 16px;
 }
 
 @media (max-width: $breakpoint-desktop) {
-  .lawyer-list {
-    &-item {
-      padding: 12px 24px;
+  .lawyer-selection-box {
+    width: 100%;
+
+    // 모바일에서 Input과 ProgressButton 간격 조정
+    & > .notice-input + * {
+      margin-top: -16px;
     }
+  }
+
+  .notice-input {
+    height: 25.5rem;
   }
 }

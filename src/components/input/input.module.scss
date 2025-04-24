@@ -23,19 +23,49 @@
 
   .input-container {
     flex: 1;
+    background-color: $color-bg-gray-02;
     height: 100%;
+    border-radius: 0.5rem;
+    padding: 1.5rem 0.625rem 1.5rem 1.5rem;
+    font-size: 0.875rem;
 
     textarea {
       width: 100%;
       height: 100%;
-      background-color: $color-bg-gray-02;
-      border-radius: 0.5rem;
-      padding: 1.5rem;
-      font-size: 0.875rem;
+
+      word-break: keep-all;
+      overflow-wrap: break-word;
+
       resize: none;
       border: none;
       outline: none;
       box-sizing: border-box;
+
+      /* 스크롤바 커스터마이징 */
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 100%;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: $color-white;
+        border-radius: 3px;
+        height: 100%;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #404040;
+        border-radius: 3px;
+        height: 60px; /* Control the thumb size */
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+      }
+
+      /* Firefox 스크롤바 지원 */
+      scrollbar-width: thin;
+      scrollbar-color: #404040 $color-white;
     }
   }
 
