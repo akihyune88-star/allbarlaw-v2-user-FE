@@ -37,31 +37,37 @@
 
   .tags {
     display: flex;
-    flex-wrap: wrap; /* Keep wrap to allow overflow */
+    flex-wrap: wrap;
     gap: 0.75rem;
     width: 100%;
-    max-height: 2rem; /* Set height to approximately one line of tags */
-    overflow: hidden; /* Hide everything beyond the first line */
+    max-height: 2rem;
+    overflow: hidden;
 
     &::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
+      display: none;
     }
   }
 
   &.x-small {
+    .lawyer-horizon-image {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+    }
+
+    img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
     .name {
       font-size: 0.9375rem;
       font-weight: $font-weight-semibold;
     }
 
     gap: 0.5rem;
-
-    img {
-      width: 48px;
-      height: 48px;
-      objectfit: 'cover';
-      border-radius: 50%;
-    }
 
     .description {
       font-size: 0.6875rem; //11px
