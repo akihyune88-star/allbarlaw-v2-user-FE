@@ -18,6 +18,8 @@ import BlogDetail from '@/pages/blog/BlogDetail'
 import RequestBaroTalk from '@/pages/baroTalk/RequestBaroTalk'
 import ConsultationContentForm from '@/pages/baroTalk/ConsultationContentForm'
 import BaroTalkLawyerSelection from '@/pages/baroTalk/BaroTalkLawyerSelection'
+import VideoLayout from '@/pages/video/Video'
+import VideoDetail from '@/pages/video/VideoDetail'
 
 const router = createBrowserRouter([
   {
@@ -41,11 +43,19 @@ const router = createBrowserRouter([
                 path: 'blog',
                 element: <BlogLayout />,
               },
+              {
+                path: 'video',
+                element: <VideoLayout />,
+              },
             ],
           },
           {
             path: ':categoryId/blog/:blogId',
             element: <BlogDetail />,
+          },
+          {
+            path: ':categoryId/video/:videoId',
+            element: <VideoDetail />,
           },
           {
             path: ROUTER.REQUEST_BARO_TALK,
