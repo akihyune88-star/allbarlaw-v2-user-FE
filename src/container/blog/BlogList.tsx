@@ -1,9 +1,7 @@
 import styles from '@/container/blog/blog-list.module.scss'
 import { exampleBlogData, SORT_CASE } from './constants'
 import { useState } from 'react'
-import { BlogCase } from '@/types/blogTypes'
-import { useNavigate, useParams } from 'react-router-dom'
-import { getBlogSummaryText } from '@/utils/blogTextFormatter'
+import BlogItem from '@/components/blogItem/BlogItem'
 
 type SortItem = {
   key: string
@@ -43,44 +41,6 @@ const BlogHeader = ({ onClick, activeKey, totalBlogCount, recentBlogCount }: Blo
         </p>
       </div>
     </header>
-  )
-}
-
-const BlogItem = ({ item }: { item: BlogCase }) => {
-  const navigate = useNavigate()
-  const { categoryId } = useParams()
-
-  const summaryContents = getBlogSummaryText(item.summaryContents)
-
-  const handleClick = () => {
-    const path = categoryId ? `/${categoryId}/blog/${item.id}` : `/blog/${item.id}`
-
-    navigate(path, {
-      state: { blogItem: item },
-    })
-  }
-
-  return (
-    <article className={styles['blog-item']} onClick={handleClick}>
-      <div className={styles['blog-content']}>
-        <h3>{item.title}</h3>
-        <p>{summaryContents}</p>
-        <span className={styles.lawyer}>{item.lawyer} 변호사</span>{' '}
-        <span className={styles.lawfirm}>[{item.lawfirm}]</span>
-        <div className={styles['blog-item-tag']}>
-          <button>재산범죄</button>
-          <button>형사기타</button>
-          <button>사기</button>
-        </div>
-      </div>
-      <figure>
-        <img
-          className={styles['blog-item-img']}
-          src='https://www.monthlypeople.com/news/photo/202003/21217_12862_5312.png'
-          alt='blog-item-image'
-        />
-      </figure>
-    </article>
   )
 }
 
