@@ -51,14 +51,12 @@
 
 .lawyer-list {
   background-color: $color-white;
-  overflow: hidden;
   border-radius: 0.5rem;
+  overflow: hidden;
 
   &-item {
     padding: 1.75rem 0 1.5rem 3.5rem; // 28px 0 24px 56px
     border-bottom: 1px solid $color-line-divider;
-
-    cursor: pointer;
 
     &:last-child {
       border-bottom: none;
@@ -67,14 +65,7 @@
 }
 
 @media (max-width: $breakpoint-desktop) {
-  .lawyer-selection-box {
-    gap: 0;
-    &-header {
-      border-radius: 8px 8px 0 0;
-    }
-  }
   .lawyer-list {
-    border-radius: 0 0 8px 8px;
     &-item {
       padding: 28px 24px;
     }
