@@ -17,6 +17,7 @@ import BlogLayout from '@/pages/blog/Blog'
 import BlogDetail from '@/pages/blog/BlogDetail'
 import RequestBaroTalk from '@/pages/baroTalk/RequestBaroTalk'
 import ConsultationContentForm from '@/pages/baroTalk/ConsultationContentForm'
+import BaroTalkLawyerSelection from '@/pages/baroTalk/BaroTalkLawyerSelection'
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
           {
             path: ROUTER.CONSULTATION_CONTENT_FORM,
             element: <ConsultationContentForm />,
+          },
+          {
+            path: ROUTER.BARO_TALK_LAWYER_SELECTION,
+            element: <BaroTalkLawyerSelection />,
           },
         ],
       },

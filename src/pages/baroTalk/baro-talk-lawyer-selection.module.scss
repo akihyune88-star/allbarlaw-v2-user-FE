@@ -1,0 +1,74 @@
+.body-gap {
+  gap: 2rem;
+}
+
+.lawyer-selection-box {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1rem;
+
+  &-header {
+    padding: 0.875rem 1.375rem 0.875rem 1rem;
+    display: flex;
+    background-color: $color-white;
+    border-radius: 0.5rem;
+
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-size: 1rem;
+      font-weight: $font-weight-extra-bold;
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: transparent;
+      outline: none;
+
+      font-size: 0.875rem;
+      color: $color-green-01;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &.selected-lawyers {
+    .lawyer-selection-box-header {
+      background-color: $color-green-01;
+
+      h3 {
+        color: $color-white;
+
+        span {
+          margin-left: 24px;
+        }
+      }
+    }
+
+    .lawyer-list {
+      border: 1px solid $color-green-01;
+    }
+  }
+}
+
+.lawyer-list {
+  background-color: $color-white;
+  border-radius: 0.5rem;
+
+  &-item {
+    padding: 1.75rem 0 1.5rem 3.5rem; //28px 0 24px 56px
+
+    border-bottom: 1px solid $color-line-divider;
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .lawyer-list {
+    &-item {
+      padding: 12px 24px;
+    }
+  }
+}
