@@ -34,9 +34,7 @@
   }
 }
 
-.instruction-text {
-  margin: 0;
-  font-size: 1.125rem;
-  line-height: 1.5rem;
-  color: $color-text-black;
+.round-box {
+  background-color: $color-white;
+  border-radius: 8px;
 }

@@ -5,6 +5,7 @@ import ProgressButton from '@/components/progressButton/ProgressButton'
 import Input from '@/components/input/Input'
 import styles from '@/pages/baroTalk/consultation-content-form.module.scss'
 import { useNavigate } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
 
 const ConsultationContentForm = () => {
   const navigate = useNavigate()
@@ -54,7 +55,12 @@ const ConsultationContentForm = () => {
             className={styles['input-wrapper-title']}
           />
         </div>
-        <ProgressButton steps={3} currentStep={2} onCancel={handleCancel} onNext={() => {}} />
+        <ProgressButton
+          steps={3}
+          currentStep={2}
+          onCancel={handleCancel}
+          onNext={() => navigate(ROUTER.BARO_TALK_LAWYER_SELECTION)}
+        />
       </div>
     </div>
   )
