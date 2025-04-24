@@ -1,0 +1,28 @@
+.button-navigation {
+  display: flex;
+  justify-content: space-between;
+  max-width: $main-content-width;
+  align-items: center;
+
+  @media (max-width: 80rem) {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+    gap: 1rem;
+
+    .button-wrapper {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+}
+
+.progress-bar {
+  width: 282px !important;
+
+  @media (max-width: 80rem) {
+    width: 17.625rem;
+  }
+}

@@ -1,0 +1,67 @@
+.selector {
+  background-color: $color-white;
+  width: $main-content-width;
+  border-radius: 0.5rem;
+
+  display: flex;
+  gap: 0.9375rem;
+  padding: 1.5rem;
+
+  .title {
+    width: 4.5625rem;
+    font-size: 1.125rem;
+    font-weight: $font-weight-extra-bold;
+    white-space: pre-line;
+    line-height: 1.5;
+  }
+
+  .item-wrapper {
+    padding: 0 1.5rem;
+    margin-top: -2px;
+  }
+
+  .group-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+  }
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background-color: $color-line-divider; // 연한 회색
+  margin: 16px 0;
+  width: 100%;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .selector {
+    width: 100%;
+    flex-direction: column;
+
+    gap: 1rem;
+
+    .title {
+      white-space: nowrap;
+    }
+
+    .item-wrapper {
+      padding: 0 0.5rem;
+    }
+
+    .group-wrapper {
+      gap: 1.5rem;
+    }
+  }
+
+  .flex-center {
+    display: block;
+    align-items: initial;
+  }
+}

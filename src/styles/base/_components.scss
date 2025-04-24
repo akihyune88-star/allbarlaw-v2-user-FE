@@ -1,0 +1,40 @@
+// 공통 컴포넌트 스타일
+// 채팅상담 요청 관련 공통 스타일
+
+@use '../abstracts/colors' as *;
+@use '../abstracts/breakpoints' as *;
+@use '../abstracts/variables' as *;
+
+.form-container {
+  width: 100%;
+  background-color: $color-white;
+}
+
+.form-body {
+  background-color: $color-bg-gray-02;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-sizing: border-box;
+
+  p {
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+    color: $color-text-black;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 80rem) {
+    padding: 1rem 1.25rem;
+    width: 100vw;
+    max-width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+  }
+}
+
+.round-box {
+  background-color: $color-white;
+  border-radius: 8px;
+}
