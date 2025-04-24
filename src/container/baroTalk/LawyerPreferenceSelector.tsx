@@ -4,7 +4,7 @@ import { LAWYER_OPTIONS } from './constants'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const LawyerPreferenceSelector = () => {
-  const isMobile = useMediaQuery('(max-width: 1200px)')
+  const isMobile = useMediaQuery('(max-width: 1279px)')
 
   const handleStatusChange = (values: string[]) => {
     console.log('Selected values:', values)

@@ -14,6 +14,7 @@ import save from '@/assets/svgs/save.svg?react'
 import refresh from '@/assets/svgs/refresh.svg?react'
 import check from '@/assets/svgs/check.svg?react'
 import checkRound from '@/assets/svgs/check-round.svg?react'
+import bookMark from '@/assets/svgs/book-mark.svg?react'
 
 export {
   react,
@@ -32,4 +33,5 @@ export {
   refresh,
   check,
   checkRound,
+  bookMark,
 }

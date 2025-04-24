@@ -8,7 +8,7 @@ interface RequestHeaderProps {
 }
 
 const RequestHeader = ({ title, mobileTitle, description }: RequestHeaderProps) => {
-  const isMobile = useMediaQuery('(max-width: 1200px)')
+  const isMobile = useMediaQuery('(max-width: 1279px)')
 
   if (isMobile) {
     return (

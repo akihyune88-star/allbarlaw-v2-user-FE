@@ -20,7 +20,7 @@ const RequestBaroTalk = () => {
     subCategoryId: null,
   })
 
-  const isMobile = useMediaQuery('(max-width: 1200px)')
+  const isMobile = useMediaQuery('(max-width: 1279px)')
   const navigate = useNavigate()
 
   const handleMainCategoryClick = (categoryId: number) => {

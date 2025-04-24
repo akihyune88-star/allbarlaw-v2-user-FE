@@ -9,7 +9,7 @@ import { ROUTER } from '@/routes/routerConstant'
 
 const ConsultationContentForm = () => {
   const navigate = useNavigate()
-  const isMobile = useMediaQuery('(max-width: 1200px)')
+  const isMobile = useMediaQuery('(max-width: 1279px)')
   const titleOptions = [
     { value: 'AI 제목 만들기 적용', label: 'AI 제목 만들기 적용' },
     { value: '직접 작성하기', label: '직접 작성하기' },
