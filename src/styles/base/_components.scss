@@ -50,6 +50,13 @@
 }
 
 .aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (max-width: $breakpoint-desktop) {
+    display: none;
+  }
 }
 
 .round-box {

@@ -17,7 +17,9 @@ const VideoHorizon = ({ type = 'default', size = 'small' }: VideoHorizonProps) =
       <section className={styles['video-content-section']}>
         <header className={styles['video-content-section-header']}>
           <h1>주차장 음주운전, 잠깐의 방심으로 억울하게 처벌을 받을 위기 어떻개 해야하나요? 제발 살려주세요</h1>
-          <SvgIcon name='bookMark' size={16} />
+          <div className={styles['bookmark-icon']}>
+            <SvgIcon name='bookMark' size={16} />
+          </div>
         </header>
         <p>
           음주후 주차장등에서 잠깐 운전하다가 적발될 경우, 처벌받을 수 있습니다. 혈중알코올 농도가 0.03% 이상이면

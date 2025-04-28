@@ -2,10 +2,12 @@ import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import Divider from '@/components/divider/Divider'
 import VideoHorizon from '@/components/video/VideoHorizon'
 import styles from '@/container/video/video-list.module.scss'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useState } from 'react'
 
 const VideoList = () => {
   const [sortCase, setSortCase] = useState<string>('all')
+  const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const videoList = [1, 2, 3, 4, 5]
 
@@ -22,13 +24,15 @@ const VideoList = () => {
         totalBlogCount={2147}
         recentBlogCount={4142}
       />
-      <Divider padding={24} />
-      {videoList.map(video => (
-        <>
-          <VideoHorizon key={video} />
-          <Divider padding={24} />
-        </>
-      ))}
+      {!isMobile && <Divider padding={24} />}
+      <section className={styles['video-list-section']}>
+        {videoList.map((video, index) => (
+          <>
+            <VideoHorizon key={video} />
+            {!isMobile && index !== videoList.length - 1 && <Divider padding={24} />}
+          </>
+        ))}
+      </section>
     </div>
   )
 }
