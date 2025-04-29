@@ -1,0 +1,55 @@
+import SvgIcon from '../SvgIcon'
+import styles from '@/components/legalKnowledgeItem/legal-knowledge-item.module.scss'
+import { COLOR } from '@/styles/color'
+import { formatTimeAgo } from '@/utils/date'
+
+type LegalKnowledgeItemProps = {
+  title: string
+  description: string
+  time: Date
+  isLastAnswer: boolean
+  lawyerList?: { img: string; name: string }[]
+}
+
+const LegalKnowledgeItem = ({ title, description, time, isLastAnswer, lawyerList }: LegalKnowledgeItemProps) => {
+  const formattedTime = time ? formatTimeAgo(time) : ''
+  return (
+    <article className={styles['legal-knowledge-item']}>
+      <header className={styles['header']}>
+        <h1>{title}</h1>
+        <div className={styles['header-right']}>
+          <span>
+            <span className={styles['time']}>{formattedTime}</span> {isLastAnswer && '마지막 답변'}
+          </span>
+          <SvgIcon name='bookMark' />
+        </div>
+      </header>
+      <div className={styles['description-wrapper']}>
+        <p className={styles['description']}>{description}</p>
+      </div>
+      <footer className={styles['footer']}>
+        <div className={styles['footer-title']}>
+          의뢰인이 선택한 변호사
+          <SvgIcon
+            name='checkRound'
+            stroke={COLOR.icon_darkgreen}
+            fill={COLOR.white}
+            style={{ transform: 'translateY(-1px)' }}
+          />
+        </div>
+        {lawyerList && (
+          <div className={styles['lawyer-list']}>
+            {lawyerList.map(lawyer => (
+              <div className={styles['lawyer-item']} key={lawyer.name}>
+                <img src={lawyer.img} alt={lawyer.name} />
+                <span>{lawyer.name} 변호사</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </footer>
+    </article>
+  )
+}
+
+export default LegalKnowledgeItem

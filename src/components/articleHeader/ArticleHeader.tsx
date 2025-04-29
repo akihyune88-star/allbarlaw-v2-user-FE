@@ -1,5 +1,6 @@
 import { SORT_CASE } from '@/constants/category'
 import styles from '@/components/articleHeader/article-header.module.scss'
+import React from 'react'
 
 type SortItem = {
   key: string
@@ -13,6 +14,7 @@ type BlogHeaderProps = {
   recentBlogCount: number
   title: string
   mobileTitle: string
+  button?: React.ReactNode
 }
 
 const ArticleHeader = ({
@@ -22,11 +24,13 @@ const ArticleHeader = ({
   recentBlogCount,
   title,
   mobileTitle,
+  button,
 }: BlogHeaderProps) => {
   return (
     <header>
       <div className={styles['header']}>
         <h2>{title}</h2>
+        {button && button}
         <nav className={styles['nav-list']} aria-label='블로그 정렬'>
           <ul className={styles['sort-case']}>
             {SORT_CASE.map((item: SortItem) => (
@@ -44,6 +48,7 @@ const ArticleHeader = ({
 
       <div className={styles['header-mobile']}>
         <h2>{mobileTitle}</h2>
+        {button && button}
         <p>
           전체 {totalBlogCount.toLocaleString()}개 / 최근 한달 {recentBlogCount.toLocaleString()}개
         </p>

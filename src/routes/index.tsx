@@ -9,7 +9,7 @@ import Main from '@/pages/main/Main'
 import SubMain from '@/pages/subMain/SubMain'
 import Support from '@/pages/Support'
 import AboutPage from '@/pages/AboutPage'
-import LegalKnowledge from '@/pages/LegalKnowledge'
+
 import LegalDictionary from '@/pages/LegalDictionary'
 import LawyerSearch from '@/pages/LawyerSearch'
 import LawFirm from '@/pages/LawFirm'
@@ -20,6 +20,7 @@ import ConsultationContentForm from '@/pages/baroTalk/ConsultationContentForm'
 import BaroTalkLawyerSelection from '@/pages/baroTalk/BaroTalkLawyerSelection'
 import VideoLayout from '@/pages/video/Video'
 import VideoDetail from '@/pages/video/VideoDetail'
+import LegalKnowledgeLayout from '@/pages/legalKnowledge/LegalKnowledge'
 
 const router = createBrowserRouter([
   {
@@ -40,12 +41,16 @@ const router = createBrowserRouter([
             element: <SubMain />,
             children: [
               {
-                path: 'blog',
+                path: ROUTER.BLOG,
                 element: <BlogLayout />,
               },
               {
-                path: 'video',
+                path: ROUTER.VIDEO,
                 element: <VideoLayout />,
+              },
+              {
+                path: ROUTER.LEGAL_KNOWLEDGE,
+                element: <LegalKnowledgeLayout />,
               },
             ],
           },
@@ -57,6 +62,7 @@ const router = createBrowserRouter([
             path: ':categoryId/video/:videoId',
             element: <VideoDetail />,
           },
+
           {
             path: ROUTER.REQUEST_BARO_TALK,
             element: <RequestBaroTalk />,
@@ -87,10 +93,7 @@ const router = createBrowserRouter([
         path: ROUTER.ABOUT,
         element: <AboutPage />,
       },
-      {
-        path: ROUTER.LEGAL_KNOWLEDGE,
-        element: <LegalKnowledge />,
-      },
+
       {
         path: ROUTER.LEGAL_DICTIONARY,
         element: <LegalDictionary />,

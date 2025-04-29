@@ -1,0 +1,92 @@
+.legal-knowledge-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-size: 1rem;
+    font-weight: $font-weight-semibold;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    span {
+      font-size: 0.875rem;
+      font-weight: $font-weight-semibold;
+      color: $color-text-caption;
+    }
+
+    .time {
+      color: $color-green-01;
+    }
+  }
+}
+
+.description {
+  font-size: 0.8125rem;
+  color: $color-text-index;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  height: 2.0625rem;
+
+  .footer-title {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+    min-width: 11.0625rem;
+    background-color: $color-icon-darkgreen;
+    border-radius: 0.5rem 0 0 0.5rem;
+
+    color: $color-white;
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+  }
+
+  .lawyer-list {
+    width: 100%;
+    height: 100%;
+    background-color: $color-bg-gray-01;
+    border-radius: 0 0.5rem 0.5rem 0;
+    display: flex;
+    gap: 0.9375rem;
+
+    .lawyer-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      span {
+        font-size: 0.875rem;
+        font-weight: $font-weight-semibold;
+        color: $color-text-index;
+      }
+
+      img {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+      }
+
+      &:first-child {
+        padding-left: 29px; // 1.8125rem (Assuming 16px base)
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+}

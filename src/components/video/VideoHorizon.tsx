@@ -5,16 +5,16 @@ import { COLOR } from '@/styles/color'
 
 type VideoHorizonProps = {
   type?: 'default' | 'search' | 'reverse'
-  size?: 'small' | 'large'
+  size?: 'xsmall' | 'small' | 'large'
 }
 
 const VideoHorizon = ({ type = 'default', size = 'small' }: VideoHorizonProps) => {
-  console.log(type, size)
-
   const [like, setLike] = useState(false)
 
+  const rootClassName = [styles['video-horizon'], styles[type], styles[size]].filter(Boolean).join(' ')
+
   return (
-    <div className={styles['video-horizon']}>
+    <div className={rootClassName}>
       <figure className={styles['video-horizon-figure']}>
         <img className={styles.img} src={'https://picsum.photos/200/300'} alt='동영상 썸네일' />
       </figure>

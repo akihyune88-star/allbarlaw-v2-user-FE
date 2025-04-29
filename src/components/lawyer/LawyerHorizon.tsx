@@ -1,6 +1,7 @@
 import styles from '@/components/lawyer/lawyer-horizon.module.scss'
 import Tag from '../tag/Tag'
 import SvgIcon from '../SvgIcon'
+import { COLOR } from '@/styles/color'
 
 type LawyerHorizonProps = {
   name: string
@@ -32,7 +33,7 @@ const LawyerHorizon = ({
     >
       <div className={styles['lawyer-horizon-image']}>
         <img src={profileImage} alt='변호사 프로필' />
-        {selected && <SvgIcon name='checkRound' size={16} />}
+        {selected && <SvgIcon name='checkRound' size={16} fill={COLOR.green_01} stroke={COLOR.white} />}
       </div>
       <div className={styles['lawyer-horizon-content']}>
         <div>
