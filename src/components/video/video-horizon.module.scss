@@ -106,12 +106,17 @@
   }
 
   .video-content-section-header {
+    gap: 0.5rem;
+
     h1 {
+      font-size: 0.9375rem;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
+
+      word-break: keep-all;
     }
   }
 

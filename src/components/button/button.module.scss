@@ -100,12 +100,16 @@
 }
 
 .share {
+  width: 57px;
+  height: 24px;
   @include common-button-style;
   background-color: $color-bg-gray-01;
   color: $color-text-black;
 }
 
 .save {
+  width: 57px;
+  height: 24px;
   @include common-button-style;
   background-color: rgba($color-green-01, 0.3);
   color: $color-icon-darkgreen;

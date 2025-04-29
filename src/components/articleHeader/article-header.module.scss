@@ -56,6 +56,13 @@
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
 
+    h2 {
+      white-space: pre-line;
+      font-size: 16px;
+      font-weight: $font-weight-extra-bold;
+      line-height: 20px;
+    }
+
     p {
       margin-top: 1.0625rem;
       font-size: 0.875rem;

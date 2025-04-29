@@ -19,6 +19,7 @@ const VideoList = () => {
     <div className={styles['video-list']}>
       <ArticleHeader
         title={`변호사의 영상을 보고\n내 법률 문제의 해결방법을 찾으세요`}
+        mobileTitle={`변호사의 영상을 보고\n내 법률 문제의 해결방법을 찾으세요.`}
         onClick={handleSortCase}
         activeKey={sortCase}
         totalBlogCount={2147}

@@ -5,10 +5,13 @@ import styles from '@/components/blogItem/blog-item.module.scss'
 import Tag from '../tag/Tag'
 import SvgIcon from '../SvgIcon'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useState } from 'react'
+import { COLOR } from '@/styles/color'
 const BlogItem = ({ item }: { item: BlogCase }) => {
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { categoryId } = useParams()
+  const [like, setLike] = useState(false)
 
   const summaryContents = getBlogSummaryText(item.summaryContents)
 
@@ -25,7 +28,9 @@ const BlogItem = ({ item }: { item: BlogCase }) => {
       <div className={styles['blog-item-wrapper']}>
         <div className={styles['blog-content-header']}>
           <h3>{item.title}</h3>
-          {!isMobile && <SvgIcon name='bookMark' />}
+          {!isMobile && (
+            <SvgIcon name='bookMark' onClick={() => setLike(!like)} fill={like ? COLOR.green_01 : 'none'} />
+          )}
         </div>
         <div className={styles['blog-content-body']}>
           <p>{summaryContents}</p>

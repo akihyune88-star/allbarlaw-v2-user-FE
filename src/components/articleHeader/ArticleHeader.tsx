@@ -12,9 +12,17 @@ type BlogHeaderProps = {
   totalBlogCount: number
   recentBlogCount: number
   title: string
+  mobileTitle: string
 }
 
-const ArticleHeader = ({ onClick, activeKey, totalBlogCount, recentBlogCount, title }: BlogHeaderProps) => {
+const ArticleHeader = ({
+  onClick,
+  activeKey,
+  totalBlogCount,
+  recentBlogCount,
+  title,
+  mobileTitle,
+}: BlogHeaderProps) => {
   return (
     <header>
       <div className={styles['header']}>
@@ -35,7 +43,7 @@ const ArticleHeader = ({ onClick, activeKey, totalBlogCount, recentBlogCount, ti
       </div>
 
       <div className={styles['header-mobile']}>
-        <h2>최신 블로그글</h2>
+        <h2>{mobileTitle}</h2>
         <p>
           전체 {totalBlogCount.toLocaleString()}개 / 최근 한달 {recentBlogCount.toLocaleString()}개
         </p>

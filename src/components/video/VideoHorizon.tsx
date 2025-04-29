@@ -1,5 +1,7 @@
 import styles from '@/components/video/video-horizon.module.scss'
 import SvgIcon from '../SvgIcon'
+import { useState } from 'react'
+import { COLOR } from '@/styles/color'
 
 type VideoHorizonProps = {
   type?: 'default' | 'search' | 'reverse'
@@ -8,6 +10,8 @@ type VideoHorizonProps = {
 
 const VideoHorizon = ({ type = 'default', size = 'small' }: VideoHorizonProps) => {
   console.log(type, size)
+
+  const [like, setLike] = useState(false)
 
   return (
     <div className={styles['video-horizon']}>
@@ -18,7 +22,7 @@ const VideoHorizon = ({ type = 'default', size = 'small' }: VideoHorizonProps) =
         <header className={styles['video-content-section-header']}>
           <h1>주차장 음주운전, 잠깐의 방심으로 억울하게 처벌을 받을 위기 어떻개 해야하나요? 제발 살려주세요</h1>
           <div className={styles['bookmark-icon']}>
-            <SvgIcon name='bookMark' size={16} />
+            <SvgIcon name='bookMark' size={16} onClick={() => setLike(!like)} fill={like ? COLOR.green_01 : 'none'} />
           </div>
         </header>
         <p>

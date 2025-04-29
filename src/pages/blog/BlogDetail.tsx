@@ -12,7 +12,6 @@ import AILoading from '@/components/aiLoading/AILoading'
 type BlogHeaderProps = {
   title: string
 }
-// type BlogDetailSideBarProps = {}
 
 const BlogDetailHeader = ({ title }: BlogHeaderProps) => {
   return (
