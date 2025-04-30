@@ -9,8 +9,10 @@ const TagSection = ({ tagList }: { tagList: string[] }) => {
     <section className={styles['tag-section']}>
       <h2 className={styles['section-title']}>AI 추천태그</h2>
       <div className={styles['tag-list']}>
-        {tagList.map(tag => (
-          <span>#{tag}</span>
+        {tagList.map((tag, index) => (
+          <span key={tag + index} className={styles['tag-item']}>
+            #{tag}
+          </span>
         ))}
       </div>
       <button>

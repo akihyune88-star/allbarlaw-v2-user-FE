@@ -3,7 +3,7 @@ import Divider from '@/components/divider/Divider'
 import VideoHorizon from '@/components/video/VideoHorizon'
 import styles from '@/container/video/video-list.module.scss'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 
 const VideoList = () => {
   const [sortCase, setSortCase] = useState<string>('all')
@@ -28,10 +28,10 @@ const VideoList = () => {
       {!isMobile && <Divider padding={24} />}
       <section className={styles['video-list-section']}>
         {videoList.map((video, index) => (
-          <>
-            <VideoHorizon key={video} />
+          <Fragment key={video}>
+            <VideoHorizon />
             {!isMobile && index !== videoList.length - 1 && <Divider padding={24} />}
-          </>
+          </Fragment>
         ))}
       </section>
     </div>

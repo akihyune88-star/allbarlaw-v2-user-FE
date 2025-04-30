@@ -1,7 +1,6 @@
 import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
-import React from 'react'
 
 const LawyerLayout = () => {
   return (

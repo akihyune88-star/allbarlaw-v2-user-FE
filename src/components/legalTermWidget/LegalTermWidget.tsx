@@ -10,8 +10,8 @@ const LegalTermWidget = ({ lagalTermList }: LegalTermWidgetProps) => {
     <div className={styles['legal-term-widget']}>
       <h1>법률 사전</h1>
       <div className={styles['tag-list']}>
-        {lagalTermList.map(term => (
-          <p>{term}</p>
+        {lagalTermList.map((term, index) => (
+          <p key={term + index}>{term}</p>
         ))}
       </div>
       <button>

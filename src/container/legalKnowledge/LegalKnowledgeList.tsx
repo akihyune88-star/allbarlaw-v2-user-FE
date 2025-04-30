@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import Button from '@/components/button/Button'
@@ -38,9 +38,8 @@ const LegalKnowledgeList = () => {
       {!isMobile && <Divider padding={24} />}
       <section className={styles['legal-knowledge-list']}>
         {knowledgeList.map((knowledge, index) => (
-          <>
+          <Fragment key={knowledge}>
             <LegalKnowledgeItem
-              key={knowledge}
               title='질문지 선택한 내용과, 사건내용을 AI요약한 제목을 보여줍니다.'
               description='음주후 주차장등에서 잠깐 운전하다가 적발될 경우, 처벌받을 수 있습니다. 
             혈중알코올 농도가 0.03% 이상이면 음주운전으로 간주되어 처벌대상이 됩니다. 
@@ -64,7 +63,7 @@ const LegalKnowledgeList = () => {
               isLastAnswer={true}
             />
             {index !== knowledgeList.length - 1 && !isMobile && <Divider padding={0} />}
-          </>
+          </Fragment>
         ))}
       </section>
     </div>

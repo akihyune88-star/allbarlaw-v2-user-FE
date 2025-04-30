@@ -15,7 +15,7 @@ const HeaderNavigation = () => {
       </div>
       <div className={styles['header-menu-list']}>
         {MENU_LIST.map(item => (
-          <button className={styles['menu-item']}>
+          <button key={item.name} className={styles['menu-item']}>
             <span>{item.name}</span>
           </button>
         ))}
