@@ -1,5 +1,6 @@
 import SvgIcon from '../SvgIcon'
 import styles from '@/components/legalKnowledgeItem/legal-knowledge-item.module.scss'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { COLOR } from '@/styles/color'
 import { formatTimeAgo } from '@/utils/date'
 
@@ -12,6 +13,7 @@ type LegalKnowledgeItemProps = {
 }
 
 const LegalKnowledgeItem = ({ title, description, time, isLastAnswer, lawyerList }: LegalKnowledgeItemProps) => {
+  const isMobile = useMediaQuery('(max-width: 80rem)')
   const formattedTime = time ? formatTimeAgo(time) : ''
   return (
     <article className={styles['legal-knowledge-item']}>
@@ -32,7 +34,7 @@ const LegalKnowledgeItem = ({ title, description, time, isLastAnswer, lawyerList
           의뢰인이 선택한 변호사
           <SvgIcon
             name='checkRound'
-            stroke={COLOR.icon_darkgreen}
+            stroke={isMobile ? COLOR.green_01 : COLOR.icon_darkgreen}
             fill={COLOR.white}
             style={{ transform: 'translateY(-1px)' }}
           />
@@ -48,6 +50,14 @@ const LegalKnowledgeItem = ({ title, description, time, isLastAnswer, lawyerList
           </div>
         )}
       </footer>
+      {isMobile && (
+        <div className={styles['header-right']}>
+          <span>
+            <span className={styles['time']}>{formattedTime}</span> {isLastAnswer && '마지막 답변'}
+          </span>
+          <SvgIcon name='bookMark' />
+        </div>
+      )}
     </article>
   )
 }

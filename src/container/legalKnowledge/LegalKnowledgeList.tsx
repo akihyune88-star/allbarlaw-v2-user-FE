@@ -35,7 +35,7 @@ const LegalKnowledgeList = () => {
         totalBlogCount={2147}
         recentBlogCount={4142}
       />
-      <Divider padding={24} />
+      {!isMobile && <Divider padding={24} />}
       <section className={styles['legal-knowledge-list']}>
         {knowledgeList.map((knowledge, index) => (
           <>

@@ -12,22 +12,23 @@
   h1 {
     font-size: 1rem;
     font-weight: $font-weight-semibold;
+    word-break: keep-all;
+  }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  span {
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+    color: $color-text-caption;
   }
 
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-
-    span {
-      font-size: 0.875rem;
-      font-weight: $font-weight-semibold;
-      color: $color-text-caption;
-    }
-
-    .time {
-      color: $color-green-01;
-    }
+  .time {
+    color: $color-green-01;
   }
 }
 
@@ -82,11 +83,55 @@
       }
 
       &:first-child {
-        padding-left: 29px; // 1.8125rem (Assuming 16px base)
+        padding-left: 29px;
       }
     }
   }
 }
 
 @media (max-width: $breakpoint-desktop) {
+  .header {
+    .header-right {
+      display: none;
+    }
+  }
+
+  .description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+
+    .footer-title {
+      border-radius: 0.5rem;
+      width: 100%;
+      border-radius: 0.5rem 0.5rem 0 0;
+      background-color: $color-green-01;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lawyer-list {
+      width: 100%;
+      border-radius: 0 0 0.5rem 0.5rem;
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9375rem;
+
+      .lawyer-item {
+        &:first-child {
+          padding-left: 0;
+        }
+      }
+    }
+  }
 }
