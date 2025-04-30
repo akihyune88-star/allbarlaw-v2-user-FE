@@ -21,6 +21,7 @@ import BaroTalkLawyerSelection from '@/pages/baroTalk/BaroTalkLawyerSelection'
 import VideoLayout from '@/pages/video/Video'
 import VideoDetail from '@/pages/video/VideoDetail'
 import LegalKnowledgeLayout from '@/pages/legalKnowledge/LegalKnowledge'
+import LawyerLayout from '@/pages/lawyer/Lawyer'
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
               {
                 path: ROUTER.LEGAL_KNOWLEDGE,
                 element: <LegalKnowledgeLayout />,
+              },
+              {
+                path: ROUTER.LAWYER,
+                element: <LawyerLayout />,
               },
             ],
           },

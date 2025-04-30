@@ -13,6 +13,7 @@ export const ROUTER = {
   BLOG_DETAIL: '/blog/:blogId',
   VIDEO: 'video',
   LEGAL_KNOWLEDGE: 'legal-knowledge',
+  LAWYER: 'lawyer',
   REQUEST_BARO_TALK: '/request-baro-talk',
   CONSULTATION_CONTENT_FORM: '/consultation-content-form',
   BARO_TALK_LAWYER_SELECTION: '/baro-talk-lawyer-selection',
