@@ -2,7 +2,6 @@ import { BlogCase } from '@/types/blogTypes'
 import { getBlogSummaryText } from '@/utils/blogTextFormatter'
 import { useNavigate, useParams } from 'react-router-dom'
 import styles from '@/components/blogItem/blog-item.module.scss'
-import Tag from '../tag/Tag'
 import SvgIcon from '../SvgIcon'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useState } from 'react'
@@ -36,13 +35,6 @@ const BlogItem = ({ item }: { item: BlogCase }) => {
           <p>{summaryContents}</p>
           <span className={styles.lawyer}>{item.lawyer} 변호사</span>{' '}
           <span className={styles.lawfirm}>[{item.lawfirm}]</span>
-          <div className={styles['blog-item-tag']}>
-            <Tag tag='재산범죄' />
-            <Tag tag='형사기타' />
-            <Tag tag='사기' />
-            <Tag tag='형사기타' />
-            <Tag tag='사기' />
-          </div>
         </div>
       </div>
       <figure>

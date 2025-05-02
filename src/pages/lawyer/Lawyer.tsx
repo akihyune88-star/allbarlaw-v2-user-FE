@@ -1,12 +1,14 @@
 import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
+import LawyerList from '@/container/lawyer/LawyerList'
 
 const LawyerLayout = () => {
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
         <AIBlogCarousel />
+        <LawyerList />
       </section>
       <aside className='aside'>
         <section>

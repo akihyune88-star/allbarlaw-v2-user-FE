@@ -19,6 +19,26 @@
   display: flex;
   align-items: flex-end;
 
+  .allButton {
+    --button-text-color: #{$color-text-index};
+
+    color: var(--button-text-color);
+    font-weight: $font-weight-regular;
+    font-size: 0.875rem;
+    margin-right: 0.6875rem;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    min-width: 72px;
+    text-align: center;
+
+    &.active {
+      --button-text-color: #{$color-text-black};
+      font-weight: $font-weight-extra-bold;
+    }
+  }
+
   .sort-case {
     display: flex;
     gap: 0.6875rem;
@@ -68,6 +88,32 @@
       font-size: 0.875rem;
       color: $color-text-caption;
       font-weight: $font-weight-semibold;
+    }
+  }
+
+  .mobile-bottom {
+    padding: 1.0625rem 0;
+  }
+
+  .nav-list {
+    justify-content: space-between;
+    align-items: center;
+    color: $color-text-index;
+
+    button {
+      background-color: transparent;
+      color: $color-text-index;
+      font-size: 0.875rem;
+      font-weight: $font-weight-semibold;
+      outline: none;
+    }
+
+    .sort-case {
+      gap: 1rem;
+
+      li {
+        min-width: 0;
+      }
     }
   }
 }
