@@ -2,6 +2,7 @@ import styles from '@/components/lawyer/lawyer-horizon.module.scss'
 import Tag from '../tag/Tag'
 import SvgIcon from '../SvgIcon'
 import { COLOR } from '@/styles/color'
+import React from 'react'
 
 type LawyerHorizonProps = {
   name: string
@@ -13,6 +14,8 @@ type LawyerHorizonProps = {
   className?: string
   onClick?: () => void
   selected?: boolean
+  buttonComponent?: React.ReactNode
+  ad?: boolean
 }
 
 const LawyerHorizon = ({
@@ -25,6 +28,8 @@ const LawyerHorizon = ({
   className,
   onClick,
   selected = false,
+  buttonComponent,
+  ad = false,
 }: LawyerHorizonProps) => {
   return (
     <div
@@ -39,6 +44,7 @@ const LawyerHorizon = ({
         <div>
           <span className={styles['name']}>{name}</span>
           {lawfirm && <span className={styles['lawfirm']}>{lawfirm}</span>}
+          {ad && <span className={styles['ad']}>AD</span>}
         </div>
         <p className={styles['description']}>{description}</p>
         {tags && tags.length > 0 && (
@@ -48,6 +54,7 @@ const LawyerHorizon = ({
             ))}
           </div>
         )}
+        {buttonComponent && buttonComponent}
       </div>
     </div>
   )

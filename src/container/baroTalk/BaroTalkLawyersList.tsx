@@ -15,7 +15,7 @@ interface LawyersListProps {
   title?: string
 }
 
-const LawyersList = ({ type, lawyers, onLawyerClick, onRefresh, title }: LawyersListProps) => {
+const BaroTalkLawyersList = ({ type, lawyers, onLawyerClick, onRefresh, title }: LawyersListProps) => {
   if (type === 'selected' && lawyers.length === 0) return null
 
   const isSelected = type === 'selected'
@@ -56,4 +56,4 @@ const LawyersList = ({ type, lawyers, onLawyerClick, onRefresh, title }: Lawyers
   )
 }
 
-export default memo(LawyersList)
+export default memo(BaroTalkLawyersList)

@@ -2,12 +2,13 @@ import RequestHeader from '@/container/baroTalk/RequestHeader'
 import styles from '@/pages/baroTalk/baro-talk-lawyer-selection.module.scss'
 import { Lawyer } from '@/types/lawyerTypes'
 import { useCallback, useMemo, useState } from 'react'
-import LawyersList from '@/container/baroTalk/LawyersList'
+
 import Input from '@/components/input/Input'
 import CheckBox from '@/components/checkBox'
 import ProgressButton from '@/components/progressButton/ProgressButton'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import BaroTalkLawyersList from '@/container/baroTalk/BaroTalkLawyersList'
 
 const BaroTalkLawyerSelection = () => {
   const navigate = useNavigate()
@@ -68,8 +69,8 @@ const BaroTalkLawyerSelection = () => {
           </p>
         )}
         <div className={styles['lawyer-selection-box']}>
-          <LawyersList type='selected' lawyers={selectedLawyers} onLawyerClick={handleRemoveLawyer} />
-          <LawyersList
+          <BaroTalkLawyersList type='selected' lawyers={selectedLawyers} onLawyerClick={handleRemoveLawyer} />
+          <BaroTalkLawyersList
             type='recommended'
             lawyers={filteredLawyers}
             onLawyerClick={handleLawyerClick}
