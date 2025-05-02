@@ -23,6 +23,14 @@
 }
 
 @media (max-width: $breakpoint-desktop) {
+  .container {
+    gap: 0;
+  }
+  .header-wrapper {
+    background-color: transparent;
+    padding: 0;
+  }
+
   .lawyer-list-item {
     padding: 1rem;
   }

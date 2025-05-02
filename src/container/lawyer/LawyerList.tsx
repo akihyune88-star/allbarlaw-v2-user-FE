@@ -21,7 +21,6 @@ const LawyerList = () => {
         <ArticleHeader
           title={`분야별 전문 변호사를 찾아보시고 상담하세요.
           채팅상담을 남겨 주시면 24시간내에 답변 드립니다.`}
-          mobileTitle={`변호사의 영상을 보고\n내 법률 문제의 해결방법을 찾으세요.`}
           onClick={handleSortCase}
           activeKey={sortCase}
           totalBlogCount={2147}

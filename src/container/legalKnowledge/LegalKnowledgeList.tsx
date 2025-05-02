@@ -21,8 +21,7 @@ const LegalKnowledgeList = () => {
   return (
     <div className={styles['legal-knowledge-list-container']}>
       <ArticleHeader
-        title={`변호사가 직접 답변하는 ㅇㅇㅇㅇㅇ!\n내 문제와 유사한 문제가 있는지 찾아보세요`}
-        mobileTitle={`해당 분야의 전문 변호사가 직접 답변하는\n올바로 법률 지식인!\n찾고 있는 비슷한 문제를 먼저 찾아보세요.`}
+        title={`변호사가 직접 답변하는 법률 지식인!\n내 문제와 유사한 문제가 있는지 찾아보세요`}
         button={
           isMobile ? (
             <Button variant='primary' className={styles['chat-button']}>

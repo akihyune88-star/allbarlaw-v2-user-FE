@@ -15,7 +15,6 @@ const BlogList = () => {
     <main className={styles['list-container']}>
       <ArticleHeader
         title={`변호사가 작성한 글 안에서\n 내 문제의 해결방법을 찾으세요.`}
-        mobileTitle={`최신 블로그 글`}
         onClick={handleSortCase}
         activeKey={sortCase}
         totalBlogCount={2147}

@@ -15,7 +15,6 @@ type BlogHeaderProps = {
   totalBlogCount: number
   recentBlogCount: number
   title: string
-  mobileTitle: string
   button?: React.ReactNode
   type?: ViewType
 }
@@ -26,7 +25,7 @@ const ArticleHeader = ({
   totalBlogCount,
   recentBlogCount,
   title,
-  mobileTitle,
+
   button,
   type = 'default',
 }: BlogHeaderProps) => {
@@ -87,7 +86,7 @@ const ArticleHeader = ({
         </nav>
       </div>
       <div className={styles['header-mobile']}>
-        <h2>{mobileTitle}</h2>
+        <h2>{title}</h2>
         {button && button}
         <div className={styles['mobile-bottom']}>{renderSortedContentsMobileView(type)}</div>
       </div>
