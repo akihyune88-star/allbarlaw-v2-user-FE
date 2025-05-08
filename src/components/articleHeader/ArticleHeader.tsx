@@ -3,6 +3,7 @@ import styles from '@/components/articleHeader/article-header.module.scss'
 import React from 'react'
 import SvgIcon from '../SvgIcon'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useNavigate } from 'react-router-dom'
 
 type SortItem = {
   key: string
@@ -11,8 +12,9 @@ type SortItem = {
 
 type ViewType = 'section' | 'total'
 
-type BlogHeaderProps = {
-  onClick: (key: string) => void
+type ArticleHeaderProps = {
+  onClick?: (key: string) => void
+  navigationPath?: string
   activeKey?: string
   totalBlogCount: number
   recentBlogCount: number
@@ -24,6 +26,7 @@ type BlogHeaderProps = {
 
 const ArticleHeader = ({
   onClick,
+  navigationPath,
   activeKey,
   totalBlogCount,
   recentBlogCount,
@@ -31,19 +34,14 @@ const ArticleHeader = ({
   className,
   button,
   type = 'section',
-}: BlogHeaderProps) => {
+}: ArticleHeaderProps) => {
   const mainClassName = [styles[type], className].filter(Boolean).join(' ')
+  const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
-  const handleClick = (key: string) => {
-    if (onClick) {
-      onClick(key)
-    }
-  }
-
   const handleTotalViewClick = () => {
-    if (onClick) {
-      onClick('전체')
+    if (navigationPath) {
+      navigate(navigationPath)
     }
   }
 
@@ -52,7 +50,7 @@ const ArticleHeader = ({
       return (
         <nav className={styles['nav-list']} aria-label='블로그 정렬'>
           <button
-            onClick={() => onClick('전체')}
+            onClick={() => onClick && onClick('전체')}
             className={`${styles.allButton} ${activeKey === '전체' ? styles.active : ''}`}
           >
             전체 {totalBlogCount.toLocaleString()}개
@@ -65,7 +63,7 @@ const ArticleHeader = ({
               return (
                 <li
                   key={item.key}
-                  onClick={() => onClick(item.key)}
+                  onClick={() => onClick && onClick(item.key)}
                   className={activeKey === item.key ? styles.active : ''}
                 >
                   {item.name}
@@ -82,7 +80,7 @@ const ArticleHeader = ({
             {SORT_CASE.map((item: SortItem) => (
               <li
                 key={item.key}
-                onClick={() => handleClick(item.key)}
+                onClick={() => onClick && onClick(item.key)}
                 className={activeKey === item.key ? styles.active : ''}
               >
                 {item.name === '전체' ? `${item.name} ${totalBlogCount.toLocaleString()}개` : item.name}
