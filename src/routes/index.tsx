@@ -23,6 +23,7 @@ import VideoDetail from '@/pages/video/VideoDetail'
 import LegalKnowledgeLayout from '@/pages/legalKnowledge/LegalKnowledge'
 import LawyerLayout from '@/pages/lawyer/Lawyer'
 import SubCategoryLawfirmLayout from '@/pages/lawfirm/SubCategoryLawfirm'
+import TotalSubMain from '@/pages/subMain/TotalSubMain'
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
             path: ':categoryId',
             element: <SubMain />,
             children: [
+              {
+                path: '',
+                element: <TotalSubMain />,
+              },
               {
                 path: 'blog',
                 element: <BlogLayout />,
