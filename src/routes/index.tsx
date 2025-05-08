@@ -22,6 +22,7 @@ import VideoLayout from '@/pages/video/Video'
 import VideoDetail from '@/pages/video/VideoDetail'
 import LegalKnowledgeLayout from '@/pages/legalKnowledge/LegalKnowledge'
 import LawyerLayout from '@/pages/lawyer/Lawyer'
+import SubCategoryLawfirmLayout from '@/pages/lawfirm/SubCategoryLawfirm'
 
 const router = createBrowserRouter([
   {
@@ -42,20 +43,24 @@ const router = createBrowserRouter([
             element: <SubMain />,
             children: [
               {
-                path: ROUTER.BLOG,
+                path: 'blog',
                 element: <BlogLayout />,
               },
               {
-                path: ROUTER.VIDEO,
+                path: 'video',
                 element: <VideoLayout />,
               },
               {
-                path: ROUTER.LEGAL_KNOWLEDGE,
+                path: 'legal-knowledge',
                 element: <LegalKnowledgeLayout />,
               },
               {
-                path: ROUTER.LAWYER,
+                path: 'lawyer',
                 element: <LawyerLayout />,
+              },
+              {
+                path: 'law-firm',
+                element: <SubCategoryLawfirmLayout />,
               },
             ],
           },

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SUB_MENU_LIST } from './constants'
+import { SUB_MENU_LIST } from '../../constants/submainConstants'
 import styles from './sub-menu-navigation.module.scss'
 import { useCategoryStore } from '@/store/useCategoryStore'
 import { useNavigate } from 'react-router-dom'
@@ -11,7 +11,7 @@ const SubMenuNavigation = () => {
 
   const handleMenuClick = (menu: (typeof SUB_MENU_LIST)[0]) => {
     setSelectedMenu(menu)
-    navigate(`/${subcategory}/${menu.path}`)
+    navigate(`/${subcategory}${menu.path}`)
   }
 
   return (

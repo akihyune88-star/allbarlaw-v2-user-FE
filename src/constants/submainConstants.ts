@@ -29,6 +29,6 @@ export const SUB_MENU_LIST = [
   {
     name: '로펌',
     itemWidth: 54,
-    path: '/law-firm',
+    path: ROUTER.LAW_FIRM,
   },
 ]

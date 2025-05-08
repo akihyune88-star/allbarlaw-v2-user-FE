@@ -1,6 +1,6 @@
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
-import styles from './Lawyer-list.module.scss'
+import styles from './lawyer-list.module.scss'
 import { useState } from 'react'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
