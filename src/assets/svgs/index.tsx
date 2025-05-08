@@ -15,6 +15,10 @@ import refresh from '@/assets/svgs/refresh.svg?react'
 import check from '@/assets/svgs/check.svg?react'
 import checkRound from '@/assets/svgs/check-round.svg?react'
 import bookMark from '@/assets/svgs/book-mark.svg?react'
+import map from '@/assets/svgs/map.svg?react'
+import call from '@/assets/svgs/call.svg?react'
+import homepage from '@/assets/svgs/homepage.svg?react'
+import slickArrow from '@/assets/svgs/slick-arrow.svg?react'
 
 export {
   react,
@@ -34,4 +38,8 @@ export {
   check,
   checkRound,
   bookMark,
+  map,
+  call,
+  homepage,
+  slickArrow,
 }
