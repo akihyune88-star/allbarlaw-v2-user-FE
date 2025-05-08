@@ -1,17 +1,19 @@
 import { SORT_CASE } from '@/constants/category'
 import styles from '@/components/articleHeader/article-header.module.scss'
 import React from 'react'
+import SvgIcon from '../SvgIcon'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 type SortItem = {
   key: string
   name: string
 }
 
-type ViewType = 'list' | 'default'
+type ViewType = 'section' | 'total'
 
 type BlogHeaderProps = {
   onClick: (key: string) => void
-  activeKey: string
+  activeKey?: string
   totalBlogCount: number
   recentBlogCount: number
   title: string
@@ -28,16 +30,25 @@ const ArticleHeader = ({
   title,
   className,
   button,
-  type = 'default',
+  type = 'section',
 }: BlogHeaderProps) => {
-  const renderSortedContentsMobileView = (type: ViewType) => {
-    if (type === 'list') {
-      return (
-        <p>
-          전체 {totalBlogCount.toLocaleString()}개 / 최근 한달 ${recentBlogCount.toLocaleString()}개`
-        </p>
-      )
-    } else {
+  const mainClassName = [styles[type], className].filter(Boolean).join(' ')
+  const isMobile = useMediaQuery('(max-width: 80rem)')
+
+  const handleClick = (key: string) => {
+    if (onClick) {
+      onClick(key)
+    }
+  }
+
+  const handleTotalViewClick = () => {
+    if (onClick) {
+      onClick('전체')
+    }
+  }
+
+  const renderSortCase = () => {
+    if (isMobile) {
       return (
         <nav className={styles['nav-list']} aria-label='블로그 정렬'>
           <button
@@ -64,20 +75,14 @@ const ArticleHeader = ({
           </ul>
         </nav>
       )
-    }
-  }
-
-  return (
-    <header className={className}>
-      <div className={styles['header']}>
-        <h2>{title}</h2>
-        {button && button}
+    } else {
+      return (
         <nav className={styles['nav-list']} aria-label='블로그 정렬'>
           <ul className={styles['sort-case']}>
             {SORT_CASE.map((item: SortItem) => (
               <li
                 key={item.key}
-                onClick={() => onClick(item.key)}
+                onClick={() => handleClick(item.key)}
                 className={activeKey === item.key ? styles.active : ''}
               >
                 {item.name === '전체' ? `${item.name} ${totalBlogCount.toLocaleString()}개` : item.name}
@@ -85,12 +90,34 @@ const ArticleHeader = ({
             ))}
           </ul>
         </nav>
-      </div>
-      <div className={styles['header-mobile']}>
+      )
+    }
+  }
+
+  return (
+    <header className={mainClassName}>
+      <div className={styles['header']}>
         <h2>{title}</h2>
         {button && button}
-        <div className={styles['mobile-bottom']}>{renderSortedContentsMobileView(type)}</div>
+        {type === 'section' && renderSortCase()}
+        {type === 'total' && (
+          <div className={styles['total-count']}>
+            <p>
+              전체 {totalBlogCount.toLocaleString()}개 / 최근 한달 {recentBlogCount.toLocaleString()}개
+            </p>
+            <button className={styles['total-view-button']}>
+              <span>전체보기</span>
+              <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(-90deg)' }} />
+            </button>
+          </div>
+        )}
       </div>
+      {type === 'total' && (
+        <button className={styles['total-view-button']} onClick={handleTotalViewClick}>
+          <span>전체보기</span>
+          <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(-90deg)' }} />
+        </button>
+      )}
     </header>
   )
 }
