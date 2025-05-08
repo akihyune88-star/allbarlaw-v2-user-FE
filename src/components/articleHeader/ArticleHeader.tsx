@@ -17,6 +17,7 @@ type BlogHeaderProps = {
   title: string
   button?: React.ReactNode
   type?: ViewType
+  className?: string
 }
 
 const ArticleHeader = ({
@@ -25,7 +26,7 @@ const ArticleHeader = ({
   totalBlogCount,
   recentBlogCount,
   title,
-
+  className,
   button,
   type = 'default',
 }: BlogHeaderProps) => {
@@ -67,7 +68,7 @@ const ArticleHeader = ({
   }
 
   return (
-    <header>
+    <header className={className}>
       <div className={styles['header']}>
         <h2>{title}</h2>
         {button && button}
