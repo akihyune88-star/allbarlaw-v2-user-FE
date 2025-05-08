@@ -1,5 +1,6 @@
 .lawfirm-horizon {
   display: flex;
+  align-items: center;
   width: 100%;
   gap: 2rem;
 }
@@ -64,4 +65,57 @@
 .tag-list {
   display: flex;
   gap: 0.5rem;
+}
+
+.header-wrapper {
+  .thumbnail {
+    display: none;
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .lawfirm-horizon {
+    figure {
+      display: none;
+    }
+  }
+
+  .info-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .contact-info {
+    span {
+      display: none;
+    }
+  }
+
+  .header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    .thumbnail {
+      display: block;
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  .info-description {
+    h3 {
+      font-weight: $font-weight-extra-bold;
+      font-size: 0.8125rem;
+      line-height: 1.125rem;
+      color: $color-text-black;
+    }
+
+    p {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      line-height: 1.125rem;
+      color: $color-text-black;
+      word-break: keep-all;
+    }
+  }
 }

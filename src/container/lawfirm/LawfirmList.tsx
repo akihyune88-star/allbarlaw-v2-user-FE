@@ -1,9 +1,10 @@
 import styles from '@/container/lawfirm/lawfirm-list.module.scss'
 import LawfirmHorizon from '@/components/lawfirm/LawfirmHorizon'
 import MultipleImageSlider from '@/components/multipleImageSlider/MultipleImageSlider'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const LawfirmList = () => {
-  // const isMobile = useMediaQuery('(max-width: 80rem)')
+  const isMobile = useMediaQuery('(max-width: 80rem)')
   const lawfirmList = [1, 2, 3, 4, 5]
   const lawfirmImageList = [
     'https://i.pinimg.com/236x/b7/45/ef/b745ef9bb3bd41f685850cdd85a19338.jpg',
@@ -34,7 +35,7 @@ const LawfirmList = () => {
             { label: '의뢰인후기', url: 'https://example.com' },
           ]}
         />
-        {lawfirmImageList && <MultipleImageSlider imageList={lawfirmImageList} width={796} />}
+        {lawfirmImageList && <MultipleImageSlider imageList={lawfirmImageList} width={isMobile ? 335 : 796} />}
       </div>
     </div>
   ))

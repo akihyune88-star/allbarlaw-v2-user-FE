@@ -54,16 +54,19 @@ const LawfirmHorizon = ({
         <img src={lawfirmThumbnail} alt={lawfirmName} className={styles.thumbnail} />
       </figure>
       <div className={styles['lawfirm-info']}>
-        <header className={styles['info-header']}>
-          <h3 className={styles['lawfirm-name']}>{lawfirmName}</h3>
-          <div className={styles['contact-info']}>
-            {contactInfo.map(info => (
-              <div key={info.label} className={styles['contact-info-item']}>
-                <SvgIcon name={info.icon} size={24} />
-                <span>{info.label}</span>
-              </div>
-            ))}
+        <header className={styles['header-wrapper']}>
+          <div className={styles['info-header']}>
+            <h3 className={styles['lawfirm-name']}>{lawfirmName}</h3>
+            <div className={styles['contact-info']}>
+              {contactInfo.map(info => (
+                <div key={info.label} className={styles['contact-info-item']}>
+                  <SvgIcon name={info.icon} size={24} />
+                  <span>{info.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
+          <img src={lawfirmThumbnail} alt={lawfirmName} className={styles.thumbnail} />
         </header>
         <section className={styles['info-description']}>
           <h3>{title}</h3>

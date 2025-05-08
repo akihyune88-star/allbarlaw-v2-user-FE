@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import styles from './multiple-image-slider.module.scss'
 import SvgIcon from '../SvgIcon'
-import { CSSProperties } from 'react'
+import { CSSProperties, useEffect } from 'react'
 
 type MultipleImageSliderProps = {
   imageList: string[]
@@ -37,7 +37,7 @@ const Arrow = ({ className, onClick, type }: CustomArrowProps) => (
 
 const MultipleImageSlider = ({
   imageList,
-  slidesToShow = 5,
+  slidesToShow = 3,
   slidesToScroll = 1,
   imgHeight = 108,
   dots = false,
@@ -45,6 +45,7 @@ const MultipleImageSlider = ({
   infinite = false,
   width = '100%', // 기본값 설정
 }: MultipleImageSliderProps) => {
+  // 슬라이더 설정
   const settings = {
     className: 'slider variable-width',
     variableWidth: true,
@@ -60,17 +61,24 @@ const MultipleImageSlider = ({
     adaptiveHeight: false,
   }
 
-  // 슬라이더에 직접 너비 적용
+  // 슬라이더 스타일
   const sliderStyle: CSSProperties = {
     width: width,
   }
+
+  // 동적으로 CSS 변수 설정
+  useEffect(() => {
+    document.documentElement.style.setProperty('--slide-height', `${imgHeight}px`)
+  }, [imgHeight])
 
   return (
     <div className={styles.sliderWrapper} style={sliderStyle}>
       <Slider {...settings}>
         {imageList.map((img, index) => (
-          <div key={index} className={styles.slideItem}>
-            <img src={img} alt='lawfirm' className={styles['img-item']} style={{ height: `${imgHeight}px` }} />
+          <div key={index} className={styles.slideItem} style={{ height: `${imgHeight}px` }}>
+            <figure style={{ height: `${imgHeight}px` }}>
+              <img src={img} alt='lawfirm' className={styles['img-item']} style={{ height: `${imgHeight}px` }} />
+            </figure>
           </div>
         ))}
       </Slider>
