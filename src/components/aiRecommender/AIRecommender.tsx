@@ -3,6 +3,7 @@ import Divider from '../divider/Divider'
 import SvgIcon from '../SvgIcon'
 import { AIRecommenderLawyerItem } from '@/types/lawyerTypes'
 import LawyerHorizon from '../lawyer/LawyerHorizon'
+import { exampleLawyerList, exampleTagList } from '@/constants/exampleData'
 
 const TagSection = ({ tagList }: { tagList: string[] }) => {
   return (
@@ -55,34 +56,11 @@ export const LawyerItem = ({
 const AIRecommender = () => {
   return (
     <article className={styles['ai-recommender']}>
-      <TagSection
-        tagList={['경찰', '고소', '공범', '통장', '보이스피싱', '사기공범', '신고', '은행', '경찰', '고소']}
-      />
+      <TagSection tagList={exampleTagList} />
       <Divider />
-      <LawyerItem lawyerList={mockLawyerList} />
+      <LawyerItem lawyerList={exampleLawyerList} />
     </article>
   )
 }
 
 export default AIRecommender
-
-const mockLawyerList: AIRecommenderLawyerItem[] = [
-  {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-  {
-    id: 2,
-    name: '신중완',
-    description: '신중완은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-  {
-    id: 3,
-    name: '백경렬',
-    description: '백경렬은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-]

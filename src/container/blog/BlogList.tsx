@@ -1,5 +1,5 @@
 import styles from '@/container/blog/blog-list.module.scss'
-import { exampleBlogData } from './constants'
+import { exampleBlogData } from '../../constants/exampleData'
 import { useState } from 'react'
 import BlogItem from '@/components/blogItem/BlogItem'
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'

@@ -1,13 +1,20 @@
 .total-blog-list {
   display: flex;
   flex-direction: column;
-  gap: 1.8125rem;
+  gap: 1.3125rem;
 }
 
 .blog-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, auto);
-  gap: 20px;
-  margin-top: 20px;
+  column-gap: 2.875rem;
+  row-gap: 1.5rem;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .blog-list {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, auto);
+  }
 }
