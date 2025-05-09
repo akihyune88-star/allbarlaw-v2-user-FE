@@ -1,0 +1,153 @@
+.article {
+  &-wrapper {
+    max-width: 100%;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &-thumbnail {
+    display: none;
+  }
+
+  &-xsmall {
+    .category {
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: $font-weight-extra-bold;
+      color: $color-text-index;
+
+      padding-bottom: 0.5rem;
+    }
+
+    .title {
+      font-size: 1rem;
+      font-weight: $font-weight-bold;
+      line-height: 1.2;
+
+      @include ellipsis(2);
+    }
+
+    .content {
+      font-size: 0.8125rem;
+      line-height: 1.2;
+      color: $color-text-index;
+
+      @include ellipsis(2);
+    }
+
+    .lawyer {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      img {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+      }
+
+      .lawyer-name {
+        font-size: 0.875rem;
+        font-weight: $font-weight-semibold;
+        color: $color-green-01;
+      }
+    }
+  }
+
+  &-small {
+    .category {
+      font-size: 0.875rem;
+    }
+
+    .title {
+      font-size: 1.125rem;
+    }
+  }
+
+  &-regular {
+    .category {
+      font-size: 0.9375rem;
+    }
+
+    .title {
+      font-size: 1.25rem;
+    }
+  }
+
+  &-image {
+    .title {
+      font-size: 1.375rem;
+    }
+  }
+
+  &-large {
+    .category {
+      font-size: 1rem;
+    }
+
+    .title {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .article {
+    &-wrapper {
+      display: flex;
+      flex-direction: row;
+      gap: 1.125rem;
+    }
+
+    &-xsmall {
+      .category {
+        display: none;
+      }
+
+      .title {
+        font-size: 0.9375rem;
+        font-weight: $font-weight-semibold;
+        line-height: 1.2;
+
+        @include ellipsis(2);
+      }
+
+      section {
+        display: none;
+      }
+
+      .lawyer {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        figure {
+          display: none;
+        }
+
+        .lawyer-name {
+          font-size: 0.875rem;
+          font-weight: $font-weight-semibold;
+          color: $color-green-01;
+        }
+      }
+
+      .article-thumbnail {
+        display: flex;
+        min-width: 80px;
+        min-height: 80px;
+
+        img {
+          width: 80px;
+          height: 80px;
+          object-fit: cover;
+          border-radius: 0.5rem;
+        }
+      }
+    }
+  }
+}
