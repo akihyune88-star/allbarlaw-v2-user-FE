@@ -10,3 +10,14 @@
   object-fit: cover;
   border-radius: 0.5rem;
 }
+
+.constants-container {
+  background-color: white;
+  border-radius: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6.75rem;
+
+  padding: 1.5rem;
+}

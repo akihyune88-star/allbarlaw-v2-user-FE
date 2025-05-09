@@ -14,7 +14,7 @@ const TotalSubMain = () => {
         />
       </figure>
       <main className='sub-main-container'>
-        <section className='contents-section'>
+        <section className={`contents-section ${styles['constants-container']}`}>
           <TotalBlogList />
         </section>
         <aside className='aside'>
