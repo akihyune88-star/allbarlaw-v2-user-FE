@@ -29,7 +29,10 @@
 @media (max-width: $breakpoint-desktop) {
   .list-container {
     padding: 0;
-    background-color: $color-bg-gray-02;
+    display: flex;
+    flex-direction: column;
+    gap: 1.0625rem;
+    background-color: transparent;
   }
 
   .blog-list {
