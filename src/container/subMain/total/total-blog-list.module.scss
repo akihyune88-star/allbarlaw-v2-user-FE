@@ -16,5 +16,9 @@
   .blog-list {
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: repeat(1, auto);
+
+    padding: 1.5rem 1.25rem;
+    background-color: white;
+    border-radius: 0.5rem;
   }
 }

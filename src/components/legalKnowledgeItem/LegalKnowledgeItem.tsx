@@ -10,9 +10,17 @@ type LegalKnowledgeItemProps = {
   time: Date
   isLastAnswer: boolean
   lawyerList?: { img: string; name: string }[]
+  bookmark?: boolean
 }
 
-const LegalKnowledgeItem = ({ title, description, time, isLastAnswer, lawyerList }: LegalKnowledgeItemProps) => {
+const LegalKnowledgeItem = ({
+  title,
+  description,
+  time,
+  isLastAnswer,
+  lawyerList,
+  bookmark = false,
+}: LegalKnowledgeItemProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const formattedTime = time ? formatTimeAgo(time) : ''
   return (
@@ -23,7 +31,7 @@ const LegalKnowledgeItem = ({ title, description, time, isLastAnswer, lawyerList
           <span>
             <span className={styles['time']}>{formattedTime}</span> {isLastAnswer && '마지막 답변'}
           </span>
-          <SvgIcon name='bookMark' />
+          {bookmark && <SvgIcon name='bookMark' />}
         </div>
       </header>
       <div className={styles['description-wrapper']}>
@@ -55,7 +63,6 @@ const LegalKnowledgeItem = ({ title, description, time, isLastAnswer, lawyerList
           <span>
             <span className={styles['time']}>{formattedTime}</span> {isLastAnswer && '마지막 답변'}
           </span>
-          <SvgIcon name='bookMark' />
         </div>
       )}
     </article>

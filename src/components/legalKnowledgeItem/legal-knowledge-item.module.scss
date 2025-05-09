@@ -8,11 +8,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.625rem;
 
   h1 {
     font-size: 1rem;
     font-weight: $font-weight-semibold;
     word-break: keep-all;
+
+    @include ellipsis(1);
   }
 }
 
@@ -20,6 +23,7 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  min-width: 7.0625rem;
 
   span {
     font-size: 0.875rem;
@@ -103,11 +107,7 @@
   }
 
   .description {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include ellipsis(3);
   }
 
   .footer {

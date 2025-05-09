@@ -59,6 +59,16 @@
   }
 }
 
+.total-view-button {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  outline: none;
+  font-weight: $font-weight-semibold;
+  color: $color-green-01;
+}
+
 .round-box {
   background-color: $color-white;
   border-radius: 8px;
