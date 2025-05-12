@@ -1,6 +1,6 @@
 import { SORT_CASE } from '@/constants/category'
 import styles from '@/components/articleHeader/article-header.module.scss'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import SvgIcon from '../SvgIcon'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useNavigate } from 'react-router-dom'
@@ -22,6 +22,7 @@ type ArticleHeaderProps = {
   button?: React.ReactNode
   type?: ViewType
   className?: string
+  titleType?: 'horizontal' | 'vertical'
 }
 
 const ArticleHeader = ({
@@ -34,10 +35,19 @@ const ArticleHeader = ({
   className,
   button,
   type = 'section',
+  titleType = 'vertical',
 }: ArticleHeaderProps) => {
   const mainClassName = [styles[type], className].filter(Boolean).join(' ')
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const headerRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (headerRef.current) {
+      headerRef.current.style.setProperty('--header-flex-direction', titleType === 'horizontal' ? 'row' : 'column')
+      headerRef.current.style.setProperty('--header-aline-content', titleType === 'horizontal' ? 'flex-end' : 'center')
+    }
+  }, [titleType])
 
   const handleTotalViewClick = () => {
     if (navigationPath) {
@@ -93,7 +103,7 @@ const ArticleHeader = ({
   }
 
   return (
-    <header className={mainClassName}>
+    <header className={mainClassName} ref={headerRef}>
       <div className={styles['header']}>
         <h2>{title}</h2>
         {button && button}
@@ -103,7 +113,7 @@ const ArticleHeader = ({
             <p>
               전체 {totalBlogCount.toLocaleString()}개 / 최근 한달 {recentBlogCount.toLocaleString()}개
             </p>
-            <button className={styles['total-view-button']}>
+            <button className='total-view-button' onClick={handleTotalViewClick}>
               <span>전체보기</span>
               <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(-90deg)' }} />
             </button>
@@ -111,7 +121,11 @@ const ArticleHeader = ({
         )}
       </div>
       {type === 'total' && (
-        <button className={styles['total-view-button']} onClick={handleTotalViewClick}>
+        <button
+          className={`total-view-button ${styles['total-mobile-button']}`}
+          style={{ transform: 'translateY(3px)' }}
+          onClick={handleTotalViewClick}
+        >
           <span>전체보기</span>
           <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(-90deg)' }} />
         </button>

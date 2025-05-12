@@ -25,7 +25,7 @@
 
 .total {
   .header {
-    flex-direction: column;
+    flex-direction: var(--header-flex-direction, column);
     gap: 1rem;
   }
 
@@ -38,23 +38,14 @@
 
   .total-count {
     display: flex;
-    align-items: center;
+    flex: 1;
+    align-items: var(--header-aline-content, center);
     justify-content: space-between;
     p {
       margin: 0;
       font-size: 1rem;
       font-weight: $font-weight-semibold;
       color: $color-text-caption;
-    }
-
-    button {
-      background-color: transparent;
-      display: flex;
-      align-items: center;
-      font-size: 1rem;
-      font-weight: $font-weight-semibold;
-      color: $color-green-01;
-      height: 0;
     }
   }
 }
@@ -113,7 +104,7 @@
   }
 }
 
-.total-view-button {
+.total-mobile-button {
   display: none;
 }
 
@@ -121,18 +112,7 @@
   header {
     display: flex;
     justify-content: space-between;
-  }
-
-  .total-view-button {
-    display: block;
-
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    font-size: 1rem;
-    outline: none;
-    font-weight: $font-weight-semibold;
-    color: $color-green-01;
+    align-items: flex-start;
   }
 
   .header {
@@ -140,19 +120,24 @@
   }
 
   .section {
+    .header {
+      width: 100%;
+      flex-direction: column;
+    }
+
     h2 {
       color: $color-text-black;
       font-size: 1rem;
       font-weight: $font-weight-extra-bold;
       line-height: 1.25rem;
     }
-    .header {
-      flex-direction: column;
-      width: 100%;
-    }
   }
 
   .total {
+    .header {
+      flex-direction: column;
+    }
+
     h2 {
       font-size: 1.25rem;
       line-height: 1.5rem;
@@ -188,5 +173,9 @@
         text-align: center;
       }
     }
+  }
+
+  .total-mobile-button {
+    display: flex;
   }
 }

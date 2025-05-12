@@ -2,6 +2,7 @@ import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import TotalBlogList from '@/container/subMain/total/TotalBlogList'
 import TotalLegalKnowledge from '@/container/subMain/total/TotalLegalKnowledge'
+import TotalVideo from '@/container/subMain/total/TotalVideo'
 import styles from '@/pages/subMain/total-sub-main.module.scss'
 
 const TotalSubMain = () => {
@@ -18,6 +19,7 @@ const TotalSubMain = () => {
         <section className={`contents-section ${styles['contents-container']}`}>
           <TotalBlogList />
           <TotalLegalKnowledge />
+          <TotalVideo />
         </section>
         <aside className='aside'>
           <section>
