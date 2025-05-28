@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 3.3125rem;
+
+  padding: 1.8125rem 1.5rem 1.3125rem 1.5rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: $font-weight-extra-bold;
+}
+
+.search-box {
+  margin-bottom: 0;
+  input {
+  }
+}

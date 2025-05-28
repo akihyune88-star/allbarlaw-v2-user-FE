@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.body-container {
+  background-color: $color-bg-gray-02;
+
+  padding: 1.5rem;
+}
+
+.recent-search {
+  background-color: $color-white;
+  padding: 0.9375rem 1.125rem;
+}
