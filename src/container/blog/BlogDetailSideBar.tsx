@@ -9,11 +9,10 @@ const BlogDetailSideBar = ({ showLoading }: { showLoading: boolean }) => {
       <div className={styles['sidebar-desktop-wrapper']}>
         <section className={styles['lawyer-section']}>
           <LawyerVertical
-            id={1}
             name='홍길동'
             lawfirm='법무법인'
             profileImage='https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg'
-            type={1}
+            type={3}
           />
         </section>
         {showLoading ? (

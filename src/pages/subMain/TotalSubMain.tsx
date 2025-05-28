@@ -1,4 +1,5 @@
 import TotalBlogList from '@/container/subMain/total/TotalBlogList'
+import TotalLawyer from '@/container/subMain/total/TotalLawyer'
 import TotalLegalKnowledge from '@/container/subMain/total/TotalLegalKnowledge'
 import TotalVideo from '@/container/subMain/total/TotalVideo'
 import styles from '@/pages/subMain/total-sub-main.module.scss'
@@ -18,6 +19,7 @@ const TotalSubMain = () => {
           <TotalBlogList />
           <TotalLegalKnowledge />
           <TotalVideo />
+          <TotalLawyer />
         </section>
       </main>
     </div>

@@ -19,6 +19,9 @@ import map from '@/assets/svgs/map.svg?react'
 import call from '@/assets/svgs/call.svg?react'
 import homepage from '@/assets/svgs/homepage.svg?react'
 import slickArrow from '@/assets/svgs/slick-arrow.svg?react'
+import naver from '@/assets/svgs/naver.svg?react'
+import youtube from '@/assets/svgs/youtube.svg?react'
+import instagram from '@/assets/svgs/instagram.svg?react'
 
 export {
   react,
@@ -42,4 +45,7 @@ export {
   call,
   homepage,
   slickArrow,
+  naver,
+  youtube,
+  instagram,
 }

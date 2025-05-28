@@ -3,13 +3,16 @@ import Tag from '../tag/Tag'
 import SvgIcon from '../SvgIcon'
 import { COLOR } from '@/styles/color'
 import React from 'react'
+import { SocialLink } from '@/types/lawyerTypes'
+import { KeyOfIcon } from '@/types/svg'
 
 type LawyerHorizonProps = {
   name: string
   profileImage: string
-  description: string
+  description?: string
   lawfirm?: string
   tags?: string[]
+  socialLink?: SocialLink[]
   size?: 'x-small' | 'small' | 'large'
   className?: string
   onClick?: () => void
@@ -30,6 +33,7 @@ const LawyerHorizon = ({
   selected = false,
   buttonComponent,
   ad = false,
+  socialLink,
 }: LawyerHorizonProps) => {
   return (
     <div
@@ -46,11 +50,20 @@ const LawyerHorizon = ({
           {lawfirm && <span className={styles['lawfirm']}>{lawfirm}</span>}
           {ad && <span className={styles['ad']}>AD</span>}
         </div>
-        <p className={styles['description']}>{description}</p>
+        {description && <p className={styles['description']}>{description}</p>}
+
         {tags && tags.length > 0 && (
           <div className={styles['tags']}>
             {tags.map((tag, index) => (
               <Tag key={index} tag={tag} />
+            ))}
+          </div>
+        )}
+
+        {socialLink && (
+          <div className={styles['social-link']}>
+            {socialLink.map(link => (
+              <SvgIcon name={link.type as KeyOfIcon} size={24} key={link.type} />
             ))}
           </div>
         )}
