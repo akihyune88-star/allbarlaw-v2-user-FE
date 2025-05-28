@@ -102,9 +102,37 @@
       background-color: $color-white;
       cursor: pointer;
       outline: none;
+      position: relative;
 
       span {
         font-weight: $font-weight-semibold;
+      }
+
+      .speech-bubble {
+        position: absolute;
+        top: -2rem;
+        left: 53%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: white;
+        padding: 4px 0.5rem;
+        border-radius: 0.25rem;
+
+        font-size: 0.625rem;
+        font-weight: $font-weight-semibold;
+        white-space: nowrap;
+        z-index: 10;
+
+        // 말풍선 꼬리 (아래쪽 화살표)
+        &::after {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 25%;
+          transform: translateX(-50%);
+          border: 0.25rem solid transparent;
+          border-top: 0.5rem solid #333;
+        }
       }
     }
   }

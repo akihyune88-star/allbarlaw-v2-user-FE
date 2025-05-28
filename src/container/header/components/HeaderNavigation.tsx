@@ -15,6 +15,11 @@ const HeaderNavigation = () => {
       <div className={styles['header-menu-list']}>
         {MENU_LIST.map(item => (
           <button key={item.name} className={styles['menu-item']} onClick={() => navigation(item.path)}>
+            {item.name === '바로톡' && (
+              <div className={styles['speech-bubble']}>
+                <span>변호사랑 바로상담하기</span>
+              </div>
+            )}
             <span>{item.name}</span>
           </button>
         ))}
