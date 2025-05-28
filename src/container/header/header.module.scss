@@ -61,15 +61,9 @@
   }
 
   .search-form {
-    position: absolute;
     width: 26.25rem; /* 420px */
     top: 0.3125rem; /* 5px */
     left: 35%;
-  }
-
-  .user-navigation {
-    display: flex;
-    gap: 1.5rem; /* 24px */
   }
 
   .main-navigation {
@@ -100,6 +94,7 @@
   .header-menu-list {
     display: flex;
     align-items: center;
+    position: relative;
 
     .menu-item {
       width: 10rem;

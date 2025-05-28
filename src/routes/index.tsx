@@ -7,12 +7,6 @@ import { ROUTER } from './routerConstant'
 import MainLayout from '@/pages/MainLayout'
 import Main from '@/pages/main/Main'
 import SubMain from '@/pages/subMain/SubMain'
-import Support from '@/pages/Support'
-import AboutPage from '@/pages/AboutPage'
-
-import LegalDictionary from '@/pages/LegalDictionary'
-import LawyerSearch from '@/pages/LawyerSearch'
-import LawFirm from '@/pages/LawFirm'
 import BlogLayout from '@/pages/blog/Blog'
 import BlogDetail from '@/pages/blog/BlogDetail'
 import RequestBaroTalk from '@/pages/baroTalk/RequestBaroTalk'
@@ -24,6 +18,9 @@ import LegalKnowledgeLayout from '@/pages/legalKnowledge/LegalKnowledge'
 import LawyerLayout from '@/pages/lawyer/Lawyer'
 import SubCategoryLawfirmLayout from '@/pages/lawfirm/SubCategoryLawfirm'
 import TotalSubMain from '@/pages/subMain/TotalSubMain'
+import LegalDictionary from '@/pages/legalDictionary/LegalDictionary'
+import AboutAllbarlaw from '@/pages/aboutAllbarlaw/AboutAllbarlaw'
+import SearchMain from '@/pages/search/SearchMain'
 
 const router = createBrowserRouter([
   {
@@ -90,6 +87,18 @@ const router = createBrowserRouter([
             path: ROUTER.BARO_TALK_LAWYER_SELECTION,
             element: <BaroTalkLawyerSelection />,
           },
+          {
+            path: ROUTER.MYPAGE,
+            element: <Mypage />,
+          },
+          {
+            path: ROUTER.LEGAL_DICTIONARY,
+            element: <LegalDictionary />,
+          },
+          {
+            path: ROUTER.SEARCH_MAIN,
+            element: <SearchMain />,
+          },
         ],
       },
       {
@@ -97,29 +106,8 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: ROUTER.MYPAGE,
-        element: <Mypage />,
-      },
-      {
-        path: ROUTER.SUPPORT,
-        element: <Support />,
-      },
-      {
         path: ROUTER.ABOUT,
-        element: <AboutPage />,
-      },
-
-      {
-        path: ROUTER.LEGAL_DICTIONARY,
-        element: <LegalDictionary />,
-      },
-      {
-        path: ROUTER.LAWYER_SEARCH,
-        element: <LawyerSearch />,
-      },
-      {
-        path: ROUTER.LAW_FIRM,
-        element: <LawFirm />,
+        element: <AboutAllbarlaw />,
       },
     ],
   },

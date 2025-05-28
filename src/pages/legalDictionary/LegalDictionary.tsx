@@ -1,5 +1,5 @@
 const LegalDictionary = () => {
-  return <div>LegalDictionary</div>
+  return <div>법률사전</div>
 }
 
 export default LegalDictionary
