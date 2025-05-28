@@ -1,6 +1,7 @@
 .container {
   display: flex;
   gap: 4.25rem;
+  padding: 0 1.5rem;
 }
 
 .aside {
@@ -49,6 +50,7 @@
   .container {
     flex-direction: column;
     gap: 1.0625rem;
+    padding: 0;
   }
 
   .aside {
