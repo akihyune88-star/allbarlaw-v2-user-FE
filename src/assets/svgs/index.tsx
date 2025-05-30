@@ -22,6 +22,7 @@ import slickArrow from '@/assets/svgs/slick-arrow.svg?react'
 import naver from '@/assets/svgs/naver.svg?react'
 import youtube from '@/assets/svgs/youtube.svg?react'
 import instagram from '@/assets/svgs/instagram.svg?react'
+import error from '@/assets/svgs/error.svg?react'
 
 export {
   react,
@@ -48,4 +49,5 @@ export {
   naver,
   youtube,
   instagram,
+  error,
 }
