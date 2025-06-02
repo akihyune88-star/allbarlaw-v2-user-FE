@@ -15,6 +15,9 @@
 
   padding: 0.75rem 0;
   border-radius: 0.5rem;
+  border: 1px solid transparent;
+
+  cursor: pointer;
 
   &-korean {
     font-size: 0.875rem;
@@ -27,6 +30,10 @@
     font-weight: $font-weight-regular;
     line-height: 1.125rem;
     color: $color-text-index;
+  }
+
+  &:hover {
+    border-color: rgba(32, 191, 98, 1);
   }
 }
 
