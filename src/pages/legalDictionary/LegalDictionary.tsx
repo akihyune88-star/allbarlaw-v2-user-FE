@@ -2,6 +2,7 @@ import LegalDictionaryHeader from '@/container/legalDictionary/LegalDictionaryHe
 import styles from './legal-dictionary.module.scss'
 import RecentSearches from '@/container/legalDictionary/RecentSearches'
 import LegalSearchList from '@/container/legalDictionary/LegalSearchList'
+import LegalItemWidget from '@/components/legalItemWidget/LegalItemWidget'
 
 const LegalDictionary = () => {
   return (
@@ -13,8 +14,9 @@ const LegalDictionary = () => {
           <div className='contents-section'>
             <LegalSearchList legalList={legalList} />
           </div>
-          <div className='aside' style={{ width: 250 }}>
-            2
+          <div className='aside' style={{ width: 250, flexShrink: 0 }}>
+            <LegalItemWidget title='많이 찾는 용어' />
+            <LegalItemWidget title='최근 등록된 용어' />
           </div>
         </div>
       </section>

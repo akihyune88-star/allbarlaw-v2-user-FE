@@ -1,0 +1,47 @@
+.container {
+  background-color: $color-white;
+  border-radius: 0.5rem;
+  border: 1px solid #20bf624d;
+  padding: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-size: 1.25rem;
+    color: $color-icon-darkgreen;
+    font-weight: $font-weight-extra-bold;
+  }
+}
+
+.divider {
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+
+  &-title {
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+    color: $color-text-black;
+  }
+
+  &-discription {
+    @include ellipsis(2);
+    font-size: 0.6875rem;
+    line-height: 20px;
+    color: $color-text-index;
+  }
+}
