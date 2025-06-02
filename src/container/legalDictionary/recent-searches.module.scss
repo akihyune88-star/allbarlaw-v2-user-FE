@@ -35,14 +35,14 @@
 .search-history-wrapper {
   display: flex;
   flex-wrap: wrap;
-  padding: 0 12px;
+  padding-left: 12px;
   height: 56px;
   overflow: hidden;
 
   span {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     line-height: 28px;
-    margin-left: 12px;
+    margin-right: 12px;
     word-break: keep-all;
 
     color: $color-text-index;

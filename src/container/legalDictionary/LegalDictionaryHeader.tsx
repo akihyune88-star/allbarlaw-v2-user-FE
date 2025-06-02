@@ -2,8 +2,9 @@ import InputBox from '@/components/inputBox/InputBox'
 import styles from './legal-dictionary-header.module.scss'
 import React, { useState } from 'react'
 import SvgIcon from '@/components/SvgIcon'
+import LegalTermReportModal from './LegalTermReportModal'
 
-const SearchInputBox = () => {
+const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
   const [searchValue, setSearchValue] = useState('')
 
   const handleSearch = () => {}
@@ -24,7 +25,7 @@ const SearchInputBox = () => {
         icon={<SvgIcon name='search' style={{ marginRight: 13 }} onClick={handleSearch} />}
       />
 
-      <button className={styles.button} style={{ alignItems: 'flex-end' }}>
+      <button className={styles.button} style={{ alignItems: 'flex-end' }} onClick={modalOpen}>
         <SvgIcon name='error' />
         오류 신고
       </button>
@@ -58,21 +59,32 @@ const ConsonantFilter = () => {
 }
 
 const LegalDictionaryHeader = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  console.log('isModalOpen', isModalOpen)
+
+  const handleModalOpen = () => {
+    console.log('handleModalOpen')
+    setIsModalOpen(true)
+  }
+
   return (
-    <div className={styles.container}>
-      <div className={styles['title-wrapper']}>
-        <h1 className={styles.title}>법률 용어 백사전</h1>
-        <div className={styles['button-wrapper']}>
-          <button className={styles.button}>히스토리</button>
-          <button className={styles.button}>
-            <SvgIcon name='error' />
-            오류 신고
-          </button>
+    <>
+      <div className={styles.container}>
+        <div className={styles['title-wrapper']}>
+          <h1 className={styles.title}>법률 용어 백사전</h1>
+          <div className={styles['button-wrapper']}>
+            <button className={styles.button}>히스토리</button>
+            <button className={styles.button} onClick={handleModalOpen}>
+              <SvgIcon name='error' />
+              오류 신고
+            </button>
+          </div>
         </div>
+        <SearchInputBox modalOpen={handleModalOpen} />
+        <ConsonantFilter />
       </div>
-      <SearchInputBox />
-      <ConsonantFilter />
-    </div>
+      <LegalTermReportModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   )
 }
 

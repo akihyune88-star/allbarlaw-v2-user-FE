@@ -6,6 +6,12 @@ body {
   line-height: 1.2;
 }
 
+/* 글로벌 버튼 스타일 */
+button {
+  outline: none !important;
+  cursor: pointer;
+}
+
 ::selection {
   background-color: $color-primary-200;
   color: $color-primary-900;

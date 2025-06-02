@@ -1,0 +1,73 @@
+.modal {
+  padding: 36px 30px 29px 36px;
+}
+
+.header {
+  border-bottom: none;
+  padding: 0;
+
+  .title {
+    font-size: 1.5rem !important;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.body {
+  padding: 3.8125rem 0 4.125rem 0;
+  display: flex;
+  gap: 0.75rem;
+  flex-direction: column;
+
+  span {
+    font-size: 0.875rem;
+    color: $color-text-index;
+    line-height: 1.25rem;
+  }
+
+  input {
+    border: 1px solid $color-line-borderbox;
+    border-radius: 6px;
+    padding: 9px 0 10px 22px;
+    font-size: 14px;
+  }
+}
+
+.footer {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-top: none;
+  padding: 0;
+
+  gap: 1rem;
+}
+
+.btn {
+  width: 6.75rem;
+  height: 2.5rem;
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  font-size: 0.75rem;
+
+  &.cancel {
+    background-color: $color-white;
+    border: 1px solid rgba(0, 0, 0, 0.7);
+  }
+
+  &.report {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
