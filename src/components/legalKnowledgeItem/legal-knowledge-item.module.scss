@@ -6,6 +6,7 @@
 
 .header {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   gap: 0.625rem;
@@ -45,6 +46,7 @@
   display: flex;
   align-items: center;
   height: 2.0625rem;
+  margin-top: 0.5rem;
 
   .footer-title {
     height: 100%;

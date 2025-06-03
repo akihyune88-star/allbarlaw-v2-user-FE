@@ -3,6 +3,9 @@ import LegalItemWidget from '@/components/legalItemWidget/LegalItemWidget'
 import styles from './legal-term-detail.module.scss'
 import LegalTermDefinition from '@/container/legalTermDetail/LegalTermDefinition'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import LegalTermBlogList from '@/container/legalTermDetail/LegalTermBlogList'
+import LegalTermKnowledgeList from '@/container/legalTermDetail/LegalTermKnowledgeList'
+import LegalTermVideoList from '@/container/legalTermDetail/LegalTermVideoList'
 
 const PcTotalContentsHeader = ({ amount }: { amount: number }) => {
   return (
@@ -23,7 +26,12 @@ const LegalTermDetail = () => {
     <main className={`sub-main-container ${styles.container}`}>
       <div className='contents-section'>
         <LegalTermDefinition termId={state.id} />
-        <div>{isMobile && <PcTotalContentsHeader amount={2147} />}</div>
+        <div className={styles['related-content-section']}>
+          {isMobile && <PcTotalContentsHeader amount={2147} />}
+          <LegalTermBlogList />
+          <LegalTermKnowledgeList />
+          <LegalTermVideoList />
+        </div>
       </div>
       <div className='aside' style={{ width: 250, flexShrink: 0 }}>
         <LegalItemWidget title='많이 찾는 용어' />

@@ -11,7 +11,7 @@ const LegalTermDefinition = ({ termId }: LegalTermDefinitionProps) => {
 
   return (
     <div className={styles.container}>
-      <header>
+      <header className={styles['header']}>
         <h3 className={styles['title']}>파산선고 (破産宣告)</h3>
         <p className={styles['english-title']}>declaration of bankruptcy</p>
       </header>
@@ -20,7 +20,7 @@ const LegalTermDefinition = ({ termId }: LegalTermDefinitionProps) => {
         수용하여 채무자의 책임재산으로 파산재단을 구성하여 채권자에게 공평하게 배분하는 채무자 회생 및 파산에 관한 법률
         상의 절차(파산절차)를 개시하는 결정을 내리는 선고를 말한다.
       </p>
-      <footer>
+      <footer className={styles['footer']}>
         <p className={styles['source']}>{`출처 : 네이버 법률용어사전 > 법문북스 www.lawb.co.kr`}</p>
         <div className={styles['button-wrapper']}>
           <Button variant='share'>
