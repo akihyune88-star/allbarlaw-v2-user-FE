@@ -138,12 +138,22 @@ const category = [
   },
 ]
 
+export interface MainCategory {
+  id: number
+  categoryName: string
+}
+
+export interface SubCategory {
+  id: number
+  subcategoryName: string
+}
+
 interface CategoryStoreState {
   categoryList: CategoryList
-  maincategory: number | null
-  subcategory: number | null
-  setMaincategory: (id: number | null) => void
-  setSubcategory: (id: number | null) => void
+  maincategory: MainCategory | null
+  subcategory: SubCategory | null
+  setMaincategory: (category: MainCategory | null) => void
+  setSubcategory: (subcategory: SubCategory | null) => void
 }
 
 export const useCategoryStore = create<CategoryStoreState>()(set => ({
@@ -152,7 +162,7 @@ export const useCategoryStore = create<CategoryStoreState>()(set => ({
   categoryList: category,
 
   //* set 함수
-  setMaincategory: id => set({ maincategory: id }),
-  setSubcategory: id => set({ subcategory: id }),
+  setMaincategory: category => set({ maincategory: category }),
+  setSubcategory: subcategory => set({ subcategory: subcategory }),
   setCategoryList: (list: CategoryList) => set({ categoryList: list }),
 }))

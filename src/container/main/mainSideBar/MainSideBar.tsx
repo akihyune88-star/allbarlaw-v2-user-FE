@@ -9,18 +9,20 @@ const MainSideBar = () => {
   const { maincategory, subcategory, setMaincategory, setSubcategory, categoryList } = useCategoryStore()
 
   const handleMainCategoryClick = (id: number) => {
-    setMaincategory(id)
     const selectedCategory = categoryList?.find(category => category.id === id)
-    if (selectedCategory && selectedCategory.subcategories.length > 0) {
-      const firstSubCategoryId = selectedCategory.subcategories[0].id
-      setSubcategory(firstSubCategoryId)
-      navigate(`${ROUTER.SUB_MAIN.replace(':subCategoryId', firstSubCategoryId.toString())}`)
+    if (selectedCategory) {
+      setMaincategory({ id: selectedCategory.id, categoryName: selectedCategory.categoryName })
     }
   }
 
   const handleSubCategoryClick = (id: number) => {
-    setSubcategory(id)
-    navigate(`${ROUTER.SUB_MAIN.replace(':subCategoryId', id.toString())}`)
+    const selectedMainCategory = categoryList?.find(category => category.id === maincategory?.id)
+    const selectedSubCategory = selectedMainCategory?.subcategories.find(sub => sub.id === id)
+
+    if (selectedSubCategory) {
+      setSubcategory({ id: selectedSubCategory.id, subcategoryName: selectedSubCategory.subcategoryName })
+      navigate(`${ROUTER.SUB_MAIN.replace(':subCategoryId', id.toString())}`)
+    }
   }
 
   if (!categoryList) {
@@ -31,8 +33,8 @@ const MainSideBar = () => {
     <aside className={styles['sidebar-container']}>
       <SideBar
         categories={categoryList}
-        selectedMainCategory={maincategory}
-        selectedSubCategory={subcategory}
+        selectedMainCategory={maincategory?.id || null}
+        selectedSubCategory={subcategory?.id || null}
         onMainCategoryClick={handleMainCategoryClick}
         onSubCategoryClick={handleSubCategoryClick}
       />

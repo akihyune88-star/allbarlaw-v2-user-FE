@@ -11,7 +11,7 @@ const SubMenuNavigation = () => {
 
   const handleMenuClick = (menu: (typeof SUB_MENU_LIST)[0]) => {
     setSelectedMenu(menu)
-    navigate(`/${subcategory}${menu.path}`)
+    navigate(`/${subcategory?.id}${menu.path}`)
   }
 
   return (

@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import styles from './CategoryTitle.module.scss'
+import { useCategoryStore } from '@/store/useCategoryStore'
 
 const CategoryTitle = () => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
+  const { maincategory: _maincategory, subcategory } = useCategoryStore()
   const [mainCategory] = useState('음주/교통')
-  const [subCategory] = useState('음주운전')
   const [selectedCategory, setSelectedCategory] = useState('')
 
   const toggleCategory = () => {
@@ -22,7 +23,7 @@ const CategoryTitle = () => {
   return (
     <div className={styles['category-title']}>
       {/* Desktop View */}
-      <h1 className={styles['desktop-title']}>{subCategory}</h1>
+      <h1 className={styles['desktop-title']}>{subcategory?.subcategoryName}</h1>
 
       {/* Mobile View */}
       <div className={styles['mobile-title']}>
@@ -34,7 +35,7 @@ const CategoryTitle = () => {
             size={16}
           />
         </h2>
-        {!isCategoryOpen && <h2>{subCategory}</h2>}
+        {!isCategoryOpen && <h2>{subcategory?.subcategoryName}</h2>}
       </div>
 
       {/* Category Selection Panel */}
