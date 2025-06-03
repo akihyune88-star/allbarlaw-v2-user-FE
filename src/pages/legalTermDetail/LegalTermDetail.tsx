@@ -6,6 +6,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import LegalTermBlogList from '@/container/legalTermDetail/LegalTermBlogList'
 import LegalTermKnowledgeList from '@/container/legalTermDetail/LegalTermKnowledgeList'
 import LegalTermVideoList from '@/container/legalTermDetail/LegalTermVideoList'
+import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 
 const PcTotalContentsHeader = ({ amount }: { amount: number }) => {
   return (
@@ -22,6 +23,9 @@ const LegalTermDetail = () => {
   const { state } = useLocation()
   const isMobile = useMediaQuery('(min-width: 80rem)')
   console.log(state.id)
+
+  const tagList = ['#파산', '#선고', '#개인회생', '#개인회생파산', '#법인파산', '#파산선', '#희망파산']
+
   return (
     <main className={`sub-main-container ${styles.container}`}>
       <div className='contents-section'>
@@ -34,6 +38,16 @@ const LegalTermDetail = () => {
         </div>
       </div>
       <div className='aside' style={{ width: 250, flexShrink: 0 }}>
+        <ContentsRecommender
+          title='유사한 법률 용어'
+          contents={
+            <div className={styles['tag-list']}>
+              {tagList.map(tag => (
+                <span key={tag}>{tag}</span>
+              ))}
+            </div>
+          }
+        />
         <LegalItemWidget title='많이 찾는 용어' />
         <LegalItemWidget title='최근 등록된 용어' />
       </div>

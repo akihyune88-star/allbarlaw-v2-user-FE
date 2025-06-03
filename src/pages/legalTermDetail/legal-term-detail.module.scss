@@ -32,3 +32,15 @@
   flex-direction: column;
   gap: 0.25rem;
 }
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  word-break: keep-all;
+
+  span {
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+  }
+}
