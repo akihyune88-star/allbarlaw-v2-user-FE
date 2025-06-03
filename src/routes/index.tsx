@@ -21,6 +21,8 @@ import TotalSubMain from '@/pages/subMain/TotalSubMain'
 import LegalDictionary from '@/pages/legalDictionary/LegalDictionary'
 import AboutAllbarlaw from '@/pages/aboutAllbarlaw/AboutAllbarlaw'
 import SearchMain from '@/pages/search/SearchMain'
+import DictionaryMain from '@/pages/legalDictionary/DictionaryMain'
+import LegalTermDetail from '@/pages/legalTermDetail/LegalTermDetail'
 
 const router = createBrowserRouter([
   {
@@ -94,6 +96,16 @@ const router = createBrowserRouter([
           {
             path: ROUTER.LEGAL_DICTIONARY,
             element: <LegalDictionary />,
+            children: [
+              {
+                path: '',
+                element: <DictionaryMain />,
+              },
+              {
+                path: ':termId',
+                element: <LegalTermDetail />,
+              },
+            ],
           },
           {
             path: ROUTER.SEARCH_MAIN,

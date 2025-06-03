@@ -1,0 +1,22 @@
+.container {
+  background-color: $color-white;
+  padding: 1.5rem;
+
+  border-radius: 0.5rem;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
