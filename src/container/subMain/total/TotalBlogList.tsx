@@ -2,18 +2,30 @@ import Article from '@/components/article/Article'
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import styles from '@/container/subMain/total/total-blog-list.module.scss'
 import { useBlogCount } from '@/hooks/queries/useBlogCount'
-import { useCategoryStore } from '@/store/useCategoryStore'
+import { useParams } from 'react-router-dom'
 
 const TotalBlogList = () => {
   const mapItem = [1, 2, 3, 4]
-  const { subcategory } = useCategoryStore()
-  const { data: blogCount } = useBlogCount({ subCategoryId: subcategory?.subcategoryId || 'all', recentDays: 30 })
+  const { subCategoryId } = useParams<{ subCategoryId: string }>()
 
-  console.log(blogCount)
+  const { data: blogMonthCount } = useBlogCount({
+    subCategoryId: subCategoryId ? Number(subCategoryId) : undefined,
+    recentDays: 30,
+  })
+
+  const { data: blogTotalCount } = useBlogCount({
+    subCategoryId: subCategoryId ? Number(subCategoryId) : undefined,
+    recentDays: 'all',
+  })
 
   return (
     <div className={styles['total-blog-list']}>
-      <ArticleHeader title='변호사의 글' totalBlogCount={10} recentBlogCount={10} type='total' />
+      <ArticleHeader
+        title='변호사의 글'
+        totalBlogCount={blogTotalCount}
+        recentBlogCount={blogMonthCount}
+        type='total'
+      />
       <div className={styles['blog-list']}>
         {mapItem.map(blogNumber => (
           <Article

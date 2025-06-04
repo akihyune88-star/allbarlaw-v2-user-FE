@@ -1,54 +1,86 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import SvgIcon from '@/components/SvgIcon'
 import styles from './CategoryTitle.module.scss'
-import { useCategoryStore } from '@/store/useCategoryStore'
+import { useCategory } from '@/hooks/queries/useCategory'
 
 const CategoryTitle = () => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
-  const { maincategory: _maincategory, subcategory } = useCategoryStore()
-  const [mainCategory] = useState('음주/교통')
-  const [selectedCategory, setSelectedCategory] = useState('')
+  const navigate = useNavigate()
+  const { subCategoryId } = useParams<{ subCategoryId: string }>()
+  const { data: categoryList } = useCategory()
+
+  const categoryInfo = useMemo(() => {
+    if (!subCategoryId || !categoryList) return null
+
+    const currentSubCategoryId = Number(subCategoryId)
+
+    for (const category of categoryList) {
+      const subCategory = category.subcategories.find(sub => sub.subcategoryId === currentSubCategoryId)
+      if (subCategory) {
+        return {
+          mainCategory: {
+            categoryId: category.categoryId,
+            categoryName: category.categoryName,
+          },
+          subCategory: {
+            subcategoryId: subCategory.subcategoryId,
+            subcategoryName: subCategory.subcategoryName,
+          },
+        }
+      }
+    }
+    return null
+  }, [subCategoryId, categoryList])
 
   const toggleCategory = () => {
     setIsCategoryOpen(!isCategoryOpen)
   }
 
-  const handleCategorySelect = (category: string) => {
-    setSelectedCategory(category)
+  const handleCategorySelect = (subcategoryId: number) => {
+    navigate(`/${subcategoryId}`)
     setIsCategoryOpen(false)
   }
 
-  const categories = ['음주운전', '무면허 운전', '교통사고', '보복운전', '뺑소니']
+  // 현재 메인카테고리의 서브카테고리들 가져오기
+  const currentMainCategory = categoryList?.find(
+    category => category.categoryId === categoryInfo?.mainCategory?.categoryId
+  )
+  const subcategories = currentMainCategory?.subcategories || []
+
+  if (!categoryInfo) return null
 
   return (
     <div className={styles['category-title']}>
       {/* Desktop View */}
-      <h1 className={styles['desktop-title']}>{subcategory?.subcategoryName}</h1>
+      <h1 className={styles['desktop-title']}>{categoryInfo.subCategory.subcategoryName}</h1>
 
       {/* Mobile View */}
       <div className={styles['mobile-title']}>
         <h2 onClick={toggleCategory}>
-          {mainCategory}
+          {categoryInfo.mainCategory.categoryName}
           <SvgIcon
             name='arrowSmall'
             className={`${styles['arrow-icon']} ${isCategoryOpen ? styles.open : ''}`}
             size={16}
           />
         </h2>
-        {!isCategoryOpen && <h2>{subcategory?.subcategoryName}</h2>}
+        {!isCategoryOpen && <h2>{categoryInfo.subCategory.subcategoryName}</h2>}
       </div>
 
       {/* Category Selection Panel */}
       {isCategoryOpen && (
         <div className={styles['category-panel']}>
           <div className={styles['category-chips']}>
-            {categories.map(category => (
+            {subcategories.map(subcategory => (
               <div
-                key={category}
-                className={`${styles['category-chip']} ${selectedCategory === category ? styles.selected : ''}`}
-                onClick={() => handleCategorySelect(category)}
+                key={subcategory.subcategoryId}
+                className={`${styles['category-chip']} ${
+                  categoryInfo.subCategory.subcategoryId === subcategory.subcategoryId ? styles.selected : ''
+                }`}
+                onClick={() => handleCategorySelect(subcategory.subcategoryId)}
               >
-                <span>{category}</span>
+                <span>{subcategory.subcategoryName}</span>
               </div>
             ))}
           </div>

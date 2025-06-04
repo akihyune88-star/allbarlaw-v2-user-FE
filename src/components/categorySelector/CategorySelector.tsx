@@ -20,8 +20,8 @@ const CategorySelector = ({
   initialVisibleGroups = 2, // 기본값: 2그룹 표시
 }: CategorySelectorProps) => {
   const { data: categoryList } = useCategory()
-  const [selectedCategory, setSelectedMainCategory] = useState<number | null>(7) // 부동산을 기본 선택
-  const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(32) // 기타부동산을 기본 선택
+  const [selectedCategory, setSelectedMainCategory] = useState<number | null>(null) // 부동산을 기본 선택
+  const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(null) // 기타부동산을 기본 선택
   const [isExpanded, setIsExpanded] = useState<boolean>(false) // 모바일에서 펼침 상태
 
   // 모바일 분기 처리

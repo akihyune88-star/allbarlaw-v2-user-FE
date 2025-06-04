@@ -1,41 +1,40 @@
 import ProgressButton from '@/components/progressButton/ProgressButton'
-import CategorySelector from '@/container/baroTalk/CategorySelector'
 import ConsultationStatusSelector from '@/container/baroTalk/ConsultationStatusSelector'
 import LawyerPreferenceSelector from '@/container/baroTalk/LawyerPreferenceSelector'
 import RequestHeader from '@/container/baroTalk/RequestHeader'
 import RequestTypeSelector from '@/container/baroTalk/RequestTypeSelector'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { ROUTER } from '@/routes/routerConstant'
-import { useState } from 'react'
+
 import { useNavigate } from 'react-router-dom'
 
-interface CategorySelection {
-  mainCategoryId: number | null
-  subCategoryId: number | null
-}
+// interface CategorySelection {
+//   mainCategoryId: number | null
+//   subCategoryId: number | null
+// }
 
 const RequestBaroTalk = () => {
-  const [selectedCategory, setSelectedCategory] = useState<CategorySelection>({
-    mainCategoryId: null,
-    subCategoryId: null,
-  })
+  // const [selectedCategory, setSelectedCategory] = useState<CategorySelection>({
+  //   mainCategoryId: null,
+  //   subCategoryId: null,
+  // })
 
   const isMobile = useMediaQuery('(max-width: 1279px)')
   const navigate = useNavigate()
 
-  const handleMainCategoryClick = (categoryId: number) => {
-    setSelectedCategory({
-      mainCategoryId: categoryId,
-      subCategoryId: null,
-    })
-  }
+  // const handleMainCategoryClick = (categoryId: number) => {
+  //   setSelectedCategory({
+  //     mainCategoryId: categoryId,
+  //     subCategoryId: null,
+  //   })
+  // }
 
-  const handleSubCategoryClick = (subCategoryId: number) => {
-    setSelectedCategory(prev => ({
-      ...prev,
-      subCategoryId,
-    }))
-  }
+  // const handleSubCategoryClick = (subCategoryId: number) => {
+  //   setSelectedCategory(prev => ({
+  //     ...prev,
+  //     subCategoryId,
+  //   }))
+  // }
 
   return (
     <div className='form-container'>
@@ -47,11 +46,7 @@ const RequestBaroTalk = () => {
 
       <div className='form-body'>
         {!isMobile && <p>상담을 위해 아래 항목을 선택해주세요.</p>}
-        <CategorySelector
-          selection={selectedCategory}
-          onMainCategoryClick={handleMainCategoryClick}
-          onSubCategoryClick={handleSubCategoryClick}
-        />
+
         <ConsultationStatusSelector />
         <RequestTypeSelector />
         <LawyerPreferenceSelector />

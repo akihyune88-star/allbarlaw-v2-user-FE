@@ -39,7 +39,7 @@ const router = createBrowserRouter([
             element: <Main />,
           },
           {
-            path: ':categoryId',
+            path: ':subCategoryId',
             element: <SubMain />,
             children: [
               {
@@ -69,11 +69,11 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: ':categoryId/blog/:blogId',
+            path: ':subCategoryId/blog/:blogId',
             element: <BlogDetail />,
           },
           {
-            path: ':categoryId/video/:videoId',
+            path: ':subCategoryId/video/:videoId',
             element: <VideoDetail />,
           },
 
