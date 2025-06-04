@@ -1,12 +1,10 @@
-import MobileSearch from '@/container/main/mobileSearch/MobileSearch'
+import CategorySelector from '@/container/main/categorySelector/CategorySelector'
 import styles from './main.module.scss'
-import MainNavigation from '@/container/main/mainNavigation/MainNavigation'
 
 const Main = () => {
   return (
     <div className={styles['main-container']}>
-      <MobileSearch />
-      <MainNavigation />
+      <CategorySelector title='분류별 법률 정보를 찾아보세요' />
     </div>
   )
 }

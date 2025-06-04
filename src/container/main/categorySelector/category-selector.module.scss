@@ -1,0 +1,171 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: $font-weight-bold;
+  margin: 0;
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background-color: $color-white;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.icon-wrapper {
+  display: flex;
+  padding: 20px 15px 4px 15px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+
+  &:hover {
+    .category-name {
+      color: $color-green-01;
+    }
+  }
+
+  &.selected {
+    .category-name {
+      color: $color-green-01;
+      font-weight: $font-weight-bold;
+    }
+  }
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.category-name {
+  font-size: 0.875rem;
+  font-weight: $font-weight-medium;
+  line-height: 2.86;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.subcategory-section {
+  background-color: $color-white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.subcategory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.subcategory-button {
+  padding: 1rem 1.5rem;
+  border: 2px solid $color-line-borderbox;
+  border-radius: 8px;
+  background-color: $color-white;
+  font-size: 0.875rem;
+  font-weight: $font-weight-medium;
+  // color: $color-text-primary;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $color-green-01;
+    background-color: rgba($color-green-01, 0.05);
+  }
+
+  &.selected {
+    background-color: $color-green-01;
+    border-color: $color-green-01;
+    color: $color-white;
+    font-weight: $font-weight-bold;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-green-01;
+    box-shadow: 0 0 0 3px rgba($color-green-01, 0.2);
+  }
+}
+
+.subcategory-inline {
+  width: 100%; // 전체 너비를 차지
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: rgba($color-green-01, 0.05);
+  border-radius: 8px;
+  border-left: 4px solid $color-green-01;
+  order: 999; // 선택된 카테고리 다음에 나타나도록
+}
+
+// // 모바일 반응형
+// @media (max-width: $breakpoint-tablet) {
+//   .container {
+//     padding: 1.5rem;
+//   }
+
+//   .title {
+//     font-size: 1.5rem;
+//   }
+
+//   .category-row {
+//     gap: 1rem;
+//   }
+
+//   .category-item {
+//     padding: 0.75rem;
+//     min-width: 80px;
+//   }
+
+//   .icon-wrapper {
+//     width: 48px;
+//     height: 48px;
+//   }
+
+//   .icon {
+//     width: 32px;
+//     height: 32px;
+//   }
+
+//   .category-name {
+//     font-size: 0.75rem;
+//   }
+
+//   .subcategory-section {
+//     padding: 1.5rem;
+//   }
+
+//   .subcategory-grid {
+//     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+//     gap: 0.75rem;
+//   }
+
+//   .subcategory-button {
+//     padding: 0.75rem 1rem;
+//     font-size: 0.75rem;
+//   }
+// }

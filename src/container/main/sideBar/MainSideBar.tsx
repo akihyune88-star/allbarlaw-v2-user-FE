@@ -3,10 +3,13 @@ import { useCategoryStore } from '@/store/useCategoryStore'
 import styles from './main-side-bar.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
+import { useCategoriesQuery } from '@/hooks/queries/useCategoriesQuery'
+import CategoryLoading from '@/container/main/CategoryLoading'
 
 const MainSideBar = () => {
   const navigate = useNavigate()
-  const { maincategory, subcategory, setMaincategory, setSubcategory, categoryList } = useCategoryStore()
+  const { maincategory, subcategory, setMaincategory, setSubcategory } = useCategoryStore()
+  const { data: categoryList, isLoading, isError } = useCategoriesQuery()
 
   const handleMainCategoryClick = (id: number) => {
     const selectedCategory = categoryList?.find(category => category.id === id)
@@ -25,19 +28,27 @@ const MainSideBar = () => {
     }
   }
 
-  if (!categoryList) {
-    return null // or a loading state
-  }
-
   return (
     <aside className={styles['sidebar-container']}>
-      <SideBar
-        categories={categoryList}
-        selectedMainCategory={maincategory?.id || null}
-        selectedSubCategory={subcategory?.id || null}
-        onMainCategoryClick={handleMainCategoryClick}
-        onSubCategoryClick={handleSubCategoryClick}
-      />
+      {isLoading ? (
+        <CategoryLoading />
+      ) : isError ? (
+        <div className={styles['error-state']}>
+          <p>카테고리를 불러올 수 없습니다.</p>
+        </div>
+      ) : categoryList ? (
+        <SideBar
+          categories={categoryList}
+          selectedMainCategory={maincategory?.id || null}
+          selectedSubCategory={subcategory?.id || null}
+          onMainCategoryClick={handleMainCategoryClick}
+          onSubCategoryClick={handleSubCategoryClick}
+        />
+      ) : (
+        <div className={styles['empty-state']}>
+          <p>카테고리가 없습니다.</p>
+        </div>
+      )}
     </aside>
   )
 }

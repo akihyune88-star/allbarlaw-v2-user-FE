@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useCategoryStore } from '@/store/useCategoryStore'
+import { useCategoriesQuery } from './queries/useCategoriesQuery'
 
 type Selection = {
   mainCategoryId: number | null
@@ -14,7 +14,7 @@ type Selection = {
  * @returns 카테고리 상태 및 선택된 카테고리 정보
  */
 export const useCategories = (selection: Selection, onMainCategoryClick: (id: number) => void) => {
-  const { categoryList } = useCategoryStore()
+  const { data: categoryList } = useCategoriesQuery()
 
   // 초기 카테고리 설정
   useEffect(() => {
