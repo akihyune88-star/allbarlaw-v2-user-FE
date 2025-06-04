@@ -3,41 +3,24 @@ import styles from './main.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useCategoryStore } from '@/store/useCategoryStore'
-import { useCategoriesQuery } from '@/hooks/queries/useCategoriesQuery'
+import { MainCategory, SubCategory } from '@/types/categoryTypes'
 
 const Main = () => {
   const navigate = useNavigate()
   const { setMaincategory, setSubcategory } = useCategoryStore()
-  const { data: categoryList } = useCategoriesQuery()
 
-  const handleSubCategoryClick = (subCategoryId: number) => {
-    // 서브카테고리 정보 찾기
-    let selectedMainCategory = null
-    let selectedSubCategory = null
+  const handleSubCategoryClick = (mainCategory: MainCategory, subCategory: SubCategory) => {
+    // 스토어 업데이트 - 받은 객체로 바로 설정
+    setMaincategory({
+      id: mainCategory.id,
+      categoryName: mainCategory.categoryName,
+    })
+    setSubcategory({
+      id: subCategory.id,
+      subcategoryName: subCategory.subcategoryName,
+    })
 
-    for (const category of categoryList || []) {
-      const foundSubCategory = category.subcategories.find(sub => sub.id === subCategoryId)
-      if (foundSubCategory) {
-        selectedMainCategory = category
-        selectedSubCategory = foundSubCategory
-        break
-      }
-    }
-
-    // 스토어 업데이트
-    if (selectedMainCategory && selectedSubCategory) {
-      setMaincategory({
-        id: selectedMainCategory.id,
-        categoryName: selectedMainCategory.categoryName,
-      })
-      setSubcategory({
-        id: selectedSubCategory.id,
-        subcategoryName: selectedSubCategory.subcategoryName,
-      })
-    }
-
-    // 페이지 이동
-    navigate(`${ROUTER.SUB_MAIN.replace(':subCategoryId', subCategoryId.toString())}`)
+    navigate(`${ROUTER.SUB_MAIN.replace(':subCategoryId', subCategory.id.toString())}`)
   }
 
   return (

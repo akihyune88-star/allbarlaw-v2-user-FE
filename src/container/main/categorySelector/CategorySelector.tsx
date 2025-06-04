@@ -2,25 +2,26 @@ import { useState } from 'react'
 import styles from './category-selector.module.scss'
 import { useCategoriesQuery } from '@/hooks/queries/useCategoriesQuery'
 import { chunk } from '@/utils/arrayUtils'
+import { MainCategory, SubCategory } from '@/types/categoryTypes'
 
 type CategorySelectorProps = {
   title?: string
-  onSubCategoryClick?: (subCategoryId: number) => void
+  onSubCategoryClick?: (mainCategory: MainCategory, subCategory: SubCategory) => void
 }
 
 const CategorySelector = ({ title = '분류별 법률정보를 찾아보세요', onSubCategoryClick }: CategorySelectorProps) => {
   const { data: categoryList } = useCategoriesQuery()
-  const [selectedMainCategory, setSelectedMainCategory] = useState<number | null>(null) // 부동산을 기본 선택
-  const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(null) // 기타부동산을 기본 선택
+  const [selectedMainCategory, setSelectedMainCategory] = useState<number | null>(7) // 부동산을 기본 선택
+  const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(32) // 기타부동산을 기본 선택
 
   const handleMainCategoryClick = (categoryId: number) => {
     setSelectedMainCategory(categoryId)
     setSelectedSubCategory(null) // 메인 카테고리가 바뀌면 서브 카테고리 선택 해제
   }
 
-  const handleSubCategoryClick = (subCategoryId: number) => {
-    setSelectedSubCategory(subCategoryId)
-    onSubCategoryClick?.(subCategoryId) // 외부 이벤트 핸들러 호출
+  const handleSubCategoryClick = (mainCategory: MainCategory, subCategory: SubCategory) => {
+    setSelectedSubCategory(subCategory.id)
+    onSubCategoryClick?.(mainCategory, subCategory) // 메인카테고리와 서브카테고리 객체 함께 전달
   }
 
   // 카테고리 리스트를 9개씩 그룹으로 나누기
@@ -71,7 +72,7 @@ const CategorySelector = ({ title = '분류별 법률정보를 찾아보세요',
                         className={`${styles['subcategory-button']} ${
                           selectedSubCategory === subCategory.id ? styles.selected : ''
                         }`}
-                        onClick={() => handleSubCategoryClick(subCategory.id)}
+                        onClick={() => handleSubCategoryClick(selectedCategoryInGroup, subCategory)}
                       >
                         {subCategory.subcategoryName}
                       </button>

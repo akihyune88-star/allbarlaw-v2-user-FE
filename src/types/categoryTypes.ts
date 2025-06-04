@@ -15,3 +15,13 @@ type Category = {
 }
 
 export type CategoryList = Category[]
+
+export interface MainCategory {
+  id: number
+  categoryName: string
+}
+
+export interface SubCategory {
+  id: number
+  subcategoryName: string
+}

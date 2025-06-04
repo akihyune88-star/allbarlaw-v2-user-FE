@@ -1,14 +1,5 @@
+import { MainCategory, SubCategory } from '@/types/categoryTypes'
 import { create } from 'zustand'
-
-export interface MainCategory {
-  id: number
-  categoryName: string
-}
-
-export interface SubCategory {
-  id: number
-  subcategoryName: string
-}
 
 interface CategoryStoreState {
   // UI 상태만 관리 (데이터는 React Query로 관리)
