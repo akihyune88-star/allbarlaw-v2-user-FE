@@ -16,8 +16,8 @@ type ArticleHeaderProps = {
   onClick?: (key: string) => void
   navigationPath?: string
   activeKey?: string
-  totalBlogCount: number
-  recentBlogCount: number
+  totalBlogCount?: number
+  recentBlogCount?: number
   title: string
   button?: React.ReactNode
   type?: ViewType
@@ -63,7 +63,7 @@ const ArticleHeader = ({
             onClick={() => onClick && onClick('전체')}
             className={`${styles.allButton} ${activeKey === '전체' ? styles.active : ''}`}
           >
-            전체 {totalBlogCount.toLocaleString()}개
+            전체 {totalBlogCount?.toLocaleString()}개
           </button>
           <ul className={styles['sort-case']}>
             {SORT_CASE.map((item: SortItem) => {
@@ -93,7 +93,7 @@ const ArticleHeader = ({
                 onClick={() => onClick && onClick(item.key)}
                 className={activeKey === item.key ? styles.active : ''}
               >
-                {item.name === '전체' ? `${item.name} ${totalBlogCount.toLocaleString()}개` : item.name}
+                {item.name === '전체' ? `${item.name} ${totalBlogCount?.toLocaleString()}개` : item.name}
               </li>
             ))}
           </ul>
@@ -111,7 +111,7 @@ const ArticleHeader = ({
         {type === 'total' && (
           <div className={styles['total-count']}>
             <p>
-              전체 {totalBlogCount.toLocaleString()}개 / 최근 한달 {recentBlogCount.toLocaleString()}개
+              전체 {totalBlogCount?.toLocaleString()}개 / 최근 한달 {recentBlogCount?.toLocaleString()}개
             </p>
             <button className='total-view-button' onClick={handleTotalViewClick}>
               <span>전체보기</span>
