@@ -6,7 +6,7 @@ import SvgIcon from '../SvgIcon'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useState } from 'react'
 import { COLOR } from '@/styles/color'
-const BlogItem = ({ item }: { item: BlogCase }) => {
+const BlogItem = ({ item, viewKeepBookmark = false }: { item: BlogCase; viewKeepBookmark?: boolean }) => {
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { categoryId } = useParams()
@@ -27,9 +27,10 @@ const BlogItem = ({ item }: { item: BlogCase }) => {
       <div className={styles['blog-item']}>
         <div className={styles['blog-content-header']}>
           <h3>{item.title}</h3>
-          {!isMobile && (
-            <SvgIcon name='bookMark' onClick={() => setLike(!like)} fill={like ? COLOR.green_01 : 'none'} />
-          )}
+          {!isMobile ||
+            (viewKeepBookmark && (
+              <SvgIcon name='bookMark' onClick={() => setLike(!like)} fill={like ? COLOR.green_01 : 'none'} />
+            ))}
         </div>
         <div className={styles['blog-content-body']}>
           <p>{summaryContents}</p>
@@ -38,11 +39,7 @@ const BlogItem = ({ item }: { item: BlogCase }) => {
         </div>
       </div>
       <figure>
-        <img
-          className={styles['blog-item-img']}
-          src='https://www.monthlypeople.com/news/photo/202003/21217_12862_5312.png'
-          alt='blog-item-image'
-        />
+        <img className={styles['blog-item-img']} src={item.thumbnail} alt='blog-item-image' />
       </figure>
     </article>
   )

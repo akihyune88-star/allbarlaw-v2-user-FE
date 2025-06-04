@@ -1,11 +1,19 @@
 import styles from '@/container/blog/blog-list.module.scss'
-import { exampleBlogData } from '../../constants/exampleData'
 import { useState } from 'react'
 import BlogItem from '@/components/blogItem/BlogItem'
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
+import { useParams } from 'react-router-dom'
+import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 
 const BlogList = () => {
   const [sortCase, setSortCase] = useState<string>('all')
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+  console.log('blogList subcategoryId', subcategoryId)
+  const { blogList } = useGetBlogList({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
+    take: 4,
+  })
+  console.log('blogList', blogList)
 
   const handleSortCase = (key: string) => {
     setSortCase(key)
@@ -21,8 +29,8 @@ const BlogList = () => {
         recentBlogCount={4142}
       />
       <section className={styles['blog-list']} aria-label='블로그 목록'>
-        {exampleBlogData.blogCases.map(_blogItem => (
-          <BlogItem key={_blogItem.id} item={_blogItem} />
+        {blogList.map(blogItem => (
+          <BlogItem key={blogItem.id} item={blogItem} />
         ))}
       </section>
     </main>

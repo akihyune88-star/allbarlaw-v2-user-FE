@@ -38,7 +38,6 @@ const ConsonantFilter = () => {
   const [selectedConsonant, setSelectedConsonant] = useState<string | null>(null)
 
   const handleConsonantClick = (consonant: string) => {
-    console.log('선택된 자음:', consonant)
     setSelectedConsonant(consonant)
     // 필터 로직 추가
   }
