@@ -8,10 +8,12 @@ import BlogFeedContainer from '@/container/main/blogFeedContainer/BlogFeedContai
 import BaroTalkBanner from '@/container/main/baroTalkBanner/BaroTalkBanner'
 import LawyerAdvertisementList from '@/container/main/lawyerAdvertisementList/LawyerAdvertisementList'
 import LawyerVideoSpotlight from '@/container/main/lawyerVideoSpotlight/LawyerVideoSpotlight'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const Main = () => {
   const navigate = useNavigate()
   const { setMaincategory, setSubcategory } = useCategoryStore()
+  const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const handleSubCategoryClick = (mainCategory: MainCategory, subCategory: SubCategory) => {
     // 스토어 업데이트 - 받은 객체로 바로 설정
@@ -33,7 +35,7 @@ const Main = () => {
       <div className={styles['content-container']}>
         <CategorySelector title='분류별 법률 정보를 찾아보세요' onSubCategoryClick={handleSubCategoryClick} />
         <BlogFeedContainer />
-        <BaroTalkBanner />
+        {!isMobile && <BaroTalkBanner />}
         <LawyerAdvertisementList />
         <LawyerVideoSpotlight />
       </div>

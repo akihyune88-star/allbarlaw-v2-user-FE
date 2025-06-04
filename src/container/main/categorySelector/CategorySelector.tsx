@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import styles from './category-selector.module.scss'
-import { useCategoriesQuery } from '@/hooks/queries/useCategoriesQuery'
 import { chunk } from '@/utils/arrayUtils'
 import { MainCategory, SubCategory } from '@/types/categoryTypes'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import SvgIcon from '@/components/SvgIcon'
+import { useCategory } from '@/hooks/queries/useCategory'
 
 type CategorySelectorProps = {
   title?: string
@@ -19,7 +19,7 @@ const CategorySelector = ({
   enableMobileExpand = true, // 기본값: 펼쳐보기 기능 사용
   initialVisibleGroups = 2, // 기본값: 2그룹 표시
 }: CategorySelectorProps) => {
-  const { data: categoryList } = useCategoriesQuery()
+  const { data: categoryList } = useCategory()
   const [selectedMainCategory, setSelectedMainCategory] = useState<number | null>(7) // 부동산을 기본 선택
   const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(32) // 기타부동산을 기본 선택
   const [isExpanded, setIsExpanded] = useState<boolean>(false) // 모바일에서 펼침 상태

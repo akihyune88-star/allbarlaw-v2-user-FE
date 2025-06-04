@@ -1,7 +1,10 @@
 import styles from './category-selector.module.scss'
 import Divider from '@/components/divider/Divider'
 import SvgIcon from '@/components/SvgIcon'
-import { useDropdown, useCategories, DropdownType } from '@/hooks'
+import { useDropdown } from '@/hooks'
+import { useCategory } from '@/hooks/queries/useCategory'
+
+type DropdownType = 'main' | 'sub'
 
 type CategorySelectorProps = {
   selection: {
@@ -27,8 +30,15 @@ const CategorySelector = ({ selection, onMainCategoryClick, onSubCategoryClick }
     activeItemClassName: styles.activeItem,
   })
 
-  const { categoryList, selectedMainCategory, selectedSubCategory } = useCategories(selection, onMainCategoryClick)
+  // React Query로 카테고리 데이터 가져오기
+  const { data: categoryList, isLoading, error } = useCategory()
 
+  // 선택된 카테고리들을 컴포넌트에서 직접 계산
+  const selectedMainCategory = categoryList?.find(cat => cat.id === selection.mainCategoryId)
+  const selectedSubCategory = selectedMainCategory?.subcategories.find(sub => sub.id === selection.subCategoryId)
+
+  if (isLoading) return <div>카테고리 로딩중...</div>
+  if (error) return <div>카테고리 로딩 에러</div>
   if (!categoryList) return null
 
   const handleMainCategorySelect = (categoryId: number) => {

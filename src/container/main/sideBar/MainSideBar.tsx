@@ -3,13 +3,13 @@ import { useCategoryStore } from '@/store/useCategoryStore'
 import styles from './main-side-bar.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
-import { useCategoriesQuery } from '@/hooks/queries/useCategoriesQuery'
 import CategoryLoading from '@/container/main/categoryLoading/CategoryLoading'
+import { useCategory } from '@/hooks/queries/useCategory'
 
 const MainSideBar = () => {
   const navigate = useNavigate()
   const { maincategory, subcategory, setMaincategory, setSubcategory } = useCategoryStore()
-  const { data: categoryList, isLoading, isError } = useCategoriesQuery()
+  const { data: categoryList, isLoading, isError } = useCategory()
 
   const handleMainCategoryClick = (id: number) => {
     const selectedCategory = categoryList?.find(category => category.id === id)
