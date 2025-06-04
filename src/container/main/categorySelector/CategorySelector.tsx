@@ -1,15 +1,17 @@
 import { useState } from 'react'
 import styles from './category-selector.module.scss'
 import { useCategoriesQuery } from '@/hooks/queries/useCategoriesQuery'
+import { chunk } from '@/utils/arrayUtils'
 
 type CategorySelectorProps = {
   title?: string
+  onSubCategoryClick?: (subCategoryId: number) => void
 }
 
-const CategorySelector = ({ title = '분류별 법률정보를 찾아보세요' }: CategorySelectorProps) => {
+const CategorySelector = ({ title = '분류별 법률정보를 찾아보세요', onSubCategoryClick }: CategorySelectorProps) => {
   const { data: categoryList } = useCategoriesQuery()
-  const [selectedMainCategory, setSelectedMainCategory] = useState<number | null>(7) // 부동산을 기본 선택
-  const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(32) // 기타부동산을 기본 선택
+  const [selectedMainCategory, setSelectedMainCategory] = useState<number | null>(null) // 부동산을 기본 선택
+  const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(null) // 기타부동산을 기본 선택
 
   const handleMainCategoryClick = (categoryId: number) => {
     setSelectedMainCategory(categoryId)
@@ -18,9 +20,11 @@ const CategorySelector = ({ title = '분류별 법률정보를 찾아보세요' 
 
   const handleSubCategoryClick = (subCategoryId: number) => {
     setSelectedSubCategory(subCategoryId)
+    onSubCategoryClick?.(subCategoryId) // 외부 이벤트 핸들러 호출
   }
 
-  const selectedCategory = categoryList?.find(category => category.id === selectedMainCategory)
+  // 카테고리 리스트를 9개씩 그룹으로 나누기
+  const categoryGroups = categoryList ? chunk(categoryList, 9) : []
 
   return (
     <section className={styles.container}>
@@ -30,46 +34,54 @@ const CategorySelector = ({ title = '분류별 법률정보를 찾아보세요' 
         </header>
       )}
 
-      {/* 모든 카테고리와 서브카테고리 */}
-      <div className={styles['category-grid']}>
-        {/* 메인 카테고리들 렌더링 */}
-        {categoryList?.map((category, index) => (
-          <div
-            className={`${styles['icon-wrapper']} ${selectedMainCategory === category.id ? styles.selected : ''}`}
-            key={category.id}
-            onClick={() => handleMainCategoryClick(category.id)}
-            style={{ order: index }}
-          >
-            <img
-              src={selectedMainCategory === category.id ? category.clickedImageUrl : category.imageUrl}
-              alt={category.categoryName}
-              className={styles.icon}
-            />
-            <span className={styles['category-name']}>{category.categoryName}</span>
-          </div>
-        ))}
+      <div className={styles['category-container']}>
+        {categoryGroups.map((group, groupIndex) => {
+          // 현재 그룹에 선택된 카테고리가 있는지 확인
+          const selectedCategoryInGroup = group.find(category => category.id === selectedMainCategory)
 
-        {/* 선택된 카테고리의 서브카테고리들 */}
-        {selectedCategory && (
-          <div
-            className={styles['subcategory-inline']}
-            style={{
-              order: (categoryList?.findIndex(cat => cat.id === selectedMainCategory) ?? 0) + 0.5,
-            }}
-          >
-            {selectedCategory.subcategories.map(subCategory => (
-              <button
-                key={subCategory.id}
-                className={`${styles['subcategory-button']} ${
-                  selectedSubCategory === subCategory.id ? styles.selected : ''
-                }`}
-                onClick={() => handleSubCategoryClick(subCategory.id)}
-              >
-                {subCategory.subcategoryName}
-              </button>
-            ))}
-          </div>
-        )}
+          return (
+            <div key={groupIndex} className={styles['category-group']}>
+              {/* 현재 그룹의 카테고리들 */}
+              <div className={styles['category-row']}>
+                {group.map(category => (
+                  <div
+                    className={`${styles['icon-wrapper']} ${
+                      selectedMainCategory === category.id ? styles.selected : ''
+                    }`}
+                    key={category.id}
+                    onClick={() => handleMainCategoryClick(category.id)}
+                  >
+                    <img
+                      src={selectedMainCategory === category.id ? category.clickedImageUrl : category.imageUrl}
+                      alt={category.categoryName}
+                      className={styles.icon}
+                    />
+                    <span className={styles['category-name']}>{category.categoryName}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* 이 그룹에 선택된 카테고리가 있으면 서브카테고리 아코디언 표시 */}
+              {selectedCategoryInGroup && (
+                <div className={styles['subcategory-accordion']}>
+                  <div className={styles['subcategory-container']}>
+                    {selectedCategoryInGroup.subcategories.map(subCategory => (
+                      <button
+                        key={subCategory.id}
+                        className={`${styles['subcategory-button']} ${
+                          selectedSubCategory === subCategory.id ? styles.selected : ''
+                        }`}
+                        onClick={() => handleSubCategoryClick(subCategory.id)}
+                      >
+                        {subCategory.subcategoryName}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })}
       </div>
     </section>
   )
