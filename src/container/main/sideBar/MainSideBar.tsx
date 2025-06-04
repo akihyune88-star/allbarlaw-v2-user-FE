@@ -4,7 +4,7 @@ import styles from './main-side-bar.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useCategoriesQuery } from '@/hooks/queries/useCategoriesQuery'
-import CategoryLoading from '@/container/main/CategoryLoading'
+import CategoryLoading from '@/container/main/categoryLoading/CategoryLoading'
 
 const MainSideBar = () => {
   const navigate = useNavigate()

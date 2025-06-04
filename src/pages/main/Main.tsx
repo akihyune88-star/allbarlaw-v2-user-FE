@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useCategoryStore } from '@/store/useCategoryStore'
 import { MainCategory, SubCategory } from '@/types/categoryTypes'
+import BlogFeedContainer from '@/container/main/blogFeedContainer/BlogFeedContainer'
+import BaroTalkBanner from '@/container/main/baroTalkBanner/BaroTalkBanner'
+import LawyerAdvertisementList from '@/container/main/lawyerAdvertisementList/LawyerAdvertisementList'
+import LawyerVideoSpotlight from '@/container/main/lawyerVideoSpotlight/LawyerVideoSpotlight'
 
 const Main = () => {
   const navigate = useNavigate()
@@ -25,7 +29,14 @@ const Main = () => {
 
   return (
     <div className={styles['main-container']}>
-      <CategorySelector title='분류별 법률 정보를 찾아보세요' onSubCategoryClick={handleSubCategoryClick} />
+      <header></header>
+      <div className={styles['content-container']}>
+        <CategorySelector title='분류별 법률 정보를 찾아보세요' onSubCategoryClick={handleSubCategoryClick} />
+        <BlogFeedContainer />
+        <BaroTalkBanner />
+        <LawyerAdvertisementList />
+        <LawyerVideoSpotlight />
+      </div>
     </div>
   )
 }

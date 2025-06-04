@@ -3,16 +3,30 @@ import styles from './category-selector.module.scss'
 import { useCategoriesQuery } from '@/hooks/queries/useCategoriesQuery'
 import { chunk } from '@/utils/arrayUtils'
 import { MainCategory, SubCategory } from '@/types/categoryTypes'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import SvgIcon from '@/components/SvgIcon'
 
 type CategorySelectorProps = {
   title?: string
   onSubCategoryClick?: (mainCategory: MainCategory, subCategory: SubCategory) => void
+  enableMobileExpand?: boolean // 모바일에서 펼쳐보기 기능 사용 여부
+  initialVisibleGroups?: number // 초기에 보여줄 그룹 수 (모바일에서)
 }
 
-const CategorySelector = ({ title = '분류별 법률정보를 찾아보세요', onSubCategoryClick }: CategorySelectorProps) => {
+const CategorySelector = ({
+  title = '분류별 법률정보를 찾아보세요',
+  onSubCategoryClick,
+  enableMobileExpand = true, // 기본값: 펼쳐보기 기능 사용
+  initialVisibleGroups = 2, // 기본값: 2그룹 표시
+}: CategorySelectorProps) => {
   const { data: categoryList } = useCategoriesQuery()
   const [selectedMainCategory, setSelectedMainCategory] = useState<number | null>(7) // 부동산을 기본 선택
   const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(32) // 기타부동산을 기본 선택
+  const [isExpanded, setIsExpanded] = useState<boolean>(false) // 모바일에서 펼침 상태
+
+  // 모바일 분기 처리
+  const isMobile = useMediaQuery('(max-width: 80rem)')
+  const chunkSize = isMobile ? 5 : 9
 
   const handleMainCategoryClick = (categoryId: number) => {
     setSelectedMainCategory(categoryId)
@@ -24,8 +38,20 @@ const CategorySelector = ({ title = '분류별 법률정보를 찾아보세요',
     onSubCategoryClick?.(mainCategory, subCategory) // 메인카테고리와 서브카테고리 객체 함께 전달
   }
 
-  // 카테고리 리스트를 9개씩 그룹으로 나누기
-  const categoryGroups = categoryList ? chunk(categoryList, 9) : []
+  const handleToggleExpand = () => {
+    setIsExpanded(!isExpanded)
+  }
+
+  const categoryGroups = categoryList ? chunk(categoryList, chunkSize) : []
+
+  // 모바일에서 보여줄 그룹 결정
+  const visibleGroups =
+    isMobile && enableMobileExpand && !isExpanded
+      ? categoryGroups.slice(0, initialVisibleGroups) // 설정된 수만큼만 표시
+      : categoryGroups // 데스크톱이거나 펼쳐진 상태거나 기능 비활성화면 모든 그룹
+
+  // 펼쳐보기 버튼 표시 조건
+  const showExpandButton = isMobile && enableMobileExpand && categoryGroups.length > initialVisibleGroups
 
   return (
     <section className={styles.container}>
@@ -36,7 +62,7 @@ const CategorySelector = ({ title = '분류별 법률정보를 찾아보세요',
       )}
 
       <div className={styles['category-container']}>
-        {categoryGroups.map((group, groupIndex) => {
+        {visibleGroups.map((group, groupIndex) => {
           // 현재 그룹에 선택된 카테고리가 있는지 확인
           const selectedCategoryInGroup = group.find(category => category.id === selectedMainCategory)
 
@@ -83,6 +109,14 @@ const CategorySelector = ({ title = '분류별 법률정보를 찾아보세요',
             </div>
           )
         })}
+
+        {/* 모바일에서 펼쳐보기/접기 버튼 */}
+        {showExpandButton && (
+          <button className={styles['expand-button']} onClick={handleToggleExpand}>
+            {isExpanded ? '접기' : '펼쳐보기'}
+            <SvgIcon name='arrowSmall' style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </button>
+        )}
       </div>
     </section>
   )
