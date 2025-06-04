@@ -12,7 +12,7 @@ const BlogItem = ({ item }: { item: BlogCase }) => {
   const { categoryId } = useParams()
   const [like, setLike] = useState(false)
 
-  const summaryContents = getBlogSummaryText(item.summaryContents)
+  const summaryContents = getBlogSummaryText(item.summaryContent)
 
   const handleClick = () => {
     const path = categoryId ? `/${categoryId}/blog/${item.id}` : `/blog/${item.id}`
@@ -23,8 +23,8 @@ const BlogItem = ({ item }: { item: BlogCase }) => {
   }
 
   return (
-    <article className={styles['blog-item']} onClick={handleClick}>
-      <div className={styles['blog-item-wrapper']}>
+    <article className={styles['blog-item-wrapper']} onClick={handleClick}>
+      <div className={styles['blog-item']}>
         <div className={styles['blog-content-header']}>
           <h3>{item.title}</h3>
           {!isMobile && (
@@ -33,8 +33,8 @@ const BlogItem = ({ item }: { item: BlogCase }) => {
         </div>
         <div className={styles['blog-content-body']}>
           <p>{summaryContents}</p>
-          <span className={styles.lawyer}>{item.lawyer} 변호사</span>{' '}
-          <span className={styles.lawfirm}>[{item.lawfirm}]</span>
+          <span className={styles.lawyer}>{item.lawyerName} 변호사</span>{' '}
+          <span className={styles.lawfirm}>[{item.lawfirmName}]</span>
         </div>
       </div>
       <figure>

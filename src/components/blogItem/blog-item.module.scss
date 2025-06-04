@@ -1,4 +1,4 @@
-.blog-item {
+.blog-item-wrapper {
   border-top: 1px solid $color-line-divider;
   display: flex;
   justify-content: space-between;
@@ -6,9 +6,10 @@
 
   cursor: pointer;
 
-  .blog-item-wrapper {
+  padding: 1.5rem 0 1.4375rem 0;
+
+  .blog-item {
     width: 33.875rem;
-    padding: 1.5rem 0 1.4375rem 0;
 
     .blog-content-header {
       display: flex;
