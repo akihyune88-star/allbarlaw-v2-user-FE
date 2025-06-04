@@ -8,7 +8,7 @@ export const ROUTER = {
   LAWYER_SEARCH: '/lawyer-search',
   LAW_FIRM: '/law-firm',
   MAIN: '/',
-  SUB_MAIN: '/:subCategoryId',
+  SUB_MAIN: '/:subcategoryId',
   BLOG: '/blog',
   BLOG_DETAIL: '/blog/:blogId',
   VIDEO: '/video',

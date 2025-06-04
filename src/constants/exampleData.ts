@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { AIRecommenderLawyerItem } from '@/types/lawyerTypes'
 
 export const exampleBlogData = {

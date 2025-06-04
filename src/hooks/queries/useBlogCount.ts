@@ -3,17 +3,17 @@ import { QUERY_KEY } from '@/constants/queryKey'
 import { blogService } from '@/services/blogService'
 
 type BlogCountRequest = {
-  subCategoryId?: number
+  subcategoryId?: number
   recentDays: number | 'all'
 }
 
 export const useBlogCount = (request: BlogCountRequest) => {
-  const { subCategoryId, recentDays } = request
+  const { subcategoryId, recentDays } = request
 
   return useQuery({
-    queryKey: [QUERY_KEY.BLOG_COUNT, subCategoryId, recentDays],
-    queryFn: () => blogService.getBlogCount(subCategoryId!, recentDays),
-    enabled: subCategoryId !== undefined,
+    queryKey: [QUERY_KEY.BLOG_COUNT, subcategoryId, recentDays],
+    queryFn: () => blogService.getBlogCount(subcategoryId!, recentDays),
+    enabled: subcategoryId !== undefined,
 
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 30,

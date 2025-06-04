@@ -3,12 +3,12 @@ export interface Category {
   categoryName: string
 }
 
-export interface SubCategory {
+export interface subcategory {
   subcategoryId: number
   subcategoryName: string
 }
 
-interface SubcategoryInfo extends SubCategory {
+interface SubcategoryInfo extends subcategory {
   isUncategorized: boolean
   categoryId: number
 }

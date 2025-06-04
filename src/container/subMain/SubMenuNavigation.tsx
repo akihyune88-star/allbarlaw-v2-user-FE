@@ -6,11 +6,11 @@ import styles from './sub-menu-navigation.module.scss'
 const SubMenuNavigation = () => {
   const [selectedMenu, setSelectedMenu] = useState(SUB_MENU_LIST[0])
   const navigate = useNavigate()
-  const { subCategoryId } = useParams<{ subCategoryId: string }>()
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
 
   const handleMenuClick = (menu: (typeof SUB_MENU_LIST)[0]) => {
     setSelectedMenu(menu)
-    navigate(`/${subCategoryId}${menu.path}`)
+    navigate(`/${subcategoryId}${menu.path}`)
   }
 
   return (

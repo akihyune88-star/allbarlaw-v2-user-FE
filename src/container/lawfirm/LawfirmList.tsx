@@ -24,7 +24,10 @@ const LawfirmList = () => {
           lawfirmThumbnail='https://picsum.photos/200/300'
           lawfirmName='법률사무소 가온길'
           title='전문성과 경험으로 의뢰인의 고민을 해결해드리겠습니다. '
-          description='단 한 번의 기회, 더신사 법무법인과 함께 하세요. 각 분야 전문 변호사들의 차별화된 전략으로 기대 이상의 결과를 만들어냅니다'
+          description={
+            '단 한 번의 기회, 더신사 법무법인과 함께 하세요. ' +
+            '각 분야 전문 변호사들의 차별화된 전략으로 기대 이상의 결과를 만들어냅니다'
+          }
           address='서울특별시 강남구 테헤란로 14길 6 남도빌딩 2층'
           phoneNumber='02-123-4567'
           homepageUrl='https://example.com'

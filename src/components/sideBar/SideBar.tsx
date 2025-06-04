@@ -6,20 +6,20 @@ import { CategoryList } from '@/types/categoryTypes'
 interface SideBarProps {
   categories: CategoryList
   selectedMainCategory: number | null
-  selectedSubCategory: number | null
+  selectedSubcategory: number | null
   onMainCategoryClick: (id: number) => void
-  onSubCategoryClick: (id: number) => void
+  onSubcategoryClick: (id: number) => void
 }
 
 interface CategoryItemProps {
   category: CategoryList[number]
   isActive: boolean
   onClick: () => void
-  selectedSubCategory: number | null
-  onSubCategoryClick: (id: number) => void
+  selectedSubcategory: number | null
+  onSubcategoryClick: (id: number) => void
 }
 
-const CategoryItem = ({ category, isActive, onClick, selectedSubCategory, onSubCategoryClick }: CategoryItemProps) => {
+const CategoryItem = ({ category, isActive, onClick, selectedSubcategory, onSubcategoryClick }: CategoryItemProps) => {
   return (
     <li className={styles['category-list-item']}>
       <div className={styles['category-list-header']}>
@@ -37,9 +37,9 @@ const CategoryItem = ({ category, isActive, onClick, selectedSubCategory, onSubC
               key={subcategory.subcategoryId}
               className={styles['subcategory-item']}
               style={{
-                backgroundColor: selectedSubCategory === subcategory.subcategoryId ? COLOR.bg_gray_02 : 'transparent',
+                backgroundColor: selectedSubcategory === subcategory.subcategoryId ? COLOR.bg_gray_02 : 'transparent',
               }}
-              onClick={() => onSubCategoryClick(subcategory.subcategoryId)}
+              onClick={() => onSubcategoryClick(subcategory.subcategoryId)}
             >
               <span>{subcategory.subcategoryName}</span>
             </li>
@@ -53,9 +53,9 @@ const CategoryItem = ({ category, isActive, onClick, selectedSubCategory, onSubC
 const SideBar = ({
   categories,
   selectedMainCategory,
-  selectedSubCategory,
+  selectedSubcategory,
   onMainCategoryClick,
-  onSubCategoryClick,
+  onSubcategoryClick,
 }: SideBarProps) => {
   return (
     <nav className={styles.container} aria-label='카테고리 네비게이션'>
@@ -66,8 +66,8 @@ const SideBar = ({
             category={category}
             isActive={selectedMainCategory === category.categoryId}
             onClick={() => onMainCategoryClick(category.categoryId)}
-            selectedSubCategory={selectedSubCategory}
-            onSubCategoryClick={onSubCategoryClick}
+            selectedSubcategory={selectedSubcategory}
+            onSubcategoryClick={onSubcategoryClick}
           />
         ))}
       </ul>

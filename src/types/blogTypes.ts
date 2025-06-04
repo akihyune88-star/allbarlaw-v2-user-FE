@@ -1,15 +1,31 @@
 export type BlogCountRequest = {
-  subCategoryId: number | 'all'
+  subcategoryId: number | 'all'
   recentDays: number
+}
+
+export type BlogListRequest = {
+  subcategoryId?: number
+  take?: number
+  cursor?: number
+  cursorId?: number
+  orderBy?: 'createdAt' | 'viewCount' | 'likesCount'
 }
 
 export interface BlogCase {
   id: number
   title: string
-  summaryContents: string
-  lawyer: string
-  lawfirm: string
-  isKeep: boolean
+  summaryContent: string
   thumbnail: string
-  tagList: string[]
+  lawyerName: string
+  lawfirmName: string
+  lawyerId: number
+  lawyerProfileImage: string
+  isKeep: boolean
+}
+
+export type BlogListResponse = {
+  data: BlogCase[]
+  nextCursor: number
+  nextCursorId: number
+  hasNextPage: boolean
 }

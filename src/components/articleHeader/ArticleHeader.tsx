@@ -3,7 +3,6 @@ import styles from '@/components/articleHeader/article-header.module.scss'
 import React, { useEffect, useRef } from 'react'
 import SvgIcon from '../SvgIcon'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useNavigate } from 'react-router-dom'
 
 type SortItem = {
   key: string
@@ -14,7 +13,7 @@ type ViewType = 'section' | 'total'
 
 type ArticleHeaderProps = {
   onClick?: (key: string) => void
-  navigationPath?: string
+  onClickTotalView?: () => void
   activeKey?: string
   totalBlogCount?: number
   recentBlogCount?: number
@@ -27,7 +26,7 @@ type ArticleHeaderProps = {
 
 const ArticleHeader = ({
   onClick,
-  navigationPath,
+  onClickTotalView,
   activeKey,
   totalBlogCount,
   recentBlogCount,
@@ -38,7 +37,6 @@ const ArticleHeader = ({
   titleType = 'vertical',
 }: ArticleHeaderProps) => {
   const mainClassName = [styles[type], className].filter(Boolean).join(' ')
-  const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const headerRef = useRef<HTMLElement>(null)
 
@@ -48,12 +46,6 @@ const ArticleHeader = ({
       headerRef.current.style.setProperty('--header-aline-content', titleType === 'horizontal' ? 'flex-end' : 'center')
     }
   }, [titleType])
-
-  const handleTotalViewClick = () => {
-    if (navigationPath) {
-      navigate(navigationPath)
-    }
-  }
 
   const renderSortCase = () => {
     if (isMobile) {
@@ -113,7 +105,7 @@ const ArticleHeader = ({
             <p>
               전체 {totalBlogCount?.toLocaleString()}개 / 최근 한달 {recentBlogCount?.toLocaleString()}개
             </p>
-            <button className='total-view-button' onClick={handleTotalViewClick}>
+            <button className='total-view-button' onClick={onClickTotalView}>
               <span>전체보기</span>
               <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(-90deg)' }} />
             </button>
@@ -124,7 +116,7 @@ const ArticleHeader = ({
         <button
           className={`total-view-button ${styles['total-mobile-button']}`}
           style={{ transform: 'translateY(3px)' }}
-          onClick={handleTotalViewClick}
+          onClick={onClickTotalView}
         >
           <span>전체보기</span>
           <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(-90deg)' }} />

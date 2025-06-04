@@ -16,7 +16,7 @@ import VideoLayout from '@/pages/video/Video'
 import VideoDetail from '@/pages/video/VideoDetail'
 import LegalKnowledgeLayout from '@/pages/legalKnowledge/LegalKnowledge'
 import LawyerLayout from '@/pages/lawyer/Lawyer'
-import SubCategoryLawfirmLayout from '@/pages/lawfirm/SubCategoryLawfirm'
+import SubcategoryLawfirmLayout from '@/pages/lawfirm/SubCategoryLawfirm'
 import TotalSubMain from '@/pages/subMain/TotalSubMain'
 import LegalDictionary from '@/pages/legalDictionary/LegalDictionary'
 import AboutAllbarlaw from '@/pages/aboutAllbarlaw/AboutAllbarlaw'
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
             element: <Main />,
           },
           {
-            path: ':subCategoryId',
+            path: ':subcategoryId',
             element: <SubMain />,
             children: [
               {
@@ -64,16 +64,16 @@ const router = createBrowserRouter([
               },
               {
                 path: 'law-firm',
-                element: <SubCategoryLawfirmLayout />,
+                element: <SubcategoryLawfirmLayout />,
               },
             ],
           },
           {
-            path: ':subCategoryId/blog/:blogId',
+            path: ':subcategoryId/blog/:blogId',
             element: <BlogDetail />,
           },
           {
-            path: ':subCategoryId/video/:videoId',
+            path: ':subcategoryId/video/:videoId',
             element: <VideoDetail />,
           },
 

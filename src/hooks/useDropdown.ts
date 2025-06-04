@@ -4,7 +4,7 @@ export type DropdownType = 'main' | 'sub' | null
 
 interface UseDropdownProps {
   mainCategoryId: number | null
-  subCategoryId: number | null
+  subcategoryId: number | null
   activeItemClassName: string
 }
 
@@ -14,7 +14,7 @@ interface UseDropdownProps {
  * @param props 드롭다운 설정 옵션
  * @returns 드롭다운 상태와 제어 함수들
  */
-export const useDropdown = ({ mainCategoryId, subCategoryId, activeItemClassName }: UseDropdownProps) => {
+export const useDropdown = ({ mainCategoryId, subcategoryId, activeItemClassName }: UseDropdownProps) => {
   const [openDropdown, setOpenDropdown] = useState<DropdownType>(null)
   const mainDropdownRef = useRef<HTMLDivElement>(null)
   const subDropdownRef = useRef<HTMLDivElement>(null)
@@ -74,7 +74,7 @@ export const useDropdown = ({ mainCategoryId, subCategoryId, activeItemClassName
 
   // 소분류 드롭다운 메뉴가 열릴 때 선택된 항목으로 스크롤
   useEffect(() => {
-    if (openDropdown === 'sub' && subDropdownMenuRef.current && subCategoryId) {
+    if (openDropdown === 'sub' && subDropdownMenuRef.current && subcategoryId) {
       const selectedItem = subDropdownMenuRef.current.querySelector(`.${activeItemClassName}`)
       if (selectedItem) {
         setTimeout(() => {
@@ -82,7 +82,7 @@ export const useDropdown = ({ mainCategoryId, subCategoryId, activeItemClassName
         }, 100)
       }
     }
-  }, [openDropdown, subCategoryId, activeItemClassName])
+  }, [openDropdown, subcategoryId, activeItemClassName])
 
   return {
     openDropdown,

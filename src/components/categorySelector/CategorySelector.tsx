@@ -1,27 +1,27 @@
 import { useState } from 'react'
 import styles from './category-selector.module.scss'
 import { chunk } from '@/utils/arrayUtils'
-import { Category, SubCategory } from '@/types/categoryTypes'
+import { Category, Subcategory } from '@/types/categoryTypes'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import SvgIcon from '@/components/SvgIcon'
 import { useCategory } from '@/hooks/queries/useCategory'
 
 type CategorySelectorProps = {
   title?: string
-  onSubCategoryClick?: (category: Category, subCategory: SubCategory) => void
+  onSubcategoryClick?: (category: Category, subcategory: Subcategory) => void
   enableMobileExpand?: boolean // 모바일에서 펼쳐보기 기능 사용 여부
   initialVisibleGroups?: number // 초기에 보여줄 그룹 수 (모바일에서)
 }
 
 const CategorySelector = ({
   title = '분류별 법률정보를 찾아보세요',
-  onSubCategoryClick,
+  onSubcategoryClick,
   enableMobileExpand = true, // 기본값: 펼쳐보기 기능 사용
   initialVisibleGroups = 2, // 기본값: 2그룹 표시
 }: CategorySelectorProps) => {
   const { data: categoryList } = useCategory()
   const [selectedCategory, setSelectedMainCategory] = useState<number | null>(null) // 부동산을 기본 선택
-  const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(null) // 기타부동산을 기본 선택
+  const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(null) // 기타부동산을 기본 선택
   const [isExpanded, setIsExpanded] = useState<boolean>(false) // 모바일에서 펼침 상태
 
   // 모바일 분기 처리
@@ -30,12 +30,12 @@ const CategorySelector = ({
 
   const handleMainCategoryClick = (categoryId: number) => {
     setSelectedMainCategory(categoryId)
-    setSelectedSubCategory(null) // 메인 카테고리가 바뀌면 서브 카테고리 선택 해제
+    setSelectedSubcategory(null) // 메인 카테고리가 바뀌면 서브 카테고리 선택 해제
   }
 
-  const handleSubCategoryClick = (category: Category, subCategory: SubCategory) => {
-    setSelectedSubCategory(subCategory.subcategoryId)
-    onSubCategoryClick?.(category, subCategory) // 메인카테고리와 서브카테고리 객체 함께 전달
+  const handlesubcategoryClick = (category: Category, subcategory: Subcategory) => {
+    setSelectedSubcategory(subcategory.subcategoryId)
+    onSubcategoryClick?.(category, subcategory) // 메인카테고리와 서브카테고리 객체 함께 전달
   }
 
   const handleToggleExpand = () => {
@@ -92,15 +92,15 @@ const CategorySelector = ({
               {selectedCategoryInGroup && (
                 <div className={styles['subcategory-accordion']}>
                   <div className={styles['subcategory-container']}>
-                    {selectedCategoryInGroup.subcategories.map(subCategory => (
+                    {selectedCategoryInGroup.subcategories.map(subcategory => (
                       <button
-                        key={subCategory.subcategoryId}
+                        key={subcategory.subcategoryId}
                         className={`${styles['subcategory-button']} ${
-                          selectedSubCategory === subCategory.subcategoryId ? styles.selected : ''
+                          selectedSubcategory === subcategory.subcategoryId ? styles.selected : ''
                         }`}
-                        onClick={() => handleSubCategoryClick(selectedCategoryInGroup, subCategory)}
+                        onClick={() => handlesubcategoryClick(selectedCategoryInGroup, subcategory)}
                       >
-                        {subCategory.subcategoryName}
+                        {subcategory.subcategoryName}
                       </button>
                     ))}
                   </div>

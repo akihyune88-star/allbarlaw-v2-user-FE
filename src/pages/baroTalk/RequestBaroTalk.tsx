@@ -10,13 +10,13 @@ import { useNavigate } from 'react-router-dom'
 
 // interface CategorySelection {
 //   mainCategoryId: number | null
-//   subCategoryId: number | null
+//   subcategoryId: number | null
 // }
 
 const RequestBaroTalk = () => {
   // const [selectedCategory, setSelectedCategory] = useState<CategorySelection>({
   //   mainCategoryId: null,
-  //   subCategoryId: null,
+  //   subcategoryId: null,
   // })
 
   const isMobile = useMediaQuery('(max-width: 1279px)')
@@ -25,14 +25,14 @@ const RequestBaroTalk = () => {
   // const handleMainCategoryClick = (categoryId: number) => {
   //   setSelectedCategory({
   //     mainCategoryId: categoryId,
-  //     subCategoryId: null,
+  //     subcategoryId: null,
   //   })
   // }
 
-  // const handleSubCategoryClick = (subCategoryId: number) => {
+  // const handlesubcategoryClick = (subcategoryId: number) => {
   //   setSelectedCategory(prev => ({
   //     ...prev,
-  //     subCategoryId,
+  //     subcategoryId,
   //   }))
   // }
 

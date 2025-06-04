@@ -2,7 +2,7 @@ import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import LawfirmList from '@/container/lawfirm/LawfirmList'
 
-const SubCategoryLawfirmLayout = () => {
+const SubcategoryLawfirmLayout = () => {
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
@@ -28,4 +28,4 @@ const SubCategoryLawfirmLayout = () => {
   )
 }
 
-export default SubCategoryLawfirmLayout
+export default SubcategoryLawfirmLayout
