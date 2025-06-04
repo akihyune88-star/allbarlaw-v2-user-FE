@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import styles from './category-selector.module.scss'
 import { chunk } from '@/utils/arrayUtils'
-import { MainCategory, SubCategory } from '@/types/categoryTypes'
+import { Category, SubCategory } from '@/types/categoryTypes'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import SvgIcon from '@/components/SvgIcon'
 import { useCategory } from '@/hooks/queries/useCategory'
 
 type CategorySelectorProps = {
   title?: string
-  onSubCategoryClick?: (mainCategory: MainCategory, subCategory: SubCategory) => void
+  onSubCategoryClick?: (category: Category, subCategory: SubCategory) => void
   enableMobileExpand?: boolean // 모바일에서 펼쳐보기 기능 사용 여부
   initialVisibleGroups?: number // 초기에 보여줄 그룹 수 (모바일에서)
 }
@@ -20,7 +20,7 @@ const CategorySelector = ({
   initialVisibleGroups = 2, // 기본값: 2그룹 표시
 }: CategorySelectorProps) => {
   const { data: categoryList } = useCategory()
-  const [selectedMainCategory, setSelectedMainCategory] = useState<number | null>(7) // 부동산을 기본 선택
+  const [selectedCategory, setSelectedMainCategory] = useState<number | null>(7) // 부동산을 기본 선택
   const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(32) // 기타부동산을 기본 선택
   const [isExpanded, setIsExpanded] = useState<boolean>(false) // 모바일에서 펼침 상태
 
@@ -33,9 +33,9 @@ const CategorySelector = ({
     setSelectedSubCategory(null) // 메인 카테고리가 바뀌면 서브 카테고리 선택 해제
   }
 
-  const handleSubCategoryClick = (mainCategory: MainCategory, subCategory: SubCategory) => {
-    setSelectedSubCategory(subCategory.id)
-    onSubCategoryClick?.(mainCategory, subCategory) // 메인카테고리와 서브카테고리 객체 함께 전달
+  const handleSubCategoryClick = (category: Category, subCategory: SubCategory) => {
+    setSelectedSubCategory(subCategory.subcategoryId)
+    onSubCategoryClick?.(category, subCategory) // 메인카테고리와 서브카테고리 객체 함께 전달
   }
 
   const handleToggleExpand = () => {
@@ -64,7 +64,7 @@ const CategorySelector = ({
       <div className={styles['category-container']}>
         {visibleGroups.map((group, groupIndex) => {
           // 현재 그룹에 선택된 카테고리가 있는지 확인
-          const selectedCategoryInGroup = group.find(category => category.id === selectedMainCategory)
+          const selectedCategoryInGroup = group.find(category => category.categoryId === selectedCategory)
 
           return (
             <div key={groupIndex} className={styles['category-group']}>
@@ -73,13 +73,13 @@ const CategorySelector = ({
                 {group.map(category => (
                   <div
                     className={`${styles['icon-wrapper']} ${
-                      selectedMainCategory === category.id ? styles.selected : ''
+                      selectedCategory === category.categoryId ? styles.selected : ''
                     }`}
-                    key={category.id}
-                    onClick={() => handleMainCategoryClick(category.id)}
+                    key={category.categoryId}
+                    onClick={() => handleMainCategoryClick(category.categoryId)}
                   >
                     <img
-                      src={selectedMainCategory === category.id ? category.clickedImageUrl : category.imageUrl}
+                      src={selectedCategory === category.categoryId ? category.clickedImageUrl : category.imageUrl}
                       alt={category.categoryName}
                       className={styles.icon}
                     />
@@ -94,9 +94,9 @@ const CategorySelector = ({
                   <div className={styles['subcategory-container']}>
                     {selectedCategoryInGroup.subcategories.map(subCategory => (
                       <button
-                        key={subCategory.id}
+                        key={subCategory.subcategoryId}
                         className={`${styles['subcategory-button']} ${
-                          selectedSubCategory === subCategory.id ? styles.selected : ''
+                          selectedSubCategory === subCategory.subcategoryId ? styles.selected : ''
                         }`}
                         onClick={() => handleSubCategoryClick(selectedCategoryInGroup, subCategory)}
                       >

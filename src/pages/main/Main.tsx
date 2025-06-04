@@ -3,7 +3,7 @@ import styles from './main.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useCategoryStore } from '@/store/useCategoryStore'
-import { MainCategory, SubCategory } from '@/types/categoryTypes'
+import { Category, SubCategory } from '@/types/categoryTypes'
 import BlogFeedContainer from '@/container/main/blogFeedContainer/BlogFeedContainer'
 import BaroTalkBanner from '@/container/main/baroTalkBanner/BaroTalkBanner'
 import LawyerAdvertisementList from '@/container/main/lawyerAdvertisementList/LawyerAdvertisementList'
@@ -12,21 +12,21 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const Main = () => {
   const navigate = useNavigate()
-  const { setMaincategory, setSubcategory } = useCategoryStore()
+  const { setCategory, setSubcategory } = useCategoryStore()
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
-  const handleSubCategoryClick = (mainCategory: MainCategory, subCategory: SubCategory) => {
+  const handleSubCategoryClick = (category: Category, subCategory: SubCategory) => {
     // 스토어 업데이트 - 받은 객체로 바로 설정
-    setMaincategory({
-      id: mainCategory.id,
-      categoryName: mainCategory.categoryName,
+    setCategory({
+      categoryId: category.categoryId,
+      categoryName: category.categoryName,
     })
     setSubcategory({
-      id: subCategory.id,
+      subcategoryId: subCategory.subcategoryId,
       subcategoryName: subCategory.subcategoryName,
     })
 
-    navigate(`${ROUTER.SUB_MAIN.replace(':subCategoryId', subCategory.id.toString())}`)
+    navigate(`${ROUTER.SUB_MAIN.replace(':subCategoryId', subCategory.subcategoryId.toString())}`)
   }
 
   return (

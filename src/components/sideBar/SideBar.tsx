@@ -34,10 +34,12 @@ const CategoryItem = ({ category, isActive, onClick, selectedSubCategory, onSubC
         <ul className={styles['subcategory-list']}>
           {category.subcategories.map(subcategory => (
             <li
-              key={subcategory.id}
+              key={subcategory.subcategoryId}
               className={styles['subcategory-item']}
-              style={{ backgroundColor: selectedSubCategory === subcategory.id ? COLOR.bg_gray_02 : 'transparent' }}
-              onClick={() => onSubCategoryClick(subcategory.id)}
+              style={{
+                backgroundColor: selectedSubCategory === subcategory.subcategoryId ? COLOR.bg_gray_02 : 'transparent',
+              }}
+              onClick={() => onSubCategoryClick(subcategory.subcategoryId)}
             >
               <span>{subcategory.subcategoryName}</span>
             </li>
@@ -60,10 +62,10 @@ const SideBar = ({
       <ul className={styles['category-list']}>
         {categories.map(category => (
           <CategoryItem
-            key={category.id}
+            key={category.categoryId}
             category={category}
-            isActive={selectedMainCategory === category.id}
-            onClick={() => onMainCategoryClick(category.id)}
+            isActive={selectedMainCategory === category.categoryId}
+            onClick={() => onMainCategoryClick(category.categoryId)}
             selectedSubCategory={selectedSubCategory}
             onSubCategoryClick={onSubCategoryClick}
           />

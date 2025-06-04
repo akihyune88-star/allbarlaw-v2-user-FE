@@ -8,22 +8,26 @@ import { useCategory } from '@/hooks/queries/useCategory'
 
 const MainSideBar = () => {
   const navigate = useNavigate()
-  const { maincategory, subcategory, setMaincategory, setSubcategory } = useCategoryStore()
+  const { category, subcategory, setCategory, setSubcategory } = useCategoryStore()
   const { data: categoryList, isLoading, isError } = useCategory()
+  console.log('categoryList', categoryList)
 
   const handleMainCategoryClick = (id: number) => {
-    const selectedCategory = categoryList?.find(category => category.id === id)
+    const selectedCategory = categoryList?.find(category => category.categoryId === id)
     if (selectedCategory) {
-      setMaincategory({ id: selectedCategory.id, categoryName: selectedCategory.categoryName })
+      setCategory({ categoryId: selectedCategory.categoryId, categoryName: selectedCategory.categoryName })
     }
   }
 
   const handleSubCategoryClick = (id: number) => {
-    const selectedMainCategory = categoryList?.find(category => category.id === maincategory?.id)
-    const selectedSubCategory = selectedMainCategory?.subcategories.find(sub => sub.id === id)
+    const selectedMainCategory = categoryList?.find(categoryItem => categoryItem.categoryId === category?.categoryId)
+    const selectedSubCategory = selectedMainCategory?.subcategories.find(sub => sub.subcategoryId === id)
 
     if (selectedSubCategory) {
-      setSubcategory({ id: selectedSubCategory.id, subcategoryName: selectedSubCategory.subcategoryName })
+      setSubcategory({
+        subcategoryId: selectedSubCategory.subcategoryId,
+        subcategoryName: selectedSubCategory.subcategoryName,
+      })
       navigate(`${ROUTER.SUB_MAIN.replace(':subCategoryId', id.toString())}`)
     }
   }
@@ -39,8 +43,8 @@ const MainSideBar = () => {
       ) : categoryList ? (
         <SideBar
           categories={categoryList}
-          selectedMainCategory={maincategory?.id || null}
-          selectedSubCategory={subcategory?.id || null}
+          selectedMainCategory={category?.categoryId || null}
+          selectedSubCategory={subcategory?.subcategoryId || null}
           onMainCategoryClick={handleMainCategoryClick}
           onSubCategoryClick={handleSubCategoryClick}
         />

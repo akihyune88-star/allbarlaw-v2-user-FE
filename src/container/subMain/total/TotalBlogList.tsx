@@ -1,9 +1,16 @@
 import Article from '@/components/article/Article'
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import styles from '@/container/subMain/total/total-blog-list.module.scss'
+import { useBlogCount } from '@/hooks/queries/useBlogCount'
+import { useCategoryStore } from '@/store/useCategoryStore'
 
 const TotalBlogList = () => {
   const mapItem = [1, 2, 3, 4]
+  const { subcategory } = useCategoryStore()
+  const { data: blogCount } = useBlogCount({ subCategoryId: subcategory?.subcategoryId || 'all', recentDays: 30 })
+
+  console.log(blogCount)
+
   return (
     <div className={styles['total-blog-list']}>
       <ArticleHeader title='변호사의 글' totalBlogCount={10} recentBlogCount={10} type='total' />

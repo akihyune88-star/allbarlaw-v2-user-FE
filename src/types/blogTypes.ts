@@ -1,3 +1,8 @@
+export type BlogCountRequest = {
+  subCategoryId: number | 'all'
+  recentDays: number
+}
+
 export interface BlogCase {
   id: number
   title: string
