@@ -26,6 +26,10 @@
   background-color: red;
 }
 
+.blog-list-item {
+  padding: 0;
+}
+
 @media (max-width: $breakpoint-desktop) {
   .list-container {
     padding: 0;

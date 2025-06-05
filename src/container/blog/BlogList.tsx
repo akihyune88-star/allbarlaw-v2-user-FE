@@ -4,11 +4,13 @@ import BlogItem from '@/components/blogItem/BlogItem'
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import { useParams } from 'react-router-dom'
 import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
+import Divider from '@/components/divider/Divider'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const BlogList = () => {
   const [sortCase, setSortCase] = useState<string>('all')
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
-
+  const isMobile = useMediaQuery('(max-width: 80rem)')
   const { blogList } = useGetBlogList({
     subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
     take: 4,
@@ -28,8 +30,12 @@ const BlogList = () => {
         recentBlogCount={4142}
       />
       <section className={styles['blog-list']} aria-label='블로그 목록'>
-        {blogList.map(blogItem => (
-          <BlogItem key={blogItem.id} item={blogItem} />
+        {!isMobile && <Divider />}
+        {blogList.map((blogItem, idx) => (
+          <>
+            <BlogItem key={blogItem.id} item={blogItem} className={styles['blog-list-item']} />
+            {isMobile || (idx !== blogList.length - 1 && <Divider />)}
+          </>
         ))}
       </section>
     </main>
