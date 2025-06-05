@@ -6,6 +6,7 @@ import SvgIcon from '../SvgIcon'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useState } from 'react'
 import { COLOR } from '@/styles/color'
+
 const BlogItem = ({ item, viewKeepBookmark = false }: { item: BlogCase; viewKeepBookmark?: boolean }) => {
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')

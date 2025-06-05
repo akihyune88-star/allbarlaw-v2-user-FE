@@ -8,12 +8,11 @@ import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 const BlogList = () => {
   const [sortCase, setSortCase] = useState<string>('all')
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
-  console.log('blogList subcategoryId', subcategoryId)
+
   const { blogList } = useGetBlogList({
     subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
     take: 4,
   })
-  console.log('blogList', blogList)
 
   const handleSortCase = (key: string) => {
     setSortCase(key)
