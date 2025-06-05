@@ -4,7 +4,6 @@
 
     &.article-xxlarge {
       display: flex;
-      width: 23.4375rem;
       flex-direction: column-reverse;
       gap: 1rem;
     }
@@ -108,7 +107,7 @@
       display: block;
 
       img {
-        height: 27.375rem;
+        height: auto;
         border-radius: 0.5rem;
         object-fit: cover;
       }
@@ -133,14 +132,14 @@
     }
 
     .lawyer {
-      &-name {
+      figure {
+        display: none;
+      }
+
+      .lawyer-name {
         font-size: 0.875rem;
         font-weight: $font-weight-semibold;
         color: $color-green-01;
-      }
-
-      img {
-        display: none;
       }
     }
   }
