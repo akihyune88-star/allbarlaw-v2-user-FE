@@ -11,8 +11,13 @@ export type BlogListRequest = {
   orderBy?: 'createdAt' | 'viewCount' | 'likesCount'
 }
 
+export type BlogDetailRequest = {
+  blogCaseId: number
+  subcategoryId?: number | 'all'
+}
 export interface BlogCase {
-  id: number
+  subcategoryId: number
+  blogCaseId: number
   title: string
   summaryContent: string
   thumbnail: string
@@ -28,4 +33,9 @@ export type BlogListResponse = {
   nextCursor: number
   nextCursorId: number
   hasNextPage: boolean
+}
+
+export type BlogDetailResponse = Omit<BlogCase, 'isKeep'> & {
+  source: string
+  tags: string[]
 }

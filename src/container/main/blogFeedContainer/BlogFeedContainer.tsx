@@ -5,6 +5,7 @@ import BlogItem from '@/components/blogItem/BlogItem'
 import Article from '@/components/article/Article'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useNavigate } from 'react-router-dom'
 
 const BlogFeedHeader = () => {
   const { data: totalBlogCount } = useBlogCount({
@@ -30,6 +31,7 @@ const BlogFeedHeader = () => {
 
 const BlogFeedContainer = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const navigate = useNavigate()
 
   const { blogList } = useGetBlogList({
     subcategoryId: 'all',
@@ -38,6 +40,10 @@ const BlogFeedContainer = () => {
   })
 
   const subBlogList = isMobile ? blogList : blogList.slice(1, 4)
+
+  const handleBlogClick = (subcategoryId: number, blogId: number) => {
+    navigate(`/${subcategoryId}/blog/${blogId}`)
+  }
 
   return (
     <section className={styles.container}>
@@ -51,13 +57,19 @@ const BlogFeedContainer = () => {
               title={blogList[0].title}
               content={blogList[0].summaryContent}
               lawyerInfo={{ name: blogList[0].lawyerName, profileImageUrl: blogList[0].lawyerProfileImage }}
+              onClick={() => handleBlogClick(blogList[0].subcategoryId, blogList[0].blogCaseId)}
             />
           )}
         </div>
         <div className={styles['sub-blog-list']}>
           {subBlogList.map((blog, idx) => (
             <>
-              <BlogItem key={blog.id} item={blog} className={styles['sub-blog-list-item']} />
+              <BlogItem
+                key={blog.blogCaseId}
+                item={blog}
+                className={styles['sub-blog-list-item']}
+                onClick={() => handleBlogClick(blog.subcategoryId, blog.blogCaseId)}
+              />
               {isMobile || (idx !== subBlogList.length - 1 && <Divider padding={29} />)}
             </>
           ))}

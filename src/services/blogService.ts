@@ -1,5 +1,5 @@
 import instance from '@/lib/axios'
-import { BlogListRequest, BlogListResponse } from '@/types/blogTypes'
+import { BlogDetailRequest, BlogDetailResponse, BlogListRequest, BlogListResponse } from '@/types/blogTypes'
 
 // 현재는 목업 데이터를 사용하지만, 실제 API로 교체 가능
 export const blogService = {
@@ -33,5 +33,17 @@ export const blogService = {
     const response = await instance.get<BlogListResponse>(url)
 
     return response.data
+  },
+
+  getBlogDetail: async (request: BlogDetailRequest) => {
+    try {
+      const response = await instance.get<BlogDetailResponse>(`/blog-case/detail/${request.blogCaseId}`)
+      console.log(response.data)
+
+      return response.data
+    } catch (error) {
+      console.error('Failed to fetch blog detail:', error)
+      throw error
+    }
   },
 }

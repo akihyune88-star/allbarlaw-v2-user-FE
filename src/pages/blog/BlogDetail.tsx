@@ -1,6 +1,5 @@
 import styles from '@/pages/blog/blog-detail.module.scss'
-import { BlogCase } from '@/types/blogTypes'
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Button from '@/components/button/Button'
 import SvgIcon from '@/components/SvgIcon'
 import BlogDetailContents from '@/container/blog/BlogDetailContents'
@@ -8,6 +7,7 @@ import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
 import BlogDetailSideBar from '@/container/blog/BlogDetailSideBar'
 import { useEffect, useState } from 'react'
 import AILoading from '@/components/aiLoading/AILoading'
+import { useGetBlogDetail } from '@/hooks/queries/useGetBlogDetail'
 
 type BlogHeaderProps = {
   title: string
@@ -48,35 +48,40 @@ const BlogNavigationBar = () => {
 }
 
 const BlogDetail = () => {
-  const { state } = useLocation()
-  const { blogItem } = state as { blogItem: BlogCase }
-
   const [showLoading, setShowLoading] = useState(true)
+  const { blogCaseId } = useParams<{ blogCaseId: string }>()
+  const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
+
+  const lawyer = {
+    name: data?.lawyerName || '',
+    lawfirm: data?.lawfirmName || '',
+    profileImage: data?.lawyerProfileImage || '',
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowLoading(false)
-    }, 5000)
+    }, 3000)
 
     return () => clearTimeout(timer)
   }, [])
 
   return (
     <div className={styles['blog-detail-container']}>
-      <BlogDetailHeader title={blogItem.title} />
+      <BlogDetailHeader title={data?.title || ''} />
       <div className={styles['blog-detail-body']}>
         <div>
           {showLoading ? (
             <AILoading />
           ) : (
             <>
-              <BlogDetailContents summaryContents={blogItem.summaryContents} tagList={blogItem.tagList} />
+              <BlogDetailContents summaryContents={data?.summaryContent || ''} tagList={data?.tags || []} />
               <BlogNavigationBar />
               <AIBlogCarousel />
             </>
           )}
         </div>
-        <BlogDetailSideBar showLoading={showLoading} />
+        <BlogDetailSideBar showLoading={showLoading} lawyer={lawyer || {}} />
       </div>
     </div>
   )

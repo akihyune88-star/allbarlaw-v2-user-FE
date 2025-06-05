@@ -2,12 +2,13 @@ import styles from '@/container/blog/blog-list.module.scss'
 import { useState } from 'react'
 import BlogItem from '@/components/blogItem/BlogItem'
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const BlogList = () => {
+  const navigate = useNavigate()
   const [sortCase, setSortCase] = useState<string>('all')
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const isMobile = useMediaQuery('(max-width: 80rem)')
@@ -16,9 +17,13 @@ const BlogList = () => {
     take: 4,
   })
 
+  console.log(blogList)
+
   const handleSortCase = (key: string) => {
     setSortCase(key)
   }
+
+  const handleBlogItemClick = (blogId: number) => navigate(`/${subcategoryId}/blog/${blogId}`)
 
   return (
     <main className={styles['list-container']}>
@@ -33,7 +38,12 @@ const BlogList = () => {
         {!isMobile && <Divider />}
         {blogList.map((blogItem, idx) => (
           <>
-            <BlogItem key={blogItem.id} item={blogItem} className={styles['blog-list-item']} />
+            <BlogItem
+              key={blogItem.blogCaseId}
+              item={blogItem}
+              className={styles['blog-list-item']}
+              onClick={() => handleBlogItemClick(blogItem.blogCaseId)}
+            />
             {isMobile || (idx !== blogList.length - 1 && <Divider />)}
           </>
         ))}

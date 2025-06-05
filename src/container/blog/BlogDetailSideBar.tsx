@@ -3,17 +3,21 @@ import LawyerVertical from '@/components/lawyer/LawyerVertical'
 import styles from './blog-detail-sidebar.module.scss'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 
-const BlogDetailSideBar = ({ showLoading }: { showLoading: boolean }) => {
+type BlogDetailSideBarProps = {
+  showLoading: boolean
+  lawyer: {
+    name: string
+    lawfirm: string
+    profileImage: string
+  }
+}
+
+const BlogDetailSideBar = ({ showLoading, lawyer }: BlogDetailSideBarProps) => {
   return (
     <aside className={styles['blog-detail-sidebar']}>
       <div className={styles['sidebar-desktop-wrapper']}>
         <section className={styles['lawyer-section']}>
-          <LawyerVertical
-            name='홍길동'
-            lawfirm='법무법인'
-            profileImage='https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg'
-            type={3}
-          />
+          <LawyerVertical name={lawyer.name} lawfirm={lawyer.lawfirm} profileImage={lawyer.profileImage} type={3} />
         </section>
         {showLoading ? (
           <div />

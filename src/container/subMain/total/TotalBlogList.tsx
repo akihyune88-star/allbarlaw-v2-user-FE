@@ -28,9 +28,10 @@ const TotalBlogList = () => {
     take: 4,
   })
 
-  const handleTotalBlogClick = () => {
-    navigate(`/${subcategoryId}${ROUTER.BLOG}`)
-  }
+  const handleTotalBlogClick = () => navigate(`/${subcategoryId}${ROUTER.BLOG}`)
+
+  const handleDetailBlogClick = (subcategoryId: number, blogCaseId: number) =>
+    navigate(`/${subcategoryId}/blog/${blogCaseId}`)
 
   return (
     <div className={styles['total-blog-list']}>
@@ -44,7 +45,7 @@ const TotalBlogList = () => {
       <div className={styles['blog-list']}>
         {blogList.map(blogItem => (
           <Article
-            key={blogItem.id}
+            key={blogItem.blogCaseId}
             type='xsmall'
             thumbnailUrl={blogItem.thumbnail}
             title={blogItem.title}
@@ -54,6 +55,7 @@ const TotalBlogList = () => {
               name: blogItem.lawyerName,
               profileImageUrl: blogItem.lawyerProfileImage,
             }}
+            onClick={() => handleDetailBlogClick(blogItem.subcategoryId, blogItem.blogCaseId)}
           />
         ))}
       </div>

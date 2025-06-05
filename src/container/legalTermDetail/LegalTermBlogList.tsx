@@ -17,7 +17,7 @@ const LegalTermBlogList = () => {
       </header>
       <section className={styles['list-section']} style={{ paddingTop: 16 }}>
         {first3Items.map(blog => (
-          <BlogItem key={blog.id} item={blog} />
+          <BlogItem key={blog.blogCaseId} item={blog} />
         ))}
       </section>
     </div>
