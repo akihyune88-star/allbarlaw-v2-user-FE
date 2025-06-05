@@ -1,0 +1,34 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  gap: 0.9375rem;
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: $font-weight-extra-bold;
+    color: $color-text-black;
+  }
+
+  .count {
+    display: flex;
+    align-items: flex-end;
+
+    .count-number {
+      font-size: 1rem;
+      font-weight: $font-weight-semibold;
+      color: $color-text-caption;
+      line-height: 1;
+    }
+  }
+}
+
+.video-grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
