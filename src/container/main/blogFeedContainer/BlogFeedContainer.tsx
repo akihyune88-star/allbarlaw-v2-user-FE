@@ -4,6 +4,7 @@ import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 import BlogItem from '@/components/blogItem/BlogItem'
 import Article from '@/components/article/Article'
 import Divider from '@/components/divider/Divider'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const BlogFeedHeader = () => {
   const { data: totalBlogCount } = useBlogCount({
@@ -28,19 +29,21 @@ const BlogFeedHeader = () => {
 }
 
 const BlogFeedContainer = () => {
+  const isMobile = useMediaQuery('(max-width: 80rem)')
+
   const { blogList } = useGetBlogList({
     subcategoryId: 'all',
     take: 4,
     orderBy: 'createdAt',
   })
 
-  const subBlogList = blogList.slice(1, 4)
+  const subBlogList = isMobile ? blogList : blogList.slice(1, 4)
 
   return (
     <section className={styles.container}>
       <BlogFeedHeader />
       <div className={styles['blog-list-container']}>
-        <div className={styles['main-blog-item']}>
+        <div className={`${styles['main-blog-item']} ${isMobile ? styles.hidden : ''}`}>
           {blogList[0] && (
             <Article
               type='xxlarge'
@@ -55,7 +58,7 @@ const BlogFeedContainer = () => {
           {subBlogList.map((blog, idx) => (
             <>
               <BlogItem key={blog.id} item={blog} className={styles['sub-blog-list-item']} />
-              {idx !== subBlogList.length - 1 && <Divider padding={29} />}
+              {isMobile || (idx !== subBlogList.length - 1 && <Divider padding={29} />)}
             </>
           ))}
         </div>

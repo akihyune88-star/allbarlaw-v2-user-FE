@@ -42,9 +42,36 @@
   }
 }
 
+.hidden {
+  display: none;
+}
+
 @media (max-width: $breakpoint-desktop) {
+  .container {
+    padding: 0 20px;
+  }
+
   .header {
     flex-direction: column;
     gap: 1.0625rem;
+  }
+
+  .blog-list-container {
+    flex-direction: column;
+    background-color: $color-white;
+    border-radius: 0.5rem;
+
+    padding: 1.5rem 1.25rem;
+
+    .main-blog-item {
+      display: none;
+    }
+
+    .sub-blog-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
   }
 }
