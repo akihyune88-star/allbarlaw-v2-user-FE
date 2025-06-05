@@ -10,14 +10,31 @@ type BlogDetailSideBarProps = {
     lawfirm: string
     profileImage: string
   }
+  recommendLawyerList: {
+    id: number
+    name: string
+    description: string
+    profileImage: string
+  }[]
 }
 
-const BlogDetailSideBar = ({ showLoading, lawyer }: BlogDetailSideBarProps) => {
+const BlogDetailSideBar = ({ showLoading, lawyer, recommendLawyerList }: BlogDetailSideBarProps) => {
   return (
     <aside className={styles['blog-detail-sidebar']}>
       <div className={styles['sidebar-desktop-wrapper']}>
         <section className={styles['lawyer-section']}>
-          <LawyerVertical name={lawyer.name} lawfirm={lawyer.lawfirm} profileImage={lawyer.profileImage} type={3} />
+          <LawyerVertical
+            name={lawyer.name}
+            lawfirm={lawyer.lawfirm}
+            profileImage={lawyer.profileImage}
+            type={3}
+            footer={
+              <div className={styles['lawyer-vertical-footer']}>
+                <button>변호사 정보</button>
+                <button>바로 톡</button>
+              </div>
+            }
+          />
         </section>
         {showLoading ? (
           <div />
@@ -41,7 +58,7 @@ const BlogDetailSideBar = ({ showLoading, lawyer }: BlogDetailSideBarProps) => {
       {!showLoading && (
         <div className={styles['sidebar-mobile-wrapper']}>
           <div className={styles['lawyer-section']}>
-            <LawyerItem lawyerList={mockLawyerList} divider />
+            <LawyerItem lawyerList={recommendLawyerList} divider />
           </div>
 
           <LegalTermWidget
@@ -60,24 +77,3 @@ const BlogDetailSideBar = ({ showLoading, lawyer }: BlogDetailSideBarProps) => {
 }
 
 export default BlogDetailSideBar
-
-const mockLawyerList = [
-  {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-  {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-  {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-]

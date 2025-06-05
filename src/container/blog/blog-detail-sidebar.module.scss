@@ -27,6 +27,40 @@
   display: none;
 }
 
+.lawyer-vertical-footer {
+  width: 100%;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  button {
+    width: 108px;
+    height: 41px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 0.625rem;
+
+    font-size: 0.875rem;
+    font-weight: $font-weight-regular;
+
+    &:first-child {
+      background-color: $color-white;
+      border: 1px solid rgba(32, 191, 98, 0.3);
+      color: $color-green-01;
+    }
+
+    &:last-child {
+      background-color: $color-green-01;
+      color: $color-white;
+    }
+  }
+}
+
 @media (max-width: $breakpoint-desktop) {
   .blog-detail-sidebar {
     width: 100%;
