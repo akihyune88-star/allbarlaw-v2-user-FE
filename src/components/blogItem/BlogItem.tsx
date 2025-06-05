@@ -7,7 +7,13 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useState } from 'react'
 import { COLOR } from '@/styles/color'
 
-const BlogItem = ({ item, viewKeepBookmark = false }: { item: BlogCase; viewKeepBookmark?: boolean }) => {
+type BlogItemProps = {
+  item: BlogCase
+  viewKeepBookmark?: boolean
+  className?: string
+}
+
+const BlogItem = ({ item, viewKeepBookmark = false, className }: BlogItemProps) => {
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { categoryId } = useParams()
@@ -24,7 +30,7 @@ const BlogItem = ({ item, viewKeepBookmark = false }: { item: BlogCase; viewKeep
   }
 
   return (
-    <article className={styles['blog-item-wrapper']} onClick={handleClick}>
+    <article className={`${styles['blog-item-wrapper']} ${className}`} onClick={handleClick}>
       <div className={styles['blog-item']}>
         <div className={styles['blog-content-header']}>
           <h3>{item.title}</h3>
@@ -35,8 +41,10 @@ const BlogItem = ({ item, viewKeepBookmark = false }: { item: BlogCase; viewKeep
         </div>
         <div className={styles['blog-content-body']}>
           <p>{summaryContents}</p>
-          <span className={styles.lawyer}>{item.lawyerName} 변호사</span>{' '}
-          <span className={styles.lawfirm}>[{item.lawfirmName}]</span>
+          <div>
+            <span className={styles.lawyer}>{item.lawyerName} 변호사</span>
+            <span className={styles.lawfirm}>[{item.lawfirmName}]</span>
+          </div>
         </div>
       </div>
       <figure>

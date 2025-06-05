@@ -3,7 +3,7 @@ import { QUERY_KEY } from '@/constants/queryKey'
 import { blogService } from '@/services/blogService'
 
 type BlogCountRequest = {
-  subcategoryId?: number
+  subcategoryId?: number | 'all'
   recentDays: number | 'all'
 }
 

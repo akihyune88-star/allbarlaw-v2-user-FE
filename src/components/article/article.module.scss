@@ -1,6 +1,13 @@
 .article {
   &-wrapper {
     max-width: 100%;
+
+    &.article-xxlarge {
+      display: flex;
+      width: 23.4375rem;
+      flex-direction: column-reverse;
+      gap: 1rem;
+    }
   }
 
   &-content {
@@ -93,6 +100,48 @@
 
     .title {
       font-size: 1.5rem;
+    }
+  }
+
+  &-xxlarge {
+    .article-thumbnail {
+      display: block;
+
+      img {
+        height: 27.375rem;
+        border-radius: 0.5rem;
+        object-fit: cover;
+      }
+    }
+
+    .title {
+      font-size: 1rem;
+      font-weight: $font-weight-semibold;
+      line-height: 1.2;
+
+      color: $color-text-black;
+
+      @include ellipsis(2);
+    }
+
+    .content {
+      font-size: 0.8125rem;
+      font-weight: $font-weight-regular;
+      color: $color-text-index;
+
+      @include ellipsis(3);
+    }
+
+    .lawyer {
+      &-name {
+        font-size: 0.875rem;
+        font-weight: $font-weight-semibold;
+        color: $color-green-01;
+      }
+
+      img {
+        display: none;
+      }
     }
   }
 }

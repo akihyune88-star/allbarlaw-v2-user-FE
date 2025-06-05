@@ -4,7 +4,7 @@ export type BlogCountRequest = {
 }
 
 export type BlogListRequest = {
-  subcategoryId?: number
+  subcategoryId?: number | 'all'
   take?: number
   cursor?: number
   cursorId?: number

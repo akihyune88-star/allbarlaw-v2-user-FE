@@ -2,12 +2,12 @@ import styles from '@/components/article/article.module.scss'
 
 // 타입 정정 (retular -> regular)
 type ArticleProps = {
-  type: 'large' | 'small' | 'regular' | 'image' | 'xsmall'
+  type: 'large' | 'small' | 'regular' | 'image' | 'xsmall' | 'xxlarge'
   thumbnailUrl?: string
   title: string
   content: string
   imageUrl?: string
-  category: string
+  category?: string
   onClick?: () => void
   lawyerInfo: {
     name: string
@@ -46,7 +46,7 @@ const Article = ({
           <article className={`${styles['article-wrapper']} ${articleClass}`} onClick={onClick}>
             <div className={styles['article-content']}>
               <header>
-                <span className={styles.category}>{category}</span>
+                {category && <span className={styles.category}>{category}</span>}
                 <h3 className={styles.title}>{title}</h3>
               </header>
               <section>

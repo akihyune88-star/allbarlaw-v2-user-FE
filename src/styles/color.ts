@@ -34,7 +34,7 @@ const COLOR = {
   black: '#504e4f',
 
   //line
-  line_divider: '#f6f6f6',
+  line_divider: '#E6E6E6',
   line_borderbox: '#d9d9d9',
 
   // 주요 컬러
