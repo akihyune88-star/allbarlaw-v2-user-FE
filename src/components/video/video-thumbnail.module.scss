@@ -43,7 +43,8 @@
 }
 
 .large {
-  width: 332px;
+  width: 100%;
+  min-width: 332px;
 
   .title {
     @include ellipsis(2);
