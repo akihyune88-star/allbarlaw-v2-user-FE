@@ -1,5 +1,5 @@
 export type VideoCountRequest = {
-  subcategoryId: number | 'all'
+  subcategoryId?: number | 'all'
   recentDays: number | 'all'
 }
 

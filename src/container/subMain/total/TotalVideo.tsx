@@ -1,21 +1,51 @@
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import VideoThumbnail from '@/components/video/VideoThumbnail'
 import styles from '@/container/subMain/total/total-video.module.scss'
+import { useGetVideoCount } from '@/hooks/queries/useGetVideoCount'
+import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { ROUTER } from '@/routes/routerConstant'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const TotalVideo = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const mapItem = [1, 2, 3, 4]
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+  const navigate = useNavigate()
+
+  const { videoList } = useGetVideoList({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
+    take: 4,
+  })
+
+  const { data: totalVideoCount } = useGetVideoCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
+    recentDays: 'all',
+  })
+
+  const { data: recentMonthVideoCount } = useGetVideoCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
+    recentDays: 30,
+  })
+
+  const handleTotalVideoClick = () => navigate(`/${subcategoryId}${ROUTER.VIDEO}`)
+
   return (
     <div className={styles['container']}>
-      <ArticleHeader title='법률 영상' totalBlogCount={10} recentBlogCount={10} type='total' titleType='horizontal' />
+      <ArticleHeader
+        title='법률 영상'
+        totalBlogCount={totalVideoCount}
+        recentBlogCount={recentMonthVideoCount}
+        type='total'
+        titleType='horizontal'
+        onClickTotalView={handleTotalVideoClick}
+      />
       <div className={styles['video-list']}>
-        {mapItem.map(item => (
+        {videoList.map(video => (
           <VideoThumbnail
-            key={item}
+            key={video.videoCaseId}
             size={isMobile ? 'large' : 'small'}
-            imgUrl='https://dimg.donga.com/wps/NEWS/IMAGE/2023/05/24/119463126.1.jpg'
-            title='변호사 비용 얼마일까? 형사사건에 변호사 선임 꼭 해야 하는 이유를 알려드립니다.'
+            imgUrl={video.thumbnail}
+            title={video.title}
           />
         ))}
       </div>
