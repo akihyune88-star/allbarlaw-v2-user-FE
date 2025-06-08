@@ -173,6 +173,7 @@
     img {
       width: 1.5rem;
       height: 1.5rem;
+      object-fit: cover;
       border-radius: 50%;
     }
     .lawfirm {
@@ -191,6 +192,7 @@
     width: 100%;
     img {
       border-radius: 0;
+      object-fit: cover;
     }
   }
 

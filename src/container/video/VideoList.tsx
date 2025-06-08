@@ -2,14 +2,20 @@ import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import Divider from '@/components/divider/Divider'
 import VideoHorizon from '@/components/video/VideoHorizon'
 import styles from '@/container/video/video-list.module.scss'
+import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { Fragment, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 const VideoList = () => {
   const [sortCase, setSortCase] = useState<string>('all')
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
 
-  const videoList = [1, 2, 3, 4, 5]
+  const { videoList } = useGetVideoList({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
+    take: 4,
+  })
 
   const handleSortCase = (key: string) => {
     setSortCase(key)
@@ -27,8 +33,15 @@ const VideoList = () => {
       {!isMobile && <Divider padding={24} />}
       <section className={styles['video-list-section']}>
         {videoList.map((video, index) => (
-          <Fragment key={video}>
-            <VideoHorizon />
+          <Fragment key={video.videoCaseId}>
+            <VideoHorizon
+              thumbnailUrl={video.thumbnail}
+              title={video.title}
+              lawyerName={video.lawyerName}
+              lawfirmName={video.lawfirmName}
+              channelName={video.channelName}
+              channelThumbnail={video.channelThumbnail}
+            />
             {!isMobile && index !== videoList.length - 1 && <Divider padding={24} />}
           </Fragment>
         ))}
