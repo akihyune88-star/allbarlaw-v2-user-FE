@@ -13,6 +13,7 @@ type VideoHorizonProps = {
   channelName?: string
   channelThumbnail?: string
   isShowLike?: boolean
+  onClick?: () => void
 }
 
 const VideoHorizon = ({
@@ -25,13 +26,14 @@ const VideoHorizon = ({
   channelName,
   channelThumbnail,
   isShowLike = false,
+  onClick,
 }: VideoHorizonProps) => {
   const [like, setLike] = useState(false)
 
   const rootClassName = [styles['video-horizon'], styles[type], styles[size]].filter(Boolean).join(' ')
 
   return (
-    <div className={rootClassName}>
+    <div className={rootClassName} onClick={onClick}>
       <figure className={styles['video-horizon-figure']}>
         <img className={styles.img} src={thumbnailUrl} alt='동영상 썸네일' />
       </figure>

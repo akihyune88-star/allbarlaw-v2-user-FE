@@ -1,1 +1,2 @@
 export { useDropdown, type DropdownType } from './useDropdown'
+export { default as useDelayedLoading } from './useDelayedLoading'

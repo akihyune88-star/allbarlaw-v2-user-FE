@@ -4,13 +4,15 @@ import VideoHorizon from '@/components/video/VideoHorizon'
 import styles from '@/container/video/video-list.module.scss'
 import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { ROUTER } from '@/routes/routerConstant'
 import { Fragment, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const VideoList = () => {
   const [sortCase, setSortCase] = useState<string>('all')
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
+  const navigate = useNavigate()
 
   const { videoList } = useGetVideoList({
     subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
@@ -19,6 +21,10 @@ const VideoList = () => {
 
   const handleSortCase = (key: string) => {
     setSortCase(key)
+  }
+
+  const handleVideoClick = (videoCaseId: number) => {
+    navigate(`/${subcategoryId}${ROUTER.VIDEO}/${videoCaseId}`)
   }
 
   return (
@@ -41,6 +47,7 @@ const VideoList = () => {
               lawfirmName={video.lawfirmName}
               channelName={video.channelName}
               channelThumbnail={video.channelThumbnail}
+              onClick={() => handleVideoClick(video.videoCaseId)}
             />
             {!isMobile && index !== videoList.length - 1 && <Divider padding={24} />}
           </Fragment>

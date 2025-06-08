@@ -74,3 +74,63 @@
   background-color: $color-white;
   border-radius: 8px;
 }
+
+//* 디테일 페이지 스타일링
+
+.detail-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.detail-body {
+  display: flex;
+  justify-content: space-between;
+  background-color: $color-bg-gray-02;
+
+  padding: 1.5rem;
+}
+
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: $main-content-width;
+  border-radius: 0.5rem;
+  background-color: $color-white;
+}
+
+.detail-sidebar {
+  display: flex;
+  width: 250px;
+  flex-direction: column;
+
+  section {
+    position: relative;
+    width: 100%;
+  }
+
+  .lawyer-section {
+    z-index: 1;
+  }
+
+  .recommend-section {
+    z-index: 0;
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .detail-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .detail-content {
+    width: 100%;
+  }
+
+  .detail-sidebar {
+    width: 100%;
+  }
+}

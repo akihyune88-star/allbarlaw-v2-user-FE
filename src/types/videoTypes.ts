@@ -11,6 +11,11 @@ export type VideoListRequest = {
   orderBy?: 'createdAt' | 'viewCount' | 'likesCount'
 }
 
+export type VideoDetailRequest = {
+  videoCaseId: number
+  subcategoryId?: number | 'all'
+}
+
 export interface VideoCase {
   videoCaseId: number
   title: string
@@ -28,4 +33,13 @@ export type VideoListResponse = {
   nextCursor: number
   nextCursorId: number
   hasNextPage: boolean
+}
+
+export type VideoDetailResponse = Omit<VideoCase, 'isKeep'> & {
+  source: string
+  handleName: string
+  channelDescription: string
+  subscriberCount: number
+  lawyerProfileImage: string
+  tags: string[]
 }

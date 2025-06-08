@@ -5,34 +5,14 @@ import SvgIcon from '@/components/SvgIcon'
 import BlogDetailContents from '@/container/blog/BlogDetailContents'
 import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
 import BlogDetailSideBar from '@/container/blog/BlogDetailSideBar'
-import { useEffect, useState } from 'react'
 import AILoading from '@/components/aiLoading/AILoading'
 import { useGetBlogDetail } from '@/hooks/queries/useGetBlogDetail'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useDelayedLoading } from '@/hooks'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
-
-type BlogHeaderProps = {
-  title: string
-}
-
-const BlogDetailHeader = ({ title }: BlogHeaderProps) => {
-  return (
-    <div className={styles['blog-detail-header']}>
-      <h1>{title}</h1>
-      <div className={styles['button-wrapper']}>
-        <Button variant='share'>
-          공유
-          <SvgIcon name='share' size={16} />
-        </Button>
-        <Button variant='save'>
-          저장 <SvgIcon name='save' size={16} />
-        </Button>
-      </div>
-    </div>
-  )
-}
+import DetailHeader from '@/components/detailHeader/DetailHeader'
 
 const BlogNavigationBar = () => {
   return (
@@ -52,7 +32,7 @@ const BlogNavigationBar = () => {
 }
 
 const BlogDetail = () => {
-  const [showLoading, setShowLoading] = useState(true)
+  const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { blogCaseId } = useParams<{ blogCaseId: string }>()
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
 
@@ -65,21 +45,13 @@ const BlogDetail = () => {
     profileImage: data?.lawyerProfileImage || '',
   }
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoading(false)
-    }, 3000)
-
-    return () => clearTimeout(timer)
-  }, [])
-
   return (
-    <div className={styles['blog-detail-container']}>
-      <BlogDetailHeader title={data?.title || ''} />
-      <div className={styles['blog-detail-body']}>
+    <div className={'detail-container'}>
+      <DetailHeader title={data?.title || ''} />
+      <div className={'detail-body'}>
         <div>
           {showLoading ? (
-            <AILoading />
+            <AILoading title='AI가 해당 블로그의 포스팅글을 분석중입니다.' />
           ) : (
             <>
               <BlogDetailContents summaryContents={data?.summaryContent || ''} tagList={data?.tags || []} />

@@ -1,5 +1,5 @@
 import instance from '@/lib/axios'
-import { VideoListRequest, VideoListResponse } from '@/types/videoTypes'
+import { VideoDetailRequest, VideoDetailResponse, VideoListRequest, VideoListResponse } from '@/types/videoTypes'
 
 export const videoService = {
   // 모든 카테고리 가져오기
@@ -29,6 +29,12 @@ export const videoService = {
 
     const response = await instance.get<VideoListResponse>(url)
 
+    return response.data
+  },
+
+  getVideoDetail: async (request: VideoDetailRequest) => {
+    const { videoCaseId } = request
+    const response = await instance.get<VideoDetailResponse>(`/video-case/detail/${videoCaseId}`)
     return response.data
   },
 }
