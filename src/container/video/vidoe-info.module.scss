@@ -1,0 +1,63 @@
+.container {
+  background-color: $color-white;
+  display: flex;
+  width: 100%;
+  border-radius: 0.5rem;
+  padding: 1.5rem 1.6875rem 1.5rem 1.5rem;
+  gap: 1.6875rem;
+}
+
+.channel-thumbnail {
+  flex-shrink: 0;
+
+  img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+}
+
+.video-info {
+  width: 100%;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  span {
+    font-size: 1rem;
+    font-weight: $font-weight-regular;
+    color: $color-text-black;
+  }
+
+  .channel-name {
+    font-size: 1.5rem;
+    font-weight: $font-weight-extra-bold;
+  }
+
+  .channel-button {
+    background-color: $color-green-01;
+    color: $color-white;
+    border-radius: 0.5rem;
+    padding: 0.6875rem 1.5rem;
+
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.channel-description {
+  margin-top: 11px;
+  font-size: 0.875rem;
+  font-weight: $font-weight-regular;
+  color: $color-text-index;
+}

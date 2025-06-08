@@ -6,6 +6,8 @@ import { useDelayedLoading } from '@/hooks'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useParams } from 'react-router-dom'
 import { useGetVideoDetail } from '@/hooks/queries/useGetVideoDetail'
+import VidoeInfo from '@/container/video/VidoeInfo'
+import styles from './video-detail.module.scss'
 
 const VideoDetail = () => {
   const { videoId } = useParams<{ videoId: string }>()
@@ -13,7 +15,6 @@ const VideoDetail = () => {
 
   const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { data } = useGetVideoDetail({ videoCaseId: Number(videoId) })
-  console.log('data', data)
 
   return (
     <div className={'detail-container'}>
@@ -25,6 +26,15 @@ const VideoDetail = () => {
           ) : (
             <div>
               <VideoPlayerContainer videoUrl={data?.source} tags={data?.tags} />
+              <div className={styles['video-detail-content']}>
+                <VidoeInfo
+                  channelThumbnail={data?.channelThumbnail || ''}
+                  channelName={data?.channelName || ''}
+                  handleName={data?.handleName || ''}
+                  subscriberCount={data?.subscriberCount || 0}
+                  channelDescription={data?.channelDescription || ''}
+                />
+              </div>
             </div>
           )}
         </div>

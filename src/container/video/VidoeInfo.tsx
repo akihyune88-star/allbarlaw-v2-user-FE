@@ -1,0 +1,40 @@
+import styles from './vidoe-info.module.scss'
+
+type VidoeInfoProps = {
+  channelThumbnail: string
+  channelName: string
+  handleName: string
+  subscriberCount: number
+  channelDescription: string
+}
+
+const VidoeInfo = ({
+  channelThumbnail,
+  channelName,
+  handleName,
+  subscriberCount,
+  channelDescription,
+}: VidoeInfoProps) => {
+  return (
+    <section className={styles['container']}>
+      <figure className={styles['channel-thumbnail']}>
+        <img src={channelThumbnail} alt='유튜브채널썸네일' />
+      </figure>
+      <div className={styles['video-info']}>
+        <header className={styles['info-header']}>
+          <div>
+            <h3 className={styles['channel-name']}>{channelName}</h3>
+            <span>
+              @{handleName}
+              <span style={{ marginLeft: 18 }}>구독자:{subscriberCount}명</span>
+            </span>
+          </div>
+          <button className={styles['channel-button']}>채널 바로가기</button>
+        </header>
+        <p className={styles['channel-description']}>{channelDescription}</p>
+      </div>
+    </section>
+  )
+}
+
+export default VidoeInfo
