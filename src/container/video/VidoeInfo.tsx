@@ -7,6 +7,7 @@ type VidoeInfoProps = {
   handleName: string
   subscriberCount: number
   channelDescription: string
+  source: string
 }
 
 const VidoeInfo = ({
@@ -15,8 +16,13 @@ const VidoeInfo = ({
   handleName,
   subscriberCount,
   channelDescription,
+  source,
 }: VidoeInfoProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+
+  const handleChannelButton = () => {
+    window.open(source, '_blank')
+  }
 
   return (
     <section className={styles['container']}>
@@ -35,7 +41,9 @@ const VidoeInfo = ({
             </div>
           </header>
           <p className={styles['channel-description']}>{channelDescription}</p>
-          <button className={styles['channel-footer-button']}>채널 바로가기</button>
+          <button className={styles['channel-footer-button']} onClick={handleChannelButton}>
+            채널 바로가기
+          </button>
         </div>
       ) : (
         <>
@@ -51,7 +59,9 @@ const VidoeInfo = ({
                   <span style={{ marginLeft: 18 }}>구독자:{subscriberCount}명</span>
                 </span>
               </div>
-              <button className={styles['channel-button']}>채널 바로가기</button>
+              <button className={styles['channel-button']} onClick={handleChannelButton}>
+                채널 바로가기
+              </button>
             </header>
             <p className={styles['channel-description']}>{channelDescription}</p>
           </div>

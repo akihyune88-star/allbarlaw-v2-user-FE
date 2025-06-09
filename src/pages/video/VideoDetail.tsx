@@ -35,6 +35,7 @@ const VideoDetail = () => {
                   handleName={data?.handleName || ''}
                   subscriberCount={data?.subscriberCount || 0}
                   channelDescription={data?.channelDescription || ''}
+                  source={data?.source || ''}
                 />
                 <VideoSummary summary={data?.summaryContent || ''} />
                 {!isMobile && <ContentsRecommender title='AI 추천영상' contents={<div>123</div>} />}

@@ -2,11 +2,12 @@ import styles from '@/components/aiLoading/ai-loading.module.scss'
 
 type AILoadingProps = {
   title: string
+  className?: string
 }
 
-const AILoading = ({ title }: AILoadingProps) => {
+const AILoading = ({ title, className }: AILoadingProps) => {
   return (
-    <div className={styles['skeleton-container']}>
+    <div className={`${styles['skeleton-container']} ${className}`}>
       <div className={styles['skeleton-header']}>
         <span>{title}</span>
       </div>
