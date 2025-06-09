@@ -7,16 +7,24 @@ type ContentsRecommenderProps = {
   title: string
   contents: React.ReactNode
   isRefresh?: boolean
+  showDivider?: boolean
+  dividerPadding?: number
 }
 
-const ContentsRecommender = ({ title, contents, isRefresh = false }: ContentsRecommenderProps) => {
+const ContentsRecommender = ({
+  title,
+  contents,
+  isRefresh = false,
+  showDivider = true,
+  dividerPadding = 16,
+}: ContentsRecommenderProps) => {
   return (
     <section className={styles.container}>
       <header>
         <h3 className={styles.title}>{title}</h3>
         {isRefresh && <SvgIcon name='refresh' size={16} />}
       </header>
-      <Divider padding={16} />
+      {showDivider && <Divider padding={dividerPadding} />}
       <div>{contents}</div>
     </section>
   )

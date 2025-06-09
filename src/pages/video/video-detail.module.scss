@@ -6,3 +6,51 @@
 
   margin-top: 2.3125rem;
 }
+
+// 모바일에서 부모 패딩을 무시하는 클래스 - 외부에서 주입
+.mobile-no-padding {
+  @media (max-width: 80rem) {
+    padding: 0.5rem 0;
+    // 강제로 viewport 전체 너비 사용
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
+    width: 100vw !important;
+    max-width: none !important;
+
+    // 내부 컴포넌트들의 보더 제거
+    .video-player-container {
+      border-radius: 0 !important;
+    }
+
+    .video-error {
+      border-radius: 0 !important;
+    }
+
+    // 태그 부분은 다시 패딩 추가해서 정렬
+    .video-tag-list {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+  }
+
+  // 더 작은 화면에서는 더 큰 마진 적용
+  @media (max-width: 48rem) {
+    margin-left: -1.5rem; // -24px
+    margin-right: -1.5rem; // -24px
+    width: calc(100% + 3rem);
+  }
+
+  // 아주 작은 화면에서는 뷰포트 기준으로
+  @media (max-width: 30rem) {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    width: 100vw;
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .video-detail-content {
+    gap: 2rem;
+    margin-top: 0;
+  }
+}

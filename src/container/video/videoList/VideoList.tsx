@@ -1,7 +1,7 @@
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import Divider from '@/components/divider/Divider'
 import VideoHorizon from '@/components/video/VideoHorizon'
-import styles from '@/container/video/video-list.module.scss'
+import styles from './video-list.module.scss'
 import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { ROUTER } from '@/routes/routerConstant'

@@ -25,6 +25,7 @@ export interface VideoCase {
   lawyerName: string
   lawfirmName: string
   subcategoryId: number
+  summaryContent: string
   isKeep: boolean
 }
 

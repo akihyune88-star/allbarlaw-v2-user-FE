@@ -1,7 +1,7 @@
 import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
-import VideoList from '@/container/video/VideoList'
+import VideoList from '@/container/video/videoList/VideoList'
 
 const VideoLayout = () => {
   return (
