@@ -21,6 +21,22 @@
     font-weight: $font-weight-semibold;
     color: $color-text-index;
     background-color: $color-white;
+
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
   }
 
   @include breakpoint($breakpoint-desktop) {
