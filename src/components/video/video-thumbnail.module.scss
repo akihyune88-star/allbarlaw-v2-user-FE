@@ -18,6 +18,13 @@
   line-height: 1.5rem;
 }
 
+.lawyer-name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: $font-weight-extra-bold;
+  color: $color-text-black;
+}
+
 .content {
   display: flex;
   flex-direction: column;

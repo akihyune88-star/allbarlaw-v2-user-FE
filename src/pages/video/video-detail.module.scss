@@ -54,4 +54,57 @@
     gap: 2rem;
     margin-top: 0;
   }
+
+  .video-detail-mobile-side {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .lawyer-horizon {
+    background-color: $color-white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    align-items: flex-start !important;
+
+    .lawyer-horizon-image {
+      align-items: flex-start !important;
+    }
+  }
+
+  .lawyer-contact-btn-wrapper {
+    display: flex;
+    gap: 0.5rem;
+
+    button {
+      width: 108px;
+      height: 41px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 0.625rem;
+
+      font-size: 0.875rem;
+      font-weight: $font-weight-regular;
+
+      &:first-child {
+        background-color: $color-white;
+        border: 1px solid rgba(32, 191, 98, 0.3);
+        color: $color-green-01;
+      }
+
+      &:last-child {
+        background-color: $color-green-01;
+        color: $color-white;
+      }
+    }
+  }
+
+  .ai-recommender-lawyer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 }

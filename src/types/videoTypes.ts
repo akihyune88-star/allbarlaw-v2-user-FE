@@ -22,6 +22,7 @@ export interface VideoCase {
   thumbnail: string
   channelName: string
   channelThumbnail: string
+  lawyerId: number
   lawyerName: string
   lawfirmName: string
   subcategoryId: number
