@@ -5,4 +5,5 @@ export const QUERY_KEY = {
   BLOG_DETAIL: 'blogDetail',
   VIDEO_COUNT: 'videoCount',
   VIDEO_LIST: 'videoList',
+  KNOWLEDGE_LIST: 'knowledgeList',
 } as const

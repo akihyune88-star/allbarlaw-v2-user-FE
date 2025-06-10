@@ -51,3 +51,27 @@
     gap: 1.5rem;
   }
 }
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+
+.loading-text {
+  color: #666666;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+@media (max-width: 80rem) {
+  .loading-container {
+    margin-top: 1.5rem;
+    padding: 0.75rem 0;
+  }
+
+  .loading-text {
+    font-size: 0.8125rem;
+  }
+}

@@ -10,7 +10,6 @@ import { useGetBlogDetail } from '@/hooks/queries/useGetBlogDetail'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDelayedLoading } from '@/hooks'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
-import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
 
@@ -88,15 +87,6 @@ const BlogDetail = () => {
                         ))}
                       </div>
                     }
-                  />
-                  <LegalTermWidget
-                    lagalTermList={[
-                      '사기죄 [詐欺罪]',
-                      '업무방해죄 [業務妨害罪]',
-                      '절도죄 [窃盜罪]',
-                      '법정대리인 [法定代理人]',
-                      '위법성 조각사유 [違法性 阻却事由]',
-                    ]}
                   />
                 </div>
               )}

@@ -12,7 +12,7 @@ import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import BlogDetailSideBar from '@/container/blog/BlogDetailSideBar'
 import AiVideoRecommender from '@/container/video/aiVideoRecommender/AiVideoRecommender'
-import VideoSliderExample from '@/components/slider/VideoSliderExample'
+import AiRecommenderVideoSlider from '@/container/video/AiRecommenderVideoSlider'
 
 const VideoDetail = () => {
   const { videoId } = useParams<{ videoId: string }>()
@@ -64,7 +64,7 @@ const VideoDetail = () => {
                         </div>
                       }
                     />
-                    <VideoSliderExample />
+                    <AiRecommenderVideoSlider />
                     <ContentsRecommender
                       isRefresh={true}
                       title='AI 추천 변호사'
