@@ -24,6 +24,15 @@ const VidoeInfo = ({
     window.open(source, '_blank')
   }
 
+  // 구독자 수 안전하게 포맷팅
+  const formatSubscriberCount = (count: number) => {
+    const numCount = Number(count)
+    if (isNaN(numCount) || numCount <= 0) {
+      return '0'
+    }
+    return numCount.toLocaleString()
+  }
+
   return (
     <section className={styles['container']}>
       {isMobile ? (
@@ -36,7 +45,7 @@ const VidoeInfo = ({
               <h3 className={styles['channel-name']}>{channelName}</h3>
               <span>
                 @{handleName}
-                <span style={{ marginLeft: 18 }}>구독자:{subscriberCount}명</span>
+                <span style={{ marginLeft: 18 }}>구독자 : {formatSubscriberCount(subscriberCount)}명</span>
               </span>
             </div>
           </header>
@@ -56,7 +65,7 @@ const VidoeInfo = ({
                 <h3 className={styles['channel-name']}>{channelName}</h3>
                 <span>
                   @{handleName}
-                  <span style={{ marginLeft: 18 }}>구독자:{subscriberCount}명</span>
+                  <span style={{ marginLeft: 18 }}>구독자:{formatSubscriberCount(subscriberCount)}명</span>
                 </span>
               </div>
               <button className={styles['channel-button']} onClick={handleChannelButton}>

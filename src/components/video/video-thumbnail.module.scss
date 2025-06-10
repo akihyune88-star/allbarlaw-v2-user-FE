@@ -34,6 +34,8 @@
 .description {
   font-size: 0.8125rem;
   line-height: 1.125rem;
+
+  @include ellipsis(2);
 }
 
 // size에 따른 스타일 분기

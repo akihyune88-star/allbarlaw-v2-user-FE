@@ -10,6 +10,11 @@
     background-color: #000;
     border-radius: 8px;
     overflow: hidden;
+
+    // 모바일에서 보더 제거
+    @media (max-width: 80rem) {
+      border-radius: 0 !important;
+    }
   }
 
   .video-error {
@@ -24,6 +29,12 @@
     color: #666;
     font-size: 16px;
     font-weight: 500;
+
+    // 모바일에서 보더 제거
+    @media (max-width: 80rem) {
+      border-radius: 0 !important;
+      border: none !important;
+    }
   }
 
   .video-tag-list {
@@ -78,6 +89,22 @@
         font-size: 12px;
         border-radius: 12px;
       }
+    }
+  }
+}
+
+// 모바일에서 보더 제거
+@media (max-width: 80rem) {
+  .video-player-wrapper.mobile-no-padding {
+    width: 100vw !important;
+    max-width: none !important;
+
+    .video-player-container {
+      border-radius: 0 !important;
+    }
+
+    .video-error {
+      border-radius: 0 !important;
     }
   }
 }

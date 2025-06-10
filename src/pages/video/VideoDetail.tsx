@@ -1,7 +1,6 @@
 import AILoading from '@/components/aiLoading/AILoading'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
 import VideoPlayerContainer from '@/container/video/videoPlayerContainer/VideoPlayerContainer'
-
 import { useDelayedLoading } from '@/hooks'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useParams } from 'react-router-dom'
@@ -13,6 +12,7 @@ import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import BlogDetailSideBar from '@/container/blog/BlogDetailSideBar'
 import AiVideoRecommender from '@/container/video/aiVideoRecommender/AiVideoRecommender'
+import VideoSliderExample from '@/components/slider/VideoSliderExample'
 
 const VideoDetail = () => {
   const { videoId } = useParams<{ videoId: string }>()
@@ -38,7 +38,7 @@ const VideoDetail = () => {
           ) : (
             <div>
               <VideoPlayerContainer videoUrl={data?.source} tags={data?.tags} className={styles['mobile-no-padding']} />
-              <div className={styles['video-detail-content']}>
+              <div className={styles['video-detail-content']} style={{ paddingRight: isMobile ? '0' : '1.5rem' }}>
                 <VidoeInfo
                   channelThumbnail={data?.channelThumbnail || ''}
                   channelName={data?.channelName || ''}
@@ -52,7 +52,6 @@ const VideoDetail = () => {
                   <ContentsRecommender showDivider={false} title='AI 추천영상' contents={<AiVideoRecommender />} />
                 ) : (
                   <div className={styles['video-detail-mobile-side']}>
-                    모바일 메뉴
                     <LawyerHorizon
                       className={styles['lawyer-horizon']}
                       name={data?.lawyerName || ''}
@@ -65,6 +64,7 @@ const VideoDetail = () => {
                         </div>
                       }
                     />
+                    <VideoSliderExample />
                     <ContentsRecommender
                       isRefresh={true}
                       title='AI 추천 변호사'
