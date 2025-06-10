@@ -7,7 +7,6 @@ type YoutubePlayerProps = {
   videoId?: string
   url?: string
   width?: string | number
-  height?: string | number
   autoplay?: boolean
   controls?: boolean
   className?: string
@@ -21,7 +20,6 @@ const YoutubePlayer = ({
   videoId,
   url,
   width,
-  height = '315',
   autoplay = false,
   controls = true,
   className,
@@ -55,8 +53,8 @@ const YoutubePlayer = ({
   }, [url, videoId])
 
   const opts: YouTubeProps['opts'] = {
-    width: '100%', // YouTube 플레이어는 항상 100%로 설정
-    height: height,
+    width: '100%',
+    height: '100%',
     playerVars: {
       autoplay: autoplay ? 1 : 0,
       controls: controls ? 1 : 0,

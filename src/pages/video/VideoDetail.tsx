@@ -10,7 +10,6 @@ import VidoeInfo from '@/container/video/VidoeInfo'
 import styles from './video-detail.module.scss'
 import VideoSummary from '@/container/video/videoSummary/VideoSummary'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
-import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import BlogDetailSideBar from '@/container/blog/BlogDetailSideBar'
 import AiVideoRecommender from '@/container/video/aiVideoRecommender/AiVideoRecommender'
@@ -65,15 +64,6 @@ const VideoDetail = () => {
                           <button>바로톡</button>
                         </div>
                       }
-                    />
-                    <LegalTermWidget
-                      lagalTermList={[
-                        '사기죄 [詐欺罪]',
-                        '업무방해죄 [業務妨害罪]',
-                        '절도죄 [窃盜罪]',
-                        '법정대리인 [法定代理人]',
-                        '위법성 조각사유 [違法性 阻却事由]',
-                      ]}
                     />
                     <ContentsRecommender
                       isRefresh={true}
