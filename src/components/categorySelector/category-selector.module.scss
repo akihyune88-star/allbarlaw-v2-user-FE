@@ -49,12 +49,30 @@
   height: 96px;
   border-radius: 8px;
   cursor: pointer;
+  position: relative;
 
   transition: all 0.2s ease;
 
   gap: 1rem;
 
   &.selected {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 48px;
+      height: 48px;
+      background-color: rgba(40, 167, 69, 0.1);
+      border-radius: 8px;
+      z-index: 0;
+    }
+
+    .icon {
+      z-index: 1;
+    }
+
     .category-name {
       color: $color-green-01;
       font-weight: $font-weight-extra-bold;
@@ -62,9 +80,11 @@
   }
 
   .icon {
-    width: 48px;
-    height: 48px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
+    position: relative;
+    transition: all 0.2s ease;
   }
 
   .category-name {
@@ -202,6 +222,30 @@
   .icon-wrapper {
     width: 3.375rem;
     height: 5.25rem;
+
+    &.selected {
+      &::after {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 32px;
+        height: 32px;
+        background-color: rgba(32, 191, 98, 0.1);
+        border-radius: 8px;
+        z-index: 0;
+      }
+
+      .icon {
+        z-index: 1;
+      }
+
+      .category-name {
+        color: $color-green-01;
+        font-weight: $font-weight-extra-bold;
+      }
+    }
 
     .icon {
       width: 1.5rem;

@@ -2,6 +2,7 @@ import { useGetVideoCount } from '@/hooks/queries/useGetVideoCount'
 import styles from './lawyer-video-spotlight.module.scss'
 import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
 import VideoThumbnail from '@/components/video/VideoThumbnail'
+import { useNavigate } from 'react-router-dom'
 
 const LawyerVideoSpotlightHeader = () => {
   const { data: totalVideoCount } = useGetVideoCount({
@@ -31,13 +32,24 @@ const LawyerVideoSpotlight = () => {
     take: 3,
     orderBy: 'createdAt',
   })
+  const navigate = useNavigate()
+
+  const handleVideoClick = (subcategoryId: number, videoId: number) => {
+    navigate(`/${subcategoryId}/video/${videoId}`)
+  }
 
   return (
     <section className={styles.container}>
       <LawyerVideoSpotlightHeader />
       <div className={styles['video-grid-container']}>
         {videoList.map(video => (
-          <VideoThumbnail key={video.videoCaseId} title={video.title} imgUrl={video.thumbnail} size='large' />
+          <VideoThumbnail
+            key={video.videoCaseId}
+            title={video.title}
+            imgUrl={video.thumbnail}
+            size='large'
+            onClick={() => handleVideoClick(video.subcategoryId, video.videoCaseId)}
+          />
         ))}
       </div>
     </section>

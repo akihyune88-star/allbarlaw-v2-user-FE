@@ -6,11 +6,16 @@ type VideoThumbnailProps = {
   title?: string
   lawyerName?: string
   description?: string
+  onClick?: () => void
 }
 
-const VideoThumbnail = ({ size = 'small', imgUrl, title, description, lawyerName }: VideoThumbnailProps) => {
+const VideoThumbnail = ({ size = 'small', imgUrl, title, description, lawyerName, onClick }: VideoThumbnailProps) => {
   return (
-    <div className={`${styles.container} ${styles[size]}`}>
+    <div
+      className={`${styles.container} ${styles[size]}`}
+      onClick={onClick}
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
+    >
       <figure>
         <img src={imgUrl} alt={title} className={styles.image} />
       </figure>

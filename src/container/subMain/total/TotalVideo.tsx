@@ -29,6 +29,10 @@ const TotalVideo = () => {
 
   const handleTotalVideoClick = () => navigate(`/${subcategoryId}${ROUTER.VIDEO}`)
 
+  const handleVideoClick = (videoCaseId: number) => {
+    navigate(`/${subcategoryId}${ROUTER.VIDEO}/${videoCaseId}`)
+  }
+
   return (
     <div className={styles['container']}>
       <ArticleHeader
@@ -45,6 +49,7 @@ const TotalVideo = () => {
             key={video.videoCaseId}
             size={isMobile ? 'large' : 'small'}
             imgUrl={video.thumbnail}
+            onClick={() => handleVideoClick(video.videoCaseId)}
             title={video.title}
           />
         ))}
