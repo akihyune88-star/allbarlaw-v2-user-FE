@@ -20,6 +20,56 @@
   }
 }
 
+.input-wrapper-title {
+  // 모든 가능한 선택자로 헤더 가로배치 강제
+  header,
+  [class*='header'],
+  :global(.header),
+  :global([class*='header']) {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+
+    h2 {
+      margin-top: 5px;
+    }
+  }
+
+  // 중첩된 div 구조에서도 적용
+  div header,
+  div [class*='header'],
+  div :global(.header),
+  div :global([class*='header']) {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 1rem !important;
+  }
+
+  // Input 컴포넌트의 wrapper 내부에서도 적용
+  > div {
+    header,
+    [class*='header'],
+    :global(.header),
+    :global([class*='header']) {
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 1rem !important;
+    }
+  }
+}
+
+.ai-button {
+  background-color: $color-white;
+
+  border: 1px solid $color-line-divider;
+  padding: 11.5px 1.5rem;
+  border-radius: 0.5rem;
+
+  font-size: 14px;
+  font-weight: $font-weight-semibold;
+  color: $color-text-index;
+}
+
 @media (max-width: $breakpoint-desktop) {
   .content-wrapper {
     flex-direction: column-reverse;
@@ -27,5 +77,9 @@
 
   .form-body-gap {
     gap: 1rem;
+  }
+
+  .input-wrapper-title {
+    height: 14.625rem;
   }
 }

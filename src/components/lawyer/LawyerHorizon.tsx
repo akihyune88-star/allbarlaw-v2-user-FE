@@ -1,17 +1,24 @@
 import styles from '@/components/lawyer/lawyer-horizon.module.scss'
 import Tag from '../tag/Tag'
 import SvgIcon from '../SvgIcon'
+import { COLOR } from '@/styles/color'
+import React from 'react'
+import { SocialLink } from '@/types/lawyerTypes'
+import { KeyOfIcon } from '@/types/svg'
 
 type LawyerHorizonProps = {
   name: string
   profileImage: string
-  description: string
+  description?: string
   lawfirm?: string
   tags?: string[]
+  socialLink?: SocialLink[]
   size?: 'x-small' | 'small' | 'large'
   className?: string
   onClick?: () => void
   selected?: boolean
+  buttonComponent?: React.ReactNode
+  ad?: boolean
 }
 
 const LawyerHorizon = ({
@@ -24,6 +31,9 @@ const LawyerHorizon = ({
   className,
   onClick,
   selected = false,
+  buttonComponent,
+  ad = false,
+  socialLink,
 }: LawyerHorizonProps) => {
   return (
     <div
@@ -32,14 +42,16 @@ const LawyerHorizon = ({
     >
       <div className={styles['lawyer-horizon-image']}>
         <img src={profileImage} alt='변호사 프로필' />
-        {selected && <SvgIcon name='checkRound' size={16} />}
+        {selected && <SvgIcon name='checkRound' size={16} fill={COLOR.green_01} stroke={COLOR.white} />}
       </div>
       <div className={styles['lawyer-horizon-content']}>
         <div>
           <span className={styles['name']}>{name}</span>
           {lawfirm && <span className={styles['lawfirm']}>{lawfirm}</span>}
+          {ad && <span className={styles['ad']}>AD</span>}
         </div>
-        <p className={styles['description']}>{description}</p>
+        {description && <p className={styles['description']}>{description}</p>}
+
         {tags && tags.length > 0 && (
           <div className={styles['tags']}>
             {tags.map((tag, index) => (
@@ -47,6 +59,15 @@ const LawyerHorizon = ({
             ))}
           </div>
         )}
+
+        {socialLink && (
+          <div className={styles['social-link']}>
+            {socialLink.map(link => (
+              <SvgIcon name={link.type as KeyOfIcon} size={24} key={link.type} />
+            ))}
+          </div>
+        )}
+        {buttonComponent && buttonComponent}
       </div>
     </div>
   )

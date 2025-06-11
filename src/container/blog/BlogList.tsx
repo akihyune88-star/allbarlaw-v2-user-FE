@@ -1,103 +1,68 @@
 import styles from '@/container/blog/blog-list.module.scss'
-import { exampleBlogData, SORT_CASE } from './constants'
 import { useState } from 'react'
-import { BlogCase } from '@/types/blogTypes'
+import BlogItem from '@/components/blogItem/BlogItem'
+import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getBlogSummaryText } from '@/utils/blogTextFormatter'
-
-type SortItem = {
-  key: string
-  name: string
-}
-
-type BlogHeaderProps = {
-  onClick: (key: string) => void
-  activeKey: string
-  totalBlogCount: number
-  recentBlogCount: number
-}
-
-const BlogHeader = ({ onClick, activeKey, totalBlogCount, recentBlogCount }: BlogHeaderProps) => {
-  return (
-    <header>
-      <div className={styles['blog-header']}>
-        <h2>{`변호사가 작성한 글 안에서\n 내 문제의 해결방법을 찾으세요.`}</h2>
-        <nav className={styles['nav-list']} aria-label='블로그 정렬'>
-          <ul className={styles['sort-case']}>
-            {SORT_CASE.map((item: SortItem) => (
-              <li
-                key={item.key}
-                onClick={() => onClick(item.key)}
-                className={activeKey === item.key ? styles.active : ''}
-              >
-                {item.name === '전체' ? `${item.name} ${totalBlogCount.toLocaleString()}개` : item.name}
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-      <div className={styles['blog-header-mobile']}>
-        <h2>최신 블로그글</h2>
-        <p>
-          전체 {totalBlogCount.toLocaleString()}개 / 최근 한달 {recentBlogCount.toLocaleString()}개
-        </p>
-      </div>
-    </header>
-  )
-}
-
-const BlogItem = ({ item }: { item: BlogCase }) => {
-  const navigate = useNavigate()
-  const { categoryId } = useParams()
-
-  const summaryContents = getBlogSummaryText(item.summaryContents)
-
-  const handleClick = () => {
-    const path = categoryId ? `/${categoryId}/blog/${item.id}` : `/blog/${item.id}`
-
-    navigate(path, {
-      state: { blogItem: item },
-    })
-  }
-
-  return (
-    <article className={styles['blog-item']} onClick={handleClick}>
-      <div className={styles['blog-content']}>
-        <h3>{item.title}</h3>
-        <p>{summaryContents}</p>
-        <span className={styles.lawyer}>{item.lawyer} 변호사</span>{' '}
-        <span className={styles.lawfirm}>[{item.lawfirm}]</span>
-        <div className={styles['blog-item-tag']}>
-          <button>재산범죄</button>
-          <button>형사기타</button>
-          <button>사기</button>
-        </div>
-      </div>
-      <figure>
-        <img
-          className={styles['blog-item-img']}
-          src='https://www.monthlypeople.com/news/photo/202003/21217_12862_5312.png'
-          alt='blog-item-image'
-        />
-      </figure>
-    </article>
-  )
-}
+import { useInfiniteBlogList } from '@/hooks/queries/useGetBlogList'
+import Divider from '@/components/divider/Divider'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 
 const BlogList = () => {
+  const navigate = useNavigate()
   const [sortCase, setSortCase] = useState<string>('all')
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+  const isMobile = useMediaQuery('(max-width: 80rem)')
+
+  const { blogList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteBlogList({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
+    take: 4,
+    orderBy: sortCase === 'all' ? 'createdAt' : (sortCase as 'createdAt' | 'viewCount' | 'likesCount'),
+  })
+
+  // 무한스크롤 적용
+  useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetching: isFetchingNextPage,
+    fetchNextPage,
+  })
 
   const handleSortCase = (key: string) => {
     setSortCase(key)
+    // useInfiniteQuery는 쿼리 키가 바뀌면 자동으로 초기화됨
   }
+
+  const handleBlogItemClick = (blogId: number) => navigate(`/${subcategoryId}/blog/${blogId}`)
 
   return (
     <main className={styles['list-container']}>
-      <BlogHeader onClick={handleSortCase} activeKey={sortCase} totalBlogCount={2147} recentBlogCount={4142} />
+      <ArticleHeader
+        title={`변호사가 작성한 글 안에서\n 내 문제의 해결방법을 찾으세요.`}
+        onClick={handleSortCase}
+        activeKey={sortCase}
+        totalBlogCount={2147}
+        recentBlogCount={4142}
+      />
       <section className={styles['blog-list']} aria-label='블로그 목록'>
-        {exampleBlogData.blogCases.map(_blogItem => (
-          <BlogItem key={_blogItem.id} item={_blogItem} />
+        {!isMobile && <Divider />}
+        {blogList.map((blogItem, idx) => (
+          <>
+            <BlogItem
+              key={blogItem.blogCaseId}
+              item={blogItem}
+              className={styles['blog-list-item']}
+              onClick={() => handleBlogItemClick(blogItem.blogCaseId)}
+            />
+            {isMobile || (idx !== blogList.length - 1 && <Divider />)}
+          </>
         ))}
+
+        {/* 로딩 인디케이터 */}
+        {(isLoading || isFetchingNextPage) && (
+          <div className={styles['loading-container']}>
+            <div className={styles['loading-text']}>로딩 중...</div>
+          </div>
+        )}
       </section>
     </main>
   )

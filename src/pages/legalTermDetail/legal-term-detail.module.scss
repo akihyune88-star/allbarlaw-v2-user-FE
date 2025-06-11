@@ -1,0 +1,46 @@
+.container {
+  background-color: $color-bg-gray-02;
+  padding: 1.5rem;
+}
+
+.total-contents-header {
+  background-color: $color-white;
+  border-radius: 8px 8px 0 0;
+  padding: 1.5rem;
+
+  display: flex;
+  justify-content: space-between;
+
+  .title {
+    white-space: pre-line;
+    line-height: 1.2;
+
+    font-size: 1.25rem;
+    font-weight: $font-weight-regular;
+    color: $color-green-01;
+  }
+
+  .amount {
+    margin-top: auto;
+    font-size: 0.875rem;
+    font-weight: $font-weight-extra-bold;
+  }
+}
+
+.related-content-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  word-break: keep-all;
+
+  span {
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+  }
+}

@@ -1,0 +1,41 @@
+.video-list {
+  background-color: $color-white;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.video-list-section {
+  border-radius: 8px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.loading-text {
+  font-size: 1rem;
+  color: $color-text-index;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .video-list {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 1.0625rem;
+    padding: 0;
+  }
+
+  .video-list-section {
+    padding: 1.5rem 0;
+    background-color: $color-white;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}

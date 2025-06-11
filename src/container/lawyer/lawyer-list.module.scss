@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header-wrapper {
+  background-color: $color-white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.lawyer-list-wrapper {
+  background-color: $color-white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+}
+
+.lawyer-list-item {
+  padding: 24px 56px;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .container {
+    gap: 1.0625rem;
+  }
+  .header-wrapper {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .lawyer-list-item {
+    padding: 1rem;
+  }
+
+  .button-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+
+    button {
+      font-size: 0.875rem;
+    }
+  }
+}

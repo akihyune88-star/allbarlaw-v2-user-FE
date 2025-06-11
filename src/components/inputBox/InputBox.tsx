@@ -7,6 +7,7 @@ type InputBoxProps = {
   placeholder?: string
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
   icon?: React.ReactNode
   disabled?: boolean
   className?: string
@@ -17,6 +18,7 @@ const InputBox = ({
   placeholder = '',
   value = '',
   onChange = () => {},
+  onKeyDown,
   icon,
   disabled = false,
   className = '',
@@ -29,6 +31,7 @@ const InputBox = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         disabled={disabled}
       />
       {icon}

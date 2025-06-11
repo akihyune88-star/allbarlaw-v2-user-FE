@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0 1.5rem;
+}
+
+.video-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .container {
+    padding: 0;
+  }
+  .video-list {
+    width: 100%;
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

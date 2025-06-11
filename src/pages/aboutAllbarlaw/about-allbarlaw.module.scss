@@ -1,0 +1,44 @@
+.container {
+}
+
+.landing-hero {
+  margin: 0;
+
+  width: calc(100vw);
+  height: 31.75rem;
+  margin-left: calc(-50vw + 50%);
+
+  overflow-x: hidden;
+
+  background-color: $color-green-02;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.landing-hero-image {
+  width: 80rem;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  display: block;
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .landing-hero {
+    height: 13.4375rem;
+
+    align-items: center;
+  }
+
+  .landing-hero-image {
+    width: auto;
+    height: auto;
+    object-fit: cover;
+  }
+}

@@ -1,8 +1,7 @@
 import styles from '@/container/header/header.module.scss'
 import SvgIcon from '@/components/SvgIcon'
-import { MENU_LIST } from '../constants'
+import { MENU_LIST } from '@/constants/topMenu'
 import { useNavigate } from 'react-router-dom'
-import { ROUTER } from '@/routes/routerConstant'
 
 const HeaderNavigation = () => {
   const navigation = useNavigate()
@@ -15,13 +14,15 @@ const HeaderNavigation = () => {
       </div>
       <div className={styles['header-menu-list']}>
         {MENU_LIST.map(item => (
-          <button className={styles['menu-item']}>
+          <button key={item.name} className={styles['menu-item']} onClick={() => navigation(item.path)}>
+            {item.name === '바로톡' && (
+              <div className={styles['speech-bubble']}>
+                <span>변호사랑 바로상담하기</span>
+              </div>
+            )}
             <span>{item.name}</span>
           </button>
         ))}
-      </div>
-      <div className={styles['chat-btn']} onClick={() => navigation(ROUTER.REQUEST_BARO_TALK)}>
-        <button>바로톡</button>
       </div>
     </div>
   )

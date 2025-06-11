@@ -1,0 +1,50 @@
+.container {
+  background-color: $color-white;
+  padding: 1.5rem;
+}
+
+.list-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: $font-weight-extra-bold;
+  }
+
+  button {
+    color: $color-icon-darkgreen;
+    font-weight: $font-weight-semibold;
+
+    display: flex;
+    background: $color-white;
+    align-items: center;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .list-header {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid $color-line-divider;
+
+    &.knowledge {
+      margin-bottom: 1.5rem;
+    }
+
+    &.blog {
+      margin-bottom: 0.5rem;
+    }
+
+    &.video {
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .list-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}

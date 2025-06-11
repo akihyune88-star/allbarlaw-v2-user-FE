@@ -10,6 +10,7 @@
   height: 3.25rem;
 
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
 
@@ -20,6 +21,22 @@
     font-weight: $font-weight-semibold;
     color: $color-text-index;
     background-color: $color-white;
+
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
   }
 
   @include breakpoint($breakpoint-desktop) {
@@ -61,15 +78,9 @@
   }
 
   .search-form {
-    position: absolute;
     width: 26.25rem; /* 420px */
     top: 0.3125rem; /* 5px */
     left: 35%;
-  }
-
-  .user-navigation {
-    display: flex;
-    gap: 1.5rem; /* 24px */
   }
 
   .main-navigation {
@@ -100,6 +111,7 @@
   .header-menu-list {
     display: flex;
     align-items: center;
+    position: relative;
 
     .menu-item {
       width: 10rem;
@@ -107,9 +119,37 @@
       background-color: $color-white;
       cursor: pointer;
       outline: none;
+      position: relative;
 
       span {
         font-weight: $font-weight-semibold;
+      }
+
+      .speech-bubble {
+        position: absolute;
+        top: -2rem;
+        left: 53%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: white;
+        padding: 4px 0.5rem;
+        border-radius: 0.25rem;
+
+        font-size: 0.625rem;
+        font-weight: $font-weight-semibold;
+        white-space: nowrap;
+        z-index: 10;
+
+        // 말풍선 꼬리 (아래쪽 화살표)
+        &::after {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 25%;
+          transform: translateX(-50%);
+          border: 0.25rem solid transparent;
+          border-top: 0.5rem solid #333;
+        }
       }
     }
   }

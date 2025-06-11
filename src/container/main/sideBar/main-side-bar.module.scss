@@ -1,0 +1,36 @@
+.sidebar-container {
+  width: 10rem;
+  border-right: 1px solid #e0e0e0;
+
+  @media (max-width: $breakpoint-desktop) {
+    display: none;
+  }
+}
+
+// 에러 상태 스타일
+.error-state {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #6c757d;
+  width: 100%;
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+}
+
+// 빈 상태 스타일
+.empty-state {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #adb5bd;
+  width: 100%;
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+}
