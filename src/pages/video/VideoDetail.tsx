@@ -28,9 +28,17 @@ const VideoDetail = () => {
     profileImage: data?.lawyerProfileImage || '',
   }
 
+  const handleShare = () => {
+    console.log('공유하기')
+  }
+
+  const handleSave = () => {
+    console.log('저장하기')
+  }
+
   return (
     <div className={'detail-container'}>
-      <DetailHeader title={data?.title || ''} />
+      <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} />
       <div className={'detail-body'}>
         <div>
           {showLoading ? (

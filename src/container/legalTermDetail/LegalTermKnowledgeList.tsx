@@ -31,16 +31,22 @@ const LegalTermKnowledgeList = () => {
               time={threeHoursAgo}
               lawyerList={[
                 {
-                  img: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-                  name: '이보람',
+                  lawyerId: 1,
+                  lawyerProfileImage:
+                    'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
+                  lawyerName: '이보람',
                 },
                 {
-                  img: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-                  name: '신중완',
+                  lawyerId: 2,
+                  lawyerProfileImage:
+                    'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
+                  lawyerName: '신중완',
                 },
                 {
-                  img: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-                  name: '백경렬',
+                  lawyerId: 3,
+                  lawyerProfileImage:
+                    'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
+                  lawyerName: '백경렬',
                 },
               ]}
               isLastAnswer={true}

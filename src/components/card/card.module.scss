@@ -78,10 +78,6 @@
     background-color: $color-green-01;
     color: $color-white;
     border-color: $color-green-01;
-
-    &:hover {
-      background-color: darken($color-green-01, 5%);
-    }
   }
 }
 

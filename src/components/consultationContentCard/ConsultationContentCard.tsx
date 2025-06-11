@@ -1,4 +1,3 @@
-import React from 'react'
 import Card from '@/components/card'
 import Button from '@/components/button/Button'
 import SvgIcon from '@/components/SvgIcon'
@@ -46,8 +45,7 @@ const ConsultationContentCard = ({
         <h4>{title}</h4>
         <div className={styles['card-header-meta']}>
           <span>
-            <strong>{lastAnswerTime}</strong>
-            마지막 답변
+            <strong>{lastAnswerTime}</strong> 마지막 답변
           </span>
           <Button variant='share' onClick={handleShare}>
             공유
@@ -60,7 +58,7 @@ const ConsultationContentCard = ({
       </Card.Header>
       <Divider padding={16} />
       <Card.Content>
-        <p>{content || '내용이 없습니다.'}</p>
+        <p className={styles['card-content']}>{content || '내용이 없습니다.'}</p>
       </Card.Content>
     </Card>
   )

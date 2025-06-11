@@ -31,10 +31,13 @@
     white-space: nowrap;
 
     strong {
-      color: $color-text-black;
-      margin-right: 0.25rem;
+      color: $color-green-01;
     }
   }
+}
+
+.card-content {
+  white-space: pre-line;
 }
 
 @media (max-width: $breakpoint-desktop) {

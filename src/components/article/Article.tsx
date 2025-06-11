@@ -29,13 +29,15 @@ const Article = ({
 }: ArticleProps) => {
   const articleClass = [styles['article'], styles[`article-${type}`], className].filter(Boolean).join(' ')
 
+  console.log('Article', imageUrl)
+
   const renderArticle = () => {
     switch (type) {
       case 'image':
         return (
           <div className={styles['article-wrapper']} onClick={onClick}>
             <div className={articleClass}>
-              {imageUrl && <img src={imageUrl} alt={title} className={styles.image} referrerPolicy='no-referrer' />}
+              {imageUrl && <img src={thumbnailUrl} alt={title} className={styles.image} referrerPolicy='no-referrer' />}
               <h3 className={styles.title}>{title}</h3>
             </div>
           </div>

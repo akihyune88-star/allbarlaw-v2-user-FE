@@ -59,7 +59,6 @@ const BaroTalkLawyerSelection = () => {
     <main className='form-container'>
       <RequestHeader
         title='법률 상담하기'
-        mobileTitle='채팅상담 신청'
         description={`상담을 희망하는 변호사를 선택해주세요.\n변호사는 최대 4명까지 선택할 수 있습니다.`}
       />
       <section className={`form-body ${styles['body-gap']}`}>
