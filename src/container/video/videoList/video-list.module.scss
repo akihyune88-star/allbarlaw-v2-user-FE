@@ -10,6 +10,18 @@
   border-radius: 8px;
 }
 
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.loading-text {
+  font-size: 1rem;
+  color: $color-text-index;
+}
+
 @media (max-width: $breakpoint-desktop) {
   .video-list {
     background-color: transparent;

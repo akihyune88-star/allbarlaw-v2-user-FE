@@ -21,7 +21,7 @@ const VideoThumbnail = ({ size = 'small', imgUrl, title, description, lawyerName
       </figure>
       <div className={styles.content}>
         {title && <h1 className={styles.title}>{title}</h1>}
-        {lawyerName && <p className={styles['lawyer-name']}>{lawyerName}</p>}
+        {lawyerName && <p className={styles['lawyer-name']}>{lawyerName} 변호사</p>}
         {description && <p className={styles.description}>{description}</p>}
       </div>
     </div>
