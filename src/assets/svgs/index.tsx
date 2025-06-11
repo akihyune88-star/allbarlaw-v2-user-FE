@@ -24,6 +24,13 @@ import youtube from '@/assets/svgs/youtube.svg?react'
 import instagram from '@/assets/svgs/instagram.svg?react'
 import error from '@/assets/svgs/error.svg?react'
 import totalMenu from '@/assets/svgs/total-menu.svg?react'
+import activeTotalMenu from '@/assets/svgs/active-total-menu.svg?react'
+import home from '@/assets/svgs/home.svg?react'
+import activeHome from '@/assets/svgs/active-home.svg?react'
+import talk from '@/assets/svgs/talk.svg?react'
+import activeTalk from '@/assets/svgs/active-talk.svg?react'
+import bookMarkStrong from '@/assets/svgs/book-mark-strong.svg?react'
+import activeBookMark from '@/assets/svgs/active-book-mark.svg?react'
 
 export {
   react,
@@ -52,4 +59,11 @@ export {
   instagram,
   error,
   totalMenu,
+  home,
+  activeHome,
+  talk,
+  activeTalk,
+  bookMarkStrong,
+  activeBookMark,
+  activeTotalMenu,
 }

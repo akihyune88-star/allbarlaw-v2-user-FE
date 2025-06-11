@@ -6,6 +6,7 @@ interface SvgIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'name'> {
   name: KeyOfIcon
   size?: number
   strokeWidth?: number
+  color?: string
   onClick?: () => void
 }
 
@@ -15,6 +16,7 @@ const SvgIcon = ({
   height: _height,
   size,
   strokeWidth,
+  color,
   onClick,
   ...props
 }: SvgIconProps): JSX.Element => {
@@ -32,6 +34,7 @@ const SvgIcon = ({
       style={{
         display: 'inline-block',
         cursor: onClick ? 'pointer' : 'default',
+        color: color,
       }}
     >
       <IconComponent {...props} {...sizeProps} strokeWidth={strokeWidth} />

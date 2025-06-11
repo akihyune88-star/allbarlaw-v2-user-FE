@@ -23,6 +23,7 @@ import AboutAllbarlaw from '@/pages/aboutAllbarlaw/AboutAllbarlaw'
 import SearchMain from '@/pages/search/SearchMain'
 import DictionaryMain from '@/pages/legalDictionary/DictionaryMain'
 import LegalTermDetail from '@/pages/legalTermDetail/LegalTermDetail'
+import MobileMenuList from '@/pages/mobile/MobileMenuList'
 
 const router = createBrowserRouter([
   {
@@ -110,6 +111,10 @@ const router = createBrowserRouter([
           {
             path: ROUTER.SEARCH_MAIN,
             element: <SearchMain />,
+          },
+          {
+            path: ROUTER.MOBILE_MENU_LIST,
+            element: <MobileMenuList />,
           },
         ],
       },
