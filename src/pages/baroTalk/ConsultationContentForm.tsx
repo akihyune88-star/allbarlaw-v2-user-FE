@@ -25,11 +25,7 @@ const ConsultationContentForm = () => {
 
   return (
     <div className='form-container'>
-      <RequestHeader
-        title='법률 상담하기'
-        mobileTitle='채팅상담 신청'
-        description='채팅상담 및 답변내용은 법률지식인에 공개될 수 있습니다.'
-      />
+      <RequestHeader title='법률 상담하기' description='채팅상담 및 답변내용은 법률지식인에 공개될 수 있습니다.' />
       <div className={styles['form-body-gap']}>
         <div className={styles['content-wrapper']}>
           {!isMobile && <p>내용을 육하원칙에 따라 작성해주시면 보다 원활한 상담이 가능합니다. </p>}

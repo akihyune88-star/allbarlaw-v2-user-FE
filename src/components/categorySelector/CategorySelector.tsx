@@ -8,16 +8,18 @@ import { useCategory } from '@/hooks/queries/useCategory'
 
 type CategorySelectorProps = {
   title?: string
+  className?: string
   onSubcategoryClick?: (category: Category, subcategory: Subcategory) => void
   enableMobileExpand?: boolean // 모바일에서 펼쳐보기 기능 사용 여부
   initialVisibleGroups?: number // 초기에 보여줄 그룹 수 (모바일에서)
 }
 
 const CategorySelector = ({
-  title = '분류별 법률정보를 찾아보세요',
+  title,
   onSubcategoryClick,
   enableMobileExpand = true, // 기본값: 펼쳐보기 기능 사용
   initialVisibleGroups = 2, // 기본값: 2그룹 표시
+  className,
 }: CategorySelectorProps) => {
   const { data: categoryList } = useCategory()
   const [selectedCategory, setSelectedMainCategory] = useState<number | null>(null) // 부동산을 기본 선택
@@ -54,7 +56,7 @@ const CategorySelector = ({
   const showExpandButton = isMobile && enableMobileExpand && categoryGroups.length > initialVisibleGroups
 
   return (
-    <section className={styles.container}>
+    <section className={`${styles.container} ${className}`}>
       {title && (
         <header className={styles.header}>
           <h2 className={styles.title}>{title}</h2>

@@ -3,11 +3,28 @@ import Button from '@/components/button/Button'
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
 import SvgIcon from '@/components/SvgIcon'
 import styles from '@/container/subMain/total/total-legal-knowledge.module.scss'
+import { useGetKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { ROUTER } from '@/routes/routerConstant'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const TotalLegalKnowledge = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const mapItem = [1, 2, 3, 4]
+  const navigate = useNavigate()
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+
+  const {
+    data: knowledgeList,
+    isLoading: _isLoading,
+    isError: _isError,
+  } = useGetKnowledgeList({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
+    take: 4,
+    orderBy: 'createdAt',
+  })
+
+  const handleBaroTalk = () => navigate(ROUTER.REQUEST_BARO_TALK)
+  const handleTotalLegalKnowledgeClick = () => navigate(`/${subcategoryId}${ROUTER.LEGAL_KNOWLEDGE}`)
 
   return (
     <section className={styles.container}>
@@ -23,27 +40,26 @@ const TotalLegalKnowledge = () => {
                 <br />
                 최근 한달 1,314상담
               </span>
-              <button className={'total-view-button'}>
+              <button className={'total-view-button'} onClick={handleTotalLegalKnowledgeClick}>
                 <span>전체보기</span>
                 <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(-90deg)' }} />
               </button>
             </div>
-            <Button variant='normal' size='small' className={styles['question-button']}>
+            <Button variant='normal' size='small' className={styles['question-button']} onClick={handleBaroTalk}>
               질문하기
             </Button>
           </>
         )}
       </aside>
       <div className={styles['content-area']}>
-        {mapItem.map(item => (
+        {knowledgeList.map(item => (
           <LegalKnowledgeItem
-            key={item}
-            title='주차장 음주운전, 잠깐의 방심으로 억울하게 처벌받을 위기 어떻게 해야 할까?'
-            description='음주후 주차장등에서 잠깐 운전하다가 적발될 경우, 처벌받을 수 있습니다. 혈중알코올 농도가 0.03% 이상이면 음주운전으로 간주되어
-          음주후 주차장등에서 잠깐 운전하다가 적발될 경우, 처벌받을 수 있습니다. 혈중알코올 농도가 0.03% 이상이면 음주운전으로 간주되어...'
+            key={item.knowledgeId}
+            title={item.knowledgeTitle}
+            description={item.summaryContent}
             time={new Date()}
             isLastAnswer={true}
-            lawyerList={[{ img: 'https://dimg.donga.com/wps/NEWS/IMAGE/2023/05/24/119463126.1.jpg', name: '양정아' }]}
+            lawyerList={item.lawyers || []}
           />
         ))}
       </div>
