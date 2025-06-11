@@ -24,6 +24,7 @@ import SearchMain from '@/pages/search/SearchMain'
 import DictionaryMain from '@/pages/legalDictionary/DictionaryMain'
 import LegalTermDetail from '@/pages/legalTermDetail/LegalTermDetail'
 import MobileMenuList from '@/pages/mobile/MobileMenuList'
+import LegalKnowledgeDetail from '@/pages/legalKnowledge/LegalKnowledgeDetail'
 
 const router = createBrowserRouter([
   {
@@ -77,7 +78,10 @@ const router = createBrowserRouter([
             path: ':subcategoryId/video/:videoId',
             element: <VideoDetail />,
           },
-
+          {
+            path: ':subcategoryId/legal-knowledge/:knowledgeId',
+            element: <LegalKnowledgeDetail />,
+          },
           {
             path: ROUTER.REQUEST_BARO_TALK,
             element: <RequestBaroTalk />,

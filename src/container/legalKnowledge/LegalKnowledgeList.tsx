@@ -41,6 +41,9 @@ const LegalKnowledgeList = () => {
     navigate(ROUTER.REQUEST_BARO_TALK)
   }
 
+  const handleDetailLegalKnowledgeClick = (knowledgeId: number) =>
+    navigate(`/${subcategoryId}${ROUTER.LEGAL_KNOWLEDGE}/${knowledgeId}`)
+
   return (
     <div className={styles['legal-knowledge-list-container']}>
       <ArticleHeader
@@ -68,6 +71,7 @@ const LegalKnowledgeList = () => {
                 time={threeHoursAgo}
                 lawyerList={knowledge.lawyers || []}
                 isLastAnswer={true}
+                onClick={() => handleDetailLegalKnowledgeClick(knowledge.knowledgeId)}
               />
               {index !== knowledgeList.length - 1 && !isMobile && <Divider padding={0} />}
             </Fragment>

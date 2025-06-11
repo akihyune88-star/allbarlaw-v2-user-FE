@@ -54,11 +54,22 @@
     }
   }
 
+  figure {
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
   .blog-item-img {
     width: 7.5rem;
     height: 7.5rem;
+    min-width: 7.5rem;
+    min-height: 7.5rem;
+    max-width: 7.5rem;
+    max-height: 7.5rem;
     border-radius: 0.25rem;
     object-fit: cover;
+    display: block;
   }
 }
 
@@ -114,12 +125,21 @@
       }
     }
 
+    figure {
+      margin: 0;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
     .blog-item-img {
       width: 5rem;
       height: 5rem;
       min-width: 5rem;
       min-height: 5rem;
+      max-width: 5rem;
+      max-height: 5rem;
       object-fit: cover;
+      display: block;
     }
   }
 }

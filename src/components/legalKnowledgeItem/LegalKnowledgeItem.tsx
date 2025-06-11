@@ -15,6 +15,7 @@ type LegalKnowledgeItemProps = {
     lawyerName: string
   }[]
   bookmark?: boolean
+  onClick?: () => void
 }
 
 const LegalKnowledgeItem = ({
@@ -24,11 +25,12 @@ const LegalKnowledgeItem = ({
   isLastAnswer,
   lawyerList,
   bookmark = false,
+  onClick,
 }: LegalKnowledgeItemProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const formattedTime = time ? formatTimeAgo(time) : ''
   return (
-    <article className={styles['legal-knowledge-item']}>
+    <article className={styles['legal-knowledge-item']} onClick={onClick}>
       <header className={styles['header']}>
         <h1>{title}</h1>
         <div className={styles['header-right']}>

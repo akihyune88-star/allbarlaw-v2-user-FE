@@ -1,0 +1,40 @@
+.detail-body-gap {
+  gap: 1.5rem;
+}
+
+.detail-content-container {
+  width: 100%;
+}
+
+.card-container {
+  padding: 1.5rem;
+}
+
+.card-header {
+  h4 {
+    font-size: 1.25rem;
+    font-weight: $font-weight-extra-bold;
+    color: $color-green-01;
+  }
+
+  .card-header-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    span {
+      display: flex;
+      align-items: center;
+
+      font-size: 0.875rem;
+      font-weight: $font-weight-semibold;
+      color: $color-text-caption;
+
+      gap: 0.25rem;
+
+      strong {
+        color: $color-green-01;
+      }
+    }
+  }
+}

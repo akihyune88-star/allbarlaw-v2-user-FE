@@ -25,6 +25,8 @@ const TotalLegalKnowledge = () => {
 
   const handleBaroTalk = () => navigate(ROUTER.REQUEST_BARO_TALK)
   const handleTotalLegalKnowledgeClick = () => navigate(`/${subcategoryId}${ROUTER.LEGAL_KNOWLEDGE}`)
+  const handleDetailLegalKnowledgeClick = (knowledgeId: number) =>
+    navigate(`/${subcategoryId}${ROUTER.LEGAL_KNOWLEDGE}/${knowledgeId}`)
 
   return (
     <section className={styles.container}>
@@ -60,6 +62,7 @@ const TotalLegalKnowledge = () => {
             time={new Date()}
             isLastAnswer={true}
             lawyerList={item.lawyers || []}
+            onClick={() => handleDetailLegalKnowledgeClick(item.knowledgeId)}
           />
         ))}
       </div>

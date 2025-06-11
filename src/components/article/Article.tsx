@@ -35,7 +35,7 @@ const Article = ({
         return (
           <div className={styles['article-wrapper']} onClick={onClick}>
             <div className={articleClass}>
-              {imageUrl && <img src={imageUrl} alt={title} className={styles.image} />}
+              {imageUrl && <img src={imageUrl} alt={title} className={styles.image} referrerPolicy='no-referrer' />}
               <h3 className={styles.title}>{title}</h3>
             </div>
           </div>
@@ -55,7 +55,7 @@ const Article = ({
               <footer>
                 <div className={styles.lawyer}>
                   <figure>
-                    <img src={lawyerInfo.profileImageUrl} alt={lawyerInfo.name} />
+                    <img src={lawyerInfo.profileImageUrl} alt={lawyerInfo.name} referrerPolicy='no-referrer' />
                   </figure>
                   <span className={styles['lawyer-name']}>{lawyerInfo.name} 변호사</span>
                 </div>

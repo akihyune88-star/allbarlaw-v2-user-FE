@@ -1,5 +1,10 @@
 import instance from '@/lib/axios'
-import { KnowledgeListRequest, KnowledgeListResponse } from '@/types/knowledgeType'
+import {
+  KnowledgeDetailRequest,
+  KnowledgeDetailResponse,
+  KnowledgeListRequest,
+  KnowledgeListResponse,
+} from '@/types/knowledgeType'
 
 export const knowledgeService = {
   getKnowledgeList: async (request: KnowledgeListRequest) => {
@@ -19,5 +24,17 @@ export const knowledgeService = {
     const response = await instance.get<KnowledgeListResponse>(url)
 
     return response.data
+  },
+
+  getKnowledgeDetail: async (request: KnowledgeDetailRequest) => {
+    try {
+      const response = await instance.get<KnowledgeDetailResponse>(`/knowledge/detail/${request.knowledgeId}`)
+      console.log(response.data)
+
+      return response.data
+    } catch (error) {
+      console.error('Failed to fetch blog detail:', error)
+      throw error
+    }
   },
 }
