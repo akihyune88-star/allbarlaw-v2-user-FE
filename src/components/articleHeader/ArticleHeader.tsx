@@ -3,16 +3,17 @@ import styles from '@/components/articleHeader/article-header.module.scss'
 import React, { useEffect, useRef } from 'react'
 import SvgIcon from '../SvgIcon'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { SortType } from '@/types/sortTypes'
 
 type SortItem = {
-  key: string
+  key: SortType
   name: string
 }
 
 type ViewType = 'section' | 'total'
 
 type ArticleHeaderProps = {
-  onClick?: (key: string) => void
+  onClick?: (key: SortType) => void
   onClickTotalView?: () => void
   activeKey?: string
   totalBlogCount?: number
@@ -52,7 +53,7 @@ const ArticleHeader = ({
       return (
         <nav className={styles['nav-list']} aria-label='블로그 정렬'>
           <button
-            onClick={() => onClick && onClick('전체')}
+            onClick={() => onClick && onClick('all')}
             className={`${styles.allButton} ${activeKey === '전체' ? styles.active : ''}`}
           >
             전체 {totalBlogCount?.toLocaleString()}개

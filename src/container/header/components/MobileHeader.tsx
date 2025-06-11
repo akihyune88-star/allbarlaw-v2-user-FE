@@ -8,7 +8,7 @@ const MobileHeader = () => {
   return (
     <header className={styles['mobile-container']}>
       <div>
-        <SvgIcon name='totalMenu' />
+        <SvgIcon name='totalMenu' onClick={() => navigate(ROUTER.MOBILE_MENU_LIST)} />
         <SvgIcon name='mobileLogo' onClick={() => navigate(ROUTER.MAIN)} />
       </div>
       <div>

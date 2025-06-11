@@ -1,3 +1,5 @@
+import { SortType } from './sortTypes'
+
 export type VideoCountRequest = {
   subcategoryId?: number | 'all'
   recentDays: number | 'all'
@@ -8,7 +10,7 @@ export type VideoListRequest = {
   take?: number
   cursor?: number
   cursorId?: number
-  orderBy?: 'createdAt' | 'viewCount' | 'likesCount'
+  orderBy?: SortType
 }
 
 export type VideoDetailRequest = {

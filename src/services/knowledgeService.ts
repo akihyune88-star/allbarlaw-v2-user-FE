@@ -1,5 +1,5 @@
 import instance from '@/lib/axios'
-import { KnowledgeListRequest } from '@/types/knowledgeType'
+import { KnowledgeListRequest, KnowledgeListResponse } from '@/types/knowledgeType'
 
 export const knowledgeService = {
   getKnowledgeList: async (request: KnowledgeListRequest) => {
@@ -16,7 +16,7 @@ export const knowledgeService = {
     const queryString = params.toString()
     const url = `/knowledge/${subcategoryId}${queryString ? `?${queryString}` : ''}`
 
-    const response = await instance.get<KnowledgeListRequest[]>(url)
+    const response = await instance.get<KnowledgeListResponse>(url)
 
     return response.data
   },

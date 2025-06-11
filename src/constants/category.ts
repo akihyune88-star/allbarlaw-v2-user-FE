@@ -1,18 +1,20 @@
-export const SORT_CASE = [
+import { SortType } from '@/types/sortTypes'
+
+export const SORT_CASE: { key: SortType; name: string }[] = [
   {
     key: 'all',
     name: '전체',
   },
   {
-    key: 'recommend',
+    key: 'viewCount',
     name: '추천수',
   },
   {
-    key: 'like',
+    key: 'likesCount',
     name: '공감순',
   },
   {
-    key: 'new',
+    key: 'createdAt',
     name: '최신순',
   },
 ] as const

@@ -1,12 +1,14 @@
+import { SortType } from './sortTypes'
+
 export type KnowledgeListRequest = {
   subcategoryId?: number | 'all'
   take?: number
   cursor?: number
   cursorId?: number
-  orderBy?: 'createdAt' | 'viewCount' | 'likesCount'
+  orderBy?: SortType
 }
 
-export type KnowledgeItem = {
+type KnowledgeItem = {
   knowledgeId: number
   knowledgeTitle: string
   summaryContent: string
@@ -15,4 +17,11 @@ export type KnowledgeItem = {
     lawyerName: string
     lawyerProfileImage: string
   }[]
+}
+
+export type KnowledgeListResponse = {
+  data: KnowledgeItem[]
+  nextCursor: number
+  nextCursorId: number
+  hasNextPage: boolean
 }

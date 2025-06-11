@@ -1,3 +1,5 @@
+import { SortType } from './sortTypes'
+
 export type BlogCountRequest = {
   subcategoryId: number | 'all'
   recentDays: number
@@ -8,7 +10,7 @@ export type BlogListRequest = {
   take?: number
   cursor?: number
   cursorId?: number
-  orderBy?: 'createdAt' | 'viewCount' | 'likesCount'
+  orderBy?: SortType
 }
 
 export type BlogDetailRequest = {

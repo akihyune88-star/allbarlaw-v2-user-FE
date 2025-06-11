@@ -1,5 +1,5 @@
 const MobileMenuList = () => {
-  return <div></div>
+  return <div>모바일 바텀메뉴 작업중 </div>
 }
 
 export default MobileMenuList

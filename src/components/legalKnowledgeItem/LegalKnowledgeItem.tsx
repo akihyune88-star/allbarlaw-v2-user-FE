@@ -9,7 +9,11 @@ type LegalKnowledgeItemProps = {
   description: string
   time: Date
   isLastAnswer: boolean
-  lawyerList?: { img: string; name: string }[]
+  lawyerList?: {
+    lawyerId: number
+    lawyerProfileImage: string
+    lawyerName: string
+  }[]
   bookmark?: boolean
 }
 
@@ -50,9 +54,9 @@ const LegalKnowledgeItem = ({
         {lawyerList && (
           <div className={styles['lawyer-list']}>
             {lawyerList.map(lawyer => (
-              <div className={styles['lawyer-item']} key={lawyer.name}>
-                <img src={lawyer.img} alt={lawyer.name} />
-                <span>{lawyer.name} 변호사</span>
+              <div className={styles['lawyer-item']} key={lawyer.lawyerId}>
+                <img src={lawyer.lawyerProfileImage} alt={lawyer.lawyerName} />
+                <span>{lawyer.lawyerName} 변호사</span>
               </div>
             ))}
           </div>
