@@ -5,10 +5,11 @@ import Button from '@/components/button/Button'
 import styles from '@/container/legalKnowledge/legal-knowledge-list.module.scss'
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
 import Divider from '@/components/divider/Divider'
-import { useGetKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
+import { useInfiniteKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { SortType } from '@/types/sortTypes'
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 
 const LegalKnowledgeList = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
@@ -21,14 +22,17 @@ const LegalKnowledgeList = () => {
     setSortCase(key)
   }
 
-  const {
-    data: knowledgeList,
-    isLoading: _isLoading,
-    isError: _isError,
-  } = useGetKnowledgeList({
+  const { knowledgeList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteKnowledgeList({
     subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
     take: 4,
     orderBy: sortCase === 'all' ? 'createdAt' : (sortCase as 'createdAt' | 'viewCount' | 'likesCount'),
+  })
+
+  // 무한스크롤 적용
+  useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetching: isFetchingNextPage,
+    fetchNextPage,
   })
 
   const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000)
@@ -70,6 +74,13 @@ const LegalKnowledgeList = () => {
           ))
         ) : (
           <div>데이터를 불러오는 중...</div>
+        )}
+
+        {/* 로딩 인디케이터 */}
+        {(isLoading || isFetchingNextPage) && (
+          <div className={styles['loading-container']}>
+            <div className={styles['loading-text']}>로딩 중...</div>
+          </div>
         )}
       </section>
     </div>
