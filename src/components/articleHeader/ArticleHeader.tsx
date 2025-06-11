@@ -52,10 +52,7 @@ const ArticleHeader = ({
     if (isMobile) {
       return (
         <nav className={styles['nav-list']} aria-label='블로그 정렬'>
-          <button
-            onClick={() => onClick && onClick('all')}
-            className={`${styles.allButton} ${activeKey === '전체' ? styles.active : ''}`}
-          >
+          <button className={`${styles.allButton} ${activeKey === '전체' ? styles.active : ''}`}>
             전체 {totalBlogCount?.toLocaleString()}개
           </button>
           <ul className={styles['sort-case']}>

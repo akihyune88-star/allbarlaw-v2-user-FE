@@ -5,7 +5,7 @@ import { videoService } from '@/services/videoService'
 
 export const useGetVideoList = (request: VideoListRequest) => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: [QUERY_KEY.VIDEO_LIST, request.subcategoryId, request.cursorId],
+    queryKey: [QUERY_KEY.VIDEO_LIST, request.subcategoryId, request.cursorId, request.orderBy],
     queryFn: () => videoService.getVideoList(request),
     enabled: request.subcategoryId !== undefined,
     staleTime: 1000 * 60 * 10,

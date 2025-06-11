@@ -17,6 +17,7 @@ const VideoList = () => {
   const { videoList } = useGetVideoList({
     subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
     take: 4,
+    orderBy: sortCase === 'all' ? 'createdAt' : (sortCase as 'createdAt' | 'viewCount' | 'likesCount'),
   })
 
   const handleSortCase = (key: string) => {
