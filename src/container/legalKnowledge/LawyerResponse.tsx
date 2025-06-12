@@ -4,6 +4,7 @@ import SvgIcon from '@/components/SvgIcon'
 import { COLOR } from '@/styles/color'
 import Divider from '@/components/divider/Divider'
 import { useState } from 'react'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 type LawyerResponseProps = {
   lawyers: {
@@ -18,6 +19,7 @@ type LawyerResponseProps = {
 
 const LawyerResponse = ({ lawyers }: LawyerResponseProps) => {
   const [_isReportModalOpen, setIsReportModalOpen] = useState(false)
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
   const handleReportModalOpen = () => {
     setIsReportModalOpen(true)
@@ -33,17 +35,33 @@ const LawyerResponse = ({ lawyers }: LawyerResponseProps) => {
             </figure>
             <div className={styles['card-header-info']}>
               <div className={styles['info-header']}>
-                <h4 className={styles['lawyer-name']}>{lawyer.lawyerName}</h4>
-                <p className={styles['lawfirm-name']}>{lawyer.lawfirmName}</p>
-                <div className={styles['selected-badge']}>
-                  <span>의뢰인 선택</span>
-                  <SvgIcon name='checkRound' stroke={COLOR.icon_darkgreen} fill={COLOR.white} size={10} />
-                </div>
+                {!isMobile ? (
+                  <>
+                    <h4 className={styles['lawyer-name']}>{lawyer.lawyerName}</h4>
+                    <p className={styles['lawfirm-name']}>{lawyer.lawfirmName}</p>
+                    <div className={styles['selected-badge']}>
+                      <span>의뢰인 선택</span>
+                      <SvgIcon name='checkRound' stroke={COLOR.icon_darkgreen} fill={COLOR.white} size={10} />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles['selected-badge']}>
+                      <span>의뢰인 선택</span>
+                      <SvgIcon name='checkRound' stroke={COLOR.icon_darkgreen} fill={COLOR.white} size={10} />
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <h4 className={styles['lawyer-name']}>{lawyer.lawyerName}</h4>
+                      <p className={styles['lawfirm-name']}>{lawyer.lawfirmName}</p>
+                    </div>
+                  </>
+                )}
               </div>
               <p className={styles['info-description']}>{lawyer.lawyerDescription}</p>
-              <button className={styles['barotalk-btn']}>바로톡</button>
+              {!isMobile && <button className={styles['barotalk-btn']}>바로톡</button>}
             </div>
           </Card.Header>
+          {isMobile && <button className={styles['mobile-barotalk-btn']}>바로톡</button>}
           <Divider />
           <Card.Content>
             <p className={styles['description']}>{lawyer.content}</p>
