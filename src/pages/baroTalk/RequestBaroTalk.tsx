@@ -14,7 +14,7 @@ const RequestBaroTalk = () => {
     <div className='form-container'>
       <RequestHeader title='법률 상담하기' description={isMobile ? '상담을 위해 아래 항목을 선택해주세요.' : ''} />
 
-      <div className='form-body' style={{ padding: isMobile ? '0' : '1.5rem' }}>
+      <div className='main-container' style={{ padding: isMobile ? '0' : '1.5rem' }}>
         {!isMobile && <p>상담을 위해 아래 항목을 선택해주세요.</p>}
 
         <CategorySelector />

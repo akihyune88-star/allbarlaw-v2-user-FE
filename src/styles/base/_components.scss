@@ -34,6 +34,18 @@
   }
 }
 
+.main-container {
+  background-color: $color-bg-gray-02;
+  padding: 1.5rem;
+  will-change: autodm;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .main-container {
+    padding: 1.25rem;
+  }
+}
+
 //* 서브 메인 공통으로 사용할 스타일
 .sub-main-container {
   width: 100%;
