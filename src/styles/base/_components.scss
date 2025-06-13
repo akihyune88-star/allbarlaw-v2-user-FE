@@ -31,6 +31,7 @@
     max-width: 100%;
     margin: 0;
     box-sizing: border-box;
+    padding-bottom: 5rem;
   }
 }
 
@@ -42,7 +43,7 @@
 
 @media (max-width: $breakpoint-desktop) {
   .main-container {
-    padding: 1.25rem;
+    padding: 0 0 4.25rem 0;
   }
 }
 

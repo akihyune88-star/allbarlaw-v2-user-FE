@@ -28,8 +28,9 @@ const Main = () => {
         />
         <BlogFeedContainer />
         {!isMobile && <BaroTalkBanner />}
-        <LawyerAdvertisementList />
+        {!isMobile && <LawyerAdvertisementList />}
         <LawyerVideoSpotlight />
+        {isMobile && <LawyerAdvertisementList />}
       </div>
     </div>
   )
