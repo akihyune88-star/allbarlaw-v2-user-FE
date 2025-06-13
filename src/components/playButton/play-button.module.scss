@@ -1,0 +1,15 @@
+.play-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  button {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+  }
+}

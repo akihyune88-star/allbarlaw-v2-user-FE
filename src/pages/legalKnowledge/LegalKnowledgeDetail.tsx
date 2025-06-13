@@ -10,6 +10,7 @@ import ConsultationContentCard from '@/components/consultationContentCard/Consul
 import LawyerResponse from '@/container/legalKnowledge/LawyerResponse'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
+import { getRelativeTimeString } from '@/utils/date'
 
 const LegalKnowledgeDetail = () => {
   const { knowledgeId } = useParams<{ knowledgeId: string }>()
@@ -17,8 +18,6 @@ const LegalKnowledgeDetail = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const { data } = useGetKnowledgeDetail({ knowledgeId: Number(knowledgeId) })
-
-  console.log('LegalKnowledgeDetail', data)
 
   const handleShare = () => {
     console.log('공유하기 - 법률 지식:', knowledgeId)
@@ -46,6 +45,7 @@ const LegalKnowledgeDetail = () => {
               <ConsultationContentCard
                 content={data?.knowledgeDescription}
                 tags={data?.tags}
+                lastAnswerTime={data?.lastMessageAt ? getRelativeTimeString(data.lastMessageAt) : ''}
                 onShare={handleShare}
                 onSave={handleSave}
               />
