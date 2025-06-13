@@ -1,0 +1,29 @@
+.search-header {
+  padding-top: 2rem;
+  white-space: pre-line;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+
+  text-align: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: $font-weight-extra-bold;
+  line-height: 1.2;
+
+  color: $color-text-black;
+}
+
+.search-query {
+  font-size: 1.5rem;
+
+  strong {
+    color: $color-icon-darkgreen;
+    font-weight: $font-weight-extra-bold;
+    margin-right: 0.625rem;
+  }
+}

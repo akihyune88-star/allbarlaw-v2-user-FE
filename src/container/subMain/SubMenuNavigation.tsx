@@ -1,21 +1,24 @@
 import React, { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import { SUB_MENU_LIST } from '../../constants/submainConstants'
 import styles from './sub-menu-navigation.module.scss'
 
-const SubMenuNavigation = () => {
-  const [selectedMenu, setSelectedMenu] = useState(SUB_MENU_LIST[0])
-  const navigate = useNavigate()
-  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+type SubMenuNavigationProps = {
+  menuList: (typeof SUB_MENU_LIST)[0][]
+  onClick: (menu: (typeof SUB_MENU_LIST)[0]) => void
+  initialMenu?: (typeof SUB_MENU_LIST)[0]
+}
+
+const SubMenuNavigation = ({ menuList, onClick, initialMenu = SUB_MENU_LIST[0] }: SubMenuNavigationProps) => {
+  const [selectedMenu, setSelectedMenu] = useState(initialMenu)
 
   const handleMenuClick = (menu: (typeof SUB_MENU_LIST)[0]) => {
     setSelectedMenu(menu)
-    navigate(`/${subcategoryId}${menu.path}`)
+    onClick(menu)
   }
 
   return (
     <div className={styles['menu-navigation-container']}>
-      {SUB_MENU_LIST.map(menu => (
+      {menuList.map(menu => (
         <div
           className={`${styles['menu-item']} ${selectedMenu.path === menu.path ? styles.selected : ''}`}
           key={menu.path}
