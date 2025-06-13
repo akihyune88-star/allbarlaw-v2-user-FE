@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useMemo } from 'react'
+import React, { createContext, useContext, useState, useMemo, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import styles from './tabs.module.scss'
 
 type MenuItem = {
@@ -51,7 +52,24 @@ type TabsProps = {
 }
 
 const Tabs = ({ children, items, initialPath, onChange }: TabsProps) => {
+  const location = useLocation()
   const [selectedPath, setSelectedPath] = useState(initialPath || items?.[0]?.path || '')
+
+  // URL이 변경될 때마다 selectedPath 업데이트
+  useEffect(() => {
+    const pathSegments = location.pathname.split('/')
+    const currentPath = pathSegments[pathSegments.length - 1] || '/'
+
+    // 현재 경로가 items의 path와 일치하는지 확인
+    const matchingItem = items?.find(item => {
+      const itemPath = item.path.replace(/^\//, '') // 앞의 슬래시 제거
+      return itemPath === currentPath || (itemPath === '' && currentPath === '')
+    })
+
+    if (matchingItem) {
+      setSelectedPath(matchingItem.path)
+    }
+  }, [location.pathname, items])
 
   const handleSelect = (path: string) => {
     setSelectedPath(path)

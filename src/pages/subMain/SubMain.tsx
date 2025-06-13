@@ -9,14 +9,14 @@ const SubMain = () => {
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
 
   const handleMenuClick = (path: string) => {
-    navigate(`/${subcategoryId}/${path}`)
+    navigate(`/${subcategoryId}${path}`)
   }
 
   return (
     <div style={{ width: '100%' }}>
       <header className={styles['header-container']}>
         <CategoryTitle />
-        <Tabs items={SUB_MENU_LIST} onChange={handleMenuClick} initialPath={subcategoryId} />
+        <Tabs items={SUB_MENU_LIST} onChange={handleMenuClick} initialPath={'/'} />
       </header>
       <main className={styles['main-container']}>
         <Outlet />

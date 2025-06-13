@@ -12,7 +12,7 @@ const DesktopHeader = () => {
 
   const handleSearch = () => {
     if (searchValue.trim()) {
-      navigate(ROUTER.SEARCH_MAIN, { state: { searchQuery: searchValue } })
+      navigate(`/search/${searchValue.trim()}`)
       setTimeout(() => {
         setSearchValue('')
       }, 100)

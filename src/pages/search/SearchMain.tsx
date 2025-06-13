@@ -1,14 +1,18 @@
+import { Outlet, useParams } from 'react-router-dom'
 import SearchHeader from '@/container/search/searchHedaer/SearchHeader'
-import { useLocation } from 'react-router-dom'
+import styles from './search-main.module.scss'
 
 const SearchMain = () => {
-  const { state } = useLocation()
-  const searchQuery = state?.searchQuery || ''
+  const { query } = useParams<{ query: string }>()
+  const searchQuery = query || ''
 
   return (
-    <main style={{ width: '100%' }}>
+    <div className={styles['search-main']}>
       <SearchHeader searchQuery={searchQuery} />
-    </main>
+      <main className={styles['search-content']}>
+        <Outlet />
+      </main>
+    </div>
   )
 }
 
