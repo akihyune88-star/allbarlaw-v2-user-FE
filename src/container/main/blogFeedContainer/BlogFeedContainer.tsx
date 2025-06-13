@@ -6,6 +6,8 @@ import Article from '@/components/article/Article'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useNavigate } from 'react-router-dom'
+import PlayButton from '@/components/playButton/PlayButton'
+import { COLOR } from '@/styles/color'
 
 const BlogFeedHeader = () => {
   const { data: totalBlogCount } = useBlogCount({
@@ -19,12 +21,15 @@ const BlogFeedHeader = () => {
   })
 
   return (
-    <header className={styles.header}>
-      <h2 className={styles.title}>변호사의 글</h2>
-      <div className={styles.count}>
-        <span className={styles['count-number']}>전체 {totalBlogCount?.toLocaleString()}개 / </span>
-        <span className={styles['count-number']}>최근 한달 {recentMonthCount?.toLocaleString()}개</span>
+    <header className={styles['header-container']}>
+      <div className={styles['text-wrapper']}>
+        <h2 className={styles.title}>변호사의 글</h2>
+        <div className={styles.count}>
+          <span className={styles['count-number']}>전체 {totalBlogCount?.toLocaleString()}개 / </span>
+          <span className={styles['count-number']}>최근 한달 {recentMonthCount?.toLocaleString()}개</span>
+        </div>
       </div>
+      <PlayButton iconColor={COLOR.text_black} />
     </header>
   )
 }

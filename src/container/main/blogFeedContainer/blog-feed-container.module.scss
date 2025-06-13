@@ -4,7 +4,13 @@
   gap: 1rem;
 }
 
-.header {
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-wrapper {
   display: flex;
   gap: 0.9375rem;
 
@@ -51,7 +57,12 @@
     padding: 0 20px;
   }
 
-  .header {
+  .header-container {
+    align-items: flex-start;
+    gap: 1.0625rem;
+  }
+
+  .text-wrapper {
     flex-direction: column;
     gap: 1.0625rem;
   }
