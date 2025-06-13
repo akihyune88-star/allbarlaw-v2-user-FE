@@ -8,6 +8,8 @@ import { useParams } from 'react-router-dom'
 import styles from './legal-knowledge-detail.module.scss'
 import ConsultationContentCard from '@/components/consultationContentCard/ConsultationContentCard'
 import LawyerResponse from '@/container/legalKnowledge/LawyerResponse'
+import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
+import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 
 const LegalKnowledgeDetail = () => {
   const { knowledgeId } = useParams<{ knowledgeId: string }>()
@@ -30,15 +32,41 @@ const LegalKnowledgeDetail = () => {
 
   return (
     <div className={'detail-container'}>
-      <DetailHeader title={data?.knowledgeTitle || ''} />
+      <DetailHeader
+        title={data?.knowledgeTitle || ''}
+        onSave={isMobile ? handleSave : undefined}
+        onShare={isMobile ? handleShare : undefined}
+      />
       <div className={`detail-body ${styles['detail-body-gap']}`}>
         <div className={styles['detail-content-container']}>
           {showLoading ? (
             <AILoading title='AI가 해당 법률 지식인의 분석중입니다.' />
           ) : (
             <div className={styles['detail-content-container-inner']}>
-              <ConsultationContentCard content={data?.knowledgeDescription} onShare={handleShare} onSave={handleSave} />
+              <ConsultationContentCard
+                content={data?.knowledgeDescription}
+                tags={data?.tags}
+                onShare={handleShare}
+                onSave={handleSave}
+              />
               {data?.lawyers && <LawyerResponse lawyers={data?.lawyers} />}
+              <ContentsRecommender
+                isRefresh={true}
+                title='최근 답변이 많은 변호사입니다.'
+                contents={
+                  <div className={styles['lawyer-list']}>
+                    {mockLawyerList.map(lawyer => (
+                      <LawyerHorizon
+                        key={lawyer.id}
+                        name={lawyer.name}
+                        profileImage={lawyer.profileImage}
+                        description={lawyer.description}
+                        size='x-small'
+                      />
+                    ))}
+                  </div>
+                }
+              />
             </div>
           )}
         </div>

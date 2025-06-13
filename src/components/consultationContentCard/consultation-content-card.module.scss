@@ -1,3 +1,9 @@
+.consultation-content-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .card-container {
   background-color: $color-white;
   border-radius: 0.5rem;
@@ -24,46 +30,73 @@
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+}
 
-  span {
-    font-size: 0.875rem;
-    color: $color-text-index;
-    white-space: nowrap;
+.last-answer-time {
+  font-size: 0.875rem;
+  color: $color-text-index;
+  white-space: nowrap;
 
-    strong {
-      color: $color-green-01;
-    }
+  strong {
+    color: $color-green-01;
   }
 }
 
 .card-content {
   white-space: pre-line;
+
+  font-size: 0.875rem;
+  line-height: 1;
+
+  ul {
+    padding-left: 1rem;
+    padding-bottom: 0;
+  }
+  li {
+    margin-bottom: -5px;
+  }
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  .tag-item {
+    &-text {
+      color: $color-text-index;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+  }
 }
 
 @media (max-width: $breakpoint-desktop) {
+  .consultation-content-card {
+    gap: 0.5rem;
+  }
+
   .card-container {
     padding: 1.25rem;
   }
 
   .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
+    margin-bottom: 0;
   }
 
   .card-header-meta {
-    align-self: flex-end;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.5rem;
+    display: none;
+  }
 
-    span {
-      order: -1;
-    }
+  .card-content {
+    font-size: 0.75rem;
+  }
 
-    > :not(span) {
-      display: flex;
-      gap: 0.5rem;
+  .tag-list {
+    .tag-item {
+      &-text {
+        font-size: 0.75rem;
+      }
     }
   }
 }
