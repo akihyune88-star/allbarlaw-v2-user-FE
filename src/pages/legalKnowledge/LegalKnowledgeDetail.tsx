@@ -50,7 +50,7 @@ const LegalKnowledgeDetail = () => {
                 onSave={handleSave}
               />
               {data?.lawyers && <LawyerResponse lawyers={data?.lawyers} />}
-              <ContentsRecommender
+             {isMobile && <ContentsRecommender
                 isRefresh={true}
                 title='최근 답변이 많은 변호사입니다.'
                 contents={
@@ -66,7 +66,7 @@ const LegalKnowledgeDetail = () => {
                     ))}
                   </div>
                 }
-              />
+              />}
             </div>
           )}
         </div>
