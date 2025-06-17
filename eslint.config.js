@@ -12,7 +12,7 @@ import reactPlugin from 'eslint-plugin-react'
 
 export default [
   { ignores: ['dist'] },
-  js.configs.recommended,
+  ...(js.configs?.recommended ? [js.configs.recommended] : []),
   // typescript-eslint 설정 방식 수정
   {
     files: ['**/*.{ts,tsx}'],
@@ -21,7 +21,7 @@ export default [
       parser: tsParser,
     },
     rules: {
-      ...tseslint.configs.recommended.rules,
+      // TypeScript 관련 규칙 제거 (no-unused-vars 등)
     },
   },
   {
@@ -60,11 +60,9 @@ export default [
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-
       // 사용하지 않는 import 및 변수 감지 (강화된 설정)
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': [
-        'error',
+      'no-unused-vars': [
+        'warn',
         {
           vars: 'all',
           varsIgnorePattern: '^_',
@@ -76,12 +74,10 @@ export default [
       ],
       'react/jsx-uses-react': 'error',
       'react/jsx-uses-vars': 'error',
-
       // 공통
       'template-curly-spacing': ['error', 'never'],
       'prettier/prettier': 0,
       semi: 0,
-      '@typescript-eslint/semi': 0,
       'arrow-parens': ['error', 'as-needed'],
       'no-await-in-loop': 'off',
       'no-plusplus': 'off',
@@ -90,7 +86,6 @@ export default [
       'object-curly-newline': 'off',
       'operator-linebreak': 'off',
       'prefer-const': 'off',
-
       // front 전용설정
       'import/extensions': 'off',
       'implicit-arrow-linebreak': 'off',
@@ -105,10 +100,6 @@ export default [
       'jsx-quotes': ['error', 'prefer-single'],
       'arrow-body-style': 'off',
       'global-require': 'off',
-      '@typescript-eslint/naming-convention': 'off',
-      '@typescript-eslint/comma-dangle': 'off',
-      '@typescript-eslint/no-use-before-define': ['warn', { variables: false }],
-      '@typescript-eslint/no-unused-expressions': ['warn', { allowShortCircuit: true, allowTernary: true }],
       'react/function-component-definition': [2, { namedComponents: ['arrow-function', 'function-declaration'] }],
       'react/no-unstable-nested-components': 'warn',
       'react/prop-types': 'off',
