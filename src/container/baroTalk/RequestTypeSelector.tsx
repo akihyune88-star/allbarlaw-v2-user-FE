@@ -10,7 +10,7 @@ const RequestTypeSelector = () => {
   ]
 
   // useMediaQuery 훅을 사용하여 모바일 여부 체크
-  const isMobile = useMediaQuery('(max-width: 1200px)')
+  const isMobile = useMediaQuery('(max-width: 1279px)')
 
   const handleStatusChange = (value: string) => {
     // 여기서 상태 변경 처리를 할 수 있습니다

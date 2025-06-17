@@ -3,6 +3,13 @@
 
 body {
   font-size: max(16px, 1rem); // 최소 16px 보장
+  line-height: 1.2;
+}
+
+/* 글로벌 버튼 스타일 */
+button {
+  outline: none !important;
+  cursor: pointer;
 }
 
 ::selection {
@@ -38,7 +45,7 @@ body {
 /* 유틸리티 클래스 */
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1279px;
   margin: 0 auto;
   padding: 0 $spacing-md;
 }

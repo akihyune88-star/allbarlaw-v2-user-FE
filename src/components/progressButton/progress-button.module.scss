@@ -1,7 +1,7 @@
 .button-navigation {
   display: flex;
   justify-content: space-between;
-  max-width: $main-content-width;
+
   align-items: center;
 
   @media (max-width: 80rem) {

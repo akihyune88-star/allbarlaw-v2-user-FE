@@ -1,0 +1,71 @@
+.container {
+  background-color: $color-white;
+  padding: 1.5rem;
+
+  border-radius: 0.5rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.025rem;
+
+  margin-bottom: 0.25rem;
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: $font-weight-extra-bold;
+    line-height: 1.5;
+  }
+
+  .english-title {
+    font-size: 1rem;
+    font-weight: $font-weight-semibold;
+    color: $color-text-caption;
+  }
+}
+
+.description {
+  margin: 0 0 1rem 0;
+  font-size: 0.875rem;
+  font-weight: $font-weight-regular;
+  line-height: 1.2;
+
+  color: $color-text-black;
+
+  word-break: keep-all;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.source {
+  margin: 0;
+
+  font-size: 0.875rem;
+  color: $color-text-caption;
+}
+
+.button-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  header {
+    .title {
+      font-size: 1.25rem;
+    }
+  }
+
+  .description {
+    font-size: 0.8125rem;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 0.5625rem;
+  }
+}

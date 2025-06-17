@@ -1,10 +1,15 @@
 import styles from '@/components/aiLoading/ai-loading.module.scss'
 
-const AILoading = () => {
+type AILoadingProps = {
+  title: string
+  className?: string
+}
+
+const AILoading = ({ title, className }: AILoadingProps) => {
   return (
-    <div className={styles['skeleton-container']}>
+    <div className={`${styles['skeleton-container']} ${className}`}>
       <div className={styles['skeleton-header']}>
-        <span>AI가 해당 블로그의 포스팅글을 분석중입니다.</span>
+        <span>{title}</span>
       </div>
       <div className={styles['skeleton-content']}>
         <div className={styles['skeleton-paragraph']} style={{ width: 149 }} />

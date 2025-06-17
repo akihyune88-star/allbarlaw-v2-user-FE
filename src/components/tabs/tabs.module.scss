@@ -1,0 +1,81 @@
+.tabs-container {
+  display: flex;
+  gap: 0.875rem;
+  padding-left: 1.625rem;
+  position: relative;
+}
+
+.tab-item {
+  height: 2.125rem;
+  text-align: center;
+  padding-top: 0.375rem;
+  padding-bottom: 0.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+
+  span {
+    font-size: 1rem;
+    font-weight: $font-weight-semibold;
+    transition: color 0.3s ease;
+    display: block;
+    overflow: hidden;
+  }
+
+  &.selected {
+    span {
+      color: $color-green-01;
+    }
+    border-bottom: 1px solid $color-green-01;
+  }
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .tab-item {
+    width: var(--item-width);
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .tabs-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    padding-right: 1.625rem;
+
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+  }
+
+  .tab-item {
+    min-width: 64px;
+    width: fit-content;
+    flex-shrink: 0;
+    padding: 0.375rem 0.5rem 0.5rem;
+
+    span {
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+
+    &.selected {
+      border-bottom: 2px solid $color-green-01;
+
+      span {
+        color: $color-green-01;
+      }
+    }
+  }
+}
+
+// Dark mode support
+:global([data-theme='dark']) {
+  .tab-item {
+    &.selected {
+      background-color: var(--color-background-selected-dark);
+    }
+  }
+}

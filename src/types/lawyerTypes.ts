@@ -1,3 +1,8 @@
+export type SocialLink = {
+  type: 'naver' | 'youtube' | 'instagram'
+  link: string
+}
+
 export type Lawyer = {
   id: number
   name: string

@@ -1,0 +1,29 @@
+.total-blog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3125rem;
+  padding: 0 1.5rem;
+}
+
+.blog-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, auto);
+  column-gap: 2.875rem;
+  row-gap: 1.5rem;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .total-blog-list {
+    padding: 0;
+  }
+
+  .blog-list {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, auto);
+
+    padding: 1.5rem 1.25rem;
+    background-color: white;
+    border-radius: 0.5rem;
+  }
+}

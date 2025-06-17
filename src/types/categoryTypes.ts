@@ -1,12 +1,25 @@
-type Subcategory = {
-  id: number
+export interface Category {
+  categoryId: number
+  categoryName: string
+}
+
+export interface Subcategory {
+  subcategoryId: number
   subcategoryName: string
 }
 
-type Category = {
-  id: number
-  categoryName: string
-  subcategories: Subcategory[]
+interface SubcategoryInfo extends Subcategory {
+  isUncategorized: boolean
+  categoryId: number
 }
 
-export type CategoryList = Category[]
+type CategoryInfo = {
+  categoryId: number
+  categoryName: string
+  imageUrl: string
+  clickedImageUrl: string
+  isUncategorized: boolean
+  subcategories: SubcategoryInfo[]
+}
+
+export type CategoryList = CategoryInfo[]

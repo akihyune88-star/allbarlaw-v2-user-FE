@@ -1,0 +1,13 @@
+.container {
+  background-color: $color-white;
+  padding: 1.5rem;
+
+  border-radius: 0.5rem;
+  border: 1px solid rgba(32, 191, 98, 0.3);
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: $font-weight-extra-bold;
+  color: $color-icon-darkgreen;
+}

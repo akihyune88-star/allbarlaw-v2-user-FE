@@ -13,7 +13,7 @@ type ProgressButtonProps = {
 }
 
 const ProgressButton = ({ onCancel, onNext, style, steps, currentStep }: ProgressButtonProps) => {
-  const isMobile = useMediaQuery('(max-width: 1200px)')
+  const isMobile = useMediaQuery('(max-width: 1279px)')
 
   if (isMobile) {
     return (

@@ -1,0 +1,77 @@
+.loading-container {
+  padding: 1.5rem 0.75rem 1rem 1rem;
+  width: 100%;
+
+  .skeleton-category {
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    // 메인 카테고리 스켈레톤
+    .skeleton-main {
+      height: 16px;
+      background: linear-gradient(90deg, #f8f9fa 25%, #e9ecef 50%, #f8f9fa 75%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 2s infinite;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+
+      // 다양한 너비로 더 자연스럽게 - 왼쪽 정렬
+      &:nth-child(1) {
+        width: 85%;
+      }
+      &:nth-child(2) {
+        width: 70%;
+      }
+      &:nth-child(3) {
+        width: 90%;
+      }
+      &:nth-child(4) {
+        width: 65%;
+      }
+    }
+
+    // 서브카테고리 스켈레톤
+    .skeleton-subs {
+      padding-left: 1.5rem;
+
+      .skeleton-sub {
+        height: 12px;
+        background: linear-gradient(90deg, #f1f3f4 25%, #dee2e6 50%, #f1f3f4 75%);
+        background-size: 200% 100%;
+        animation: skeleton-shimmer 2.5s infinite;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+
+        // 서브카테고리들도 다양한 너비 - 왼쪽 정렬
+        &:nth-child(1) {
+          width: 60%;
+          animation-delay: 0.2s;
+        }
+        &:nth-child(2) {
+          width: 75%;
+          animation-delay: 0.4s;
+        }
+        &:nth-child(3) {
+          width: 55%;
+          animation-delay: 0.6s;
+        }
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
