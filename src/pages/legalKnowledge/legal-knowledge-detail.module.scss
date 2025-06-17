@@ -3,7 +3,7 @@
 }
 
 .detail-content-container {
-  width: 100%;
+  width: 798px;
 }
 
 .card-container {
@@ -46,6 +46,10 @@
 }
 
 @media (max-width: $breakpoint-desktop) {
+  .detail-content-container {
+    width: 100%;
+  }
+
   .lawyer-list {
     display: flex;
     flex-direction: column;
