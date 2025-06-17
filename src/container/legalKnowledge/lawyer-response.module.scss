@@ -91,6 +91,8 @@
       font-size: 0.8125rem;
       line-height: 1.125rem;
       margin: 0;
+      padding-right: 120px;
+      word-break: keep-all;
     }
   }
 }
@@ -155,6 +157,10 @@
 
       .barotalk-btn {
         position: relative;
+      }
+
+      .info-description {
+        padding-right: 0;
       }
     }
   }
