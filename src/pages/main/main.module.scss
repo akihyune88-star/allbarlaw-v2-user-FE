@@ -7,16 +7,26 @@
 
   padding: 1.6875rem 1.5rem;
   gap: 6.75rem;
-
-  @media (max-width: $breakpoint-mobile) {
-    padding: 0;
-    gap: 1.875rem;
-    padding-bottom: 4.5em;
-  }
 }
 
 .content-container {
   display: flex;
   flex-direction: column;
   gap: 6.75rem;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .main-container {
+    padding: 0;
+    gap: 1.875rem;
+    padding-bottom: 4.5em;
+  }
+
+  .category-selector {
+    padding-top: 0px;
+  }
+
+  .content-container {
+    gap: 2.5rem;
+  }
 }

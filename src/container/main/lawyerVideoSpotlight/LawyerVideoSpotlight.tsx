@@ -3,6 +3,8 @@ import styles from './lawyer-video-spotlight.module.scss'
 import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
 import VideoThumbnail from '@/components/video/VideoThumbnail'
 import { useNavigate } from 'react-router-dom'
+import PlayButton from '@/components/playButton/PlayButton'
+import { COLOR } from '@/styles/color'
 
 const LawyerVideoSpotlightHeader = () => {
   const { data: totalVideoCount } = useGetVideoCount({
@@ -16,12 +18,15 @@ const LawyerVideoSpotlightHeader = () => {
   })
 
   return (
-    <header className={styles.header}>
-      <h2 className={styles.title}>변호사의 영상</h2>
-      <div className={styles.count}>
-        <span className={styles['count-number']}>전체 {totalVideoCount?.toLocaleString()}개 / </span>
-        <span className={styles['count-number']}>최근 한달 {recentMonthVideoCount?.toLocaleString()}개</span>
+    <header className={styles['header-container']}>
+      <div className={styles['text-wrapper']}>
+        <h2 className={styles.title}>변호사의 영상</h2>
+        <div className={styles.count}>
+          <span className={styles['count-number']}>전체 {totalVideoCount?.toLocaleString()}개 / </span>
+          <span className={styles['count-number']}>최근 한달 {recentMonthVideoCount?.toLocaleString()}개</span>
+        </div>
       </div>
+      <PlayButton iconColor={COLOR.text_black} />
     </header>
   )
 }

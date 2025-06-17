@@ -8,6 +8,11 @@ export type KnowledgeListRequest = {
   orderBy?: SortType
 }
 
+export type KnowledgeDetailRequest = {
+  knowledgeId: number
+  subcategoryId?: number | 'all'
+}
+
 type KnowledgeItem = {
   knowledgeId: number
   knowledgeTitle: string
@@ -24,4 +29,20 @@ export type KnowledgeListResponse = {
   nextCursor: number
   nextCursorId: number
   hasNextPage: boolean
+}
+
+export type KnowledgeDetailResponse = {
+  knowledgeId: number
+  knowledgeTitle: string
+  knowledgeDescription: string
+  lastMessageAt: string
+  tags: string[]
+  lawyers: {
+    lawyerId: number
+    lawyerName: string
+    lawfirmName: string
+    lawyerDescription: string
+    lawyerProfileImage: string
+    content: string
+  }[]
 }

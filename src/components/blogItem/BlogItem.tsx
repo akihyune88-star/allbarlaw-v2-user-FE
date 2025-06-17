@@ -38,7 +38,12 @@ const BlogItem = ({ item, viewKeepBookmark = false, className, onClick }: BlogIt
         </div>
       </div>
       <figure>
-        <img className={styles['blog-item-img']} src={item.thumbnail} alt='blog-item-image' />
+        <img
+          className={styles['blog-item-img']}
+          src={item.thumbnail}
+          alt='blog-item-image'
+          referrerPolicy='no-referrer'
+        />
       </figure>
     </article>
   )

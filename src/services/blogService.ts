@@ -38,7 +38,6 @@ export const blogService = {
   getBlogDetail: async (request: BlogDetailRequest) => {
     try {
       const response = await instance.get<BlogDetailResponse>(`/blog-case/detail/${request.blogCaseId}`)
-      console.log(response.data)
 
       return response.data
     } catch (error) {

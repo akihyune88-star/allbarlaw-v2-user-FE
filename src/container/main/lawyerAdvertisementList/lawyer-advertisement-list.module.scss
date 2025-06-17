@@ -1,0 +1,102 @@
+.lawyer-advertisement-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .text-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.9375rem;
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: $font-weight-extra-bold;
+      color: $color-text-black;
+    }
+
+    .sub-title {
+      font-size: 1rem;
+      font-weight: $font-weight-semibold;
+      color: $color-text-caption;
+    }
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.lawyer-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.footer {
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+
+  &-button {
+    background-color: red;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8.5px 0;
+    border-radius: 0.5rem;
+
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+
+    &.left {
+      background-color: transparent;
+      border: 1px solid $color-green-01;
+      color: $color-green-01;
+    }
+
+    &.right {
+      background-color: $color-green-01;
+      color: $color-white;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .lawyer-advertisement-list-header {
+    .text-wrapper {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+
+      .title {
+        font-size: 1.25rem;
+      }
+      .sub-title {
+        font-size: 0.875rem;
+      }
+    }
+  }
+  .lawyer-list {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0.625rem;
+  }
+  .lawyer-horizon {
+    background-color: $color-white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    align-items: flex-start !important;
+  }
+
+  .footer {
+    &-button {
+      padding: 12px 0;
+    }
+  }
+}

@@ -31,6 +31,19 @@
     max-width: 100%;
     margin: 0;
     box-sizing: border-box;
+    padding-bottom: 5rem;
+  }
+}
+
+.main-container {
+  background-color: $color-bg-gray-02;
+  padding: 1.5rem;
+  will-change: autodm;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .main-container {
+    padding: 0 0 4.25rem 0;
   }
 }
 
@@ -125,6 +138,7 @@
     flex-direction: column;
     gap: 2rem;
     padding: 1.25rem;
+    padding-bottom: 5rem;
   }
 
   .detail-content {

@@ -24,6 +24,12 @@ import SearchMain from '@/pages/search/SearchMain'
 import DictionaryMain from '@/pages/legalDictionary/DictionaryMain'
 import LegalTermDetail from '@/pages/legalTermDetail/LegalTermDetail'
 import MobileMenuList from '@/pages/mobile/MobileMenuList'
+import LegalKnowledgeDetail from '@/pages/legalKnowledge/LegalKnowledgeDetail'
+import TotalSearch from '@/pages/search/totalSearch/TotalSearch'
+import SearchBlog from '@/pages/blog/searchBlog/SearchBlog'
+import SearchVideo from '@/pages/video/searchVideo/SearchVideo'
+import SearchLegalKnowledge from '@/pages/legalKnowledge/searchLegalKnowledge/SearchLegalKnowledge'
+import SearchLawyer from '@/pages/lawyer/searchLawyer/SearchLawyer'
 
 const router = createBrowserRouter([
   {
@@ -77,7 +83,10 @@ const router = createBrowserRouter([
             path: ':subcategoryId/video/:videoId',
             element: <VideoDetail />,
           },
-
+          {
+            path: ':subcategoryId/legal-knowledge/:knowledgeId',
+            element: <LegalKnowledgeDetail />,
+          },
           {
             path: ROUTER.REQUEST_BARO_TALK,
             element: <RequestBaroTalk />,
@@ -108,15 +117,38 @@ const router = createBrowserRouter([
               },
             ],
           },
+
           {
-            path: ROUTER.SEARCH_MAIN,
+            path: `${ROUTER.SEARCH_MAIN}/:query`,
             element: <SearchMain />,
-          },
-          {
-            path: ROUTER.MOBILE_MENU_LIST,
-            element: <MobileMenuList />,
+            children: [
+              {
+                path: '',
+                element: <TotalSearch />,
+              },
+              {
+                path: 'blog',
+                element: <SearchBlog />,
+              },
+              {
+                path: 'video',
+                element: <SearchVideo />,
+              },
+              {
+                path: 'legal-knowledge',
+                element: <SearchLegalKnowledge />,
+              },
+              {
+                path: 'lawyer',
+                element: <SearchLawyer />,
+              },
+            ],
           },
         ],
+      },
+      {
+        path: ROUTER.MOBILE_MENU_LIST,
+        element: <MobileMenuList />,
       },
       {
         path: ROUTER.LOGIN,

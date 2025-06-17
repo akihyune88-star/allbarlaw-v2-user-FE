@@ -46,7 +46,7 @@ const LawyerHorizon = ({
       </div>
       <div className={styles['lawyer-horizon-content']}>
         <div>
-          <span className={styles['name']}>{name}</span>
+          <span className={styles['name']}>{name} 변호사</span>
           {lawfirm && <span className={styles['lawfirm']}>{lawfirm}</span>}
           {ad && <span className={styles['ad']}>AD</span>}
         </div>
