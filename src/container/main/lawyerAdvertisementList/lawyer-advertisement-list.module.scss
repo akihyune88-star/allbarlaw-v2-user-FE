@@ -64,6 +64,10 @@
   }
 }
 
+.custom-lawyer-vertical {
+  background-color: $color-white !important;
+}
+
 @media (max-width: $breakpoint-desktop) {
   .container {
     padding: 0 1.25rem;

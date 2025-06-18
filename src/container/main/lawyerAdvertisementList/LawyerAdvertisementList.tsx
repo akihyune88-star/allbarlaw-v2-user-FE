@@ -46,6 +46,7 @@ const LawyerAdvertisementList = () => {
             />
           ) : (
             <LawyerVertical
+              className={styles['custom-lawyer-vertical']}
               name='김철수'
               profileImage='https://picsum.photos/200/300'
               type={1}

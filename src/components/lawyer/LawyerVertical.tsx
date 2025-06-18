@@ -4,6 +4,7 @@ import SvgIcon from '../SvgIcon'
 import { KeyOfIcon } from '@/types/svg'
 import Tag from '../tag/Tag'
 import { SocialLink } from '@/types/lawyerTypes'
+import { blog, instagram, youtube } from '@/assets/imgs'
 
 type LawyerVerticalProps = {
   name: string
@@ -13,20 +14,30 @@ type LawyerVerticalProps = {
   socialLink?: SocialLink[]
   tags?: string[]
   footer?: React.ReactNode
+  className?: string
 }
 
-const LawyerVertical = ({ name, lawfirm, profileImage, type = 3, socialLink, tags, footer }: LawyerVerticalProps) => {
+const LawyerVertical = ({
+  name,
+  lawfirm,
+  profileImage,
+  type = 3,
+  socialLink,
+  tags,
+  footer,
+  className,
+}: LawyerVerticalProps) => {
   return (
-    <div className={`${styles['lawyer-vertical']} ${styles[`type-${type}`]}`}>
+    <div className={`${styles['lawyer-vertical']} ${styles[`type-${type}`]} ${className}`}>
       <img src={profileImage} alt='변호사 프로필' style={{ borderRadius: 100, objectFit: 'cover' }} />
       <div className={styles['lawyer-info']}>
         <p className={styles.name}>{name} 변호사</p>
         {lawfirm && <p className={styles.lawfirm}>{lawfirm}</p>}
         {socialLink && (
           <div className={styles['social-link']}>
-            {socialLink.map(link => (
-              <SvgIcon name={link.type as KeyOfIcon} size={24} key={link.type} />
-            ))}
+            <img src={blog} alt='블로그' className={styles['social-link-img']} />
+            <img src={youtube} alt='유튜브' className={styles['social-link-img']} />
+            <img src={instagram} alt='인스타그램' className={styles['social-link-img']} />
           </div>
         )}
         {tags && (
