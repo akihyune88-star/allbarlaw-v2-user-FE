@@ -11,6 +11,7 @@ import LawyerResponse from '@/container/legalKnowledge/LawyerResponse'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import { getRelativeTimeString } from '@/utils/date'
+import { generateRandomLawyers } from '@/utils/mockDataGenerator'
 
 const LegalKnowledgeDetail = () => {
   const { knowledgeId } = useParams<{ knowledgeId: string }>()
@@ -28,6 +29,8 @@ const LegalKnowledgeDetail = () => {
     console.log('저장하기 - 법률 지식:', knowledgeId)
     // 실제 저장 로직 구현
   }
+
+  const mockLawyerList = generateRandomLawyers(3)
 
   return (
     <div className={'detail-container'}>
@@ -50,23 +53,25 @@ const LegalKnowledgeDetail = () => {
                 onSave={handleSave}
               />
               {data?.lawyers && <LawyerResponse lawyers={data?.lawyers} />}
-             {isMobile && <ContentsRecommender
-                isRefresh={true}
-                title='최근 답변이 많은 변호사입니다.'
-                contents={
-                  <div className={styles['lawyer-list']}>
-                    {mockLawyerList.map(lawyer => (
-                      <LawyerHorizon
-                        key={lawyer.id}
-                        name={lawyer.name}
-                        profileImage={lawyer.profileImage}
-                        description={lawyer.description}
-                        size='x-small'
-                      />
-                    ))}
-                  </div>
-                }
-              />}
+              {isMobile && (
+                <ContentsRecommender
+                  isRefresh={true}
+                  title='최근 답변이 많은 변호사입니다.'
+                  contents={
+                    <div className={styles['lawyer-list']}>
+                      {mockLawyerList.map(lawyer => (
+                        <LawyerHorizon
+                          key={lawyer.id}
+                          name={lawyer.name}
+                          profileImage={lawyer.profileImage}
+                          description={lawyer.description}
+                          size='x-small'
+                        />
+                      ))}
+                    </div>
+                  }
+                />
+              )}
             </div>
           )}
         </div>
@@ -77,24 +82,3 @@ const LegalKnowledgeDetail = () => {
 }
 
 export default LegalKnowledgeDetail
-
-const mockLawyerList = [
-  {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-  {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-  {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-]
