@@ -5,6 +5,7 @@ import { COLOR } from '@/styles/color'
 import React from 'react'
 import { SocialLink } from '@/types/lawyerTypes'
 import { KeyOfIcon } from '@/types/svg'
+import { blog, instagram, youtube } from '@/assets/imgs'
 
 type LawyerHorizonProps = {
   name: string
@@ -62,9 +63,9 @@ const LawyerHorizon = ({
 
         {socialLink && (
           <div className={styles['social-link']}>
-            {socialLink.map(link => (
-              <SvgIcon name={link.type as KeyOfIcon} size={24} key={link.type} />
-            ))}
+            <img src={blog} alt='블로그' className={styles['social-link-img']} />
+            <img src={youtube} alt='유튜브' className={styles['social-link-img']} />
+            <img src={instagram} alt='인스타그램' className={styles['social-link-img']} />
           </div>
         )}
         {buttonComponent && buttonComponent}
