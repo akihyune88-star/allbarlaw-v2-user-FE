@@ -1,5 +1,11 @@
 import instance from '@/lib/axios'
-import { BlogDetailRequest, BlogDetailResponse, BlogListRequest, BlogListResponse } from '@/types/blogTypes'
+import {
+  BlogDetailRequest,
+  BlogDetailResponse,
+  BlogListRequest,
+  BlogListResponse,
+  RandomBlogListRequest,
+} from '@/types/blogTypes'
 
 // 현재는 목업 데이터를 사용하지만, 실제 API로 교체 가능
 export const blogService = {
@@ -29,6 +35,22 @@ export const blogService = {
     // 쿼리스트링 생성
     const queryString = params.toString()
     const url = `/blog-case/${subcategoryId}${queryString ? `?${queryString}` : ''}`
+
+    const response = await instance.get<BlogListResponse>(url)
+
+    return response.data
+  },
+
+  getRandomBlogList: async (request: RandomBlogListRequest) => {
+    const { take, excludeIds, subcategoryId } = request
+
+    const params = new URLSearchParams()
+    if (take !== undefined) params.append('take', take.toString())
+
+    if (excludeIds !== undefined) params.append('excludeIds', `[${excludeIds}]`)
+
+    const queryString = params.toString()
+    const url = `/blog-case/${subcategoryId}/random${queryString ? `?${queryString}` : ''}`
 
     const response = await instance.get<BlogListResponse>(url)
 

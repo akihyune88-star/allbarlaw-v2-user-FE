@@ -13,6 +13,12 @@ export type BlogListRequest = {
   orderBy?: SortType
 }
 
+export type RandomBlogListRequest = {
+  subcategoryId?: number | 'all'
+  take?: number
+  excludeIds?: number[]
+}
+
 export type BlogDetailRequest = {
   blogCaseId: number
   subcategoryId?: number | 'all'
@@ -34,6 +40,11 @@ export type BlogListResponse = {
   data: BlogCase[]
   nextCursor: number
   nextCursorId: number
+  hasNextPage: boolean
+}
+
+export type RandomBlogListResponse = {
+  data: BlogCase[]
   hasNextPage: boolean
 }
 
