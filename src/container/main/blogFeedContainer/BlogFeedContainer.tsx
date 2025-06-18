@@ -11,15 +11,7 @@ import { COLOR } from '@/styles/color'
 import { useRandomBlogList } from '@/hooks/queries/useRandomBlogList'
 import { useNavigationHistory } from '@/hooks'
 
-const BlogFeedHeader = ({
-  onNext,
-  onPrev,
-  disabledPrev,
-}: {
-  onNext: () => void
-  onPrev: () => void
-  disabledPrev: boolean
-}) => {
+const BlogFeedHeader = ({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { data: totalBlogCount } = useBlogCount({
     subcategoryId: 'all',
@@ -40,9 +32,7 @@ const BlogFeedHeader = ({
           <span className={styles['count-number']}>최근 한달 {recentMonthCount?.toLocaleString()}개</span>
         </div>
       </div>
-      {!isMobile && (
-        <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} disabledPrev={disabledPrev} />
-      )}
+      {!isMobile && <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} />}
     </header>
   )
 }
@@ -51,26 +41,24 @@ const BlogFeedContainer = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
 
-  const { blogList } = useRandomBlogList({
-    subcategoryId: 'all',
-    take: 4,
-    excludeIds: [],
-  })
+  const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 
-  const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory({
-    currentData: blogList,
-    getItemId: blog => blog.blogCaseId,
-  })
-
-  // 실제 데이터 요청에 사용할 훅
-  const { blogList: actualBlogList } = useRandomBlogList({
+  const { blogList, hasNextPage } = useRandomBlogList({
     subcategoryId: 'all',
     take: 4,
     excludeIds: currentExcludeIds,
   })
 
-  const displayBlogList = actualBlogList.length > 0 ? actualBlogList : blogList
-  const subBlogList = isMobile ? displayBlogList : displayBlogList.slice(1, 4)
+  const handleNavigation = (direction: 'next' | 'prev') => {
+    if (direction === 'next') {
+      const currentIds = blogList.map(blog => blog.blogCaseId)
+      handleNext(currentIds)
+    } else {
+      handlePrev()
+    }
+  }
+
+  const subBlogList = isMobile ? blogList : blogList.slice(1, 4)
 
   const handleBlogClick = (subcategoryId: number, blogId: number) => {
     navigate(`/${subcategoryId}/blog/${blogId}`)
@@ -78,20 +66,30 @@ const BlogFeedContainer = () => {
 
   return (
     <section className={styles.container}>
-      <BlogFeedHeader onNext={handleNext} onPrev={handlePrev} disabledPrev={!canGoPrev} />
+      <BlogFeedHeader
+        onNext={
+          hasNextPage
+            ? () => {
+                const currentIds = blogList.map(blog => blog.blogCaseId)
+                handleNext(currentIds)
+              }
+            : undefined
+        }
+        onPrev={canGoPrev ? handlePrev : undefined}
+      />
       <div className={styles['blog-list-container']}>
         <div className={`${styles['main-blog-item']} ${isMobile ? styles.hidden : ''}`}>
-          {displayBlogList[0] && (
+          {blogList[0] && (
             <Article
               type='xxlarge'
-              thumbnailUrl={displayBlogList[0].thumbnail}
-              title={displayBlogList[0].title}
-              content={displayBlogList[0].summaryContent}
+              thumbnailUrl={blogList[0].thumbnail}
+              title={blogList[0].title}
+              content={blogList[0].summaryContent}
               lawyerInfo={{
-                name: displayBlogList[0].lawyerName,
-                profileImageUrl: displayBlogList[0].lawyerProfileImage,
+                name: blogList[0].lawyerName,
+                profileImageUrl: blogList[0].lawyerProfileImage,
               }}
-              onClick={() => handleBlogClick(displayBlogList[0].subcategoryId, displayBlogList[0].blogCaseId)}
+              onClick={() => handleBlogClick(blogList[0].subcategoryId, blogList[0].blogCaseId)}
             />
           )}
         </div>

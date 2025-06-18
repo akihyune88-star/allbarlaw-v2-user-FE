@@ -20,5 +20,6 @@ export const useRandomBlogList = ({ subcategoryId, take, excludeIds }: UseRandom
     blogList: (data?.data || []) as BlogCase[],
     isLoading,
     isPlaceholderData,
+    hasNextPage: data?.hasNextPage ?? true,
   }
 }

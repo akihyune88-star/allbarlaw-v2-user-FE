@@ -1,13 +1,14 @@
 import { useGetVideoCount } from '@/hooks/queries/useGetVideoCount'
 import styles from './lawyer-video-spotlight.module.scss'
-import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
+import { useRandomVideoList } from '@/hooks/queries/useRandomVideoList'
 import VideoThumbnail from '@/components/video/VideoThumbnail'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import PlayButton from '@/components/playButton/PlayButton'
 import { COLOR } from '@/styles/color'
+import { useNavigationHistory } from '@/hooks'
 
-const LawyerVideoSpotlightHeader = () => {
+const LawyerVideoSpotlightHeader = ({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const { data: totalVideoCount } = useGetVideoCount({
@@ -29,18 +30,26 @@ const LawyerVideoSpotlightHeader = () => {
           <span className={styles['count-number']}>최근 한달 {recentMonthVideoCount?.toLocaleString()}개</span>
         </div>
       </div>
-      {!isMobile && <PlayButton iconColor={COLOR.text_black} />}
+      {!isMobile && <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} />}
     </header>
   )
 }
 
 const LawyerVideoSpotlight = () => {
-  const { videoList } = useGetVideoList({
+  const navigate = useNavigate()
+
+  const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
+
+  const { videoList, hasNextPage } = useRandomVideoList({
     subcategoryId: 'all',
     take: 3,
-    orderBy: 'createdAt',
+    excludeIds: currentExcludeIds,
   })
-  const navigate = useNavigate()
+
+  const handleNextClick = () => {
+    const currentIds = videoList.map(video => video.videoCaseId)
+    handleNext(currentIds)
+  }
 
   const handleVideoClick = (subcategoryId: number, videoId: number) => {
     navigate(`/${subcategoryId}/video/${videoId}`)
@@ -48,7 +57,10 @@ const LawyerVideoSpotlight = () => {
 
   return (
     <section className={styles.container}>
-      <LawyerVideoSpotlightHeader />
+      <LawyerVideoSpotlightHeader
+        onNext={hasNextPage ? handleNextClick : undefined}
+        onPrev={canGoPrev ? handlePrev : undefined}
+      />
       <div className={styles['video-grid-container']}>
         {videoList.map(video => (
           <VideoThumbnail

@@ -13,6 +13,12 @@ export type VideoListRequest = {
   orderBy?: SortType
 }
 
+export type RandomVideoListRequest = {
+  subcategoryId: number | 'all'
+  take?: number
+  excludeIds?: number[]
+}
+
 export type VideoDetailRequest = {
   videoCaseId: number
   subcategoryId?: number | 'all'

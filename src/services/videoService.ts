@@ -1,5 +1,11 @@
 import instance from '@/lib/axios'
-import { VideoDetailRequest, VideoDetailResponse, VideoListRequest, VideoListResponse } from '@/types/videoTypes'
+import {
+  VideoDetailRequest,
+  VideoDetailResponse,
+  VideoListRequest,
+  VideoListResponse,
+  RandomVideoListRequest,
+} from '@/types/videoTypes'
 
 export const videoService = {
   // 모든 카테고리 가져오기
@@ -35,6 +41,20 @@ export const videoService = {
   getVideoDetail: async (request: VideoDetailRequest) => {
     const { videoCaseId } = request
     const response = await instance.get<VideoDetailResponse>(`/video-case/detail/${videoCaseId}`)
+    return response.data
+  },
+
+  getRandomVideoList: async (request: RandomVideoListRequest) => {
+    const { subcategoryId, take, excludeIds } = request
+
+    const params = new URLSearchParams()
+    if (take !== undefined) params.append('take', take.toString())
+    if (excludeIds !== undefined) params.append('excludeIds', `[${excludeIds}]`)
+
+    const queryString = params.toString()
+    const url = `/video-case/${subcategoryId}/random${queryString ? `?${queryString}` : ''}`
+
+    const response = await instance.get<VideoListResponse>(url)
     return response.data
   },
 }
