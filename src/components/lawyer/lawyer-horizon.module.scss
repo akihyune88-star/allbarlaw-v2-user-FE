@@ -60,6 +60,12 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+
+    .social-link-img {
+      width: 24px;
+      height: 24px;
+      border-radius: 0;
+    }
   }
 
   &.x-small {
