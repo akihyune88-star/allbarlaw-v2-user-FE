@@ -1,16 +1,20 @@
+import PlayButton from '@/components/playButton/PlayButton'
 import styles from './lawyer-advertisement-list.module.scss'
+import { COLOR } from '@/styles/color'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { SOCIAL_LINK_LIST } from '@/constants/lawyer'
 import LawyerVertical from '@/components/lawyer/LawyerVertical'
 
 const LawyerAdvertisementListHeader = () => {
+  const isMobile = useMediaQuery('(max-width: 80rem)')
   return (
     <header className={styles['lawyer-advertisement-list-header']}>
       <div className={styles['text-wrapper']}>
         <h4 className={styles['title']}>함께 시작하는 전문 변호사</h4>
         <span className={styles['sub-title']}>전체 753명의 전문 변호사가 함께 합니다.</span>
       </div>
+      {!isMobile && <PlayButton iconColor={COLOR.text_black} />}
     </header>
   )
 }

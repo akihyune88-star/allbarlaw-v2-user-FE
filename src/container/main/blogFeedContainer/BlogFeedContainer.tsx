@@ -6,8 +6,11 @@ import Article from '@/components/article/Article'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useNavigate } from 'react-router-dom'
+import PlayButton from '@/components/playButton/PlayButton'
+import { COLOR } from '@/styles/color'
 
 const BlogFeedHeader = () => {
+  const isMobile = useMediaQuery('(max-width: 80rem)')
   const { data: totalBlogCount } = useBlogCount({
     subcategoryId: 'all',
     recentDays: 'all',
@@ -27,6 +30,7 @@ const BlogFeedHeader = () => {
           <span className={styles['count-number']}>최근 한달 {recentMonthCount?.toLocaleString()}개</span>
         </div>
       </div>
+      {!isMobile && <PlayButton iconColor={COLOR.text_black} />}
     </header>
   )
 }
