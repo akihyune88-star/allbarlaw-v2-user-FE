@@ -9,6 +9,7 @@ type ContentsRecommenderProps = {
   isRefresh?: boolean
   showDivider?: boolean
   dividerPadding?: number
+  className?: string
 }
 
 const ContentsRecommender = ({
@@ -17,9 +18,10 @@ const ContentsRecommender = ({
   isRefresh = false,
   showDivider = true,
   dividerPadding = 16,
+  className,
 }: ContentsRecommenderProps) => {
   return (
-    <section className={styles.container}>
+    <section className={`${styles.container} ${className}`}>
       <header>
         <h3 className={styles.title}>{title}</h3>
         {isRefresh && <SvgIcon name='refresh' size={16} />}
