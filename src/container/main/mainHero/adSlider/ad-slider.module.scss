@@ -60,6 +60,10 @@
 }
 
 @media (max-width: $breakpoint-desktop) {
+  .ad-slider {
+    height: 118px;
+  }
+
   .nav-button-container {
     display: none;
   }
