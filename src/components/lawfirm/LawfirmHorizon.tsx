@@ -12,7 +12,11 @@ interface LawfirmHorizonProps {
   phoneNumber: string | null
   homepageUrl: string | null
   blogUrl: string | null
-  linkList?: { label: string; url: string }[]
+  linkList?: {
+    lawfirmDirectId: number
+    lawfirmDirectName: string
+    lawfirmDirectLink: string
+  }[]
   className?: string
 }
 
@@ -43,28 +47,28 @@ const LawfirmHorizon = ({
             <h3 className={styles['lawfirm-name']}>{lawfirmName}</h3>
             <div className={styles['contact-info']}>
               {blogUrl && (
-                <div className={styles['contact-info-item']}>
+                <button className={styles['contact-info-item']} onClick={() => handleTagClick(blogUrl)}>
                   <SvgIcon name={'blog'} size={24} />
                   <span>블로그</span>
-                </div>
+                </button>
               )}
               {homepageUrl && (
-                <div className={styles['contact-info-item']}>
+                <button className={styles['contact-info-item']} onClick={() => handleTagClick(homepageUrl)}>
                   <SvgIcon name={'homepage'} size={24} />
                   <span>홈페이지</span>
-                </div>
+                </button>
               )}
               {address && (
-                <div className={styles['contact-info-item']}>
+                <button className={styles['contact-info-item']} onClick={() => handleTagClick(address)}>
                   <SvgIcon name={'map'} size={24} />
                   <span>위치</span>
-                </div>
+                </button>
               )}
               {phoneNumber && (
-                <div className={styles['contact-info-item']}>
+                <button className={styles['contact-info-item']} onClick={() => handleTagClick(phoneNumber)}>
                   <SvgIcon name={'call'} size={24} />
                   <span>연락처</span>
-                </div>
+                </button>
               )}
             </div>
           </div>
@@ -76,7 +80,13 @@ const LawfirmHorizon = ({
         </section>
         <div className={styles['tag-list']}>
           {linkList &&
-            linkList.map(link => <Tag key={link.label} tag={link.label} onClick={() => handleTagClick(link.url)} />)}
+            linkList.map(link => (
+              <Tag
+                key={link.lawfirmDirectId}
+                tag={link.lawfirmDirectName}
+                onClick={() => handleTagClick(link.lawfirmDirectLink)}
+              />
+            ))}
         </div>
       </div>
     </article>

@@ -39,7 +39,7 @@
     display: flex;
     gap: 0.25rem;
     align-items: center;
-
+    background-color: transparent;
     cursor: pointer;
 
     span {
@@ -64,6 +64,7 @@
 
 .tag-list {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
