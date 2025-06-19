@@ -1,7 +1,5 @@
 import React from 'react'
 import styles from './lawyer-vertical.module.scss'
-import SvgIcon from '../SvgIcon'
-import { KeyOfIcon } from '@/types/svg'
 import Tag from '../tag/Tag'
 import { SocialLink } from '@/types/lawyerTypes'
 import { blog, instagram, youtube } from '@/assets/imgs'
