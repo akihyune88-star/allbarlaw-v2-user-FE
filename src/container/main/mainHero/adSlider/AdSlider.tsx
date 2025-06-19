@@ -1,13 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import styles from './ad-slider.module.scss'
 import PlayButton from '@/components/playButton/PlayButton'
+import { BannerResponse } from '@/types/banner'
 
 interface AdSliderProps {
-  ads: {
-    id: number
-    imageUrl: string
-    link: string
-  }[]
+  ads: BannerResponse | []
   className?: string
   autoplay?: boolean
 }

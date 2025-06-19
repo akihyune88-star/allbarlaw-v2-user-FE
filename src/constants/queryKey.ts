@@ -9,4 +9,5 @@ export const QUERY_KEY = {
   RANDOM_VIDEO_LIST: 'randomVideoList',
   KNOWLEDGE_LIST: 'knowledgeList',
   KNOWLEDGE_DETAIL: 'knowledgeDetail',
+  BANNER: 'banner',
 } as const
