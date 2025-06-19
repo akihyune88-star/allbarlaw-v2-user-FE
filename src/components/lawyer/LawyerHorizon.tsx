@@ -4,7 +4,6 @@ import SvgIcon from '../SvgIcon'
 import { COLOR } from '@/styles/color'
 import React from 'react'
 import { SocialLink } from '@/types/lawyerTypes'
-import { KeyOfIcon } from '@/types/svg'
 import { blog, instagram, youtube } from '@/assets/imgs'
 
 type LawyerHorizonProps = {

@@ -49,15 +49,6 @@ const BlogFeedContainer = () => {
     excludeIds: currentExcludeIds,
   })
 
-  const handleNavigation = (direction: 'next' | 'prev') => {
-    if (direction === 'next') {
-      const currentIds = blogList.map(blog => blog.blogCaseId)
-      handleNext(currentIds)
-    } else {
-      handlePrev()
-    }
-  }
-
   const subBlogList = isMobile ? blogList : blogList.slice(1, 4)
 
   const handleBlogClick = (subcategoryId: number, blogId: number) => {
