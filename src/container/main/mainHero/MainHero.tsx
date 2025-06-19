@@ -32,16 +32,3 @@ const MainHero = () => {
 }
 
 export default MainHero
-
-const imageList = [
-  {
-    id: 1,
-    imageUrl: 'https://www.lawinsung.com/mobile/img/m_slide01.jpg',
-    link: 'https://www.lawinsung.com/mobile/img/m_slide01.jpg',
-  },
-  {
-    id: 2,
-    imageUrl: 'https://www.mstoday.co.kr/news/photo/202309/85069_74095_575.png',
-    link: 'https://www.mstoday.co.kr/news/photo/202309/85069_74095_575.png',
-  },
-]

@@ -6,8 +6,8 @@ export const useGetBanner = () => {
   return useQuery({
     queryKey: [QUERY_KEY.BANNER],
     queryFn: bannerService.getBanners,
-    // 추가 옵션들
-    staleTime: 1000 * 60 * 10, // 10분간 fresh 상태 유지
-    gcTime: 1000 * 60 * 30, // 30분간 캐시 보관
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
+    placeholderData: previousData => previousData,
   })
 }
