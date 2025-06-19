@@ -1,19 +1,18 @@
+import AdSlider from '@/container/main/mainHero/adSlider/AdSlider'
 import TotalBlogList from '@/container/subMain/total/TotalBlogList'
 import TotalLawyer from '@/container/subMain/total/TotalLawyer'
 import TotalLegalKnowledge from '@/container/subMain/total/TotalLegalKnowledge'
 import TotalVideo from '@/container/subMain/total/TotalVideo'
+import { useGetBanner } from '@/hooks/queries/useGetBanner'
 import styles from '@/pages/subMain/total-sub-main.module.scss'
 
 const TotalSubMain = () => {
+  const { data: bannerList } = useGetBanner()
   return (
     <div className={styles['total-sub-main']}>
-      <figure>
-        <img
-          src={'https://d2v80xjmx68n4w.cloudfront.net/members/portfolios/MqK421730103906.jpg?w=500'}
-          alt='광고'
-          className={styles['banner']}
-        />
-      </figure>
+      <div className={styles['ad-slider']}>
+        <AdSlider ads={bannerList || []} />
+      </div>
       <main className='sub-main-container'>
         <section className={`contents-section ${styles['contents-container']}`}>
           <TotalBlogList />

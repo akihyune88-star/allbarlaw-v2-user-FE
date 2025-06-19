@@ -4,12 +4,15 @@ import styles from './main-hero.module.scss'
 import AdSlider from './adSlider/AdSlider'
 import PlayButton from '@/components/playButton/PlayButton'
 import { COLOR } from '@/styles/color'
+import { useGetBanner } from '@/hooks/queries/useGetBanner'
 
 const MainHero = () => {
+  const { data: bannerList } = useGetBanner()
+
   return (
     <section className={styles['main-hero']}>
       <div className={styles['slider-container']}>
-        <AdSlider ads={imageList} />
+        <AdSlider ads={bannerList || []} />
       </div>
       <figure className={styles['guide-banner']}>
         <img src={guideImageSmall} alt='main-hero-image' />
@@ -29,16 +32,3 @@ const MainHero = () => {
 }
 
 export default MainHero
-
-const imageList = [
-  {
-    id: 1,
-    imageUrl: 'https://www.lawinsung.com/mobile/img/m_slide01.jpg',
-    link: 'https://www.lawinsung.com/mobile/img/m_slide01.jpg',
-  },
-  {
-    id: 2,
-    imageUrl: 'https://www.mstoday.co.kr/news/photo/202309/85069_74095_575.png',
-    link: 'https://www.mstoday.co.kr/news/photo/202309/85069_74095_575.png',
-  },
-]
