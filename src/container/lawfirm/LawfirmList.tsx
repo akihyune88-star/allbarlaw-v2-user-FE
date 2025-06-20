@@ -1,27 +1,19 @@
 import styles from '@/container/lawfirm/lawfirm-list.module.scss'
 import MultipleImageSlider from '@/components/multipleImageSlider/MultipleImageSlider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useInfiniteLawfirmList } from '@/hooks/queries/useGetLawfirmList'
-import { useParams } from 'react-router-dom'
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import Divider from '@/components/divider/Divider'
 import LawfirmHorizon from './lawfirmHorizon/LawfirmHorizon'
 import { Fragment } from 'react/jsx-runtime'
+import { Lawfirm } from '@/types/lawfirmType'
 
-const LawfirmList = () => {
+interface LawfirmListProps {
+  lawfirmList: Lawfirm[]
+  isLoading: boolean
+  isFetchingNextPage: boolean
+}
+
+const LawfirmList = ({ lawfirmList, isLoading, isFetchingNextPage }: LawfirmListProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const { subcategoryId } = useParams<{ subcategoryId: string }>()
-  const { lawfirmList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteLawfirmList({
-    subcategoryId: Number(subcategoryId),
-    take: 6,
-  })
-
-  // 무한스크롤 적용
-  useInfiniteScroll({
-    hasNextPage: hasNextPage ?? false,
-    isFetching: isFetchingNextPage,
-    fetchNextPage,
-  })
 
   return (
     <main className={styles['lawfirm-container']}>

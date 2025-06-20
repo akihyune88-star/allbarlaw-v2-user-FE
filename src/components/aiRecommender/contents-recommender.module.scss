@@ -6,6 +6,12 @@
   border: 1px solid rgba(32, 191, 98, 0.3);
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .title {
   font-size: 1.25rem;
   font-weight: $font-weight-extra-bold;

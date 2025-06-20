@@ -34,7 +34,6 @@ const LawfirmHorizon = ({
   linkList,
   className,
 }: LawfirmHorizonProps) => {
-
   const { mutate: trackView } = usePostTrackView()
 
   const handleContactClick = (url: string) => {
@@ -50,11 +49,7 @@ const LawfirmHorizon = ({
   return (
     <article className={`${styles['lawfirm-horizon']} ${className}`}>
       <figure>
-        {lawfirmThumbnail ? (
-          <img src={lawfirmThumbnail} alt={lawfirmName} className={styles.thumbnail} />
-        ) : (
-          <div className={styles.thumbnail} aria-label={`${lawfirmName} 썸네일 없음`} />
-        )}
+        <img src={lawfirmThumbnail} alt={lawfirmName} className={styles.thumbnail} />
       </figure>
       <div className={styles['lawfirm-info']}>
         <header className={styles['header-wrapper']}>
@@ -87,11 +82,7 @@ const LawfirmHorizon = ({
               )}
             </div>
           </div>
-          {lawfirmThumbnail ? (
-            <img src={lawfirmThumbnail} alt={lawfirmName} className={styles.thumbnail} />
-          ) : (
-            <div className={styles.thumbnail} aria-label={`${lawfirmName} 썸네일 없음`} />
-          )}
+          <img src={lawfirmThumbnail} alt={lawfirmName} className={styles.thumbnail} />
         </header>
         <section className={styles['info-description']}>
           <h3>{title}</h3>
