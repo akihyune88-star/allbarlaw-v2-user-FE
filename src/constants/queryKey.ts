@@ -10,4 +10,6 @@ export const QUERY_KEY = {
   KNOWLEDGE_LIST: 'knowledgeList',
   KNOWLEDGE_DETAIL: 'knowledgeDetail',
   BANNER: 'banner',
+  LAWFIRM_LIST: 'lawfirmList',
+  TRACK_VIEW: 'trackView',
 } as const

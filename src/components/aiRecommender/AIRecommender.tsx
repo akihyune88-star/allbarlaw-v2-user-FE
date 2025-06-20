@@ -4,6 +4,8 @@ import SvgIcon from '../SvgIcon'
 import { AIRecommenderLawyerItem } from '@/types/lawyerTypes'
 import LawyerHorizon from '../lawyer/LawyerHorizon'
 import { exampleLawyerList, exampleTagList } from '@/constants/exampleData'
+import { generateRandomLawyers } from '@/utils/mockDataGenerator'
+import { useState } from 'react'
 
 const TagSection = ({ tagList }: { tagList: string[] }) => {
   return (
@@ -27,15 +29,17 @@ const TagSection = ({ tagList }: { tagList: string[] }) => {
 export const LawyerItem = ({
   lawyerList,
   divider = false,
+  onRefresh,
 }: {
   lawyerList: AIRecommenderLawyerItem[]
   divider?: boolean
+  onRefresh?: () => void
 }) => {
   return (
     <section className={styles['lawyer-section']}>
       <header>
         <h2 className={styles['section-title']}>AI 추천 변호사</h2>
-        <SvgIcon name='refresh' />
+        <SvgIcon name='refresh' onClick={onRefresh} />
       </header>
       {divider && <Divider />}
       <div className={styles['lawyer-list']}>
@@ -54,11 +58,17 @@ export const LawyerItem = ({
 }
 
 const AIRecommender = () => {
+  const [lawyerList, setLawyerList] = useState<AIRecommenderLawyerItem[]>(generateRandomLawyers(3))
+
+  const handleRefresh = () => {
+    setLawyerList(generateRandomLawyers(3))
+  }
+
   return (
     <article className={styles['ai-recommender']}>
       <TagSection tagList={exampleTagList} />
       <Divider />
-      <LawyerItem lawyerList={exampleLawyerList} />
+      <LawyerItem lawyerList={lawyerList} onRefresh={handleRefresh} />
     </article>
   )
 }

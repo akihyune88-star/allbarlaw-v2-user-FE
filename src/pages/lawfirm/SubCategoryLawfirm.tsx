@@ -1,28 +1,36 @@
-import AIRecommender from '@/components/aiRecommender/AIRecommender'
-import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
+import LawfirmFilter from '@/container/lawfirm/lawfirmFilter/LawfirmFilter'
 import LawfirmList from '@/container/lawfirm/LawfirmList'
+import { useInfiniteLawfirmList } from '@/hooks/queries/useGetLawfirmList'
+import { useParams } from 'react-router-dom'
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
+import { useState } from 'react'
 
 const SubcategoryLawfirmLayout = () => {
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+  const [filter, setFilter] = useState({
+    orderBy: 'all',
+    recentDays: 'all',
+  })
+
+  const { lawfirmList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteLawfirmList({
+    subcategoryId: Number(subcategoryId),
+    take: 6,
+  })
+
+  // 무한스크롤 적용
+  useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetching: isFetchingNextPage,
+    fetchNextPage,
+  })
+
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
-        <LawfirmList />
+        <LawfirmList lawfirmList={lawfirmList} isLoading={isLoading} isFetchingNextPage={isFetchingNextPage} />
       </section>
-      <aside className='aside'>
-        <section>
-          <AIRecommender />
-        </section>
-        <section>
-          <LegalTermWidget
-            lagalTermList={[
-              '사기죄 [詐欺罪]',
-              '업무방해죄 [業務妨害罪]',
-              '절도죄 [窃盜罪]',
-              '법정대리인 [法定代理人]',
-              '위법성 조각사유 [違法性 阻却事由]',
-            ]}
-          />
-        </section>
+      <aside className='aside' style={{ width: '250px', flexShrink: 0 }}>
+        <LawfirmFilter filter={filter} setFilter={setFilter} />
       </aside>
     </main>
   )

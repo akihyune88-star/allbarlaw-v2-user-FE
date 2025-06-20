@@ -1,28 +1,110 @@
+.lawfirm-container {
+  display: flex;
+  flex-direction: column;
+  background-color: $color-white;
+  border-radius: 0.5rem;
+}
+
+.lawfirm-header {
+  padding: 1.5rem;
+
+  h2 {
+    white-space: pre-line;
+    font-size: 1.25rem;
+    color: $color-green-01;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.lawfirm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .header-wrapper {
   padding: 1.5rem;
 }
 
 .lawfirm-item {
-  background-color: $color-white;
   border-radius: 0.5rem;
   padding: 1rem 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 
   .content-wrapper {
     padding: 0.75rem 2.1875rem 0.75rem 1.5rem;
   }
+
+  &.has-images {
+    gap: 1rem;
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+
+.loading-text {
+  color: #666666;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 @media (max-width: $breakpoint-desktop) {
+  .lawfirm-container {
+    background-color: transparent;
+  }
+
+  .lawfirm-header {
+    flex-direction: column;
+    background-color: $color-white;
+    margin: -1.5rem -1.5rem 0 -1.5rem;
+    gap: 1.0625rem;
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: $font-weight-extra-bold;
+    }
+
+    h2 {
+      font-size: 0.8125rem;
+      font-weight: $font-weight-regular;
+      line-height: 1.5rem;
+      color: $color-text-black;
+    }
+  }
+
+  .lawfirm-filter {
+    padding: 1.875rem 0 1rem 0;
+  }
+
+  .lawfirm-list {
+    gap: 0.75rem;
+    background-color: $color-white;
+  }
+
   .lawfirm-item {
     padding: 0;
-
-    gap: 0.75rem;
 
     .content-wrapper {
       padding: 0.75rem 1rem;
     }
+
+    &.has-images {
+      gap: 0.75rem;
+    }
+  }
+
+  .loading-container {
+    margin-top: 1.5rem;
+    padding: 0.75rem 0;
+  }
+
+  .loading-text {
+    font-size: 0.8125rem;
   }
 }
