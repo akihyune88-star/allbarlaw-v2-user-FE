@@ -19,4 +19,9 @@ export const lawfirmService = {
 
     return response.data
   },
+
+  postTrackView: async (id: number) => {
+    const response = await instance.post<string>(`/lawfirm/${id}/view`)
+    return response.data
+  },
 }

@@ -1,11 +1,12 @@
 import styles from '@/container/lawfirm/lawfirm-list.module.scss'
-import LawfirmHorizon from '@/components/lawfirm/LawfirmHorizon'
 import MultipleImageSlider from '@/components/multipleImageSlider/MultipleImageSlider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useInfiniteLawfirmList } from '@/hooks/queries/useGetLawfirmList'
 import { useParams } from 'react-router-dom'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import Divider from '@/components/divider/Divider'
+import LawfirmHorizon from './lawfirmHorizon/LawfirmHorizon'
+import { Fragment } from 'react/jsx-runtime'
 
 const LawfirmList = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
@@ -35,14 +36,15 @@ const LawfirmList = () => {
           const hasImages = imageList && imageList.length > 0
 
           return (
-            <>
+            <Fragment key={lawfirm.lawfirmId}>
               <div
-                key={idx}
+                key={lawfirm.lawfirmId}
                 className={`${styles['lawfirm-item']} ${hasImages ? styles['has-images'] : ''}`}
                 style={{ width: isMobile ? '100%' : '796px' }}
               >
                 <LawfirmHorizon
                   className={styles['content-wrapper']}
+                  lawfirmId={lawfirm.lawfirmId}
                   lawfirmThumbnail={lawfirm.lawfirmLogoImageUrl}
                   blogUrl={lawfirm.lawfirmBlogUrl}
                   lawfirmName={lawfirm.lawfirmName}
@@ -56,7 +58,7 @@ const LawfirmList = () => {
                 {hasImages && <MultipleImageSlider imageList={imageList} width={isMobile ? 335 : 796} />}
               </div>
               {idx !== lawfirmList.length - 1 && <Divider padding={0} />}
-            </>
+            </Fragment>
           )
         })}
 
