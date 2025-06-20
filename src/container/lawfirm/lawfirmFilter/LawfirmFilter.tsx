@@ -48,16 +48,10 @@ type LawfirmFilterProps = {
 }
 
 const LawfirmFilter = ({ filter: _filter, setFilter: _setFilter }: LawfirmFilterProps) => {
-  const handleRefresh = () => {}
-
-  const handleOrderBy = (sortType: string) => {
-    _setFilter({ ..._filter, orderBy: sortType })
-  }
-
   return (
     <ContentsRecommender
       title='필터 검색'
-      onRefresh={handleRefresh}
+      isRefresh={true}
       contents={
         <div className={styles['lawfirm-filter']}>
           <FilterSection title='정렬' filterList={LAWFIRM_MAIN_FILTER_CASE} onClick={_sortType => {}} />

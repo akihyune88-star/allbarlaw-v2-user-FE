@@ -6,6 +6,7 @@ import SvgIcon from '../SvgIcon'
 type ContentsRecommenderProps = {
   title: string
   contents: React.ReactNode
+  isRefresh?: boolean
   onRefresh?: () => void
   showDivider?: boolean
   dividerPadding?: number
@@ -15,6 +16,7 @@ type ContentsRecommenderProps = {
 const ContentsRecommender = ({
   title,
   contents,
+  isRefresh = false,
   onRefresh,
   showDivider = true,
   dividerPadding = 16,
@@ -24,7 +26,7 @@ const ContentsRecommender = ({
     <section className={`${styles.container} ${className}`}>
       <header className={styles.header}>
         <h3 className={styles.title}>{title}</h3>
-        {onRefresh && <SvgIcon name='refresh' size={16} onClick={onRefresh} />}
+        {(isRefresh || onRefresh) && <SvgIcon name='refresh' size={16} onClick={onRefresh} />}
       </header>
       {showDivider && <Divider padding={dividerPadding} />}
       <div>{contents}</div>

@@ -5,17 +5,14 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import styles from './multiple-image-slider.module.scss'
 import SvgIcon from '../SvgIcon'
-import { CSSProperties, useEffect, useRef, useState } from 'react'
+import { CSSProperties, useEffect, useRef } from 'react'
 
 type MultipleImageSliderProps = {
   imageList: string[]
-  slidesToShow?: number
-  slidesToScroll?: number
   imgHeight?: number
   dots?: boolean
   arrow?: boolean
   width?: number | string // 슬라이더 너비 prop 추가
-  infinite?: boolean
 }
 
 interface CustomArrowProps {
@@ -37,18 +34,14 @@ const Arrow = ({ className, onClick, type }: CustomArrowProps) => (
 
 const MultipleImageSlider = ({
   imageList,
-  slidesToShow = 3,
-  slidesToScroll = 1,
   imgHeight = 108,
   dots = false,
   arrow = true,
-  infinite = false,
-  width = '100%', // 기본값 설정
+  width = '100%',
 }: MultipleImageSliderProps) => {
   // 이미지 개수에 따른 설정 조정
   const hasMultipleImages = imageList.length > 1
   const sliderRef = useRef<Slider>(null)
-  const [currentSlide, setCurrentSlide] = useState(0)
 
   // 화면에 다 들어갈지 확인
   const containerWidth = typeof width === 'number' ? width : 800
@@ -56,26 +49,20 @@ const MultipleImageSlider = ({
   const estimatedTotalWidth = imageList.length * estimatedImageWidth
   const needsScrolling = estimatedTotalWidth > containerWidth
 
-  // 슬라이더 상태 업데이트
-  const handleAfterChange = (current: number) => {
-    setCurrentSlide(current)
-  }
-
   // 슬라이더 설정 - 스크롤이 필요할 때만 infinite
   const settings = {
     className: hasMultipleImages ? 'slider variable-width' : 'slider fixed-width',
     variableWidth: hasMultipleImages,
     dots: dots,
-    infinite: hasMultipleImages && needsScrolling, // 스크롤이 필요할 때만 infinite
+    infinite: hasMultipleImages && needsScrolling,
     centerMode: false,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows: arrow && hasMultipleImages && needsScrolling, // 스크롤이 필요할 때만 화살표
+    arrows: arrow && hasMultipleImages && needsScrolling,
     nextArrow: <Arrow type='next' />,
     prevArrow: <Arrow type='prev' />,
     swipeToSlide: hasMultipleImages,
     adaptiveHeight: false,
-    afterChange: handleAfterChange,
   }
 
   // 슬라이더 스타일

@@ -7,7 +7,7 @@ export const usePostTrackView = () => {
   return useMutation({
     mutationKey: [QUERY_KEY.TRACK_VIEW],
     mutationFn: (id: number) => lawfirmService.postTrackView(id),
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       console.log(`조회수 추적 성공: ID ${variables}`)
     },
     onError: (error, variables) => {

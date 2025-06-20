@@ -3,7 +3,7 @@ import Divider from '../divider/Divider'
 import SvgIcon from '../SvgIcon'
 import { AIRecommenderLawyerItem } from '@/types/lawyerTypes'
 import LawyerHorizon from '../lawyer/LawyerHorizon'
-import { exampleLawyerList, exampleTagList } from '@/constants/exampleData'
+import { exampleTagList } from '@/constants/exampleData'
 import { generateRandomLawyers } from '@/utils/mockDataGenerator'
 import { useState } from 'react'
 
