@@ -28,6 +28,12 @@
 }
 
 @media (max-width: $breakpoint-desktop) {
+  .total-sub-main {
+    .ad-slider {
+      height: 118px;
+    }
+  }
+
   .container {
     flex-direction: column;
     gap: 1.0625rem;
