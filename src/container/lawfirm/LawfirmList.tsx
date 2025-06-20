@@ -5,13 +5,14 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useInfiniteLawfirmList } from '@/hooks/queries/useGetLawfirmList'
 import { useParams } from 'react-router-dom'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
+import Divider from '@/components/divider/Divider'
 
 const LawfirmList = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const { lawfirmList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteLawfirmList({
     subcategoryId: Number(subcategoryId),
-    take: 4,
+    take: 6,
   })
 
   // 무한스크롤 적용
@@ -23,32 +24,39 @@ const LawfirmList = () => {
 
   return (
     <main className={styles['lawfirm-container']}>
+      <header className={styles['lawfirm-header']}>
+        {isMobile && <h3>로펌</h3>}
+        <h2>{`분야별 특별한 로펌을 찾으신다면..\n여기서 찾아서 선택하고 상담을 진행하시면 해결 가능합니다.`}</h2>
+      </header>
+      {isMobile && <section className={styles['lawfirm-filter']}>필터</section>}
       <section className={styles['lawfirm-list']} aria-label='로펌 목록'>
         {lawfirmList.map((lawfirm, idx) => {
           const imageList = lawfirm.lawfirmImages.map(image => image.lawfirmImageUrl)
           const hasImages = imageList && imageList.length > 0
-          console.log(imageList.length)
+
           return (
-            <div key={idx} className={`${styles['lawfirm-item']} ${hasImages ? styles['has-images'] : ''}`}>
-              <LawfirmHorizon
-                className={styles['content-wrapper']}
-                lawfirmThumbnail={lawfirm.lawfirmLogoImageUrl}
-                blogUrl={lawfirm.lawfirmBlogUrl}
-                lawfirmName={lawfirm.lawfirmName}
-                title={lawfirm.lawfirmGreetingTitle}
-                description={lawfirm.lawfirmGreetingContent}
-                address={lawfirm.lawfirmAddress}
-                phoneNumber={lawfirm.lawfirmContact}
-                homepageUrl={lawfirm.lawfirmHomepageUrl}
-                linkList={[
-                  { label: '변호사소개', url: 'https://example.com' },
-                  { label: '유튜브', url: 'https://example.com' },
-                  { label: '블로그', url: 'https://example.com' },
-                  { label: '의뢰인후기', url: 'https://example.com' },
-                ]}
-              />
-              {hasImages && <MultipleImageSlider imageList={imageList} width={isMobile ? 335 : 796} />}
-            </div>
+            <>
+              <div
+                key={idx}
+                className={`${styles['lawfirm-item']} ${hasImages ? styles['has-images'] : ''}`}
+                style={{ width: isMobile ? '100%' : '796px' }}
+              >
+                <LawfirmHorizon
+                  className={styles['content-wrapper']}
+                  lawfirmThumbnail={lawfirm.lawfirmLogoImageUrl}
+                  blogUrl={lawfirm.lawfirmBlogUrl}
+                  lawfirmName={lawfirm.lawfirmName}
+                  title={lawfirm.lawfirmGreetingTitle}
+                  description={lawfirm.lawfirmGreetingContent}
+                  address={lawfirm.lawfirmAddress}
+                  phoneNumber={lawfirm.lawfirmContact}
+                  homepageUrl={lawfirm.lawfirmHomepageUrl}
+                  linkList={lawfirm.lawfirmDirects}
+                />
+                {hasImages && <MultipleImageSlider imageList={imageList} width={isMobile ? 335 : 796} />}
+              </div>
+              {idx !== lawfirmList.length - 1 && <Divider padding={0} />}
+            </>
           )
         })}
 
