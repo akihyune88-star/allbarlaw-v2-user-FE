@@ -63,10 +63,15 @@ const LawfirmFilter = ({ filter, setFilter }: LawfirmFilterProps) => {
     setFilter(prev => ({ ...prev, recentDays: sortType }))
   }
 
+  const handleReset = () => {
+    setFilter({ orderBy: 'createdAt', recentDays: 'all' })
+  }
+
   return (
     <ContentsRecommender
       title='필터 검색'
       isRefresh={true}
+      onRefresh={handleReset}
       contents={
         <div className={styles['lawfirm-filter']}>
           <FilterSection
