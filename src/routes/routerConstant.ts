@@ -19,5 +19,7 @@ export const ROUTER = {
   BARO_TALK_LAWYER_SELECTION: '/baro-talk-lawyer-selection',
   SEARCH_MAIN: '/search',
   MOBILE_MENU_LIST: '/mobile-menu-list',
+  FAQ: '/faq',
+  NOTICE: '/notice',
   NOT_FOUND: '*',
 } as const
