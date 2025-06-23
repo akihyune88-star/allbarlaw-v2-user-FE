@@ -30,6 +30,8 @@ import SearchBlog from '@/pages/blog/searchBlog/SearchBlog'
 import SearchVideo from '@/pages/video/searchVideo/SearchVideo'
 import SearchLegalKnowledge from '@/pages/legalKnowledge/searchLegalKnowledge/SearchLegalKnowledge'
 import SearchLawyer from '@/pages/lawyer/searchLawyer/SearchLawyer'
+import FAQ from '@/pages/notice/FAQ'
+import Notice from '@/pages/notice/Notice'
 
 const router = createBrowserRouter([
   {
@@ -73,6 +75,7 @@ const router = createBrowserRouter([
                 path: 'law-firm',
                 element: <SubcategoryLawfirmLayout />,
               },
+
             ],
           },
           {
@@ -117,7 +120,6 @@ const router = createBrowserRouter([
               },
             ],
           },
-
           {
             path: `${ROUTER.SEARCH_MAIN}/:query`,
             element: <SearchMain />,
@@ -144,6 +146,14 @@ const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: ROUTER.FAQ,
+            element: <FAQ />,
+          },
+          {
+            path: ROUTER.NOTICE,
+            element: <Notice/>,
+          }
         ],
       },
       {

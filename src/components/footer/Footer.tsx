@@ -2,6 +2,8 @@ import { CSSProperties } from 'react'
 import styles from './footer.module.scss'
 import Divider from '../divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useNavigate } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
 
 interface FooterProps {
   className?: string
@@ -10,6 +12,7 @@ interface FooterProps {
 
 const Footer = ({ className, style }: FooterProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const navigate = useNavigate()
 
   return (
     <div className={`${styles['footer-container']} ${className}`} style={style}>
@@ -18,9 +21,9 @@ const Footer = ({ className, style }: FooterProps) => {
           <strong>(주)올바로 |</strong> 당신의 법률 문제
         </span>
         <div className={styles['button-wrapper']}>
-          <button>공지사항</button>
+          <button onClick={() => navigate(ROUTER.NOTICE)}>공지사항</button>
           <span className={styles.divider}>|</span>
-          <button>FAQ</button>
+          <button onClick={() => navigate(ROUTER.FAQ)}>FAQ</button>
         </div>
       </header>
       {!isMobile && <Divider padding={12} />}
