@@ -4,17 +4,23 @@ import { useInfiniteLawfirmList } from '@/hooks/queries/useGetLawfirmList'
 import { useParams } from 'react-router-dom'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { useState } from 'react'
+import { SortType } from '@/types/sortTypes'
 
 const SubcategoryLawfirmLayout = () => {
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
-  const [filter, setFilter] = useState({
-    orderBy: 'all',
+  const [filter, setFilter] = useState<{
+    orderBy: SortType
+    recentDays: string
+  }>({
+    orderBy: 'createdAt',
     recentDays: 'all',
   })
 
   const { lawfirmList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteLawfirmList({
     subcategoryId: Number(subcategoryId),
     take: 6,
+    orderBy: filter.orderBy,
+    recentDays: filter.recentDays,
   })
 
   // 무한스크롤 적용

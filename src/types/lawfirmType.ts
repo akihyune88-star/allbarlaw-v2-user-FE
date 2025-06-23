@@ -6,6 +6,7 @@ export type LawfirmListRequest = {
   cursor?: number
   cursorId?: number
   orderBy?: SortType
+  recentDays?: string
 }
 
 export type Lawfirm = {

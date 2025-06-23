@@ -1,8 +1,18 @@
 import styles from '@/components/tag/tag.module.scss'
 
-const Tag = ({ tag, onClick }: { tag: string; onClick?: () => void }) => {
+type TagProps = {
+  tag: string
+  onClick?: () => void
+  className?: string
+}
+
+const Tag = ({ tag, onClick, className }: TagProps) => {
   return (
-    <span className={styles['tag']} onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
+    <span
+      className={`${styles['tag']} ${className || ''}`}
+      onClick={onClick}
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
+    >
       {tag}
     </span>
   )
