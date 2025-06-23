@@ -3,10 +3,10 @@ type FilterCase = {
   sortType: string
 }
 
-export const LAWFIRM_MAIN_FILTER_CASE: FilterCase[] = [
+export const LAWFIRM_SORT_FILTER_CASE: FilterCase[] = [
   {
     filterName: '전체',
-    sortType: 'all',
+    sortType: 'createdAt',
   },
   {
     filterName: '인기 로펌',
@@ -18,7 +18,7 @@ export const LAWFIRM_MAIN_FILTER_CASE: FilterCase[] = [
   },
 ]
 
-export const RECENT_FILTER_CASE = [
+export const LAWFIRM_PERIOD_FILTER_CASE = [
   {
     filterName: '전체',
     sortType: 'all',

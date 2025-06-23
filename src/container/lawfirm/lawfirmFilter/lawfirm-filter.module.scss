@@ -1,6 +1,4 @@
 .lawfirm-filter {
-  background-color: beige;
-
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -28,4 +26,9 @@
   svg {
     color: $color-icon-darkgreen;
   }
+}
+
+.active-tag {
+  border-color: $color-green-01;
+  color: $color-green-01;
 }

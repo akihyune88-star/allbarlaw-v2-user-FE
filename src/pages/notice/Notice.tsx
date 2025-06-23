@@ -1,4 +1,3 @@
-
 const Notice = () => {
   return <div>Notice</div>
 }

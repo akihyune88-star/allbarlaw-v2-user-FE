@@ -6,7 +6,7 @@ import { lawfirmService } from '@/services/lawfirmService'
 // 무한 스크롤용 훅
 export const useInfiniteLawfirmList = (request: Omit<LawfirmListRequest, 'cursor' | 'cursorId'>) => {
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: [QUERY_KEY.LAWFIRM_LIST, 'infinite', request.subcategoryId, request.orderBy],
+    queryKey: [QUERY_KEY.LAWFIRM_LIST, 'infinite', request.subcategoryId, request.orderBy, request.recentDays],
     queryFn: ({ pageParam }) =>
       lawfirmService.getLawfirmList({
         ...request,
@@ -22,6 +22,7 @@ export const useInfiniteLawfirmList = (request: Omit<LawfirmListRequest, 'cursor
         cursorId: lastPage.nextCursorId,
       }
     },
+    placeholderData: previousData => previousData,
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 30,
   })
