@@ -13,4 +13,6 @@ export const QUERY_KEY = {
   LAWFIRM_LIST: 'lawfirmList',
   TRACK_VIEW: 'trackView',
   NOTICE_TYPES: 'noticeTypes',
+  NOTICE_LIST: 'noticeList',
+  NOTICE_DETAIL: 'noticeDetail',
 } as const

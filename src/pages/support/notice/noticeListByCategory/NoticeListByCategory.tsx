@@ -1,65 +1,93 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styles from './noticeListByCategory.module.scss'
 import { ROUTER } from '@/routes/routerConstant'
+import { useInfiniteNoticeList } from '@/hooks/queries/useGetNoticeList'
+import dayjs from 'dayjs'
+import { useGetNoticeType } from '@/hooks/queries/useGetNoticeType'
+import { useMemo } from 'react'
 
 const NoticeListByCategory = () => {
-  const { categoryPath } = useParams()
+  // const { categoryPath } = useParams()
   const navigate = useNavigate()
-  console.log(categoryPath)
+  const { data: noticeTypes } = useGetNoticeType()
 
-  const handleNoticeClick = (noticeId: number) => {
-    navigate(`${ROUTER.NOTICE_DETAIL}/${noticeId}`)
+  const { noticeList, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteNoticeList({
+    take: 10,
+    cursor: 0,
+    cursorId: 0,
+  })
+
+  const noticeTypeLookup = useMemo(() => {
+    if (!noticeTypes) return {}
+
+    const dataArray = Array.isArray(noticeTypes) ? noticeTypes : noticeTypes.data
+    if (!dataArray) return {}
+
+    return dataArray.reduce((acc, type) => {
+      acc[type.noticeTypeId] = type.noticeTypeName
+      return acc
+    }, {} as Record<number, string>)
+  }, [noticeTypes])
+
+  const getNoticeTypeName = (noticeTypeId: number) => {
+    return noticeTypeLookup[noticeTypeId] || '전체'
+  }
+
+  const handleNoticeClick = (noticeId: number, noticeTypeName: string) => {
+    navigate(`${ROUTER.SUPPORT_NOTICE}/detail/${noticeId}`, {
+      state: {
+        noticeTypeName,
+      },
+    })
+  }
+
+  // 로딩 중일 때
+  if (isLoading) {
+    return (
+      <section className={styles['notice-list-container']}>
+        <div>로딩 중...</div>
+      </section>
+    )
+  }
+
+  // 에러가 발생했을 때
+  if (isError) {
+    return (
+      <section className={styles['notice-list-container']}>
+        <div>공지사항을 불러오는 중 오류가 발생했습니다.</div>
+      </section>
+    )
   }
 
   return (
     <section className={styles['notice-list-container']}>
-      {noticeList.map(notice => (
-        <div key={notice.id} className={styles['notice-item']} onClick={() => handleNoticeClick(notice.id)}>
-          <span className={styles['left-container']}>
-            <strong>{getCategoryName(notice.category)}</strong>
-            <span className={styles['title']}>{notice.title}</span>
-          </span>
-          <span className={styles['created-at']}>{notice.createdAt}</span>
+      {noticeList.map(notice => {
+        const noticeTypeName = getNoticeTypeName(notice.noticeTypeId)
+        return (
+          <div
+            key={notice.noticeId}
+            className={styles['notice-item']}
+            onClick={() => handleNoticeClick(notice.noticeId, noticeTypeName)}
+          >
+            <span className={styles['left-container']}>
+              <strong>{noticeTypeName}</strong>
+              <span className={styles['title']}>{notice.noticeTitle}</span>
+            </span>
+            <span className={styles['created-at']}>{dayjs(notice.noticeCreatedAt).format('YYYY-MM-DD')}</span>
+          </div>
+        )
+      })}
+
+      {/* 더보기 버튼 - 다음 페이지가 있을 때만 표시 */}
+      {hasNextPage && (
+        <div className={styles['pagination-container']}>
+          <button className={styles['pagination-button']} onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+            {isFetchingNextPage ? '로딩 중...' : '더보기'}
+          </button>
         </div>
-      ))}
-      <div className={styles['pagination-container']}>
-        <button className={styles['pagination-button']}>이전</button>
-        <button className={styles['pagination-button']}>다음</button>
-      </div>
+      )}
     </section>
   )
 }
 
 export default NoticeListByCategory
-
-const noticeList = [
-  {
-    id: 1,
-    category: 'total',
-    title:
-      '제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다.제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다.',
-    createdAt: '2021-01-01',
-  },
-  { id: 2, category: 'notice', title: '공지사항 2', createdAt: '2021-01-02' },
-  { id: 3, category: 'update', title: '공지사항 3', createdAt: '2021-01-03' },
-  { id: 4, category: 'event', title: '공지사항 4', createdAt: '2021-01-04' },
-  { id: 5, category: 'total', title: '공지사항 5', createdAt: '2021-01-05' },
-  { id: 6, category: 'notice', title: '공지사항 6', createdAt: '2021-01-06' },
-  { id: 7, category: 'update', title: '공지사항 7', createdAt: '2021-01-07' },
-  { id: 8, category: 'event', title: '공지사항 8', createdAt: '2021-01-08' },
-  { id: 9, category: 'total', title: '공지사항 9', createdAt: '2021-01-09' },
-  { id: 10, category: 'notice', title: '공지사항 10', createdAt: '2021-01-10' },
-]
-
-const getCategoryName = (category: string) => {
-  switch (category) {
-    case 'total':
-      return '전체'
-    case 'notice':
-      return '공지사항'
-    case 'update':
-      return '업데이트'
-    case 'event':
-      return '이벤트'
-  }
-}

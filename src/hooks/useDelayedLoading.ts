@@ -9,7 +9,7 @@ const useDelayedLoading = ({ delay = 3000, initialLoading = true }: UseDelayedLo
   const [showLoading, setShowLoading] = useState(initialLoading)
 
   useEffect(() => {
-    if (!initialLoading) return
+    if (!initialLoading) return undefined
 
     const timer = setTimeout(() => {
       setShowLoading(false)

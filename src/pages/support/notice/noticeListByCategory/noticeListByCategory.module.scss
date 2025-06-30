@@ -28,6 +28,11 @@
       margin-right: 0.75rem;
     }
   }
+
+  .created-at {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
 }
 
 .pagination-container {

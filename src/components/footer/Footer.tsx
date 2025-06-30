@@ -21,7 +21,7 @@ const Footer = ({ className, style }: FooterProps) => {
           <strong>(주)올바로 |</strong> 당신의 법률 문제
         </span>
         <div className={styles['button-wrapper']}>
-          <button onClick={() => navigate(ROUTER.NOTICE)}>공지사항</button>
+          <button onClick={() => navigate(ROUTER.SUPPORT_NOTICE)}>공지사항</button>
           <span className={styles.divider}>|</span>
           <button onClick={() => navigate(ROUTER.FAQ)}>FAQ</button>
         </div>
