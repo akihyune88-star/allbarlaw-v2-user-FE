@@ -2,9 +2,10 @@ import React from 'react'
 import styles from './lawyer-vertical.module.scss'
 import Tag from '../tag/Tag'
 import { blog, instagram, youtube } from '@/assets/imgs'
-import ImageSlider, { ImageItem } from '../slider/imageSlider'
+import ImageSlider from '../slider/imageSlider'
 import Button from '../button/Button'
 import SvgIcon from '../SvgIcon'
+import { SocialLink } from '@/types/lawyerTypes'
 
 type LawyerVerticalProps = {
   name: string
@@ -21,6 +22,7 @@ type LawyerVerticalProps = {
   profileImageWidth?: string | number
   profileImageHeight?: string | number
   className?: string
+  socialLink?: SocialLink[]
 }
 
 const LawyerVertical = ({
