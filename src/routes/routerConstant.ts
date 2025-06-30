@@ -21,6 +21,7 @@ export const ROUTER = {
   MOBILE_MENU_LIST: '/mobile-menu-list',
   FAQ: '/faq',
   NOTICE: '/notice',
+  NOTICE_DETAIL: '/notice/detail',
   LAWYER_DETAIL: '/lawyer',
   NOT_FOUND: '*',
 } as const

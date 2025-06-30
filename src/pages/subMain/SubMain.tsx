@@ -1,5 +1,4 @@
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
-import styles from '@/pages/subMain/sub-main.module.scss'
 import CategoryTitle from '@/container/subMain/CategoryTitle'
 import { SUB_MENU_LIST } from '@/constants/submainConstants'
 import Tabs from '@/components/tabs/Tabs'
@@ -13,12 +12,12 @@ const SubMain = () => {
   }
 
   return (
-    <div style={{ width: '100%' }}>
-      <header className={styles['header-container']}>
+    <div className='w-full'>
+      <header className='page-header-layout'>
         <CategoryTitle />
         <Tabs items={SUB_MENU_LIST} onChange={handleMenuClick} initialPath={'/'} />
       </header>
-      <main className={styles['main-container']}>
+      <main className='gray-content-container'>
         <Outlet />
       </main>
     </div>

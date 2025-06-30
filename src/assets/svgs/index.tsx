@@ -31,6 +31,7 @@ import activeBookMark from '@/assets/svgs/active-book-mark.svg?react'
 import playButtonArrow from '@/assets/svgs/play-button-arrow.svg?react'
 import pause from '@/assets/svgs/pause.svg?react'
 import blog from '@/assets/svgs/blog.svg?react'
+import checkRoundLine from '@/assets/svgs/check-round-line.svg?react'
 
 export {
   react,
@@ -66,4 +67,5 @@ export {
   playButtonArrow,
   pause,
   blog,
+  checkRoundLine,
 }
