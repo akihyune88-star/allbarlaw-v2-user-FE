@@ -1,17 +1,25 @@
 import React from 'react'
 import styles from './lawyer-vertical.module.scss'
 import Tag from '../tag/Tag'
-import { SocialLink } from '@/types/lawyerTypes'
 import { blog, instagram, youtube } from '@/assets/imgs'
+import ImageSlider, { ImageItem } from '../slider/imageSlider'
+import Button from '../button/Button'
+import SvgIcon from '../SvgIcon'
 
 type LawyerVerticalProps = {
   name: string
   lawfirm?: string
-  profileImage: string
+  profileImage: string | string[]
   type: 1 | 2 | 3
-  socialLink?: SocialLink[]
+  blogUrl?: string
+  youtubeUrl?: string
+  instagramUrl?: string
+  shareHandler?: () => void
+  saveHandler?: () => void
   tags?: string[]
   footer?: React.ReactNode
+  profileImageWidth?: string | number
+  profileImageHeight?: string | number
   className?: string
 }
 
@@ -20,24 +28,66 @@ const LawyerVertical = ({
   lawfirm,
   profileImage,
   type = 3,
-  socialLink,
+  blogUrl,
+  youtubeUrl,
+  instagramUrl,
   tags,
   footer,
   className,
+  profileImageWidth,
+  profileImageHeight,
 }: LawyerVerticalProps) => {
   return (
     <div className={`${styles['lawyer-vertical']} ${styles[`type-${type}`]} ${className}`}>
-      <img src={profileImage} alt='변호사 프로필' style={{ borderRadius: 100, objectFit: 'cover' }} />
+      {type === 2 ? (
+        <ImageSlider
+          images={profileImage as string[]}
+          sliderSettings={{ arrows: false, infinite: false }}
+          width={profileImageWidth}
+          height={profileImageHeight}
+          customDots={true}
+        />
+      ) : (
+        <img src={profileImage as string} alt='변호사 프로필' style={{ borderRadius: 100, objectFit: 'cover' }} />
+      )}
       <div className={styles['lawyer-info']}>
         <p className={styles.name}>{name} 변호사</p>
         {lawfirm && <p className={styles.lawfirm}>{lawfirm}</p>}
-        {socialLink && (
-          <div className={styles['social-link']}>
-            <img src={blog} alt='블로그' className={styles['social-link-img']} />
-            <img src={youtube} alt='유튜브' className={styles['social-link-img']} />
-            <img src={instagram} alt='인스타그램' className={styles['social-link-img']} />
-          </div>
-        )}
+        <div className={styles['button-wrapper']}>
+          <Button variant='share'>
+            공유
+            <SvgIcon name='share' size={16} />
+          </Button>
+          <Button variant='save'>
+            저장 <SvgIcon name='save' size={16} />
+          </Button>
+        </div>
+        <div className={styles['social-link']}>
+          {blogUrl && (
+            <img
+              src={blog}
+              alt='블로그'
+              className={styles['social-link-img']}
+              onClick={() => window.open(blogUrl, '_blank')}
+            />
+          )}
+          {youtubeUrl && (
+            <img
+              src={youtube}
+              alt='유튜브'
+              className={styles['social-link-img']}
+              onClick={() => window.open(youtubeUrl, '_blank')}
+            />
+          )}
+          {instagramUrl && (
+            <img
+              src={instagram}
+              alt='인스타그램'
+              className={styles['social-link-img']}
+              onClick={() => window.open(instagramUrl, '_blank')}
+            />
+          )}
+        </div>
         {tags && (
           <div className={styles['tag-list']}>
             {tags.map(tagItem => (
