@@ -5,15 +5,21 @@ import { useState } from 'react'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Button from '@/components/button/Button'
+import { useNavigate, useParams } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
 
 const LawyerList = () => {
   const [sortCase, setSortCase] = useState<string>('all')
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const navigate = useNavigate()
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const lawyerList = [1, 2, 3, 4, 5]
 
   const handleSortCase = (key: string) => {
     setSortCase(key)
   }
+
+  const handleLawyerDetail = (lawyerId: string) => navigate(`/${subcategoryId}/lawyer/${lawyerId}`)
 
   return (
     <div className={styles.container}>
@@ -31,6 +37,7 @@ const LawyerList = () => {
         {lawyerList.map((lawyer, index) => (
           <>
             <LawyerHorizon
+              onClick={() => handleLawyerDetail(lawyer.toString())}
               key={lawyer}
               className={styles['lawyer-list-item']}
               name={'홍길동'}
