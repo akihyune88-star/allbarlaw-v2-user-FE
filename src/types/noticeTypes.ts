@@ -6,7 +6,7 @@ type NoticeType = {
 
 export type NoticeTypeResponse = NoticeType[] | { data: NoticeType[] }
 
-type Notice = {
+interface Notice {
   noticeId: number
   noticeTypeId: number
   noticeTitle: string
@@ -26,3 +26,9 @@ export type NoticeListResponse = {
   nextCursorId: number
   hasNextPage: boolean
 }
+
+interface NoticeDetail extends Notice {
+  noticeContent: string
+}
+
+export type NoticeDetailResponse = NoticeDetail

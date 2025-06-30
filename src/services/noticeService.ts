@@ -1,5 +1,5 @@
 import instance from '@/lib/axios'
-import { NoticeListRequest, NoticeListResponse, NoticeTypeResponse } from '@/types/noticeTypes'
+import { NoticeDetailResponse, NoticeListRequest, NoticeListResponse, NoticeTypeResponse } from '@/types/noticeTypes'
 
 export const noticeService = {
   // 모든 카테고리 가져오기
@@ -30,6 +30,16 @@ export const noticeService = {
       return response.data
     } catch (error) {
       console.error('Failed to fetch notice list:', error)
+      throw error
+    }
+  },
+
+  getNoticeDetail: async (noticeId: number) => {
+    try {
+      const response = await instance.get<NoticeDetailResponse>(`/notice/detail/${noticeId}`)
+      return response.data
+    } catch (error) {
+      console.error('Failed to fetch notice detail:', error)
       throw error
     }
   },

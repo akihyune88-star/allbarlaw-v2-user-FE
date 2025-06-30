@@ -14,4 +14,5 @@ export const QUERY_KEY = {
   TRACK_VIEW: 'trackView',
   NOTICE_TYPES: 'noticeTypes',
   NOTICE_LIST: 'noticeList',
+  NOTICE_DETAIL: 'noticeDetail',
 } as const

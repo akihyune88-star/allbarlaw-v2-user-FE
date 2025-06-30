@@ -33,8 +33,12 @@ const NoticeListByCategory = () => {
     return noticeTypeLookup[noticeTypeId] || '전체'
   }
 
-  const handleNoticeClick = (noticeId: number) => {
-    navigate(`${ROUTER.SUPPORT_NOTICE}/detail/${noticeId}`)
+  const handleNoticeClick = (noticeId: number, noticeTypeName: string) => {
+    navigate(`${ROUTER.SUPPORT_NOTICE}/detail/${noticeId}`, {
+      state: {
+        noticeTypeName,
+      },
+    })
   }
 
   // 로딩 중일 때
@@ -57,15 +61,22 @@ const NoticeListByCategory = () => {
 
   return (
     <section className={styles['notice-list-container']}>
-      {noticeList.map(notice => (
-        <div key={notice.noticeId} className={styles['notice-item']} onClick={() => handleNoticeClick(notice.noticeId)}>
-          <span className={styles['left-container']}>
-            <strong>{getNoticeTypeName(notice.noticeTypeId)}</strong>
-            <span className={styles['title']}>{notice.noticeTitle}</span>
-          </span>
-          <span className={styles['created-at']}>{dayjs(notice.noticeCreatedAt).format('YYYY-MM-DD')}</span>
-        </div>
-      ))}
+      {noticeList.map(notice => {
+        const noticeTypeName = getNoticeTypeName(notice.noticeTypeId)
+        return (
+          <div
+            key={notice.noticeId}
+            className={styles['notice-item']}
+            onClick={() => handleNoticeClick(notice.noticeId, noticeTypeName)}
+          >
+            <span className={styles['left-container']}>
+              <strong>{noticeTypeName}</strong>
+              <span className={styles['title']}>{notice.noticeTitle}</span>
+            </span>
+            <span className={styles['created-at']}>{dayjs(notice.noticeCreatedAt).format('YYYY-MM-DD')}</span>
+          </div>
+        )
+      })}
 
       {/* 더보기 버튼 - 다음 페이지가 있을 때만 표시 */}
       {hasNextPage && (
