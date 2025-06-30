@@ -12,4 +12,5 @@ export const QUERY_KEY = {
   BANNER: 'banner',
   LAWFIRM_LIST: 'lawfirmList',
   TRACK_VIEW: 'trackView',
+  NOTICE_TYPES: 'noticeTypes',
 } as const

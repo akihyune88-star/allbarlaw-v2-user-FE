@@ -6,7 +6,6 @@ import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Button from '@/components/button/Button'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ROUTER } from '@/routes/routerConstant'
 
 const LawyerList = () => {
   const [sortCase, setSortCase] = useState<string>('all')
