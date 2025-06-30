@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import App from '../App'
 import NotFound from '../pages/NotFound'
 import Mypage from '@/pages/Mypage'
@@ -158,9 +158,13 @@ const router = createBrowserRouter([
             element: <FAQ />,
           },
           {
-            path: ROUTER.NOTICE,
+            path: ROUTER.SUPPORT_NOTICE,
             element: <NoticeLayout />,
             children: [
+              {
+                path: '',
+                element: <Navigate to={`${ROUTER.SUPPORT_NOTICE}/all`} replace />,
+              },
               {
                 path: ':categoryPath',
                 element: <NoticeListByCategory />,

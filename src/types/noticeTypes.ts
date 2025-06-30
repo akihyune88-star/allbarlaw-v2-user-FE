@@ -1,9 +1,7 @@
 type NoticeType = {
-  id: number
-  key: string
-  name: string
+  noticeTypeId: number
+  noticeTypeKey: string
+  noticeTypeName: string
 }
 
-export type NoticeTypeResponse = {
-  data: NoticeType[]
-}
+export type NoticeTypeResponse = NoticeType[] | { data: NoticeType[] }

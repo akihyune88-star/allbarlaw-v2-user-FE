@@ -20,8 +20,7 @@ export const ROUTER = {
   SEARCH_MAIN: '/search',
   MOBILE_MENU_LIST: '/mobile-menu-list',
   FAQ: '/faq',
-  NOTICE: '/notice',
-  NOTICE_DETAIL: '/notice/detail',
+  SUPPORT_NOTICE: '/support-notice',
   LAWYER_DETAIL: '/lawyer',
   NOT_FOUND: '*',
 } as const

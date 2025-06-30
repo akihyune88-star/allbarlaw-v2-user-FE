@@ -5,10 +5,9 @@ import { ROUTER } from '@/routes/routerConstant'
 const NoticeListByCategory = () => {
   const { categoryPath } = useParams()
   const navigate = useNavigate()
-  console.log(categoryPath)
 
   const handleNoticeClick = (noticeId: number) => {
-    navigate(`${ROUTER.NOTICE_DETAIL}/${noticeId}`)
+    navigate(`${ROUTER.SUPPORT_NOTICE}/detail/${noticeId}`)
   }
 
   return (
