@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import App from '../App'
 import NotFound from '../pages/NotFound'
-import Login from '@/pages/Login'
 import Mypage from '@/pages/Mypage'
 import { ROUTER } from './routerConstant'
 import MainLayout from '@/pages/MainLayout'
@@ -28,11 +27,15 @@ import LegalKnowledgeDetail from '@/pages/legalKnowledge/LegalKnowledgeDetail'
 import TotalSearch from '@/pages/search/totalSearch/TotalSearch'
 import SearchBlog from '@/pages/blog/searchBlog/SearchBlog'
 import SearchVideo from '@/pages/video/searchVideo/SearchVideo'
-import FAQ from '@/pages/support/FAQ'
+import FAQ from '@/pages/support/faq/FAQ'
 import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
-import NoticeLayout from '@/pages/support/NoticeLayout'
+import NoticeLayout from '@/pages/support/notice/NoticeLayout'
 import SearchLegalKnowledge from '@/pages/legalKnowledge/searchLegalKnowledge/SearchLegalKnowledge'
 import SearchLawyer from '@/pages/lawyer/searchLawyer/SearchLawyer'
+import NoticeListByCategory from '@/pages/support/notice/noticeListByCategory/NoticeListByCategory'
+import NoticeDetail from '@/pages/support/notice/noticeDetail/NoticeDetail'
+import AuthLayout from '@/pages/auth/authLayout/AuthLayout'
+import Login from '@/pages/auth/login/Login'
 
 const router = createBrowserRouter([
   {
@@ -157,6 +160,16 @@ const router = createBrowserRouter([
           {
             path: ROUTER.NOTICE,
             element: <NoticeLayout />,
+            children: [
+              {
+                path: ':categoryPath',
+                element: <NoticeListByCategory />,
+              },
+              {
+                path: 'detail/:noticeId',
+                element: <NoticeDetail />,
+              },
+            ],
           },
         ],
       },
@@ -166,7 +179,13 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTER.LOGIN,
-        element: <Login />,
+        element: <AuthLayout />,
+        children: [
+          {
+            path: '',
+            element: <Login />,
+          },
+        ],
       },
       {
         path: ROUTER.ABOUT,
