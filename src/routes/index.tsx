@@ -28,12 +28,11 @@ import LegalKnowledgeDetail from '@/pages/legalKnowledge/LegalKnowledgeDetail'
 import TotalSearch from '@/pages/search/totalSearch/TotalSearch'
 import SearchBlog from '@/pages/blog/searchBlog/SearchBlog'
 import SearchVideo from '@/pages/video/searchVideo/SearchVideo'
+import FAQ from '@/pages/support/FAQ'
+import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
+import NoticeLayout from '@/pages/support/NoticeLayout'
 import SearchLegalKnowledge from '@/pages/legalKnowledge/searchLegalKnowledge/SearchLegalKnowledge'
 import SearchLawyer from '@/pages/lawyer/searchLawyer/SearchLawyer'
-
-import Notice from '@/pages/notice/Notice'
-import FAQ from '@/pages/notice/FAQ'
-import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
 
 const router = createBrowserRouter([
   {
@@ -157,7 +156,7 @@ const router = createBrowserRouter([
           },
           {
             path: ROUTER.NOTICE,
-            element: <Notice />,
+            element: <NoticeLayout />,
           },
         ],
       },

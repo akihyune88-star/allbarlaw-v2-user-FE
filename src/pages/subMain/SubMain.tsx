@@ -13,8 +13,8 @@ const SubMain = () => {
   }
 
   return (
-    <div style={{ width: '100%' }}>
-      <header className={styles['header-container']}>
+    <div className='w-full'>
+      <header className='page-header-layout'>
         <CategoryTitle />
         <Tabs items={SUB_MENU_LIST} onChange={handleMenuClick} initialPath={'/'} />
       </header>

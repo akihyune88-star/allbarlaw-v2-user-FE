@@ -1,0 +1,35 @@
+@use 'sass:color';
+
+.support-header-title {
+  width: 100%;
+}
+
+.desktop-title {
+  font-size: 1.875rem;
+  padding: 3rem 0 2.625rem 1.625rem;
+}
+
+.mobile-title {
+  display: none;
+}
+
+// Mobile styles
+@media (max-width: $breakpoint-desktop) {
+  .support-header-title {
+    padding: 1.0625rem 1.25rem;
+  }
+
+  .desktop-title {
+    display: none;
+  }
+
+  .mobile-title {
+    display: flex;
+
+    padding: 0.5rem 0;
+
+    font-size: 1.25rem;
+    font-weight: $font-weight-extra-bold;
+    color: $color-text-black;
+  }
+}
