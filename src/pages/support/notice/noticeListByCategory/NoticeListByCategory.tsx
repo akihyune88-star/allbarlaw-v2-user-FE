@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styles from './noticeListByCategory.module.scss'
 import { ROUTER } from '@/routes/routerConstant'
 import { useInfiniteNoticeList } from '@/hooks/queries/useGetNoticeList'

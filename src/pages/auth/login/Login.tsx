@@ -4,19 +4,7 @@ import { useState } from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import { COLOR } from '@/styles/color'
 import SocialLoginButton from '@/container/auth/socialLoginButton/SocialLoginButton'
-
-export const LOGIN_TABS = [
-  {
-    name: '회원 로그인',
-    itemWidth: 84,
-    path: '/user',
-  },
-  {
-    name: '변호사 로그인',
-    itemWidth: 90,
-    path: '/lawyer',
-  },
-]
+import { LOGIN_TABS } from '@/constants/authConstants'
 
 const Login = () => {
   const [_activeTab, setActiveTab] = useState('')
