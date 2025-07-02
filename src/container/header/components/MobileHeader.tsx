@@ -12,7 +12,7 @@ const MobileHeader = () => {
         <SvgIcon name='mobileLogo' onClick={() => navigate(ROUTER.MAIN)} />
       </div>
       <div>
-        <button onClick={() => navigate(ROUTER.LOGIN)}>
+        <button onClick={() => navigate(ROUTER.AUTH)}>
           <span>로그인</span> | <span>회원가입</span>
         </button>
         <SvgIcon name='search' onClick={() => navigate(ROUTER.SEARCH_MAIN)} />

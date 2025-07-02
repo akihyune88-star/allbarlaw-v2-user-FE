@@ -20,6 +20,6 @@ export const MENU_LIST = [
 
   {
     name: '로그인',
-    path: ROUTER.LOGIN,
+    path: ROUTER.AUTH,
   },
 ]

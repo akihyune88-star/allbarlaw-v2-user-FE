@@ -5,17 +5,28 @@ import SvgIcon from '@/components/SvgIcon'
 import { COLOR } from '@/styles/color'
 import SocialLoginButton from '@/container/auth/socialLoginButton/SocialLoginButton'
 import { LOGIN_TABS } from '@/constants/authConstants'
+import { useNavigate } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
+
+type AuthActionType = 'ID_FIND' | 'PASSWORD_RESET' | 'SIGNUP'
 
 const Login = () => {
   const [_activeTab, setActiveTab] = useState('')
   const [activeLocation, setActiveLocation] = useState(false)
+  const navigate = useNavigate()
 
   const handleTabChange = (path: string) => {
     setActiveTab(path)
   }
 
-  const handleSaveLocalStorage = () => {
-    setActiveLocation(!activeLocation)
+  const handleSaveLocalStorage = () => setActiveLocation(!activeLocation)
+
+  const handleAuthAction = (type: AuthActionType) => {
+    if (type === 'ID_FIND') {
+      // navigate(ROUTER.i)
+    } else if (type === 'PASSWORD_RESET') {
+      console.log('PASSWORD_RESET')
+    } else if (type === 'SIGNUP') navigate(ROUTER.SIGNUP)
   }
 
   return (
@@ -51,11 +62,11 @@ const Login = () => {
           </div>
         </form>
         <div className={styles['auth-action']}>
-          <button>아이디 찾기</button>
+          <button onClick={() => handleAuthAction('ID_FIND')}>아이디 찾기</button>
           <span>|</span>
-          <button>비밀번호 찾기</button>
+          <button onClick={() => handleAuthAction('PASSWORD_RESET')}>비밀번호 찾기</button>
           <span>|</span>
-          <button>회원가입</button>
+          <button onClick={() => handleAuthAction('SIGNUP')}>회원가입</button>
         </div>
 
         <footer className={styles['login-footer']}>
