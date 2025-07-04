@@ -26,6 +26,8 @@
   border: 1px solid $color-line-borderbox;
   border-radius: 0.5rem;
 
+  outline: none;
+
   &::placeholder {
     color: $color-text-caption;
   }
