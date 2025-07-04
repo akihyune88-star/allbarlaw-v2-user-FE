@@ -25,7 +25,7 @@ const SignUpMain = () => {
         <button className={styles['sign-up-btn']} onClick={handleSignUp}>
           일반 회원가입
         </button>
-        <SocialLoginButton />
+        <SocialLoginButton type='bar' />
       </section>
     </main>
   )

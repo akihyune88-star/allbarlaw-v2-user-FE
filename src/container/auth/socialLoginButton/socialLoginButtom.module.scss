@@ -2,17 +2,8 @@
   display: flex;
   justify-content: center;
   gap: 1.25rem;
-}
 
-.social-login-image {
-  border-radius: 50%;
-  width: 2.25rem;
-
-  cursor: pointer;
-}
-
-@media (max-width: $breakpoint-desktop) {
-  .social-login-button {
+  &[data-type='bar'] {
     flex-direction: column-reverse;
 
     button {
@@ -20,9 +11,7 @@
       align-items: center;
       justify-content: center;
       height: 3rem;
-
       border-radius: 0.5rem;
-
       font-size: 0.875rem;
       font-weight: $font-weight-semibold;
 
@@ -47,6 +36,14 @@
     .google-btn {
       background-color: #ffffff;
       border: 1px solid $color-line-borderbox;
+    }
+  }
+
+  &[data-type='icon'] {
+    .social-login-image {
+      border-radius: 50%;
+      width: 2.25rem;
+      cursor: pointer;
     }
   }
 }

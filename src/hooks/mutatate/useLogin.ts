@@ -2,11 +2,13 @@ import { useMutation } from '@tanstack/react-query'
 import { authService } from '@/services/authService'
 import { LoginRequest, LoginResponse } from '@/types/authTypes'
 import { LOCAL } from '@/constants/local'
-import { isAxiosError } from 'axios'
 import { useAuth } from '@/contexts/AuthContext'
+import { getErrorMessage } from '@/utils/errorHandler'
+import { isAxiosError } from 'axios'
 
 interface UseLoginOptions {
   onSuccess?: () => void
+  onError?: (message: string) => void
 }
 
 export const useLogin = (options?: UseLoginOptions) => {
@@ -14,9 +16,7 @@ export const useLogin = (options?: UseLoginOptions) => {
 
   return useMutation<LoginResponse, Error, LoginRequest>({
     mutationFn: async (inputValue: LoginRequest) => {
-      console.log('로그인 요청:', inputValue)
       const response = await authService.login(inputValue)
-      console.log('로그인 응답:', response)
       return response
     },
     onSuccess: (data, variables) => {
@@ -29,11 +29,9 @@ export const useLogin = (options?: UseLoginOptions) => {
     },
     onError: error => {
       if (isAxiosError(error)) {
-        console.error('로그인 실패:', error.response?.data || error.message)
-      } else {
-        console.error('로그인 실패:', error)
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        options?.onError?.(errorMessage)
       }
-      throw error
     },
   })
 }

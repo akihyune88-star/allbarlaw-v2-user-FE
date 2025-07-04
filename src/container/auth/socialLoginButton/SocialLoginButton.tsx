@@ -2,7 +2,6 @@ import naverIcon from '@/assets/imgs/naverLogin.webp'
 import kakaoIcon from '@/assets/imgs/kakaoLogin.webp'
 import googleIcon from '@/assets/imgs/googleLogin.webp'
 import styles from './socialLoginButtom.module.scss'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { KeyOfIcon } from '@/types/svg'
 import SvgIcon from '@/components/SvgIcon'
 
@@ -20,12 +19,11 @@ const SOCIAL_LOGIN_BUTTONS: { name: string; icon: string; svgIcon: KeyOfIcon }[]
   },
 ]
 
-const SocialLoginButton = () => {
-  const isMobile = useMediaQuery('(max-width: 80rem)')
+const SocialLoginButton = ({ type }: { type: 'bar' | 'icon' }) => {
   return (
-    <div className={styles['social-login-button']}>
+    <div className={styles['social-login-button']} data-type={type}>
       {SOCIAL_LOGIN_BUTTONS.map(button =>
-        isMobile ? (
+        type === 'bar' ? (
           <button key={button.name} className={styles[`${button.svgIcon}-btn`]}>
             <SvgIcon name={button.svgIcon} />
             <span>{button.name} 회원가입</span>
