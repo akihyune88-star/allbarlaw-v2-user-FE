@@ -1,20 +1,28 @@
 import { authService } from '@/services/authService'
+import { getErrorMessage } from '@/utils/errorHandler'
 import { useMutation } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 
-type UseSendVerificationCodeOptions = {
-  onSuccess?: (data: unknown) => void
+interface UseSendVerificationCodeOptions {
+  onSuccess?: () => void
+  onError?: (message: string) => void
 }
 
 // 휴대폰 인증번호 발송 뮤테이션 훅
 export const useSendVerificationCode = (options?: UseSendVerificationCodeOptions) => {
   return useMutation({
-    mutationFn: (phone: string) => authService.sendVerificationCode(phone),
-    onSuccess: data => {
-      console.log('인증번호 발송 성공:', data)
-      options?.onSuccess?.(data)
+    mutationFn: async (phone: string) => {
+      const response = await authService.sendVerificationCode(phone)
+      return response
     },
-    onError: (error, variables) => {
-      console.error(`인증번호 발송 실패: ${variables}`, error)
+    onSuccess: () => {
+      options?.onSuccess?.()
+    },
+    onError: error => {
+      if (isAxiosError(error)) {
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        options?.onError?.(errorMessage)
+      }
     },
   })
 }

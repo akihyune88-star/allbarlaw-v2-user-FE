@@ -33,8 +33,9 @@ export const errorHandler = (error: unknown): ErrorResponse => {
 export const getErrorMessage = (code: string): string => {
   const errorMessages: Record<string, string> = {
     4013: '로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요',
-    4014: '인증이 만료되었습니다. 다시 로그인해주세요.',
-    4015: '유효하지 않은 인증입니다.',
+    4009: '이미 가입된 휴대폰 번호입니다.',
+    4006: '입력값을 확인해주세요.',
+    4010: '인증번호가 유효하지 않습니다. 다시 발송해주세요',
   }
 
   return code ? errorMessages[code] : '알 수 없는 에러가 발생했습니다.'

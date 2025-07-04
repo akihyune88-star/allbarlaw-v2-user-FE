@@ -22,7 +22,8 @@
   width: 100%;
 
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 
   background-color: $color-bg-gray-03;
   padding: 0.875rem 1.0625rem 0.875rem 1.5rem;
@@ -31,6 +32,7 @@
 }
 
 .input {
+  flex: 1;
   outline: none;
   &::placeholder {
     color: $color-text-caption;

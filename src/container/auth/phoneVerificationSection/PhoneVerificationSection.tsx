@@ -23,17 +23,25 @@ const PhoneVerificationSection = () => {
   const [isCodeSent, setIsCodeSent] = useState(false)
   const [isVerified, setIsVerified] = useState(false)
   const [apiMessage, setApiMessage] = useState<{ text: string; isError: boolean } | null>(null)
+  const [codeError, setCodeError] = useState<{ text: string; isError: boolean } | null>(null)
 
   const phoneNumberValue = watch('phoneNumber')
-  const { isTimerRunning, formattedTime, startTimer, stopTimer } = useVerificationTimer(30)
+  const { isTimerRunning, formattedTime, startTimer, stopTimer } = useVerificationTimer(180)
   const { mutate: sendVerificationCode } = useSendVerificationCode({
     onSuccess: () => {
       startTimer()
       setIsCodeSent(true)
       setApiMessage(null)
     },
+    onError: message => {
+      setCodeError({ text: message, isError: true })
+    },
   })
-  const { mutateAsync: verifyVerificationCode } = useVerifyVerificationCode()
+  const { mutateAsync: verifyVerificationCode } = useVerifyVerificationCode({
+    onError: message => {
+      setApiMessage({ text: message, isError: true })
+    },
+  })
 
   const handleSendVerificationCode = async () => {
     const isValid = await trigger('phoneNumber')
@@ -79,7 +87,7 @@ const PhoneVerificationSection = () => {
         placeholder="'-' 없이 숫자만 입력"
         maxLength={11}
         {...register('phoneNumber')}
-        isError={!!errors.phoneNumber}
+        isError={!!errors.phoneNumber || codeError?.isError}
         disabled={isTimerRunning || isVerified}
         rightContent={
           isTimerRunning ? (
@@ -98,7 +106,7 @@ const PhoneVerificationSection = () => {
         message={
           isCodeSent && !errors.phoneNumber
             ? '인증번호가 문자로 발송되었습니다. 인증번호를 입력해주세요.'
-            : errors.phoneNumber?.message
+            : errors.phoneNumber?.message || codeError?.text
         }
       />
       <PhoneInput
