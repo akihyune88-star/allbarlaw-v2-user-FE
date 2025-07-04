@@ -1,44 +1,16 @@
 import styles from '@/container/header/header.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { MENU_LIST } from '@/constants/topMenu'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
-import { LOCAL } from '@/constants/local'
-import { useEffect, useState } from 'react'
+import { useAuth } from '@/contexts/AuthContext'
 
 const HeaderNavigation = () => {
   const navigate = useNavigate()
-  const location = useLocation()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const hasToken = !!(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN))
-      console.log('localStorage', localStorage.getItem(LOCAL.TOKEN))
-      console.log('sessionStorage', sessionStorage.getItem(LOCAL.TOKEN))
-      console.log('hasToken', hasToken)
-      setIsLoggedIn(hasToken)
-    }
-
-    console.log('isLoggedIn', isLoggedIn)
-    // 초기 체크
-    checkLoginStatus()
-
-    // storage 이벤트 리스너 등록
-    const handleStorageChange = () => {
-      checkLoginStatus()
-    }
-    window.addEventListener('storage', handleStorageChange)
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange)
-    }
-  }, [location.pathname]) // 페이지 변경될 때마다 체크
+  const { isLoggedIn, logout } = useAuth()
 
   const handleLogout = () => {
-    localStorage.removeItem(LOCAL.TOKEN)
-    sessionStorage.removeItem(LOCAL.TOKEN)
-    setIsLoggedIn(false)
+    logout()
     navigate(ROUTER.MAIN)
   }
 

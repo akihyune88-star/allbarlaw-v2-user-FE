@@ -2,37 +2,14 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import styles from '@/container/header/header.module.scss'
 import SvgIcon from '@/components/SvgIcon'
-import { LOCAL } from '@/constants/local'
-import { useEffect, useState } from 'react'
+import { useAuth } from '@/contexts/AuthContext'
 
 const MobileHeader = () => {
   const navigate = useNavigate()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const hasToken = !!(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN))
-      setIsLoggedIn(hasToken)
-    }
-
-    // 초기 체크
-    checkLoginStatus()
-
-    // storage 이벤트 리스너 등록
-    const handleStorageChange = () => {
-      checkLoginStatus()
-    }
-    window.addEventListener('storage', handleStorageChange)
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange)
-    }
-  }, [])
+  const { isLoggedIn, logout } = useAuth()
 
   const handleLogout = () => {
-    localStorage.removeItem(LOCAL.TOKEN)
-    sessionStorage.removeItem(LOCAL.TOKEN)
-    setIsLoggedIn(false)
+    logout()
     navigate(ROUTER.MAIN)
   }
 
