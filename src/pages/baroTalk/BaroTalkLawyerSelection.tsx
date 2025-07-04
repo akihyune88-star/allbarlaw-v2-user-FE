@@ -4,7 +4,7 @@ import { Lawyer } from '@/types/lawyerTypes'
 import { useCallback, useMemo, useState } from 'react'
 
 import Input from '@/components/input/Input'
-import CheckBox from '@/components/checkBox'
+import CheckBoxGroup from '@/components/checkBox/CheckBoxGroup'
 import ProgressButton from '@/components/progressButton/ProgressButton'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -84,11 +84,11 @@ const BaroTalkLawyerSelection = () => {
             placeholder={noticeInputMockData}
             textAreaStyle={{ fontSize: isMobile ? 12 : 14 }}
             footerChildren={
-              <CheckBox
+              <CheckBoxGroup
                 options={[{ value: 'notice', label: '질문 유의사항을 모두 확인했으며, 동의합니다.' }]}
                 name='notice'
                 className={styles['notice-checkbox']}
-                defaultValues={agreementChecked}
+                values={agreementChecked}
                 onChange={handleCheckboxChange}
               />
             }

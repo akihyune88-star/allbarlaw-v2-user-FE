@@ -1,9 +1,54 @@
 .sign-up-main {
-  padding: 62px 0;
+  padding-top: 3.875rem;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.sign-up-main-section {
+  display: flex;
+  flex-direction: column;
+  gap: 3.4375rem;
+
+  background-color: $color-white;
+  margin-top: 3.875rem;
+  padding: 2.625rem;
+  border-radius: 0.5rem;
+
+  .sign-up-btn {
+    width: 100%;
+    min-width: 22.9375rem;
+
+    padding: 0.875rem;
+
+    text-align: center;
+
+    background-color: $color-green-01;
+    border-radius: 0.5rem;
+    color: $color-white;
+  }
 }
 
 @media (max-width: $breakpoint-desktop) {
   .sign-up-main {
     padding: 0;
+    min-height: 100vh;
+  }
+
+  .sign-up-main-section {
+    flex: 1;
+    width: 100%;
+    margin-top: 0.25rem;
+    padding: 4.375rem 2.4688rem;
+
+    gap: 2.25rem;
+
+    .sign-up-btn {
+      min-width: auto;
+
+      background-color: $color-white;
+      color: $color-green-01;
+      border: 1px solid $color-green-01;
+    }
   }
 }

@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.field-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.label {
+  width: 7.5rem;
+  font-size: 1rem;
+  font-weight: $font-weight-semibold;
+  color: $color-text-black;
+}
+
+.input {
+  width: 100%;
+  background-color: $color-bg-gray-03;
+  padding: 0.875rem 0 0.875rem 1.5rem;
+
+  border: 1px solid $color-line-borderbox;
+  border-radius: 0.5rem;
+
+  &::placeholder {
+    color: $color-text-caption;
+  }
+}
+
+.field-message {
+  padding-top: 0.5rem;
+  text-align: right;
+  font-size: 0.875rem;
+  color: $color-green-01;
+
+  &[data-error='true'] {
+    color: $color-error;
+  }
+}

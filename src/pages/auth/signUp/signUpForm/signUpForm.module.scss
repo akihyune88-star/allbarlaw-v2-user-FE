@@ -1,0 +1,42 @@
+.sign-up-form {
+  padding-top: 3.875rem;
+}
+
+.sign-up-form-section {
+  margin-top: 3.0625rem;
+
+  width: 34rem;
+  background-color: $color-white;
+  padding: 2.625rem;
+
+  border-radius: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sign-up-form-button {
+  display: flex;
+  justify-content: center;
+
+  padding: 0.875rem 0;
+  border-radius: 0.5rem;
+  background-color: $color-green-01;
+  color: $color-white;
+
+  margin-top: 4.3125rem;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .sign-up-form {
+    padding-top: 0;
+  }
+
+  .sign-up-form-section {
+    margin-top: 0.25rem;
+    width: 100%;
+
+    padding: 1.5rem 1.25rem;
+  }
+}

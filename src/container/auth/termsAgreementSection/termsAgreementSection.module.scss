@@ -1,0 +1,79 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: $font-weight-extra-bold;
+  color: $color-text-black;
+  padding: 0.875rem 0 0.25rem;
+}
+
+//* 체크박스
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.agreement-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  a {
+    color: $color-text-black;
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.all-agree-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.error-message {
+  // color: $color-point-red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  padding-left: 1.5rem; /* 체크박스 아이콘 너비 + 간격 */
+  align-items: center;
+}
+
+.terms-link {
+  font-size: 0.875rem;
+  // color: $color-text-sub;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.divider {
+  margin: 0.5rem 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+
+.all-agree {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.label-text {
+  font-size: 0.875rem;
+  font-weight: $font-weight-semibold;
+}

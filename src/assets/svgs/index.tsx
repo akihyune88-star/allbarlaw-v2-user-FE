@@ -32,6 +32,9 @@ import playButtonArrow from '@/assets/svgs/play-button-arrow.svg?react'
 import pause from '@/assets/svgs/pause.svg?react'
 import blog from '@/assets/svgs/blog.svg?react'
 import checkRoundLine from '@/assets/svgs/check-round-line.svg?react'
+import kakao from '@/assets/svgs/kakao.svg?react'
+import google from '@/assets/svgs/google.svg?react'
+import naver from '@/assets/svgs/naver.svg?react'
 
 export {
   react,
@@ -68,4 +71,7 @@ export {
   pause,
   blog,
   checkRoundLine,
+  kakao,
+  google,
+  naver,
 }

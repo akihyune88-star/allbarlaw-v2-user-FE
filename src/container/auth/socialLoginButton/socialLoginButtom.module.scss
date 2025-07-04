@@ -10,3 +10,43 @@
 
   cursor: pointer;
 }
+
+@media (max-width: $breakpoint-desktop) {
+  .social-login-button {
+    flex-direction: column-reverse;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 3rem;
+
+      border-radius: 0.5rem;
+
+      font-size: 0.875rem;
+      font-weight: $font-weight-semibold;
+
+      span {
+        margin-left: 0.75rem;
+      }
+    }
+
+    .kakao-btn {
+      background-color: #fee500;
+    }
+
+    .naver-btn {
+      background-color: #03c75a;
+      color: $color-white;
+
+      span {
+        margin-left: 1.3125rem;
+      }
+    }
+
+    .google-btn {
+      background-color: #ffffff;
+      border: 1px solid $color-line-borderbox;
+    }
+  }
+}
