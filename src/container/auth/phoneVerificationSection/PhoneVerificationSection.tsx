@@ -18,6 +18,7 @@ const PhoneVerificationSection = () => {
     formState: { errors },
     trigger,
     watch,
+    setValue,
   } = useFormContext<SignUpFormData>()
 
   const [isCodeSent, setIsCodeSent] = useState(false)
@@ -46,6 +47,7 @@ const PhoneVerificationSection = () => {
   const handleSendVerificationCode = async () => {
     const isValid = await trigger('phoneNumber')
     if (isValid) {
+      setValue('verificationCode', '')
       sendVerificationCode(getValues('phoneNumber'))
     }
   }
