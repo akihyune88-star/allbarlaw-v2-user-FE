@@ -24,12 +24,17 @@ const useVerificationTimer = (initialTime: number) => {
     setIsTimerRunning(true)
   }, [initialTime])
 
+  const stopTimer = useCallback(() => {
+    setIsTimerRunning(false)
+    setTimeLeft(0)
+  }, [])
+
   const formattedTime = `${String(Math.floor(timeLeft / 60)).padStart(2, '0')}:${String(timeLeft % 60).padStart(
     2,
     '0'
   )}`
 
-  return { isTimerRunning, formattedTime, startTimer }
+  return { isTimerRunning, formattedTime, startTimer, stopTimer }
 }
 
 export default useVerificationTimer

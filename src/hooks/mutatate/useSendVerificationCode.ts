@@ -1,4 +1,4 @@
-import { authService } from '@/services/auth'
+import { authService } from '@/services/authService'
 import { useMutation } from '@tanstack/react-query'
 
 type UseSendVerificationCodeOptions = {
