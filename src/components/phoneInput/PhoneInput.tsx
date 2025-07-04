@@ -1,13 +1,14 @@
 import React, { useId } from 'react'
-import styles from './labelInput.module.scss'
+import styles from './phoneInput.module.scss'
 
-type LabelInputProps = {
+type PhoneInputProps = {
   label: string
   isError?: boolean
   message?: string
+  rightContent?: React.ReactNode
 } & React.InputHTMLAttributes<HTMLInputElement>
 
-const LabelInput = ({ label, isError, message, ...rest }: LabelInputProps) => {
+const PhoneInput = ({ label, isError, message, rightContent, ...rest }: PhoneInputProps) => {
   const id = useId()
 
   return (
@@ -16,7 +17,10 @@ const LabelInput = ({ label, isError, message, ...rest }: LabelInputProps) => {
         <label htmlFor={id} className={styles['label']}>
           {label}
         </label>
-        <input id={id} className={styles['input']} aria-invalid={isError} {...rest} />
+        <div className={styles['input-container']}>
+          <input id={id} className={styles['input']} aria-invalid={isError} {...rest} />
+          {rightContent}
+        </div>
       </div>
       <span className={styles['field-message']} data-error={isError}>
         {message || ''}
@@ -25,4 +29,4 @@ const LabelInput = ({ label, isError, message, ...rest }: LabelInputProps) => {
   )
 }
 
-export default LabelInput
+export default PhoneInput

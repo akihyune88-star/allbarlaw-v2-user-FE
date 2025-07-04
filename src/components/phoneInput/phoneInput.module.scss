@@ -18,14 +18,20 @@
   color: $color-text-black;
 }
 
-.input {
+.input-container {
   width: 100%;
-  background-color: $color-bg-gray-03;
-  padding: 0.875rem 0 0.875rem 1.5rem;
 
+  display: flex;
+  justify-content: space-between;
+
+  background-color: $color-bg-gray-03;
+  padding: 0.875rem 1.0625rem 0.875rem 1.5rem;
   border: 1px solid $color-line-borderbox;
   border-radius: 0.5rem;
+}
 
+.input {
+  outline: none;
   &::placeholder {
     color: $color-text-caption;
   }
@@ -55,5 +61,24 @@
 
   .field-message {
     text-align: left;
+  }
+
+  .input-container {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+
+    gap: 0.625rem;
+  }
+
+  .input {
+    background-color: $color-bg-gray-03;
+    border: 1px solid $color-line-borderbox;
+    padding: 0.875rem 1.0625rem 0.875rem 1.5rem;
+    border-radius: 0.5rem;
+
+    &::placeholder {
+      color: $color-text-caption;
+    }
   }
 }

@@ -11,3 +11,35 @@
 
   padding: 0.875rem 0 0.25rem 0;
 }
+
+.phone-input-button {
+  padding: 0.3125rem 0.875rem;
+  border-radius: 1.25rem;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  font-size: 0.75rem;
+  color: $color-white;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .container {
+    gap: 1.25rem;
+  }
+
+  .title {
+    padding: 0;
+
+    font-size: 1rem;
+    line-height: 1rem;
+
+    padding-bottom: 0.25rem;
+  }
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text-index;
+  font-size: 1rem;
+}

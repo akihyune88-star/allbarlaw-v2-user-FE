@@ -3,6 +3,7 @@ import LabelInput from '@/components/labelInput/LabelInput'
 import type { SignUpFormData } from '@/pages/auth/signUp/signUpForm/signUpSchema'
 import styles from './accountInfoSection.module.scss'
 import Divider from '@/components/divider/Divider'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 type AccountInfoSectionProps = {
   register: UseFormRegister<SignUpFormData>
@@ -11,10 +12,11 @@ type AccountInfoSectionProps = {
 }
 
 const AccountInfoSection = ({ register, errors, idMessage }: AccountInfoSectionProps) => {
+  const isMobile = useMediaQuery('(max-width: 80rem)')
   return (
-    <section className={styles.container}>
+    <section className={styles['account-info-section']}>
       <h2 className={styles.title}>로그인 계정</h2>
-      <Divider padding={1} />
+      {!isMobile && <Divider padding={1} />}
       <LabelInput
         label='아이디'
         placeholder='영문, 숫자 포함 5자 이상 가능합니다.'
