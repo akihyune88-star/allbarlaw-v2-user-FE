@@ -35,10 +35,11 @@
   padding-top: 0.5rem;
   text-align: right;
   font-size: 0.875rem;
-  color: $color-green-01;
+  color: #20bf62; // $color-green-01
+  min-height: 1.6rem;
 
   &[data-error='true'] {
-    color: $color-error;
+    color: #ff0000; // $color-error
   }
 }
 
