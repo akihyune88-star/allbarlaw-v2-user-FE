@@ -8,10 +8,9 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 type AccountInfoSectionProps = {
   register: UseFormRegister<SignUpFormData>
   errors: FieldErrors<SignUpFormData>
-  idMessage?: string
 }
 
-const AccountInfoSection = ({ register, errors, idMessage }: AccountInfoSectionProps) => {
+const AccountInfoSection = ({ register, errors }: AccountInfoSectionProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   return (
     <section className={styles['account-info-section']}>
@@ -22,7 +21,7 @@ const AccountInfoSection = ({ register, errors, idMessage }: AccountInfoSectionP
         placeholder='영문, 숫자 포함 5자 이상 가능합니다.'
         {...register('id')}
         isError={!!errors.id}
-        message={idMessage}
+        message={errors.id?.message}
       />
       <LabelInput
         label='비밀번호'
