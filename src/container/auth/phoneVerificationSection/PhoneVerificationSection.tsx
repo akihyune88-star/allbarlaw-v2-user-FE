@@ -1,4 +1,3 @@
-import type { UseFormRegister, FieldErrors } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import type { SignUpFormData } from '@/pages/auth/signUp/signUpForm/signUpSchema'
 import styles from './phoneVerificationSection.module.scss'
@@ -8,14 +7,17 @@ import PhoneInput from '@/components/phoneInput/PhoneInput'
 import { useSendVerificationCode } from '@/hooks/mutatate/useSendVerificationCode'
 import useVerificationTimer from '@/hooks/useVerificationTimer'
 
-type PhoneVerificationSectionProps = {
-  register: UseFormRegister<SignUpFormData>
-  errors: FieldErrors<SignUpFormData>
-}
-
-const PhoneVerificationSection = ({ register, errors }: PhoneVerificationSectionProps) => {
+const PhoneVerificationSection = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const { getValues } = useFormContext<SignUpFormData>()
+  const {
+    register,
+    getValues,
+    formState: { errors },
+    trigger,
+    watch,
+  } = useFormContext<SignUpFormData>()
+
+  const phoneNumberValue = watch('phoneNumber')
   const { isTimerRunning, formattedTime, startTimer } = useVerificationTimer(180)
   const { mutate: sendVerificationCode } = useSendVerificationCode({
     onSuccess: () => {
@@ -23,13 +25,14 @@ const PhoneVerificationSection = ({ register, errors }: PhoneVerificationSection
     },
   })
 
-  const handleSendVerificationCode = () => {
-    const phoneNumber = getValues('phoneNumber')
-    if (phoneNumber) {
-      const response = sendVerificationCode(phoneNumber)
-      console.log(response)
+  const handleSendVerificationCode = async () => {
+    const isValid = await trigger('phoneNumber')
+    if (isValid) {
+      sendVerificationCode(getValues('phoneNumber'))
     }
   }
+
+  const isButtonDisabled = isTimerRunning || !phoneNumberValue || !!errors.phoneNumber
 
   return (
     <section className={styles.container}>
@@ -50,7 +53,7 @@ const PhoneVerificationSection = ({ register, errors }: PhoneVerificationSection
               type='button'
               className={styles['phone-input-button']}
               onClick={handleSendVerificationCode}
-              disabled={isTimerRunning}
+              disabled={isButtonDisabled}
             >
               인증번호 발송
             </button>

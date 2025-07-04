@@ -21,7 +21,7 @@ export const signUpSchema = z
     phoneNumber: z
       .string()
       .min(1, { message: '전화번호를 입력해주세요.' })
-      .regex(/^[0-9]{11}$/, { message: '휴대폰 번호 11자리를 입력해주세요.' }),
+      .regex(/^010[0-9]{8}$/, { message: '올바른 휴대폰 번호 11자리를 입력해주세요.' }),
     verificationCode: z.string().length(6, { message: '인증번호는 6자리여야 합니다.' }),
 
     // EmailInput 섹션

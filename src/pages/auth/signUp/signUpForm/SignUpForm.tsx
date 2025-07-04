@@ -35,9 +35,11 @@ const SignUpForm = () => {
       <main className={`${styles['sign-up-form']} center-layout`}>
         <SignUpTitle title='회원가입' />
         <form onSubmit={handleSubmit(onSubmit)} className={styles['sign-up-form-section']}>
-          <AccountInfoSection register={register} errors={errors} />
-          <PhoneVerificationSection register={register} errors={errors} />
-          <EmailInputSection register={register} errors={errors} />
+          <div className={styles['input-section']}>
+            <AccountInfoSection register={register} errors={errors} />
+            <PhoneVerificationSection />
+            <EmailInputSection register={register} errors={errors} />
+          </div>
           <TermsAgreementSection register={register} errors={errors} setValue={setValue} watch={watch} />
           <Button type='submit' disabled={isSubmitting} className={styles['sign-up-form-button']}>
             {isSubmitting ? '가입 진행 중...' : '회원가입 완료'}

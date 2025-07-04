@@ -19,6 +19,12 @@
 
   font-size: 0.75rem;
   color: $color-white;
+
+  &:disabled {
+    background-color: #e5e7eb; // neutral_200
+    color: #9ca3af; // neutral_400
+    cursor: not-allowed;
+  }
 }
 
 @media (max-width: $breakpoint-desktop) {
