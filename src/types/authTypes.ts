@@ -24,3 +24,13 @@ export type SignUpResponse = {
   userEmail: string
   message: string
 }
+
+export type LoginRequest = {
+  userAccount: string
+  userPassword: string
+  rememberMe: boolean
+}
+
+export type LoginResponse = {
+  userAccessToken: string
+}

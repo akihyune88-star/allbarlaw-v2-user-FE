@@ -7,19 +7,45 @@ import SocialLoginButton from '@/container/auth/socialLoginButton/SocialLoginBut
 import { LOGIN_TABS } from '@/constants/authConstants'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { loginSchema, type LoginFormData, defaultValues } from './loginSchema'
+import LabelInput from '@/components/labelInput/LabelInput'
+import { useLogin } from '@/hooks/mutatate/useLogin'
 
 type AuthActionType = 'ID_FIND' | 'PASSWORD_RESET' | 'SIGNUP'
 
 const Login = () => {
   const [_activeTab, setActiveTab] = useState('')
-  const [activeLocation, setActiveLocation] = useState(false)
   const navigate = useNavigate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue,
+    watch,
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onChange',
+    defaultValues,
+  })
+
+  const rememberMe = watch('rememberMe')
 
   const handleTabChange = (path: string) => {
     setActiveTab(path)
   }
 
-  const handleSaveLocalStorage = () => setActiveLocation(!activeLocation)
+  const handleSaveLocalStorage = () => {
+    setValue('rememberMe', !rememberMe)
+  }
+
+  const { mutate: login, isPending } = useLogin({
+    onSuccess: () => {
+      navigate(ROUTER.MAIN)
+    },
+  })
 
   const handleAuthAction = (type: AuthActionType) => {
     if (type === 'ID_FIND') {
@@ -27,6 +53,14 @@ const Login = () => {
     } else if (type === 'PASSWORD_RESET') {
       console.log('PASSWORD_RESET')
     } else if (type === 'SIGNUP') navigate(ROUTER.SIGNUP)
+  }
+
+  const onSubmit = async (data: LoginFormData) => {
+    login({
+      userAccount: data.id,
+      userPassword: data.password,
+      rememberMe: data.rememberMe,
+    })
   }
 
   return (
@@ -40,24 +74,32 @@ const Login = () => {
         <div className={styles['tabs-container']}>
           <Tabs items={LOGIN_TABS} onChange={handleTabChange} initialPath={'/user'} />
         </div>
-        <form className={styles['login-form-content']}>
+        <form className={styles['login-form-content']} onSubmit={handleSubmit(onSubmit)}>
           <div className={styles['login-form-input-container']}>
-            <div className={styles['login-form-input']}>
-              <label>아이디</label>
-              <input type='text' placeholder='이메일 주소를 입력해주세요' />
-            </div>
-            <div className={styles['login-form-input']}>
-              <label>비밀번호</label>
-              <input type='password' placeholder='비밀번호를 입력해주세요' />
-            </div>
+            <LabelInput
+              label='아이디'
+              placeholder='이메일 주소를 입력해주세요'
+              {...register('id')}
+              isError={!!errors.id}
+              message={errors.id?.message}
+            />
+            <LabelInput
+              label='비밀번호'
+              type='password'
+              placeholder='비밀번호를 입력해주세요'
+              {...register('password')}
+              isError={!!errors.password}
+              message={errors.password?.message}
+            />
           </div>
           <div className={styles['login-form-button-container']}>
-            <button className={styles['login-form-button']} type='submit'>
-              로그인
+            <button className={styles['login-form-button']} type='submit' disabled={isSubmitting}>
+              {isSubmitting ? '로그인 중...' : '로그인'}
             </button>
             <div className={styles['login-form-check-container']} onClick={handleSaveLocalStorage}>
-              <SvgIcon name='checkRoundLine' size={16} color={activeLocation ? COLOR.green_01 : COLOR.icon_gray_50} />
+              <SvgIcon name='checkRoundLine' size={16} color={rememberMe ? COLOR.green_01 : COLOR.icon_gray_50} />
               <span>로그인 상태 유지</span>
+              <input type='checkbox' {...register('rememberMe')} style={{ display: 'none' }} />
             </div>
           </div>
         </form>

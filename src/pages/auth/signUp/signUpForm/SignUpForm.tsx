@@ -8,6 +8,10 @@ import PhoneVerificationSection from '@/container/auth/phoneVerificationSection/
 import TermsAgreementSection from '@/container/auth/termsAgreementSection/TermsAgreementSection'
 import EmailInputSection from '@/container/auth/emailInputSection/EmailInputSection'
 import Button from '@/components/button/Button'
+import { useSignUp } from '@/hooks/mutatate/useSignUp'
+import { useNavigate } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
+import { LOCAL } from '@/constants/local'
 
 const SignUpForm = () => {
   const methods = useForm<SignUpFormData>({
@@ -25,9 +29,29 @@ const SignUpForm = () => {
     watch,
   } = methods
 
+  const { mutate: signUp } = useSignUp()
+  const navigate = useNavigate()
+
   const onSubmit = (data: SignUpFormData) => {
     console.log('회원가입 전체 데이터:', data)
-    return new Promise(resolve => setTimeout(resolve, 2000))
+    try {
+      const verificationToken = sessionStorage.getItem(LOCAL.VERIFICATION_TOKEN)
+      if (!verificationToken) {
+        throw new Error('휴대폰 인증이 완료되지 않았습니다.')
+      }
+
+      signUp({
+        account: data.id,
+        password: data.password,
+        passwordRepeat: data.confirmPassword,
+        email: data.email,
+        phone: data.phoneNumber,
+        verificationToken: verificationToken,
+      })
+      navigate(ROUTER.AUTH)
+    } catch (error) {
+      console.error('회원가입 실패:', error)
+    }
   }
 
   return (

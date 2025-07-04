@@ -49,13 +49,15 @@ const PhoneVerificationSection = () => {
     const code = getValues('verificationCode')
 
     try {
-      await verifyVerificationCode({
+      const result = await verifyVerificationCode({
         phone: phoneNumberValue,
         certNumber: code,
       })
-      setIsVerified(true)
-      stopTimer()
-      setApiMessage({ text: '인증이 완료되었습니다.', isError: false })
+      if (result.data) {
+        setIsVerified(true)
+        stopTimer()
+        setApiMessage({ text: '인증이 완료되었습니다.', isError: false })
+      }
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         setApiMessage({ text: error.response.data.detail, isError: true })

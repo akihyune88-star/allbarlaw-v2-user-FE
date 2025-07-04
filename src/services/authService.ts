@@ -1,5 +1,5 @@
 import instance from '@/lib/axios'
-import { SignUpRequest, VerifyVerificationCodeRequest } from '@/types/authTypes'
+import { LoginRequest, SignUpRequest, VerifyVerificationCodeRequest } from '@/types/authTypes'
 
 // 현재는 목업 데이터를 사용하지만, 실제 API로 교체 가능
 export const authService = {
@@ -28,6 +28,15 @@ export const authService = {
       return response.data
     } catch (error) {
       console.error('Failed to sign up:', error)
+      throw error
+    }
+  },
+  login: async (inputValue: LoginRequest) => {
+    try {
+      const response = await instance.post('/user/login', inputValue)
+      return response.data
+    } catch (error) {
+      console.error('Failed to login:', error)
       throw error
     }
   },

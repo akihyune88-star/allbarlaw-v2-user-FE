@@ -28,12 +28,8 @@ export const signUpSchema = z
     email: z.string().email({ message: '이메일 형식에 맞지 않습니다.' }),
 
     // TermsAgreement 섹션
-    agreeToTerms: z.boolean().refine(val => val === true, {
-      message: '서비스 이용약관에 동의해주세요.',
-    }),
-    agreeToPrivacy: z.boolean().refine(val => val === true, {
-      message: '개인정보 수집 및 이용에 동의해주세요.',
-    }),
+    agreeToTerms: z.boolean().optional(),
+    agreeToPrivacy: z.boolean().optional(),
     agreeToMarketing: z.boolean().optional(),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
