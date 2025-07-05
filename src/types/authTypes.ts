@@ -39,3 +39,8 @@ export type SocialLoginRequest = {
   userProvider: string
   userAccessToken: string
 }
+
+export type CheckResponse = {
+  isAvailable: true
+  isValid: true
+}

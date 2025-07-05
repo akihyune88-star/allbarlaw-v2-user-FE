@@ -3,6 +3,15 @@ import { LoginRequest, SignUpRequest, SocialLoginRequest, VerifyVerificationCode
 
 // 현재는 목업 데이터를 사용하지만, 실제 API로 교체 가능
 export const authService = {
+  checkId: async (userAccount: string) => {
+    try {
+      const response = await instance.post('/user/check-account', { userAccount })
+      return response.data
+    } catch (error) {
+      console.error('Failed to check id:', error)
+      throw error
+    }
+  },
   sendVerificationCode: async (phone: string) => {
     try {
       const response = await instance.post('/user/send-verification', { phone })
@@ -18,6 +27,15 @@ export const authService = {
       return response.data
     } catch (error) {
       console.error('Failed to verify verification code:', error)
+      throw error
+    }
+  },
+  checkEmail: async (userEmail: string) => {
+    try {
+      const response = await instance.post('/user/check-email', { userEmail })
+      return response.data
+    } catch (error) {
+      console.error('Failed to check email:', error)
       throw error
     }
   },
