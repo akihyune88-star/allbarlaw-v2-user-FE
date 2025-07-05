@@ -1,5 +1,5 @@
 import instance from '@/lib/axios'
-import { LoginRequest, SignUpRequest, VerifyVerificationCodeRequest } from '@/types/authTypes'
+import { LoginRequest, SignUpRequest, SocialLoginRequest, VerifyVerificationCodeRequest } from '@/types/authTypes'
 
 // 현재는 목업 데이터를 사용하지만, 실제 API로 교체 가능
 export const authService = {
@@ -21,7 +21,6 @@ export const authService = {
       throw error
     }
   },
-
   signUp: async (inputValue: SignUpRequest) => {
     try {
       const response = await instance.post('/user/signup', inputValue)
@@ -37,6 +36,15 @@ export const authService = {
       return response.data
     } catch (error) {
       console.error('Failed to login:', error)
+      throw error
+    }
+  },
+  socialLogin: async (inputValue: SocialLoginRequest) => {
+    try {
+      const response = await instance.post('/user/social-auth', inputValue)
+      return response.data
+    } catch (error) {
+      console.error('Failed to social login:', error)
       throw error
     }
   },

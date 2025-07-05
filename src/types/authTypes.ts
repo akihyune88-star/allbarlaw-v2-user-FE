@@ -34,3 +34,8 @@ export type LoginRequest = {
 export type LoginResponse = {
   userAccessToken: string
 }
+
+export type SocialLoginRequest = {
+  userProvider: string
+  userAccessToken: string
+}
