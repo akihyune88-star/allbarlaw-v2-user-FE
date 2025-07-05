@@ -36,6 +36,9 @@ import NoticeListByCategory from '@/pages/support/notice/noticeListByCategory/No
 import NoticeDetail from '@/pages/support/notice/noticeDetail/NoticeDetail'
 import AuthLayout from '@/pages/auth/authLayout/AuthLayout'
 import Login from '@/pages/auth/login/Login'
+import SignUpMain from '@/pages/auth/signUp/signUpMain/SignUpMain'
+import SignUpForm from '@/pages/auth/signUp/signUpForm/SignUpForm'
+import SocialCheck from '@/pages/auth/socialCheck/SocialCheck'
 
 const router = createBrowserRouter([
   {
@@ -44,6 +47,28 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {
+        path: ROUTER.AUTH,
+        element: <AuthLayout />,
+        children: [
+          {
+            path: '',
+            element: <Login />,
+          },
+          {
+            path: ROUTER.SIGNUP,
+            element: <SignUpMain />,
+          },
+          {
+            path: ROUTER.SIGNUP_FORM,
+            element: <SignUpForm />,
+          },
+        ],
+      },
+      {
+        path: 'social-check/:provider',
+        element: <SocialCheck />,
+      },
+      {
         path: '',
         element: <MainLayout />,
         children: [
@@ -51,6 +76,7 @@ const router = createBrowserRouter([
             path: '',
             element: <Main />,
           },
+
           {
             path: ':subcategoryId',
             element: <SubMain />,
@@ -180,16 +206,6 @@ const router = createBrowserRouter([
       {
         path: ROUTER.MOBILE_MENU_LIST,
         element: <MobileMenuList />,
-      },
-      {
-        path: ROUTER.LOGIN,
-        element: <AuthLayout />,
-        children: [
-          {
-            path: '',
-            element: <Login />,
-          },
-        ],
       },
       {
         path: ROUTER.ABOUT,

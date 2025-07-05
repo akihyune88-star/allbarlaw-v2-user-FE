@@ -28,6 +28,11 @@ const SvgIcon = ({
     ...(height !== undefined ? { height } : {}),
   }
 
+  const svgStyle: React.CSSProperties = {}
+  if (strokeWidth) {
+    svgStyle.strokeWidth = strokeWidth
+  }
+
   return (
     <span
       onClick={onClick}
@@ -37,7 +42,7 @@ const SvgIcon = ({
         color: color,
       }}
     >
-      <IconComponent {...props} {...sizeProps} strokeWidth={strokeWidth} />
+      <IconComponent {...props} {...sizeProps} style={svgStyle} />
     </span>
   )
 }

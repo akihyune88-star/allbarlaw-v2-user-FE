@@ -1,5 +1,13 @@
 export const ROUTER = {
+  // Auth
+  AUTH: '/auth',
   LOGIN: '/login',
+  ID_FIND: '/id-find',
+  PASSWORD_RESET: '/password-reset',
+  SIGNUP: 'signup',
+  SIGNUP_FORM: 'signup-form',
+  SOCIAL_CHECK: '/social-check',
+
   MYPAGE: '/mypage',
   SUPPORT: '/support',
   ABOUT: '/about',

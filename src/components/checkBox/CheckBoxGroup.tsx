@@ -1,41 +1,55 @@
+import React from 'react'
 import CheckBox from './CheckBox'
 import styles from './check-box-group.module.scss'
 
+interface CheckOption {
+  value: string
+  label: string
+}
+
 interface CheckBoxGroupProps {
-  title?: string
-  options: Array<{ value: string; label: string }>
+  options: CheckOption[]
   name: string
-  defaultValues?: string[]
-  onChange?: (values: string[]) => void
+  values: string[]
+  onChange: (values: string[]) => void
   className?: string
   direction?: 'horizontal' | 'vertical'
   gap?: string | number
-  gapUnit?: 'px' | 'rem'
 }
 
 const CheckBoxGroup = ({
-  title,
   options,
   name,
-  defaultValues = [],
+  values,
   onChange,
   className,
   direction = 'vertical',
   gap = '1rem',
-  gapUnit = 'rem',
 }: CheckBoxGroupProps) => {
+  const handleChange = (value: string) => {
+    const newValues = values.includes(value) ? values.filter(v => v !== value) : [...values, value]
+    onChange(newValues)
+  }
+
+  const containerStyle = {
+    display: 'flex',
+    flexDirection: direction === 'horizontal' ? 'row' : 'column',
+    gap: typeof gap === 'number' ? `${gap}rem` : gap,
+  } as React.CSSProperties
+
   return (
-    <div className={`${styles['checkbox-group']} ${className || ''}`}>
-      {title && <h3 className={styles['checkbox-group-title']}>{title}</h3>}
-      <CheckBox
-        options={options}
-        name={name}
-        defaultValues={defaultValues}
-        onChange={onChange}
-        direction={direction}
-        gap={gap}
-        gapUnit={gapUnit}
-      />
+    <div className={className} style={containerStyle}>
+      {options.map(option => (
+        <label key={option.value} className={styles['checkbox-label']}>
+          <CheckBox
+            name={name}
+            value={option.value}
+            checked={values.includes(option.value)}
+            onChange={() => handleChange(option.value)}
+          />
+          <span className={styles['checkbox-text']}>{option.label}</span>
+        </label>
+      ))}
     </div>
   )
 }

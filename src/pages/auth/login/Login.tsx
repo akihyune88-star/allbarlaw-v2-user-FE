@@ -1,21 +1,81 @@
 import Tabs from '@/components/tabs/Tabs'
 import styles from './login.module.scss'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import { COLOR } from '@/styles/color'
 import SocialLoginButton from '@/container/auth/socialLoginButton/SocialLoginButton'
 import { LOGIN_TABS } from '@/constants/authConstants'
+import { useNavigate } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { loginSchema, type LoginFormData, defaultValues } from './loginSchema'
+import LabelInput from '@/components/labelInput/LabelInput'
+import { useLogin } from '@/hooks/mutatate/useLogin'
+import { getErrorMessage } from '@/utils/errorHandler'
+
+type AuthActionType = 'ID_FIND' | 'PASSWORD_RESET' | 'SIGNUP'
 
 const Login = () => {
   const [_activeTab, setActiveTab] = useState('')
-  const [activeLocation, setActiveLocation] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage('')
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [errorMessage])
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue,
+    watch,
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onChange',
+    defaultValues,
+  })
+
+  const rememberMe = watch('rememberMe')
 
   const handleTabChange = (path: string) => {
     setActiveTab(path)
   }
 
   const handleSaveLocalStorage = () => {
-    setActiveLocation(!activeLocation)
+    setValue('rememberMe', !rememberMe)
+  }
+
+  const { mutate: login, isPending } = useLogin({
+    onSuccess: () => {
+      navigate(ROUTER.MAIN)
+    },
+    onError: message => {
+      setErrorMessage(message)
+    },
+  })
+
+  const handleAuthAction = (type: AuthActionType) => {
+    if (type === 'ID_FIND') {
+      // navigate(ROUTER.i)
+    } else if (type === 'PASSWORD_RESET') {
+      console.log('PASSWORD_RESET')
+    } else if (type === 'SIGNUP') navigate(ROUTER.SIGNUP)
+  }
+
+  const onSubmit = async (data: LoginFormData) => {
+    setErrorMessage('')
+    login({
+      userAccount: data.id,
+      userPassword: data.password,
+      rememberMe: data.rememberMe,
+    })
   }
 
   return (
@@ -29,37 +89,46 @@ const Login = () => {
         <div className={styles['tabs-container']}>
           <Tabs items={LOGIN_TABS} onChange={handleTabChange} initialPath={'/user'} />
         </div>
-        <form className={styles['login-form-content']}>
+        <form className={styles['login-form-content']} onSubmit={handleSubmit(onSubmit)}>
+          {errorMessage && <div className={styles['error-message']}>{errorMessage}</div>}
           <div className={styles['login-form-input-container']}>
-            <div className={styles['login-form-input']}>
-              <label>아이디</label>
-              <input type='text' placeholder='이메일 주소를 입력해주세요' />
-            </div>
-            <div className={styles['login-form-input']}>
-              <label>비밀번호</label>
-              <input type='password' placeholder='비밀번호를 입력해주세요' />
-            </div>
+            <LabelInput
+              label='아이디'
+              placeholder='이메일 주소를 입력해주세요'
+              {...register('id')}
+              isError={!!errors.id}
+              message={errors.id?.message}
+            />
+            <LabelInput
+              label='비밀번호'
+              type='password'
+              placeholder='비밀번호를 입력해주세요'
+              {...register('password')}
+              isError={!!errors.password}
+              message={errors.password?.message}
+            />
           </div>
           <div className={styles['login-form-button-container']}>
-            <button className={styles['login-form-button']} type='submit'>
-              로그인
+            <button className={styles['login-form-button']} type='submit' disabled={isPending}>
+              {isPending ? '로그인 중...' : '로그인'}
             </button>
             <div className={styles['login-form-check-container']} onClick={handleSaveLocalStorage}>
-              <SvgIcon name='checkRoundLine' size={16} color={activeLocation ? COLOR.green_01 : COLOR.icon_gray_50} />
+              <SvgIcon name='checkRoundLine' size={16} color={rememberMe ? COLOR.green_01 : COLOR.icon_gray_50} />
               <span>로그인 상태 유지</span>
+              <input type='checkbox' {...register('rememberMe')} style={{ display: 'none' }} />
             </div>
           </div>
         </form>
         <div className={styles['auth-action']}>
-          <button>아이디 찾기</button>
+          <button onClick={() => handleAuthAction('ID_FIND')}>아이디 찾기</button>
           <span>|</span>
-          <button>비밀번호 찾기</button>
+          <button onClick={() => handleAuthAction('PASSWORD_RESET')}>비밀번호 찾기</button>
           <span>|</span>
-          <button>회원가입</button>
+          <button onClick={() => handleAuthAction('SIGNUP')}>회원가입</button>
         </div>
 
         <footer className={styles['login-footer']}>
-          <SocialLoginButton />
+          <SocialLoginButton type='icon' />
         </footer>
       </section>
     </div>

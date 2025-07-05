@@ -1,50 +1,62 @@
-.checkbox-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-
-.checkbox-label {
-  display: flex;
+.checkbox-wrapper {
+  display: inline-flex;
   align-items: center;
   cursor: pointer;
-  padding: 0.25rem 0;
+  /* Prevent text selection */
+  user-select: none;
 }
 
+/* Hide the browser's default checkbox */
 .checkbox-input {
-  display: none;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
 }
 
+/* Create a custom checkbox */
 .checkbox-custom {
+  position: relative;
+  display: inline-block;
   width: 1rem;
   height: 1rem;
+  background-color: transparent;
+  border: 1px solid #ccc;
   border-radius: 0.25rem;
-  border: 1px solid $color-line-borderbox;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 0.5rem;
-  background-color: $color-white;
   transition: all 0.2s ease;
 }
 
-.checkbox-checked {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  color: $color-white;
-  z-index: 1;
+/* On mouse-over, add a grey background color */
+.checkbox-wrapper:hover .checkbox-custom {
+  background-color: #f0f0f0;
 }
 
-.checkbox-text {
-  font-size: 1rem;
-  font-weight: $font-weight-semibold;
-  color: $color-text-index;
-}
-
+/* When the checkbox is checked, add a green background */
 .checkbox-input:checked + .checkbox-custom {
-  border-color: #2eb56a;
   background-color: #2eb56a;
+  border-color: #2eb56a;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkbox-custom::after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-input:checked + .checkbox-custom::after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-input:checked + .checkbox-custom::after {
+  left: 0.3rem;
+  top: 0.05rem;
+  width: 0.25rem;
+  height: 0.6rem;
+  border: solid white;
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
 }

@@ -1,0 +1,23 @@
+.sign-up-title {
+  width: 100%;
+  text-align: center;
+
+  h1 {
+    font-size: 2rem;
+    line-height: 2rem;
+    font-weight: $font-weight-extra-bold;
+
+    color: $color-text-black;
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .sign-up-title {
+    background-color: $color-white;
+    padding: 0.5rem 0;
+    h1 {
+      font-size: 1.25rem;
+      line-height: 2rem;
+    }
+  }
+}
