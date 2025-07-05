@@ -3,6 +3,7 @@ import { ROUTER } from '@/routes/routerConstant'
 declare global {
   interface Window {
     Kakao: any
+    naver_id_login: any
   }
 }
 
@@ -11,19 +12,28 @@ const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
 export const naverLogin = () => {
-  const state = Math.random().toString(36).slice(2)
-  const redirectUri = 'http://localhost:5173/social-check/naver'
+  // 기존 네이버 로그인 버튼이 있다면 제거
+  const existingButton = document.getElementById('naver_id_login')
+  if (existingButton) {
+    existingButton.remove()
+  }
 
-  // 네이버 로그인 URL 생성
-  const naverAuthUrl = new URL('https://nid.naver.com/oauth2.0/authorize')
-  naverAuthUrl.searchParams.append('response_type', 'code')
-  naverAuthUrl.searchParams.append('client_id', NAVER_CLIENT_ID)
-  naverAuthUrl.searchParams.append('redirect_uri', redirectUri)
-  naverAuthUrl.searchParams.append('state', state)
-  naverAuthUrl.searchParams.append('scope', 'name email profile_image')
+  // 네이버 로그인 버튼을 위한 div 생성
+  const naverLoginDiv = document.createElement('div')
+  naverLoginDiv.id = 'naver_id_login'
+  naverLoginDiv.style.position = 'absolute'
+  naverLoginDiv.style.top = '-10000px'
+  document.body.appendChild(naverLoginDiv)
 
-  // 네이버 로그인 페이지로 리다이렉트
-  window.location.href = naverAuthUrl.toString()
+  // 네이버 로그인 초기화
+  const naverLogin = new window.naver_id_login(NAVER_CLIENT_ID, 'http://localhost:5173/social-check/naver')
+  naverLogin.init_naver_id_login()
+
+  // 자동으로 네이버 로그인 실행
+  const naverLoginButton = document.getElementById('naver_id_login_anchor')
+  if (naverLoginButton) {
+    naverLoginButton.click()
+  }
 }
 
 export const kakaoLogin = () => {

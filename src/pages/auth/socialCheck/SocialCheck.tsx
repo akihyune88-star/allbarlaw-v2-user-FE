@@ -11,8 +11,19 @@ const isValidProvider = (provider: string | undefined): provider is SocialProvid
   return provider === 'kakao' || provider === 'naver' || provider === 'google'
 }
 
+declare global {
+  interface Window {
+    naver_id_login: any
+  }
+}
+
 const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_KEY
-const REDIRECT_URI = 'http://localhost:5173/social-check/kakao'
+const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
+const GOOGLE_CLIENT_SECRET = import.meta.env.VITE_GOOGLE_CLIENT_SECRET
+const KAKAO_REDIRECT_URI = 'http://localhost:5173/social-check/kakao'
+const NAVER_REDIRECT_URI = 'http://localhost:5173/social-check/naver'
+const GOOGLE_REDIRECT_URI = 'http://localhost:5173/social-check/google'
 
 const SocialCheck = () => {
   const navigate = useNavigate()
@@ -23,7 +34,7 @@ const SocialCheck = () => {
       navigate(ROUTER.MAIN)
     },
     onError: () => {
-      navigate(ROUTER.MAIN + ROUTER.AUTH)
+      //   navigate(ROUTER.MAIN + ROUTER.AUTH)
     },
   })
 
@@ -33,7 +44,7 @@ const SocialCheck = () => {
         params: {
           grant_type: 'authorization_code',
           client_id: KAKAO_CLIENT_ID,
-          redirect_uri: REDIRECT_URI,
+          redirect_uri: KAKAO_REDIRECT_URI,
           code,
         },
         headers: {
@@ -48,33 +59,76 @@ const SocialCheck = () => {
     }
   }
 
+  const getNaverToken = () => {
+    const naverLogin = new window.naver_id_login(NAVER_CLIENT_ID, NAVER_REDIRECT_URI)
+    const token = naverLogin.oauthParams.access_token
+
+    if (!token) {
+      throw new Error('네이버 액세스 토큰을 찾을 수 없습니다.')
+    }
+
+    return token
+  }
+
+  const getGoogleToken = async (code: string) => {
+    try {
+      const response = await axios.post(
+        'https://oauth2.googleapis.com/token',
+        {
+          code,
+          client_id: GOOGLE_CLIENT_ID,
+          client_secret: GOOGLE_CLIENT_SECRET,
+          redirect_uri: GOOGLE_REDIRECT_URI,
+          grant_type: 'authorization_code',
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+
+      return response.data.access_token
+    } catch (error) {
+      console.error('구글 토큰 받아오기 실패:', error)
+      throw error
+    }
+  }
+
   useEffect(() => {
     const processLogin = async () => {
-      const code = new URLSearchParams(location.search).get('code')
-
-      if (code && isValidProvider(provider)) {
-        try {
-          let accessToken = ''
-
-          switch (provider) {
-            case 'kakao':
-              accessToken = await getKakaoToken(code)
-              break
-            // 다른 provider 케이스는 나중에 추가
-          }
-
-          if (accessToken) {
-            socialLogin({
-              userProvider: provider,
-              userAccessToken: accessToken,
-            })
-          }
-        } catch (error) {
-          console.error('소셜 로그인 처리 실패:', error)
-          navigate(ROUTER.MAIN + ROUTER.AUTH)
-        }
-      } else {
+      if (!isValidProvider(provider)) {
         navigate(ROUTER.MAIN + ROUTER.AUTH)
+        return
+      }
+
+      try {
+        let accessToken = ''
+        const code = new URLSearchParams(location.search).get('code')
+
+        switch (provider) {
+          case 'kakao':
+            if (!code) throw new Error('인증 코드가 없습니다.')
+            accessToken = await getKakaoToken(code)
+            break
+          case 'naver':
+            accessToken = getNaverToken()
+            break
+          case 'google':
+            if (!code) throw new Error('인증 코드가 없습니다.')
+            accessToken = await getGoogleToken(code)
+            break
+        }
+
+        if (accessToken) {
+          socialLogin({
+            userProvider: provider,
+            userAccessToken: accessToken,
+          })
+        }
+      } catch (error) {
+        console.error('소셜 로그인 처리 실패:', error)
+        //   navigate(ROUTER.MAIN + ROUTER.AUTH)
       }
     }
 
