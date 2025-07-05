@@ -6,6 +6,7 @@ export const ROUTER = {
   PASSWORD_RESET: '/password-reset',
   SIGNUP: 'signup',
   SIGNUP_FORM: 'signup-form',
+  SOCIAL_CHECK: '/social-check',
 
   MYPAGE: '/mypage',
   SUPPORT: '/support',

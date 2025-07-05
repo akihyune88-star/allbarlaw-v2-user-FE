@@ -38,6 +38,7 @@ import AuthLayout from '@/pages/auth/authLayout/AuthLayout'
 import Login from '@/pages/auth/login/Login'
 import SignUpMain from '@/pages/auth/signUp/signUpMain/SignUpMain'
 import SignUpForm from '@/pages/auth/signUp/signUpForm/SignUpForm'
+import SocialCheck from '@/pages/auth/socialCheck/SocialCheck'
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
             element: <SignUpForm />,
           },
         ],
+      },
+      {
+        path: 'social-check/:provider',
+        element: <SocialCheck />,
       },
       {
         path: '',
