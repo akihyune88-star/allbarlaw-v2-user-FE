@@ -19,8 +19,8 @@ const AccountInfoSection = ({ register, errors, watch }: AccountInfoSectionProps
   const [idMessage, setIdMessage] = useState<string | undefined>(undefined)
   const [isIdError, setIsIdError] = useState(false)
 
-  const password = watch('password')
-  const confirmPassword = watch('confirmPassword')
+  const watchPassword = watch('password')
+  const watchConfirmPassword = watch('confirmPassword')
 
   const { mutate: checkId } = useIdCheck({
     onSuccess: data => {
@@ -65,13 +65,13 @@ const AccountInfoSection = ({ register, errors, watch }: AccountInfoSectionProps
 
   const getPasswordMessage = () => {
     if (errors.password) return errors.password.message
-    if (password && !errors.password) return '비밀번호 사용이 가능합니다.'
+    if (watchPassword && !errors.password) return '비밀번호 사용이 가능합니다.'
     return undefined
   }
 
   const getConfirmPasswordMessage = () => {
     if (errors.confirmPassword) return errors.confirmPassword.message
-    if (confirmPassword && password === confirmPassword) return '비밀번호 확인이 되었습니다.'
+    if (watchConfirmPassword && watchPassword === watchConfirmPassword) return '비밀번호 확인이 되었습니다.'
     return undefined
   }
 
