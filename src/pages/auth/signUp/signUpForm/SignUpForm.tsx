@@ -17,10 +17,8 @@ const SignUpForm = () => {
   const methods = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
     mode: 'onChange',
-    defaultValues: {
-      agreeToMarketing: false,
-    },
   })
+
   const {
     register,
     handleSubmit,
@@ -58,7 +56,7 @@ const SignUpForm = () => {
     <FormProvider {...methods}>
       <main className={`${styles['sign-up-form']} center-layout`}>
         <SignUpTitle title='회원가입' />
-        <form onSubmit={handleSubmit(onSubmit)} className={styles['sign-up-form-section']}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <AccountInfoSection register={register} errors={errors} />
           <PhoneVerificationSection />
           <EmailInputSection register={register} errors={errors} />
