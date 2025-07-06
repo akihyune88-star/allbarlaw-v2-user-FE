@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import styles from './social-check.module.scss'
-import { useSocialAuth, isValidProvider } from '@/hooks/useSocialAuth'
+import { useSocialAuth } from '@/hooks/useSocialAuth'
 
 const SocialCheck = () => {
   const { provider } = useParams()

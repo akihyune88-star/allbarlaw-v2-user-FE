@@ -1,5 +1,3 @@
-import { ROUTER } from '@/routes/routerConstant'
-
 declare global {
   interface Window {
     Kakao: any

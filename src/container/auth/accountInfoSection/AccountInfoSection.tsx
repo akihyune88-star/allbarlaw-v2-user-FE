@@ -10,10 +10,10 @@ import { useIdCheck } from '@/hooks/mutatate/useIdCheck'
 type AccountInfoSectionProps = {
   register: UseFormRegister<SignUpFormData>
   errors: FieldErrors<SignUpFormData>
-  watch: UseFormWatch<SignUpFormData>
+  watch?: UseFormWatch<SignUpFormData>
 }
 
-const AccountInfoSection = ({ register, errors, watch }: AccountInfoSectionProps) => {
+const AccountInfoSection = ({ register, errors }: AccountInfoSectionProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const debounceTimer = useRef<ReturnType<typeof setTimeout>>(null)
   const [idMessage, setIdMessage] = useState<string | undefined>(undefined)

@@ -15,7 +15,7 @@ export const useIdCheck = (options?: UseIdCheckOptions) => {
       const response = await authService.checkId(userAccount)
       return response
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (data, _variables) => {
       options?.onSuccess?.(data)
     },
     onError: error => {

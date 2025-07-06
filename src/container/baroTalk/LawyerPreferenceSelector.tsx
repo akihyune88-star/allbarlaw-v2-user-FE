@@ -1,20 +1,20 @@
-import { CheckBoxGroup } from '@/components/checkBox'
+// import { CheckBoxGroup } from '@/components/checkBox'
 import styles from '@/container/baroTalk/common-selector.module.scss'
-import { LAWYER_OPTIONS } from './constants'
+// import { LAWYER_OPTIONS } from './constants'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const LawyerPreferenceSelector = () => {
   const isMobile = useMediaQuery('(max-width: 1279px)')
 
-  const handleStatusChange = (values: string[]) => {
-    console.log('Selected values:', values)
-  }
+  // const handleStatusChange = (values: string[]) => {
+  //   console.log('Selected values:', values)
+  // }
 
   return (
     <div className={`${styles['selector']} ${styles['flex-center']}`}>
       <h1 className={styles['title']} style={{ marginBottom: isMobile ? 16 : 0 }}>{`변호사\n타입 선택`}</h1>
       <div className={styles['group-wrapper']}>
-        <CheckBoxGroup
+        {/* <CheckBoxGroup
           className={styles['item-wrapper']}
           options={LAWYER_OPTIONS.gender}
           name='consultationStatus'
@@ -39,7 +39,7 @@ const LawyerPreferenceSelector = () => {
           direction={isMobile ? 'vertical' : 'horizontal'}
           onChange={handleStatusChange}
           gap={isMobile ? 0.75 : 2.25}
-        />
+        /> */}
       </div>
     </div>
   )
