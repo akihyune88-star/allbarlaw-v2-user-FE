@@ -20,6 +20,7 @@ export const useVerifyVerificationCode = (options?: UseVerifyVerificationCodeOpt
     onSuccess: data => {
       console.log('인증 성공')
       sessionStorage.setItem(LOCAL.VERIFICATION_TOKEN, data.verificationToken)
+      options?.onSuccess?.()
     },
     onError: error => {
       if (isAxiosError(error)) {

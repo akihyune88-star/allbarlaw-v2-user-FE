@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 import { useState } from 'react'
-import { isAxiosError } from 'axios'
+
 import type { SignUpFormData } from '@/pages/auth/signUp/signUpForm/signUpSchema'
 import styles from './phoneVerificationSection.module.scss'
 import Divider from '@/components/divider/Divider'
@@ -38,7 +38,13 @@ const PhoneVerificationSection = () => {
       setCodeError({ text: message, isError: true })
     },
   })
+
   const { mutateAsync: verifyVerificationCode } = useVerifyVerificationCode({
+    onSuccess: () => {
+      setIsVerified(true)
+      stopTimer()
+      setApiMessage({ text: '인증이 완료되었습니다.', isError: false })
+    },
     onError: message => {
       setApiMessage({ text: message, isError: true })
     },
@@ -58,23 +64,10 @@ const PhoneVerificationSection = () => {
 
     const code = getValues('verificationCode')
 
-    try {
-      const result = await verifyVerificationCode({
-        phone: phoneNumberValue,
-        certNumber: code,
-      })
-      if (result.data) {
-        setIsVerified(true)
-        stopTimer()
-        setApiMessage({ text: '인증이 완료되었습니다.', isError: false })
-      }
-    } catch (error) {
-      if (isAxiosError(error) && error.response) {
-        setApiMessage({ text: error.response.data.detail, isError: true })
-      } else {
-        setApiMessage({ text: '알 수 없는 오류가 발생했습니다.', isError: true })
-      }
-    }
+    await verifyVerificationCode({
+      phone: phoneNumberValue,
+      certNumber: code,
+    })
   }
 
   const isButtonDisabled = isTimerRunning || !phoneNumberValue || !!errors.phoneNumber || isVerified

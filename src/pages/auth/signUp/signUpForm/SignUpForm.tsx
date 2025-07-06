@@ -59,7 +59,7 @@ const SignUpForm = () => {
       <main className={`${styles['sign-up-form']} center-layout`}>
         <SignUpTitle title='회원가입' />
         <form onSubmit={handleSubmit(onSubmit)} className={styles['sign-up-form-section']}>
-          <AccountInfoSection register={register} errors={errors} />
+          <AccountInfoSection register={register} errors={errors} watch={watch} />
           <PhoneVerificationSection />
           <EmailInputSection register={register} errors={errors} />
           <TermsAgreementSection register={register} errors={errors} setValue={setValue} watch={watch} />

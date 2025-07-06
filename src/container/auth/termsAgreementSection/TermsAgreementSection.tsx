@@ -35,7 +35,6 @@ const AgreementRow = ({
   name: keyof SignUpFormData
   label: string
   register: UseFormRegister<SignUpFormData>
-  errors: FieldErrors<SignUpFormData>
   link?: React.ReactNode
 }) => {
   return (
@@ -52,6 +51,7 @@ const AgreementRow = ({
 const TermsAgreementSection = ({ register, errors, setValue, watch }: TermsAgreementSectionProps) => {
   const watchAllAgreement = watch(['agreeToTerms', 'agreeToPrivacy', 'agreeToMarketing'])
   const isAllChecked = watchAllAgreement.every(Boolean)
+  const hasError = errors.agreeToTerms || errors.agreeToPrivacy
 
   const handleAllAgreeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target
@@ -65,19 +65,18 @@ const TermsAgreementSection = ({ register, errors, setValue, watch }: TermsAgree
       <h2 className={styles.title}>올바로 서비스 이용약관 동의</h2>
       <Divider padding={1} />
       <div className={styles['checkbox-group']}>
+        <AgreementRow name='agreeToTerms' label='서비스 이용약관 동의' register={register} link={<TermsLink />} />
         <AgreementRow
-          name='agreeToTerms'
-          label='서비스 이용약관 동의'
+          name='agreeToPrivacy'
+          label='개인정보 처리방침 동의'
           register={register}
-          errors={errors}
-          link={<TermsLink />}
+          link={<TermsLink text='[개인정보 처리방침 보기]' />}
         />
         <AgreementRow
-          name='agreeToTerms'
-          label='서비스 이용약관 동의'
+          name='agreeToMarketing'
+          label='마케팅 정보 수신 동의'
           register={register}
-          errors={errors}
-          link={<TermsLink />}
+          link={<TermsLink text='[마케팅 정보 수신 동의 보기]' />}
         />
       </div>
       <Divider padding={1} />
@@ -86,6 +85,7 @@ const TermsAgreementSection = ({ register, errors, setValue, watch }: TermsAgree
           <CheckBox checked={isAllChecked} onChange={handleAllAgreeChange} />
           <span className={styles['label-text']}>모두 동의</span>
         </div>
+        {hasError && <p className={styles['error-message']}>약관 동의는 필수입니다.</p>}
       </div>
     </section>
   )
