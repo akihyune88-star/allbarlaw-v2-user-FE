@@ -18,6 +18,9 @@ const AccountInfoSection = ({ register, errors }: AccountInfoSectionProps) => {
   const [idMessage, setIdMessage] = useState<string | undefined>(undefined)
   const [isIdError, setIsIdError] = useState(false)
 
+  const password = watch('password')
+  const confirmPassword = watch('confirmPassword')
+
   const { mutate: checkId } = useIdCheck({
     onSuccess: data => {
       if (data.isAvailable) {
@@ -37,7 +40,6 @@ const AccountInfoSection = ({ register, errors }: AccountInfoSectionProps) => {
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
 
-    // 새로운 입력이 시작되면 메시지와 에러 상태 초기화
     setIdMessage(undefined)
     setIsIdError(false)
 
@@ -60,6 +62,18 @@ const AccountInfoSection = ({ register, errors }: AccountInfoSectionProps) => {
     }
   }, [])
 
+  const getPasswordMessage = () => {
+    if (errors.password) return errors.password.message
+    if (password && !errors.password) return '비밀번호 사용이 가능합니다.'
+    return undefined
+  }
+
+  const getConfirmPasswordMessage = () => {
+    if (errors.confirmPassword) return errors.confirmPassword.message
+    if (confirmPassword && password === confirmPassword) return '비밀번호 확인이 되었습니다.'
+    return undefined
+  }
+
   return (
     <section className={styles['account-info-section']}>
       <h2 className={styles.title}>로그인 계정</h2>
@@ -79,7 +93,7 @@ const AccountInfoSection = ({ register, errors }: AccountInfoSectionProps) => {
         placeholder='8자 이상 입력해주세요'
         {...register('password')}
         isError={!!errors.password}
-        message={errors.password?.message}
+        message={getPasswordMessage()}
       />
       <LabelInput
         label='비밀번호 확인'
@@ -87,7 +101,7 @@ const AccountInfoSection = ({ register, errors }: AccountInfoSectionProps) => {
         placeholder='비밀번호를 다시 입력해주세요.'
         {...register('confirmPassword')}
         isError={!!errors.confirmPassword}
-        message={errors.confirmPassword?.message}
+        message={getConfirmPasswordMessage()}
       />
     </section>
   )

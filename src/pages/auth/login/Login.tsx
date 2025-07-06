@@ -12,7 +12,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginFormData, defaultValues } from './loginSchema'
 import LabelInput from '@/components/labelInput/LabelInput'
 import { useLogin } from '@/hooks/mutatate/useLogin'
-import { getErrorMessage } from '@/utils/errorHandler'
 
 type AuthActionType = 'ID_FIND' | 'PASSWORD_RESET' | 'SIGNUP'
 
@@ -33,7 +32,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     setValue,
     watch,
   } = useForm<LoginFormData>({

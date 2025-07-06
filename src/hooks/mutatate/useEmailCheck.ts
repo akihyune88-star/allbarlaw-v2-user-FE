@@ -15,7 +15,7 @@ export const useEmailCheck = (options?: UseEmailCheckOptions) => {
       const response = await authService.checkEmail(userEmail)
       return response
     },
-    onSuccess: data => {
+    onSuccess: (data, _variables) => {
       options?.onSuccess?.(data)
     },
     onError: error => {

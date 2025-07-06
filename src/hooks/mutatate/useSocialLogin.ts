@@ -19,7 +19,7 @@ export const useSocialLogin = (options?: UseSocialLoginOptions) => {
       const response = await authService.socialLogin(inputValue)
       return response
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (data, _variables) => {
       localStorage.setItem(LOCAL.TOKEN, data.userAccessToken)
 
       // 토큰 저장 후 로그인 상태 체크
