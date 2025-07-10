@@ -10,9 +10,10 @@ import { useEmailCheck } from '@/hooks/mutatate/useEmailCheck'
 type EmailInputSectionProps = {
   register: UseFormRegister<SignUpFormData>
   errors: FieldErrors<SignUpFormData>
+  onEmailError?: (isError: boolean) => void
 }
 
-const EmailInputSection = ({ register, errors }: EmailInputSectionProps) => {
+const EmailInputSection = ({ register, errors, onEmailError }: EmailInputSectionProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const debounceTimer = useRef<ReturnType<typeof setTimeout>>(null)
   const [emailMessage, setEmailMessage] = useState<string | undefined>(undefined)
@@ -23,14 +24,17 @@ const EmailInputSection = ({ register, errors }: EmailInputSectionProps) => {
       if (data.isAvailable) {
         setEmailMessage('사용 가능한 이메일입니다.')
         setIsEmailError(false)
+        onEmailError?.(false)
       } else {
         setEmailMessage('이미 등록된 이메일입니다.')
         setIsEmailError(true)
+        onEmailError?.(true)
       }
     },
     onError: message => {
       setEmailMessage(message)
       setIsEmailError(true)
+      onEmailError?.(true)
     },
   })
 
@@ -40,6 +44,7 @@ const EmailInputSection = ({ register, errors }: EmailInputSectionProps) => {
     // 새로운 입력이 시작되면 메시지와 에러 상태 초기화
     setEmailMessage(undefined)
     setIsEmailError(false)
+    onEmailError?.(false)
 
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current)

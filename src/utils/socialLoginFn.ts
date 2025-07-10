@@ -8,6 +8,7 @@ declare global {
 const KAKAO_KEY = import.meta.env.VITE_KAKAO_KEY
 const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
+const BASE_REDIRECT_URI = import.meta.env.VITE_REDIRECT_URL
 
 export const naverLogin = () => {
   // 기존 네이버 로그인 버튼이 있다면 제거
@@ -24,7 +25,7 @@ export const naverLogin = () => {
   document.body.appendChild(naverLoginDiv)
 
   // 네이버 로그인 초기화
-  const naverLogin = new window.naver_id_login(NAVER_CLIENT_ID, 'http://localhost:5173/social-check/naver')
+  const naverLogin = new window.naver_id_login(NAVER_CLIENT_ID, `${BASE_REDIRECT_URI}/social-check/naver`)
   naverLogin.init_naver_id_login()
 
   // 자동으로 네이버 로그인 실행
@@ -72,12 +73,12 @@ export const kakaoLogin = () => {
       console.error('카카오 로그인 실패:', error)
     },
     scope: 'profile_nickname, profile_image, account_email',
-    redirectUri: 'http://localhost:5173/social-check/kakao',
+    redirectUri: `${BASE_REDIRECT_URI}/social-check/kakao`,
   })
 }
 
 export const googleLogin = () => {
-  const redirectUri = 'http://localhost:5173/social-check/google'
+  const redirectUri = `${BASE_REDIRECT_URI}/social-check/google`
 
   // 구글 로그인 URL 생성
   const googleAuthUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth')
