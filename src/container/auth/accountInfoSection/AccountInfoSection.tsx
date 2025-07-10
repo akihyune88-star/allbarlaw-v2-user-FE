@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import type { UseFormRegister, FieldErrors } from 'react-hook-form'
+import type { UseFormRegister, FieldErrors, UseFormWatch } from 'react-hook-form'
 import LabelInput from '@/components/labelInput/LabelInput'
 import type { SignUpFormData } from '@/pages/auth/signUp/signUpForm/signUpSchema'
 import styles from './accountInfoSection.module.scss'
@@ -10,9 +10,11 @@ import { useIdCheck } from '@/hooks/mutatate/useIdCheck'
 type AccountInfoSectionProps = {
   register: UseFormRegister<SignUpFormData>
   errors: FieldErrors<SignUpFormData>
+  watch: UseFormWatch<SignUpFormData>
+  onIdError: (isError: boolean) => void
 }
 
-const AccountInfoSection = ({ register, errors }: AccountInfoSectionProps) => {
+const AccountInfoSection = ({ register, errors, watch, onIdError }: AccountInfoSectionProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const debounceTimer = useRef<ReturnType<typeof setTimeout>>(null)
   const [idMessage, setIdMessage] = useState<string | undefined>(undefined)
@@ -26,14 +28,17 @@ const AccountInfoSection = ({ register, errors }: AccountInfoSectionProps) => {
       if (data.isAvailable) {
         setIdMessage('가입이 가능한 아이디 입니다.')
         setIsIdError(false)
+        onIdError(false)
       } else {
         setIdMessage('이미 존재하는 아이디 입니다.')
         setIsIdError(true)
+        onIdError(true)
       }
     },
     onError: message => {
       setIdMessage(message)
       setIsIdError(true)
+      onIdError(true)
     },
   })
 
@@ -42,6 +47,7 @@ const AccountInfoSection = ({ register, errors }: AccountInfoSectionProps) => {
 
     setIdMessage(undefined)
     setIsIdError(false)
+    onIdError(false)
 
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current)

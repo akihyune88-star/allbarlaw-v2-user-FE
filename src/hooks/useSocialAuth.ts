@@ -16,9 +16,9 @@ const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_KEY
 const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = import.meta.env.VITE_GOOGLE_CLIENT_SECRET
-const KAKAO_REDIRECT_URI = 'http://localhost:5173/social-check/kakao'
-const NAVER_REDIRECT_URI = 'http://localhost:5173/social-check/naver'
-const GOOGLE_REDIRECT_URI = 'http://localhost:5173/social-check/google'
+const KAKAO_REDIRECT_URI = `${import.meta.env.VITE_REDIRECT_URL}/social-check/kakao`
+const NAVER_REDIRECT_URI = `${import.meta.env.VITE_REDIRECT_URL}/social-check/naver`
+const GOOGLE_REDIRECT_URI = `${import.meta.env.VITE_REDIRECT_URL}/social-check/google`
 
 export const isValidProvider = (provider: string | undefined): provider is SocialProvider => {
   return provider === 'kakao' || provider === 'naver' || provider === 'google'

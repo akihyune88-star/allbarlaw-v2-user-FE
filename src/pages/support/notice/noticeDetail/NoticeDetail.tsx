@@ -22,9 +22,10 @@ const NoticeDetail = () => {
           </span>
           <h3 className={styles['notice-detail-title']}>{noticeDetail?.noticeTitle}</h3>
         </header>
-        <main className={styles['notice-content']}>
-          <p>{noticeDetail?.noticeContent}</p>
-        </main>
+        <main
+          className={styles['notice-content']}
+          dangerouslySetInnerHTML={{ __html: noticeDetail?.noticeContent || '' }}
+        />
       </section>
       <button className={styles['notice-list-button']} onClick={handleListButtonClick}>
         목록보기
