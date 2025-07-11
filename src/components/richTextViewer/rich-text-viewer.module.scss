@@ -1,0 +1,138 @@
+.rich-text-viewer {
+  // 기본 여백 제거
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  ol,
+  ul {
+    margin: 0;
+  }
+
+  // 제목 스타일링
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.875rem;
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  // 문단 스타일
+  p {
+    line-height: 1.6;
+
+    & + p {
+      margin-top: 0.5rem;
+    }
+  }
+
+  // 목록 스타일링
+  ol {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+
+    // 순서 있는 목록
+    li[data-list='ordered'] {
+      list-style-type: decimal;
+      margin-bottom: 0.25rem;
+    }
+
+    // 순서 없는 목록
+    li[data-list='bullet'] {
+      list-style-type: disc;
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  // 링크 스타일
+  a {
+    color: $color-green-01;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // 이미지 스타일
+  img {
+    max-width: 100%;
+    height: auto;
+    margin: 0.5rem 0;
+    border-radius: 0.25rem;
+  }
+
+  // 인라인 스타일
+  strong {
+    font-weight: bold;
+  }
+  em {
+    font-style: italic;
+  }
+  u {
+    text-decoration: underline;
+  }
+  s {
+    text-decoration: line-through;
+  }
+
+  // 스크린리더를 위한 숨김 처리
+  .ql-ui {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+}
+
+// Quill 정렬 클래스 - 전역으로 적용
+:global {
+  .ql-align-left {
+    text-align: left !important;
+  }
+
+  .ql-align-center {
+    text-align: center !important;
+  }
+
+  .ql-align-right {
+    text-align: right !important;
+  }
+
+  .ql-align-justify {
+    text-align: justify !important;
+  }
+}
+
+// 반응형 스타일
+@media (max-width: $breakpoint-mobile) {
+  .rich-text-viewer {
+    h1 {
+      font-size: 1.5rem;
+    }
+    h2 {
+      font-size: 1.25rem;
+    }
+    h3 {
+      font-size: 1.125rem;
+    }
+  }
+}
