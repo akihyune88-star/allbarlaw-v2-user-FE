@@ -1,3 +1,5 @@
+@import '@/styles/abstracts/variables';
+
 .rich-text-viewer {
   // 기본 여백 제거
   h1,
@@ -8,7 +10,8 @@
   h6,
   p,
   ol,
-  ul {
+  ul,
+  blockquote {
     margin: 0;
   }
 
@@ -31,6 +34,24 @@
     font-weight: 600;
   }
 
+  h4 {
+    font-size: 1.125rem;
+    margin-bottom: 0.625rem;
+    font-weight: 600;
+  }
+
+  h5 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  h6 {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
   // 문단 스타일
   p {
     line-height: 1.6;
@@ -40,21 +61,96 @@
     }
   }
 
+  // 인용구 스타일
+  blockquote {
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    border-left: 4px solid $color-green-01;
+    background-color: $color-neutral-100;
+    color: $color-text-index;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  // 수평선
+  hr {
+    border: none;
+    border-top: 1px solid $color-line-divider;
+    margin: 1rem 0;
+  }
+
   // 목록 스타일링
+  ul,
   ol {
     padding-left: 1.5rem;
     margin: 0.5rem 0;
 
-    // 순서 있는 목록
-    li[data-list='ordered'] {
-      list-style-type: decimal;
+    li {
       margin-bottom: 0.25rem;
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  // 체크박스 스타일
+  .task-list-item {
+    list-style-type: none;
+    position: relative;
+    padding-left: 1.5rem;
+
+    &[data-task='true'] {
+      &::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: $color-green-01;
+      }
     }
 
-    // 순서 없는 목록
-    li[data-list='bullet'] {
-      list-style-type: disc;
-      margin-bottom: 0.25rem;
+    &[data-task='false'] {
+      &::before {
+        content: '□';
+        position: absolute;
+        left: 0;
+      }
+    }
+  }
+
+  // 테이블 스타일
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+
+    th,
+    td {
+      border: 1px solid $color-line-divider;
+      padding: 0.5rem;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    th {
+      background-color: $color-bg-gray-01;
+      font-weight: 600;
+    }
+
+    thead {
+      border-bottom: 2px solid $color-line-divider;
     }
   }
 
@@ -86,39 +182,8 @@
   u {
     text-decoration: underline;
   }
-  s {
+  del {
     text-decoration: line-through;
-  }
-
-  // 스크린리더를 위한 숨김 처리
-  .ql-ui {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-  }
-}
-
-// Quill 정렬 클래스 - 전역으로 적용
-:global {
-  .ql-align-left {
-    text-align: left !important;
-  }
-
-  .ql-align-center {
-    text-align: center !important;
-  }
-
-  .ql-align-right {
-    text-align: right !important;
-  }
-
-  .ql-align-justify {
-    text-align: justify !important;
   }
 }
 
@@ -133,6 +198,21 @@
     }
     h3 {
       font-size: 1.125rem;
+    }
+    h4 {
+      font-size: 1rem;
+    }
+    h5 {
+      font-size: 0.875rem;
+    }
+    h6 {
+      font-size: 0.75rem;
+    }
+
+    table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
   }
 }
