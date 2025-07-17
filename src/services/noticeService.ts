@@ -1,5 +1,5 @@
 import instance from '@/lib/axios'
-import { NoticeDetailResponse, NoticeListRequest, NoticeListResponse, NoticeTypeResponse } from '@/types/noticeTypes'
+import { NoticeDetailResponse, NoticeListRequest, NoticeListResponse, NoticeTypeResponse } from '@/types/supportTypes'
 
 export const noticeService = {
   // 모든 카테고리 가져오기

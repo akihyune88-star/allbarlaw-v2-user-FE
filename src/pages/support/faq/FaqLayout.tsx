@@ -1,0 +1,63 @@
+import Tabs from '@/components/tabs/Tabs'
+import { NOTICE_CATEGORY } from '@/constants/supportCategory'
+import SupportHeaderTitle from '@/container/support/supportHeader/SupportHeader'
+import { useGetNoticeType } from '@/hooks/queries/useGetNoticeType'
+import { NoticeDetailResponse } from '@/types/supportTypes'
+// import { ROUTER } from '@/routes/routerConstant'
+import { useMemo } from 'react'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
+
+type NoticeType = {
+  noticeTypeId: number
+  noticeTypeKey: string
+  noticeTypeName: string
+}
+
+const FaqLayout = () => {
+  const navigate = useNavigate()
+  const { categoryPath } = useParams()
+  const { data: noticeTypes } = useGetNoticeType()
+
+  // 현재 경로에 따라 초기 탭 설정 (경로가 없으면 'all' 기본값)
+  const currentPath = categoryPath || 'all'
+
+  const tabItems = useMemo(() => {
+    if (!noticeTypes) return NOTICE_CATEGORY // fallback
+
+    // noticeTypes가 배열인지 객체인지 확인 후 처리
+    const dataArray = Array.isArray(noticeTypes) ? noticeTypes : noticeTypes.data
+
+    if (!dataArray) return NOTICE_CATEGORY
+
+    return [
+      {
+        path: 'all',
+        name: '전체',
+        itemWidth: 60,
+      },
+      ...dataArray.map((type: NoticeType) => ({
+        path: type.noticeTypeKey,
+        name: type.noticeTypeName,
+        itemWidth: type.noticeTypeName.length * 20 + 40, // 글자 수에 따라 동적 계산
+      })),
+    ]
+  }, [noticeTypes])
+
+  const handleMenuClick = (path: string) => {
+    // navigate(`${ROUTER.SUPPORT_NOTICE}/${path}`)
+  }
+
+  return (
+    <div className='w-full'>
+      <header className='page-header-layout'>
+        <SupportHeaderTitle title='FAQ' />
+        <Tabs items={tabItems} onChange={handleMenuClick} initialPath={currentPath} />
+      </header>
+      <main className='gray-content-container'>
+        <Outlet />
+      </main>
+    </div>
+  )
+}
+
+export default FaqLayout

@@ -27,7 +27,7 @@ import LegalKnowledgeDetail from '@/pages/legalKnowledge/LegalKnowledgeDetail'
 import TotalSearch from '@/pages/search/totalSearch/TotalSearch'
 import SearchBlog from '@/pages/blog/searchBlog/SearchBlog'
 import SearchVideo from '@/pages/video/searchVideo/SearchVideo'
-import FAQ from '@/pages/support/faq/FAQ'
+
 import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
 import NoticeLayout from '@/pages/support/notice/NoticeLayout'
 import SearchLegalKnowledge from '@/pages/legalKnowledge/searchLegalKnowledge/SearchLegalKnowledge'
@@ -39,6 +39,8 @@ import Login from '@/pages/auth/login/Login'
 import SignUpMain from '@/pages/auth/signUp/signUpMain/SignUpMain'
 import SignUpForm from '@/pages/auth/signUp/signUpForm/SignUpForm'
 import SocialCheck from '@/pages/auth/socialCheck/SocialCheck'
+import FaqLayout from '@/pages/support/faq/FaqLayout'
+import FaqListByCategory from '@/pages/support/faq/faqListByCategory/FaqListByCategory'
 
 const router = createBrowserRouter([
   {
@@ -181,7 +183,17 @@ const router = createBrowserRouter([
           },
           {
             path: ROUTER.FAQ,
-            element: <FAQ />,
+            element: <FaqLayout />,
+            children: [
+              {
+                path: '',
+                element: <Navigate to={`${ROUTER.FAQ}/all`} replace />,
+              },
+              {
+                path: ':categoryPath',
+                element: <FaqListByCategory />,
+              },
+            ],
           },
           {
             path: ROUTER.SUPPORT_NOTICE,

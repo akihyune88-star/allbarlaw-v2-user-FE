@@ -32,3 +32,12 @@ interface NoticeDetail extends Notice {
 }
 
 export type NoticeDetailResponse = NoticeDetail
+
+type Faq = {
+  faqId: number
+  faqTitle: string
+  faqContent: string
+  faqCreatedAt: string
+}
+
+export type FaqResponse = Faq[]

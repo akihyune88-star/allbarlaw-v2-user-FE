@@ -1,0 +1,27 @@
+.faqListByCategory {
+  background-color: $color-white;
+  padding: 1.5rem;
+
+  border-radius: 0.5rem;
+}
+
+.faqTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.125rem;
+
+  font-size: 1.125rem;
+
+  strong {
+    font-weight: 700;
+    color: $color-green-01;
+  }
+}
+
+.faqContent {
+  margin-top: 0.5rem;
+
+  font-size: 0.9375rem;
+  white-space: pre-line;
+}
