@@ -25,6 +25,8 @@
   background-color: $color-bg-gray-02;
   padding: 1.5rem;
   will-change: autodm;
+  max-width: 1120px;
+  margin: 0 auto;
 
   @media (max-width: $breakpoint-desktop) {
     padding: 1.25rem;

@@ -10,12 +10,23 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 1.125rem;
+  flex: 1;
+  min-width: 0;
 
   font-size: 1.125rem;
 
   strong {
     font-weight: 700;
     color: $color-green-01;
+    flex-shrink: 0;
+  }
+
+  span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 

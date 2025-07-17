@@ -15,7 +15,10 @@ const FaqListByCategory = () => {
               <Accordion.Title itemId={faq.faqId}>
                 <div className={styles.faqTitle}>
                   <strong>공지</strong>
-                  <span>제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다.</span>
+                  <span>
+                    제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다제목을 1줄
+                    이내로 보여줍니다제목을 1줄 이내로 보여줍니다.
+                  </span>
                 </div>
               </Accordion.Title>
               <Accordion.Content itemId={faq.faqId}>
