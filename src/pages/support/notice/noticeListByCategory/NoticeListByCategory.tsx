@@ -5,6 +5,7 @@ import { useInfiniteNoticeList } from '@/hooks/queries/useGetNoticeList'
 import dayjs from 'dayjs'
 import { useGetNoticeType } from '@/hooks/queries/useGetNoticeType'
 import { useMemo } from 'react'
+import SvgIcon from '@/components/SvgIcon'
 
 const NoticeListByCategory = () => {
   // const { categoryPath } = useParams()
@@ -82,7 +83,8 @@ const NoticeListByCategory = () => {
       {hasNextPage && (
         <div className={styles['pagination-container']}>
           <button className={styles['pagination-button']} onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-            {isFetchingNextPage ? '로딩 중...' : '더보기'}
+            더보기
+            <SvgIcon name='arrowSmall' size={16} />
           </button>
         </div>
       )}

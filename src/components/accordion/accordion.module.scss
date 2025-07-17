@@ -21,20 +21,6 @@
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
-
-  &:hover {
-    background-color: rgba($color-bg-gray-01, 0.5);
-  }
-
-  &:focus {
-    outline: none;
-    background-color: rgba($color-bg-gray-01, 0.3);
-  }
-
-  &.active {
-    background-color: rgba($color-green-01, 0.05);
-    border-left: 3px solid $color-green-01;
-  }
 }
 
 .arrowIconWrapper {
@@ -43,6 +29,7 @@
   justify-content: center;
   flex-shrink: 0;
   padding-right: 1.25rem;
+  background-color: transparent;
 }
 
 .arrowIcon {

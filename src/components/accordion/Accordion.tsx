@@ -53,20 +53,20 @@ const AccordionTitle: React.FC<AccordionTitleProps> = ({ children, itemId, class
   const { isOpen, toggleItem } = useAccordionContext()
 
   return (
-    <button
+    <div
       className={`${styles.accordionHeader} ${className}`}
       onClick={() => toggleItem(itemId)}
       aria-expanded={isOpen(itemId)}
     >
       {children}
-      <div className={styles.arrowIconWrapper}>
+      <button className={styles.arrowIconWrapper}>
         <SvgIcon
           name='arrowSmall'
           className={`${styles.arrowIcon} ${isOpen(itemId) ? styles.rotated : ''}`}
           size={16}
         />
-      </div>
-    </button>
+      </button>
+    </div>
   )
 }
 
