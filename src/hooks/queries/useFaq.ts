@@ -59,7 +59,7 @@ export const useInfiniteFaqList = (request: {
         ...request,
         cursor: pageParam?.cursor,
         cursorId: pageParam?.cursorId,
-        faqTypeId: request.faqTypeId === 'all' ? undefined : request.faqTypeId,
+        faqTypeId: request.faqTypeId === 'all' ? 'all' : request.faqTypeId,
       }),
     initialPageParam: undefined as { cursor?: number; cursorId?: number } | undefined,
     getNextPageParam: lastPage => {

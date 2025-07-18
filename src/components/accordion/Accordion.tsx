@@ -45,7 +45,7 @@ export interface AccordionContentProps {
   className?: string
 }
 
-const AccordionItem: React.FC<AccordionItemProps> = ({ children, id, className = '' }) => {
+const AccordionItem: React.FC<AccordionItemProps> = ({ children, className = '' }) => {
   return <div className={`${styles.accordionItem} ${className}`}>{children}</div>
 }
 
