@@ -5,6 +5,7 @@ import {
   NoticeListRequest,
   NoticeListResponse,
   NoticeTypeResponse,
+  SupportListResponse,
 } from '@/types/supportTypes'
 
 export const noticeService = {
@@ -20,7 +21,7 @@ export const noticeService = {
   },
 
   getNoticeList: async (request: NoticeListRequest) => {
-    const { take, cursor, cursorId } = request
+    const { take, cursor, cursorId, typeId } = request
 
     const params = new URLSearchParams()
     if (take !== undefined) params.append('take', take.toString())
@@ -29,7 +30,7 @@ export const noticeService = {
 
     // 쿼리스트링 생성
     const queryString = params.toString()
-    const url = `/notice/${queryString ? `?${queryString}` : ''}`
+    const url = `/notice/${typeId}${queryString ? `?${queryString}` : ''}`
 
     try {
       const response = await instance.get<NoticeListResponse>(url)
@@ -52,8 +53,27 @@ export const noticeService = {
 }
 
 export const faqService = {
-  // getFaqList: async (request: FaqListRequest) => {
-  //   const { take, cursor, cursorId } = request
-  // },
   readeFaqTypes: async () => await instance.get<FaqType>('/faq/types'),
+  readFaqList: async (faqTypeId: number) => await instance.get<SupportListResponse>(`/faq/list/${faqTypeId}`),
+
+  getFaqList: async (request: { take: number; cursor?: number; cursorId?: number; faqTypeId?: number }) => {
+    const { take, cursor, cursorId, faqTypeId } = request
+
+    const params = new URLSearchParams()
+    if (take !== undefined) params.append('take', take.toString())
+    if (cursor !== undefined) params.append('cursor', cursor.toString())
+    if (cursorId !== undefined) params.append('cursorId', cursorId.toString())
+
+    // 쿼리스트링 생성
+    const queryString = params.toString()
+    const url = `/faq/${faqTypeId}${queryString ? `?${queryString}` : ''}`
+
+    try {
+      const response = await instance.get<SupportListResponse>(url)
+      return response.data
+    } catch (error) {
+      console.error('Failed to fetch faq list:', error)
+      throw error
+    }
+  },
 }

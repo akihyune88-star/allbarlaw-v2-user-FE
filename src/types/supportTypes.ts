@@ -17,6 +17,7 @@ export type NoticeListRequest = {
   take?: number
   cursor?: number
   cursorId?: number
+  typeId?: 'all' | number
   // orderBy?: SortType
 }
 
@@ -34,10 +35,10 @@ interface NoticeDetail extends Notice {
 export type NoticeDetailResponse = NoticeDetail
 
 type Faq = {
-  noticeId: number
-  noticeTypeId: number
-  noticeTitle: string
-  noticeCreatedAt: string
+  faqId: number
+  faqTypeId: number
+  faqTitle: string
+  faqCreatedAt: string
 }
 
 export type FaqType = {

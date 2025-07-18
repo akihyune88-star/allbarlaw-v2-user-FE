@@ -16,6 +16,7 @@ const NoticeListByCategory = () => {
     take: 10,
     cursor: 0,
     cursorId: 0,
+    typeId: 'all',
   })
 
   const noticeTypeLookup = useMemo(() => {
