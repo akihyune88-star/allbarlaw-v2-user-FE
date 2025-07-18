@@ -34,10 +34,28 @@ interface NoticeDetail extends Notice {
 export type NoticeDetailResponse = NoticeDetail
 
 type Faq = {
-  faqId: number
-  faqTitle: string
-  faqContent: string
-  faqCreatedAt: string
+  noticeId: number
+  noticeTypeId: number
+  noticeTitle: string
+  noticeCreatedAt: string
 }
 
-export type FaqResponse = Faq[]
+export type FaqType = {
+  faqTypeId: number
+  faqTypeName: string
+}
+
+export type FaqTypeResponse = FaqType[] | { data: FaqType[] }
+
+export type FaqListRequest = {
+  take?: number
+  cursor?: number
+  cursorId?: number
+}
+
+export type SupportListResponse = {
+  data: Notice[] | Faq[]
+  nextCursor: number
+  nextCursorId: number
+  hasNextPage: boolean
+}

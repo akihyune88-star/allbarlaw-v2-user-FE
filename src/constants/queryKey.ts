@@ -15,4 +15,5 @@ export const QUERY_KEY = {
   NOTICE_TYPES: 'noticeTypes',
   NOTICE_LIST: 'noticeList',
   NOTICE_DETAIL: 'noticeDetail',
+  FAQ_TYPES: 'faqTypes',
 } as const

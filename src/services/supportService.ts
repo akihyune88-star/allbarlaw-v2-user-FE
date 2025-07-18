@@ -1,5 +1,11 @@
 import instance from '@/lib/axios'
-import { NoticeDetailResponse, NoticeListRequest, NoticeListResponse, NoticeTypeResponse } from '@/types/supportTypes'
+import {
+  FaqType,
+  NoticeDetailResponse,
+  NoticeListRequest,
+  NoticeListResponse,
+  NoticeTypeResponse,
+} from '@/types/supportTypes'
 
 export const noticeService = {
   // 모든 카테고리 가져오기
@@ -43,4 +49,11 @@ export const noticeService = {
       throw error
     }
   },
+}
+
+export const faqService = {
+  // getFaqList: async (request: FaqListRequest) => {
+  //   const { take, cursor, cursorId } = request
+  // },
+  readeFaqTypes: async () => await instance.get<FaqType>('/faq/types'),
 }

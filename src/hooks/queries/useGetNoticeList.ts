@@ -1,5 +1,5 @@
 import { QUERY_KEY } from '@/constants/queryKey'
-import { noticeService } from '@/services/noticeService'
+import { noticeService } from '@/services/supportService'
 import { NoticeListRequest } from '@/types/supportTypes'
 import { useInfiniteQuery } from '@tanstack/react-query'
 

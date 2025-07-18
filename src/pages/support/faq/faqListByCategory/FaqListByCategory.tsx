@@ -16,8 +16,7 @@ const FaqListByCategory = () => {
                 <div className={styles.faqTitle}>
                   <strong>공지</strong>
                   <span>
-                    제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다제목을 1줄
-                    이내로 보여줍니다제목을 1줄 이내로 보여줍니다.
+                    제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다. 제목을 1줄 이내로 보여줍니다ZZ.
                   </span>
                 </div>
               </Accordion.Title>

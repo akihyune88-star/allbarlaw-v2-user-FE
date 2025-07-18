@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
-import { noticeService } from '@/services/noticeService'
+import { noticeService } from '@/services/supportService'
 
 export const useGetNoticeDetail = (noticeId: number) => {
   const { data, isLoading, isError } = useQuery({
