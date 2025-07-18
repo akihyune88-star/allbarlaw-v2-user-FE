@@ -1,0 +1,93 @@
+.accordion {
+  width: 100%;
+  // border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.accordionItem {
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.accordionHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: $color-white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.arrowIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding-right: 1.25rem;
+  background-color: transparent;
+}
+
+.arrowIcon {
+  transition: transform 0.3s ease;
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.accordionContent {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background-color: $color-white;
+
+  &.open {
+    max-height: 500px; // 충분한 높이로 설정
+  }
+}
+
+.contentWrapper {
+  padding: 0 1.25rem 1rem;
+}
+
+.contentText {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: $color-text-caption;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+
+// 접근성 개선을 위한 스크린 리더 전용 텍스트
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .accordionHeader {
+    padding: 0.875rem 1rem;
+  }
+
+  .contentWrapper {
+    padding: 0 1rem 0.875rem;
+  }
+
+  .contentText {
+    font-size: 0.75rem;
+  }
+}

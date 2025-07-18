@@ -17,6 +17,7 @@ export type NoticeListRequest = {
   take?: number
   cursor?: number
   cursorId?: number
+  typeId?: 'all' | number
   // orderBy?: SortType
 }
 
@@ -32,3 +33,30 @@ interface NoticeDetail extends Notice {
 }
 
 export type NoticeDetailResponse = NoticeDetail
+
+type Faq = {
+  faqId: number
+  faqTypeId: number
+  faqTitle: string
+  faqCreatedAt: string
+}
+
+export type FaqType = {
+  faqTypeId: number
+  faqTypeName: string
+}
+
+export type FaqTypeResponse = FaqType[] | { data: FaqType[] }
+
+export type FaqListRequest = {
+  take?: number
+  cursor?: number
+  cursorId?: number
+}
+
+export type SupportListResponse = {
+  data: Notice[] | Faq[]
+  nextCursor: number
+  nextCursorId: number
+  hasNextPage: boolean
+}

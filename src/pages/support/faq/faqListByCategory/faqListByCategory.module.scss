@@ -1,0 +1,84 @@
+.faqListByCategory {
+  background-color: $color-white;
+  padding: 1.5rem;
+
+  border-radius: 0.5rem;
+}
+
+.faqTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.125rem;
+  flex: 1;
+  min-width: 0;
+
+  font-size: 1.125rem;
+
+  strong {
+    font-weight: 700;
+    color: $color-green-01;
+    flex-shrink: 0;
+  }
+
+  span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.faqContent {
+  margin-top: 0.5rem;
+
+  font-size: 0.9375rem;
+  white-space: pre-line;
+}
+
+.emptyMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  color: $color-text-caption;
+  font-size: 1rem;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pagination-button {
+  width: 100%;
+  background-color: $color-white;
+
+  border: 1px solid $color-line-borderbox;
+  padding-top: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  color: $color-text-caption;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba($color-bg-gray-01, 0.5);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

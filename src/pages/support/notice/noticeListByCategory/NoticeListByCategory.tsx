@@ -1,21 +1,28 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import styles from './noticeListByCategory.module.scss'
 import { ROUTER } from '@/routes/routerConstant'
 import { useInfiniteNoticeList } from '@/hooks/queries/useGetNoticeList'
 import dayjs from 'dayjs'
 import { useGetNoticeType } from '@/hooks/queries/useGetNoticeType'
 import { useMemo } from 'react'
+import SvgIcon from '@/components/SvgIcon'
 
 const NoticeListByCategory = () => {
   // const { categoryPath } = useParams()
   const navigate = useNavigate()
   const { data: noticeTypes } = useGetNoticeType()
+  const { categoryPath } = useParams()
+  console.log(categoryPath)
 
-  const { noticeList, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteNoticeList({
-    take: 10,
-    cursor: 0,
-    cursorId: 0,
-  })
+  const { noticeList, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteNoticeList(
+    {
+      take: 10,
+      cursor: 0,
+      cursorId: 0,
+      typeId: categoryPath === 'all' ? 'all' : Number(categoryPath),
+    },
+    categoryPath
+  )
 
   const noticeTypeLookup = useMemo(() => {
     if (!noticeTypes) return {}
@@ -61,30 +68,41 @@ const NoticeListByCategory = () => {
 
   return (
     <section className={styles['notice-list-container']}>
-      {noticeList.map(notice => {
-        const noticeTypeName = getNoticeTypeName(notice.noticeTypeId)
-        return (
-          <div
-            key={notice.noticeId}
-            className={styles['notice-item']}
-            onClick={() => handleNoticeClick(notice.noticeId, noticeTypeName)}
-          >
-            <span className={styles['left-container']}>
-              <strong>{noticeTypeName}</strong>
-              <span className={styles['title']}>{notice.noticeTitle}</span>
-            </span>
-            <span className={styles['created-at']}>{dayjs(notice.noticeCreatedAt).format('YYYY-MM-DD')}</span>
-          </div>
-        )
-      })}
+      {noticeList.length === 0 ? (
+        <div className={styles.emptyMessage}>등록된 공지사항이 없습니다.</div>
+      ) : (
+        <>
+          {noticeList.map(notice => {
+            const noticeTypeName = getNoticeTypeName(notice.noticeTypeId)
+            return (
+              <div
+                key={notice.noticeId}
+                className={styles['notice-item']}
+                onClick={() => handleNoticeClick(notice.noticeId, noticeTypeName)}
+              >
+                <span className={styles['left-container']}>
+                  <strong>{noticeTypeName}</strong>
+                  <span className={styles['title']}>{notice.noticeTitle}</span>
+                </span>
+                <span className={styles['created-at']}>{dayjs(notice.noticeCreatedAt).format('YYYY-MM-DD')}</span>
+              </div>
+            )
+          })}
 
-      {/* 더보기 버튼 - 다음 페이지가 있을 때만 표시 */}
-      {hasNextPage && (
-        <div className={styles['pagination-container']}>
-          <button className={styles['pagination-button']} onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-            {isFetchingNextPage ? '로딩 중...' : '더보기'}
-          </button>
-        </div>
+          {/* 더보기 버튼 - 다음 페이지가 있을 때만 표시 */}
+          {hasNextPage && (
+            <div className={styles['pagination-container']}>
+              <button
+                className={styles['pagination-button']}
+                onClick={() => fetchNextPage()}
+                disabled={isFetchingNextPage}
+              >
+                더보기
+                <SvgIcon name='arrowSmall' size={16} />
+              </button>
+            </div>
+          )}
+        </>
       )}
     </section>
   )
