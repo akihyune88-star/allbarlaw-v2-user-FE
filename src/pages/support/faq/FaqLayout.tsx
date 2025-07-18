@@ -1,33 +1,34 @@
 import Tabs from '@/components/tabs/Tabs'
 import { NOTICE_CATEGORY } from '@/constants/supportCategory'
 import SupportHeaderTitle from '@/container/support/supportHeader/SupportHeader'
+import { useReadFaqType } from '@/hooks/queries/useFaq'
 import { useGetNoticeType } from '@/hooks/queries/useGetNoticeType'
 import { NoticeDetailResponse } from '@/types/supportTypes'
 // import { ROUTER } from '@/routes/routerConstant'
 import { useMemo } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 
-type NoticeType = {
-  noticeTypeId: number
-  noticeTypeKey: string
-  noticeTypeName: string
+type FaqType = {
+  faqTypeId: number
+  faqTypeKey: string
+  faqTypeName: string
 }
 
 const FaqLayout = () => {
   const navigate = useNavigate()
   const { categoryPath } = useParams()
-  const { data: noticeTypes } = useGetNoticeType()
+  const { data: faqTypes } = useReadFaqType()
 
   // 현재 경로에 따라 초기 탭 설정 (경로가 없으면 'all' 기본값)
   const currentPath = categoryPath || 'all'
 
   const tabItems = useMemo(() => {
-    if (!noticeTypes) return NOTICE_CATEGORY // fallback
+    if (!faqTypes) return [] // fallback
 
-    // noticeTypes가 배열인지 객체인지 확인 후 처리
-    const dataArray = Array.isArray(noticeTypes) ? noticeTypes : noticeTypes.data
+    // faqTypes가 배열인지 객체인지 확인 후 처리
+    const dataArray = Array.isArray(faqTypes) ? faqTypes : faqTypes.data
 
-    if (!dataArray) return NOTICE_CATEGORY
+    if (!dataArray || !Array.isArray(dataArray)) return []
 
     return [
       {
@@ -35,16 +36,16 @@ const FaqLayout = () => {
         name: '전체',
         itemWidth: 60,
       },
-      ...dataArray.map((type: NoticeType) => ({
-        path: type.noticeTypeKey,
-        name: type.noticeTypeName,
-        itemWidth: type.noticeTypeName.length * 20 + 40, // 글자 수에 따라 동적 계산
+      ...dataArray.map((type: FaqType) => ({
+        path: String(type.faqTypeId),
+        name: type.faqTypeName,
+        itemWidth: Math.min((type.faqTypeName?.length || 0) * 12 + 40, 120), // 최대 너비 제한
       })),
     ]
-  }, [noticeTypes])
+  }, [faqTypes])
 
   const handleMenuClick = (path: string) => {
-    // navigate(`${ROUTER.SUPPORT_NOTICE}/${path}`)
+    // navigate(`${ROUTER.SUPPORT_FAQ}/${path}`)
   }
 
   return (
