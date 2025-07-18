@@ -1,6 +1,7 @@
 import Tabs from '@/components/tabs/Tabs'
 import SupportHeaderTitle from '@/container/support/supportHeader/SupportHeader'
 import { useReadFaqType } from '@/hooks/queries/useFaq'
+import { ROUTER } from '@/routes/routerConstant'
 // import { ROUTER } from '@/routes/routerConstant'
 import { useMemo } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
@@ -42,7 +43,7 @@ const FaqLayout = () => {
   }, [faqTypes])
 
   const handleMenuClick = (path: string) => {
-    // navigate(`${ROUTER.SUPPORT_FAQ}/${path}`)
+    navigate(`${ROUTER.FAQ}/${path}`)
   }
 
   return (

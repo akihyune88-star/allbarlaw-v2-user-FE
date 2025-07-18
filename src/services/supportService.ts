@@ -56,7 +56,7 @@ export const faqService = {
   readeFaqTypes: async () => await instance.get<FaqType>('/faq/types'),
   readFaqList: async (faqTypeId: number) => await instance.get<SupportListResponse>(`/faq/list/${faqTypeId}`),
 
-  getFaqList: async (request: { take: number; cursor?: number; cursorId?: number; faqTypeId?: number }) => {
+  getFaqList: async (request: { take: number; cursor?: number; cursorId?: number; faqTypeId?: 'all' | number }) => {
     const { take, cursor, cursorId, faqTypeId } = request
 
     const params = new URLSearchParams()
