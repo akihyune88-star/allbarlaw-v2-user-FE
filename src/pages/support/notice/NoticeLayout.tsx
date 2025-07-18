@@ -36,7 +36,7 @@ const NoticeLayout = () => {
         itemWidth: 60,
       },
       ...dataArray.map((type: NoticeType) => ({
-        path: type.noticeTypeKey,
+        path: String(type.noticeTypeId),
         name: type.noticeTypeName,
         itemWidth: type.noticeTypeName.length * 20 + 40, // 글자 수에 따라 동적 계산
       })),

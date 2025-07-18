@@ -59,7 +59,7 @@ export const useInfiniteFaqList = (request: {
         ...request,
         cursor: pageParam?.cursor,
         cursorId: pageParam?.cursorId,
-        faqTypeId: request.faqTypeId,
+        faqTypeId: request.faqTypeId === 'all' ? undefined : request.faqTypeId,
       }),
     initialPageParam: undefined as { cursor?: number; cursorId?: number } | undefined,
     getNextPageParam: lastPage => {
@@ -71,6 +71,7 @@ export const useInfiniteFaqList = (request: {
     },
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 30,
+    placeholderData: previousData => previousData,
   })
 
   // 모든 페이지의 데이터를 하나의 배열로 합치기
