@@ -1,5 +1,4 @@
 // 마이페이지
-import MypageLayout from './mypage/mypageLayout/MypageLayout'
-import KeepList from './mypage/keepList/KeepList'
+import Mypage from './mypage/Mypage'
 
-export { MypageLayout, KeepList }
+export { Mypage }

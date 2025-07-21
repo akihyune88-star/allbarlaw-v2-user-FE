@@ -1,0 +1,40 @@
+.mypageHeader {
+  padding: 1.875rem 1.0625rem 1.75rem 1.625rem;
+}
+
+.tabWrapper {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.tabButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  font-size: 0.875rem;
+  font-weight: $font-weight-extra-bold;
+  color: $color-text-index;
+
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  svg {
+    color: $color-text-index;
+  }
+
+  &.active {
+    color: $color-green-01;
+
+    svg {
+      color: $color-green-01;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .mypageHeader {
+    padding: 1.5rem 1.25rem;
+  }
+}

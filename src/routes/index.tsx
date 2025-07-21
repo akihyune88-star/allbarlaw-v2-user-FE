@@ -39,7 +39,7 @@ import SocialCheck from '@/pages/auth/socialCheck/SocialCheck'
 import FaqLayout from '@/pages/support/faq/FaqLayout'
 import FaqListByCategory from '@/pages/support/faq/faqListByCategory/FaqListByCategory'
 import MainLayout from '@/pages/MainLayout'
-import { KeepList, MypageLayout } from '@/pages'
+import { Mypage } from '@/pages'
 
 const router = createBrowserRouter([
   {
@@ -138,17 +138,7 @@ const router = createBrowserRouter([
           },
           {
             path: ROUTER.MYPAGE,
-            element: <MypageLayout />,
-            children: [
-              {
-                path: '',
-                element: <Navigate to={`${ROUTER.KEEP_LIST}`} replace />,
-              },
-              {
-                path: ROUTER.KEEP_LIST,
-                element: <KeepList />,
-              },
-            ],
+            element: <Mypage />,
           },
           {
             path: ROUTER.LEGAL_DICTIONARY,

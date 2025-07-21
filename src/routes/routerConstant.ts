@@ -7,9 +7,11 @@ export const ROUTER = {
   SIGNUP: 'signup',
   SIGNUP_FORM: 'signup-form',
   SOCIAL_CHECK: '/social-check',
-
+  // 마이페이지
   MYPAGE: '/mypage',
   KEEP_LIST: 'keep-list',
+  CHAT_LIST: 'chat-list',
+
   SUPPORT: '/support',
   ABOUT: '/about',
   BARO_TALK: '/baro-talk',
