@@ -1,10 +1,23 @@
 .mypageHeader {
   padding: 1.875rem 1.0625rem 1.75rem 1.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.6875rem;
+}
+
+.navigation {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .tabWrapper {
   display: flex;
-  gap: 1.5rem;
+  gap: 2.125rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .tabButton {
@@ -33,8 +46,72 @@
   }
 }
 
+.sortWrapper {
+  display: flex;
+  gap: 0.6875rem;
+  align-items: center;
+
+  font-size: 0.875rem;
+  color: $color-text-index;
+
+  span {
+    width: 7.125rem;
+    text-align: center;
+  }
+}
+
+.sortButtonWrapper {
+  display: flex;
+  gap: 0.6875rem;
+}
+
+.sortButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: $color-text-index;
+}
+
+// .sortButton {
+//   font-size: 0.75rem;
+//   color: $color-text-caption;
+//   background-color: transparent;
+//   border: none;
+//   cursor: pointer;
+//   padding: 0.25rem 0.5rem;
+//   border-radius: 0.25rem;
+//   transition: all 0.2s ease;
+
+//   &:hover {
+//     background-color: rgba($color-bg-gray-01, 0.5);
+//   }
+
+//   &.active {
+//     color: $color-green-01;
+//     font-weight: $font-weight-medium;
+//   }
+// }
+
 @media (max-width: $breakpoint-desktop) {
   .mypageHeader {
     padding: 1.5rem 1.25rem;
+    gap: 1rem;
+  }
+
+  .navigation {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .tabWrapper {
+    gap: 1.5rem;
+  }
+
+  .sortWrapper {
+    width: 100%;
+    justify-content: space-between;
+    span {
+      width: auto;
+    }
   }
 }

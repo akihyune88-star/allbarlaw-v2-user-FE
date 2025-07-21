@@ -7,9 +7,11 @@ interface MypageHeaderProps {
   tabs: string[]
   onTabClick: (tab: string) => void
   currentTab: string
+  sortOrder?: 'recent' | 'oldest'
+  onSortChange?: (sortOrder: 'recent' | 'oldest') => void
 }
 
-const MypageHeader = ({ tabs, onTabClick, currentTab }: MypageHeaderProps) => {
+const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder = 'recent', onSortChange }: MypageHeaderProps) => {
   const getTabInfo = (tab: string): { name: string; icon: KeyOfIcon } => {
     switch (tab) {
       case 'keepList':
@@ -31,25 +33,49 @@ const MypageHeader = ({ tabs, onTabClick, currentTab }: MypageHeaderProps) => {
   }
 
   return (
-    <div className={styles.mypageHeader}>
+    <header className={styles.mypageHeader}>
       <h1>마이페이지</h1>
-      <div className={styles.tabWrapper}>
-        {tabs.map(tab => {
-          const tabInfo = getTabInfo(tab)
-          const isActive = currentTab === tab
-          return (
-            <button
-              key={tab}
-              onClick={() => onTabClick(tab)}
-              className={`${styles.tabButton} ${isActive ? styles.active : ''}`}
-            >
-              <SvgIcon name={tabInfo.icon} size={16} color={isActive ? COLOR.green_01 : COLOR.text_caption} />
-              <span>{tabInfo.name}</span>
-            </button>
-          )
-        })}
-      </div>
-    </div>
+      <nav className={styles.navigation}>
+        <ul className={styles.tabWrapper}>
+          {tabs.map(tab => {
+            const tabInfo = getTabInfo(tab)
+            const isActive = currentTab === tab
+            return (
+              <li key={tab}>
+                <button
+                  onClick={() => onTabClick(tab)}
+                  className={`${styles.tabButton} ${isActive ? styles.active : ''}`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  <SvgIcon name={tabInfo.icon} size={16} color={isActive ? COLOR.green_01 : COLOR.text_caption} />
+                  <span>{tabInfo.name}</span>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+
+        {onSortChange && (
+          <div className={styles.sortWrapper}>
+            <span>전체 2,147개</span>
+            <div className={styles.sortButtonWrapper}>
+              <button
+                onClick={() => onSortChange('recent')}
+                className={`${styles.sortButton} ${sortOrder === 'recent' ? styles.active : ''}`}
+              >
+                최근 등록순
+              </button>
+              <button
+                onClick={() => onSortChange('oldest')}
+                className={`${styles.sortButton} ${sortOrder === 'oldest' ? styles.active : ''}`}
+              >
+                과거 등록순
+              </button>
+            </div>
+          </div>
+        )}
+      </nav>
+    </header>
   )
 }
 
