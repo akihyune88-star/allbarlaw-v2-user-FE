@@ -1,7 +1,5 @@
 import styles from './keepSidebar.module.scss'
 
-const buttonList = ['법률정보의 글', '변호사의 영상', '법률 지식인', '변호사', '법률 사전']
-
 interface KeepSidebarProps {
   buttonList: string[]
   activeButton: string
