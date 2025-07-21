@@ -1,9 +1,7 @@
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import App from '../App'
 import NotFound from '../pages/NotFound'
-import Mypage from '@/pages/Mypage'
 import { ROUTER } from './routerConstant'
-import MainLayout from '@/pages/MainLayout'
 import Main from '@/pages/main/Main'
 import SubMain from '@/pages/subMain/SubMain'
 import BlogLayout from '@/pages/blog/Blog'
@@ -27,7 +25,6 @@ import LegalKnowledgeDetail from '@/pages/legalKnowledge/LegalKnowledgeDetail'
 import TotalSearch from '@/pages/search/totalSearch/TotalSearch'
 import SearchBlog from '@/pages/blog/searchBlog/SearchBlog'
 import SearchVideo from '@/pages/video/searchVideo/SearchVideo'
-
 import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
 import NoticeLayout from '@/pages/support/notice/NoticeLayout'
 import SearchLegalKnowledge from '@/pages/legalKnowledge/searchLegalKnowledge/SearchLegalKnowledge'
@@ -41,6 +38,8 @@ import SignUpForm from '@/pages/auth/signUp/signUpForm/SignUpForm'
 import SocialCheck from '@/pages/auth/socialCheck/SocialCheck'
 import FaqLayout from '@/pages/support/faq/FaqLayout'
 import FaqListByCategory from '@/pages/support/faq/faqListByCategory/FaqListByCategory'
+import MainLayout from '@/pages/MainLayout'
+import { KeepList, MypageLayout } from '@/pages'
 
 const router = createBrowserRouter([
   {
@@ -139,7 +138,17 @@ const router = createBrowserRouter([
           },
           {
             path: ROUTER.MYPAGE,
-            element: <Mypage />,
+            element: <MypageLayout />,
+            children: [
+              {
+                path: '',
+                element: <Navigate to={`${ROUTER.KEEP_LIST}`} replace />,
+              },
+              {
+                path: ROUTER.KEEP_LIST,
+                element: <KeepList />,
+              },
+            ],
           },
           {
             path: ROUTER.LEGAL_DICTIONARY,

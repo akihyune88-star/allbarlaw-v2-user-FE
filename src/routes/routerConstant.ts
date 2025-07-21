@@ -9,6 +9,7 @@ export const ROUTER = {
   SOCIAL_CHECK: '/social-check',
 
   MYPAGE: '/mypage',
+  KEEP_LIST: 'keep-list',
   SUPPORT: '/support',
   ABOUT: '/about',
   BARO_TALK: '/baro-talk',
