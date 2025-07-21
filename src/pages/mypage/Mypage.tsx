@@ -1,5 +1,5 @@
-import ChatList from '@/container/mypage/mypageHeader/chatList/ChatList'
-import KeepList from '@/container/mypage/mypageHeader/keepList/KeepList'
+import ChatList from '@/container/mypage/chatList/ChatList'
+import KeepList from '@/container/mypage/keepList/KeepList'
 import MypageHeader from '@/container/mypage/mypageHeader/MypageHeader'
 import { useState } from 'react'
 
