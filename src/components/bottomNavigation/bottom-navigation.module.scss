@@ -56,6 +56,10 @@
       }
     }
 
+    svg {
+      color: $color-icon-gray-50;
+    }
+
     &:hover {
       opacity: 0.8;
     }
