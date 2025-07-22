@@ -47,6 +47,7 @@ const MyVideoList = () => {
               videoUrl={video.thumbnail}
               isShowTitle={false}
               description={video.title}
+              isShowKeepBookmark={true}
             />
           ))}
         </div>

@@ -6,6 +6,7 @@
 .content {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 0.5rem;
 
   figure {
@@ -25,4 +26,5 @@
   font-size: 1rem;
   line-height: 24px;
   @include ellipsis(2);
+  flex: 1;
 }
