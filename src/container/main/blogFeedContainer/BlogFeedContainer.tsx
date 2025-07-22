@@ -89,6 +89,7 @@ const BlogFeedContainer = () => {
             <React.Fragment key={blog.blogCaseId}>
               <BlogItem
                 item={blog}
+                isShowKeep={false}
                 className={styles['sub-blog-list-item']}
                 onClick={() => handleBlogClick(blog.subcategoryId, blog.blogCaseId)}
               />

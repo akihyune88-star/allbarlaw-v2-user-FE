@@ -2,13 +2,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 5.375rem;
 
   cursor: pointer;
 
   padding: 1.5rem 0 1.4375rem 0;
 
   .blog-item {
-    width: 33.875rem;
+    // width: 33.875rem;
 
     .blog-content-header {
       display: flex;
@@ -58,6 +59,18 @@
     margin: 0;
     padding: 0;
     flex-shrink: 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    label {
+      background-color: rgba($color-bg-black, 0.7);
+      color: $color-white;
+      padding: 0.3125rem 0.875rem;
+      border-radius: 1.25rem;
+      position: absolute;
+    }
   }
 
   .blog-item-img {
@@ -141,5 +154,11 @@
       object-fit: cover;
       display: block;
     }
+  }
+
+  .blog-content-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 }

@@ -1,0 +1,82 @@
+import SvgIcon from '@/components/SvgIcon'
+import { COLOR } from '@/styles/color'
+import { KeyOfIcon } from '@/types/svg'
+import styles from './mypageHeader.module.scss'
+
+interface MypageHeaderProps {
+  tabs: string[]
+  onTabClick: (tab: string) => void
+  currentTab: string
+  sortOrder?: 'recent' | 'oldest'
+  onSortChange?: (sortOrder: 'recent' | 'oldest') => void
+}
+
+const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder = 'recent', onSortChange }: MypageHeaderProps) => {
+  const getTabInfo = (tab: string): { name: string; icon: KeyOfIcon } => {
+    switch (tab) {
+      case 'keepList':
+        return {
+          name: 'Keep',
+          icon: 'bookMark',
+        }
+      case 'chatList':
+        return {
+          name: '지식인 채팅 목록',
+          icon: 'talk',
+        }
+      default:
+        return {
+          name: 'Keep',
+          icon: 'bookMark',
+        }
+    }
+  }
+
+  return (
+    <header className={styles.mypageHeader}>
+      <h1>마이페이지</h1>
+      <nav className={styles.navigation}>
+        <ul className={styles.tabWrapper}>
+          {tabs.map(tab => {
+            const tabInfo = getTabInfo(tab)
+            const isActive = currentTab === tab
+            return (
+              <li key={tab}>
+                <button
+                  onClick={() => onTabClick(tab)}
+                  className={`${styles.tabButton} ${isActive ? styles.active : ''}`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  <SvgIcon name={tabInfo.icon} size={16} color={isActive ? COLOR.green_01 : COLOR.text_caption} />
+                  <span>{tabInfo.name}</span>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+
+        {onSortChange && (
+          <div className={styles.sortWrapper}>
+            <span>전체 2,147개</span>
+            <div className={styles.sortButtonWrapper}>
+              <button
+                onClick={() => onSortChange('recent')}
+                className={`${styles.sortButton} ${sortOrder === 'recent' ? styles.active : ''}`}
+              >
+                최근 등록순
+              </button>
+              <button
+                onClick={() => onSortChange('oldest')}
+                className={`${styles.sortButton} ${sortOrder === 'oldest' ? styles.active : ''}`}
+              >
+                과거 등록순
+              </button>
+            </div>
+          </div>
+        )}
+      </nav>
+    </header>
+  )
+}
+
+export default MypageHeader

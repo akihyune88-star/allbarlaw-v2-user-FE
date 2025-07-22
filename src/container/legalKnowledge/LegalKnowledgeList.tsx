@@ -35,8 +35,6 @@ const LegalKnowledgeList = () => {
     fetchNextPage,
   })
 
-  const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000)
-
   const handleBaroTalk = () => {
     navigate(ROUTER.REQUEST_BARO_TALK)
   }
@@ -68,7 +66,7 @@ const LegalKnowledgeList = () => {
               <LegalKnowledgeItem
                 title={knowledge.knowledgeTitle}
                 description={knowledge.summaryContent}
-                time={threeHoursAgo}
+                time={new Date(knowledge.lastMessageAt)}
                 lawyerList={knowledge.lawyers || []}
                 isLastAnswer={true}
                 onClick={() => handleDetailLegalKnowledgeClick(knowledge.knowledgeId)}

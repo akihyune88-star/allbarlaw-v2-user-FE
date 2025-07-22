@@ -62,7 +62,7 @@ const BottomNavigation = () => {
             className={`${styles.item} ${isActive ? styles.active : ''}`}
             onClick={() => handleItemClick(item.path)}
           >
-            <SvgIcon name={isActive ? item.activeIcon : item.icon} />
+            <SvgIcon name={isActive ? item.activeIcon : item.icon} size={24} />
             <span className={styles['menu-name']}>{item.name}</span>
           </div>
         )

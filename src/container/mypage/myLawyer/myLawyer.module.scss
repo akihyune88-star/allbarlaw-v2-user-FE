@@ -1,0 +1,21 @@
+.myLawyer {
+  padding: 1.5rem;
+}
+
+.emptyMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  color: $color-text-caption;
+  font-size: 1rem;
+  min-height: 200px;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .myLawyer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}

@@ -1,0 +1,11 @@
+.myLegalKnowledgeList {
+  padding: 1.5rem;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .myLegalKnowledgeList {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
