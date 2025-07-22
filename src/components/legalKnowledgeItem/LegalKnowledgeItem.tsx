@@ -69,6 +69,7 @@ const LegalKnowledgeItem = ({
           <span>
             <span className={styles['time']}>{formattedTime}</span> {isLastAnswer && '마지막 답변'}
           </span>
+          {bookmark && <SvgIcon name='bookMark' />}
         </div>
       )}
     </article>

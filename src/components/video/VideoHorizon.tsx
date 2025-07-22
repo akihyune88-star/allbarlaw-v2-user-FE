@@ -13,6 +13,8 @@ type VideoHorizonProps = {
   channelName?: string
   channelThumbnail?: string
   isShowLike?: boolean
+  className?: string
+  summaryContents?: string
   onClick?: () => void
 }
 
@@ -26,6 +28,8 @@ const VideoHorizon = ({
   channelName,
   channelThumbnail,
   isShowLike = false,
+  className,
+  summaryContents,
   onClick,
 }: VideoHorizonProps) => {
   const [like, setLike] = useState(false)
@@ -33,7 +37,7 @@ const VideoHorizon = ({
   const rootClassName = [styles['video-horizon'], styles[type], styles[size]].filter(Boolean).join(' ')
 
   return (
-    <div className={rootClassName} onClick={onClick}>
+    <div className={`${rootClassName} ${className}`} onClick={onClick}>
       <figure className={styles['video-horizon-figure']}>
         <img className={styles.img} src={thumbnailUrl} alt='동영상 썸네일' />
       </figure>
@@ -46,13 +50,7 @@ const VideoHorizon = ({
             </div>
           )}
         </header>
-        <p>
-          음주후 주차장등에서 잠깐 운전하다가 적발될 경우, 처벌받을 수 있습니다. 혈중알코올 농도가 0.03% 이상이면
-          음주운전으로 간주되어 처벌대상이 됩니다. 음주후 주차장등에서 잠깐 운전하다가 적발될 경우, 처벌받을 수
-          있습니다. 혈중알코올 농도가 0.03% 이상음주후 주차장등에서 잠깐 운전하다가 적발될 경우, 처벌받을 수 있습니다.
-          혈중알코올 농도가 0.03% 이상이면 음주운전으로 간주되어 처벌대상이 됩니다. 음주후 주차장등에서 잠깐 운전하다가
-          적발될 경우, 처벌받을 수 있습니다. 혈중알코올 농도가 0.03% 이상...
-        </p>
+        <p>{summaryContents}</p>
         <div className={styles['video-content-section-footer']}>
           <span className={styles.lawyer}>
             {lawyerName} 변호사 [{lawfirmName}]
