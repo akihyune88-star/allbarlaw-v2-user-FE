@@ -29,7 +29,7 @@ const MyBlogList = () => {
     <div className={styles.myBlogList}>
       {blogList.map((blog, idx) => (
         <React.Fragment key={blog.blogCaseId}>
-          <BlogItem item={blog} viewKeepBookmark={true} />
+          <BlogItem item={blog} viewKeepBookmark={true} summaryButton={true} />
           {!isMobile && idx !== blogList.length - 1 && <Divider />}
         </React.Fragment>
       ))}

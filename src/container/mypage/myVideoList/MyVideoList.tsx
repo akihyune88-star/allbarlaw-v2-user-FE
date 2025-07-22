@@ -4,12 +4,14 @@ import styles from './myVideoList.module.scss'
 import VideoHorizon from '@/components/video/VideoHorizon'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import VideoThumbnail from '@/components/video/VideoThumbnail'
+import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
 
 const MyVideoList = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { videoList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteVideoList({
     subcategoryId: 'all',
-    take: 4,
+    take: 10,
   })
 
   useInfiniteScroll({
@@ -20,22 +22,35 @@ const MyVideoList = () => {
 
   return (
     <div className={styles.myVideoList}>
-      {videoList.map((video, idx) => (
-        <>
-          <VideoHorizon
-            key={video.videoCaseId}
-            thumbnailUrl={video.thumbnail}
-            title={video.title}
-            lawyerName={video.lawyerName}
-            lawfirmName={video.lawfirmName}
-            channelName={video.channelName}
-            summaryContents={video.summaryContent}
-            className={styles.myVideoItem}
-            isShowLike={true}
-          />
-          {!isMobile && idx !== videoList.length - 1 && <Divider padding={24} />}
-        </>
-      ))}
+      {!isMobile ? (
+        videoList.map((video, idx) => (
+          <>
+            <VideoHorizon
+              key={video.videoCaseId}
+              thumbnailUrl={video.thumbnail}
+              title={video.title}
+              lawyerName={video.lawyerName}
+              lawfirmName={video.lawfirmName}
+              channelName={video.channelName}
+              summaryContents={video.summaryContent}
+              className={styles.myVideoItem}
+              isShowLike={true}
+            />
+            {!isMobile && idx !== videoList.length - 1 && <Divider padding={24} />}
+          </>
+        ))
+      ) : (
+        <div className={styles.myVideoListMobile}>
+          {videoList.map(video => (
+            <RecommenderVideo
+              key={video.videoCaseId}
+              videoUrl={video.thumbnail}
+              isShowTitle={false}
+              description={video.title}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

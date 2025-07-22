@@ -10,10 +10,11 @@ type BlogItemProps = {
   item: BlogCase
   viewKeepBookmark?: boolean
   className?: string
+  summaryButton?: boolean
   onClick?: () => void
 }
 
-const BlogItem = ({ item, viewKeepBookmark = false, className, onClick }: BlogItemProps) => {
+const BlogItem = ({ item, viewKeepBookmark = false, className, summaryButton = false, onClick }: BlogItemProps) => {
   const [like, setLike] = useState(false)
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const summaryContents = getBlogSummaryText(item.summaryContent)
@@ -50,6 +51,7 @@ const BlogItem = ({ item, viewKeepBookmark = false, className, onClick }: BlogIt
           alt='blog-item-image'
           referrerPolicy='no-referrer'
         />
+        {summaryButton && !isMobile && <label htmlFor='blog-item-img'>요약보기</label>}
       </figure>
     </article>
   )
