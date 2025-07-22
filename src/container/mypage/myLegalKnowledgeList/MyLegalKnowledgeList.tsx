@@ -6,7 +6,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Divider from '@/components/divider/Divider'
 
 const MyLegalKnowledgeList = () => {
-  const { knowledgeList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteKnowledgeList({
+  const { knowledgeList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteKnowledgeList({
     subcategoryId: 4,
     take: 4,
   })
@@ -34,7 +34,6 @@ const MyLegalKnowledgeList = () => {
             time={threeHoursAgo}
             lawyerList={knowledge.lawyers || []}
             isLastAnswer={true}
-            bookmark={true}
           />
           {!isMobile && idx !== knowledgeList.length - 1 && <Divider padding={24} />}
         </>

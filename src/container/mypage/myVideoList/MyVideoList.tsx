@@ -8,7 +8,7 @@ import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
 
 const MyVideoList = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const { videoList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteVideoList({
+  const { videoList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteVideoList({
     subcategoryId: 'all',
     take: 10,
   })
