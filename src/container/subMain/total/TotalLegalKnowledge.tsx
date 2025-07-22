@@ -6,7 +6,6 @@ import styles from '@/container/subMain/total/total-legal-knowledge.module.scss'
 import { useGetKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { ROUTER } from '@/routes/routerConstant'
-import { formatTimeAgo } from '@/utils/date'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const TotalLegalKnowledge = () => {
