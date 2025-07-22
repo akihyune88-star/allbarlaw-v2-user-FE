@@ -2,6 +2,7 @@ import styles from '@/components/video/video-horizon.module.scss'
 import SvgIcon from '../SvgIcon'
 import { useState } from 'react'
 import { COLOR } from '@/styles/color'
+import { useAuth } from '@/contexts/AuthContext'
 
 type VideoHorizonProps = {
   type?: 'default' | 'search' | 'reverse'
@@ -12,7 +13,6 @@ type VideoHorizonProps = {
   lawfirmName?: string
   channelName?: string
   channelThumbnail?: string
-  isShowLike?: boolean
   className?: string
   summaryContents?: string
   onClick?: () => void
@@ -27,12 +27,12 @@ const VideoHorizon = ({
   lawfirmName,
   channelName,
   channelThumbnail,
-  isShowLike = false,
   className,
   summaryContents,
   onClick,
 }: VideoHorizonProps) => {
   const [like, setLike] = useState(false)
+  const { isLoggedIn } = useAuth()
 
   const rootClassName = [styles['video-horizon'], styles[type], styles[size]].filter(Boolean).join(' ')
 
@@ -44,7 +44,7 @@ const VideoHorizon = ({
       <section className={styles['video-content-section']}>
         <header className={styles['video-content-section-header']}>
           <h1>{title}</h1>
-          {isShowLike && (
+          {isLoggedIn && (
             <div className={styles['bookmark-icon']}>
               <SvgIcon name='bookMark' size={16} onClick={() => setLike(!like)} fill={like ? COLOR.green_01 : 'none'} />
             </div>

@@ -17,6 +17,7 @@ type KnowledgeItem = {
   knowledgeId: number
   knowledgeTitle: string
   summaryContent: string
+  lastMessageAt: string
   lawyers: {
     lawyerId: number
     lawyerName: string

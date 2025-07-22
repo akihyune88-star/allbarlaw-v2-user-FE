@@ -3,6 +3,7 @@ import styles from '@/components/legalKnowledgeItem/legal-knowledge-item.module.
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { COLOR } from '@/styles/color'
 import { formatTimeAgo } from '@/utils/date'
+import { useAuth } from '@/contexts/AuthContext'
 
 type LegalKnowledgeItemProps = {
   title: string
@@ -14,8 +15,8 @@ type LegalKnowledgeItemProps = {
     lawyerProfileImage: string
     lawyerName: string
   }[]
-  bookmark?: boolean
   onClick?: () => void
+  isShowKeep?: boolean
 }
 
 const LegalKnowledgeItem = ({
@@ -24,11 +25,13 @@ const LegalKnowledgeItem = ({
   time,
   isLastAnswer,
   lawyerList,
-  bookmark = false,
   onClick,
+  isShowKeep = true,
 }: LegalKnowledgeItemProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const { isLoggedIn } = useAuth()
   const formattedTime = time ? formatTimeAgo(time) : ''
+  console.log(formattedTime)
   return (
     <article className={styles['legal-knowledge-item']} onClick={onClick}>
       <header className={styles['header']}>
@@ -37,7 +40,7 @@ const LegalKnowledgeItem = ({
           <span>
             <span className={styles['time']}>{formattedTime}</span> {isLastAnswer && '마지막 답변'}
           </span>
-          {bookmark && <SvgIcon name='bookMark' />}
+          {isLoggedIn && isShowKeep && <SvgIcon name='bookMark' />}
         </div>
       </header>
       <div className={styles['description-wrapper']}>
@@ -69,7 +72,7 @@ const LegalKnowledgeItem = ({
           <span>
             <span className={styles['time']}>{formattedTime}</span> {isLastAnswer && '마지막 답변'}
           </span>
-          {bookmark && <SvgIcon name='bookMark' />}
+          {isLoggedIn && isShowKeep && <SvgIcon name='bookMark' />}
         </div>
       )}
     </article>

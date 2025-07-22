@@ -6,6 +6,7 @@ import styles from '@/container/subMain/total/total-legal-knowledge.module.scss'
 import { useGetKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { ROUTER } from '@/routes/routerConstant'
+import { formatTimeAgo } from '@/utils/date'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const TotalLegalKnowledge = () => {
@@ -59,8 +60,9 @@ const TotalLegalKnowledge = () => {
             key={item.knowledgeId}
             title={item.knowledgeTitle}
             description={item.summaryContent}
-            time={new Date()}
+            time={new Date(item.lastMessageAt)}
             isLastAnswer={true}
+            isShowKeep={false}
             lawyerList={item.lawyers || []}
             onClick={() => handleDetailLegalKnowledgeClick(item.knowledgeId)}
           />

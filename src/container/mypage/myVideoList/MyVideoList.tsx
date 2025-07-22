@@ -4,7 +4,6 @@ import styles from './myVideoList.module.scss'
 import VideoHorizon from '@/components/video/VideoHorizon'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import VideoThumbnail from '@/components/video/VideoThumbnail'
 import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
 
 const MyVideoList = () => {
@@ -34,7 +33,6 @@ const MyVideoList = () => {
               channelName={video.channelName}
               summaryContents={video.summaryContent}
               className={styles.myVideoItem}
-              isShowLike={true}
             />
             {!isMobile && idx !== videoList.length - 1 && <Divider padding={24} />}
           </>
@@ -47,7 +45,6 @@ const MyVideoList = () => {
               videoUrl={video.thumbnail}
               isShowTitle={false}
               description={video.title}
-              isShowKeepBookmark={true}
             />
           ))}
         </div>

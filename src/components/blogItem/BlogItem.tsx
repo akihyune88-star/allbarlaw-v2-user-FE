@@ -5,18 +5,20 @@ import SvgIcon from '../SvgIcon'
 import { useState } from 'react'
 import { COLOR } from '@/styles/color'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useAuth } from '@/contexts/AuthContext'
 
 type BlogItemProps = {
   item: BlogCase
-  viewKeepBookmark?: boolean
   className?: string
   summaryButton?: boolean
+  isShowKeep?: boolean
   onClick?: () => void
 }
 
-const BlogItem = ({ item, viewKeepBookmark = false, className, summaryButton = false, onClick }: BlogItemProps) => {
+const BlogItem = ({ item, className, summaryButton = false, isShowKeep = true, onClick }: BlogItemProps) => {
   const [like, setLike] = useState(false)
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const { isLoggedIn } = useAuth()
   const summaryContents = getBlogSummaryText(item.summaryContent)
 
   return (
@@ -24,7 +26,7 @@ const BlogItem = ({ item, viewKeepBookmark = false, className, summaryButton = f
       <div className={styles['blog-item']}>
         <div className={styles['blog-content-header']}>
           <h3>{item.title}</h3>
-          {viewKeepBookmark && !isMobile && (
+          {isLoggedIn && !isMobile && isShowKeep && (
             <SvgIcon name='bookMark' onClick={() => setLike(!like)} fill={like ? COLOR.green_01 : 'none'} />
           )}
         </div>
@@ -33,7 +35,7 @@ const BlogItem = ({ item, viewKeepBookmark = false, className, summaryButton = f
           <div className={styles['blog-content-footer']}>
             <span className={styles.lawyer}>{item.lawyerName} 변호사</span>
             <span className={styles.lawfirm}>[{item.lawfirmName}]</span>
-            {viewKeepBookmark && isMobile && (
+            {isLoggedIn && isMobile && isShowKeep && (
               <SvgIcon
                 name='bookMark'
                 onClick={() => setLike(!like)}
