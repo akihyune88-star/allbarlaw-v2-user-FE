@@ -5,6 +5,14 @@
 
 .keepListContent {
   padding: 1.625rem 1.5rem;
+  width: 100%;
+}
+
+.keepListBody {
+  width: 100%;
+  height: 100%;
+  background-color: $color-white;
+  border-radius: 0.5rem;
 }
 
 @media (max-width: $breakpoint-desktop) {
