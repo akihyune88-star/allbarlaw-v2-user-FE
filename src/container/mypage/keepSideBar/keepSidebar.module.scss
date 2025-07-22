@@ -13,15 +13,61 @@
   border-bottom: 1px solid $color-line-divider;
   border-right: 1px solid $color-line-divider;
 
+  font-size: 0.875rem;
+  font-weight: $font-weight-semibold;
+  color: $color-text-caption;
+
   &:hover {
     background-color: rgba($color-white, 0.5);
   }
 
   &.active {
     background-color: $color-white;
+    color: $color-green-01;
   }
 
   &:first-child {
     border-top: 1px solid $color-line-divider;
+  }
+
+  span {
+    margin-right: 0.625rem;
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .keepSidebar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    background-color: $color-bg-gray-03;
+  }
+
+  .keepSidebarButton {
+    width: 4rem;
+    height: 3rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+    text-align: center;
+
+    font-size: 0.6875rem;
+
+    border-bottom: none;
+
+    &:first-child {
+      border-top: none;
+    }
+
+    &:last-child {
+      border-right: none;
+    }
+
+    span {
+      margin-right: 0;
+    }
   }
 }

@@ -6,3 +6,9 @@
 .keepListContent {
   padding: 1.625rem 1.5rem;
 }
+
+@media (max-width: $breakpoint-desktop) {
+  .keepList {
+    flex-direction: column;
+  }
+}

@@ -15,7 +15,8 @@ const KeepSidebar = ({ buttonList, activeButton, setActiveButton }: KeepSidebarP
           className={`${styles.keepSidebarButton} ${activeButton === button ? styles.active : ''}`}
           onClick={() => setActiveButton(button)}
         >
-          {button}
+          <span>{button}</span>
+          <span>(1)</span>
         </button>
       ))}
     </div>
