@@ -8,6 +8,7 @@ import EmailInputSection from '@/container/auth/emailInputSection/EmailInputSect
 import TermsAgreementSection from '@/container/auth/termsAgreementSection/TermsAgreementSection'
 import Button from '@/components/button/Button'
 import { lawyerSignupSchema, type LawyerSignupFormData } from './lawyerSignupSchema'
+import LawyerCertification from '@/container/auth/lawyerCertification/LawyerCertification'
 
 const LawyerSignupForm = () => {
   const [isEmailError, setIsEmailError] = useState(false)
@@ -68,41 +69,7 @@ const LawyerSignupForm = () => {
         <SignUpTitle title='변호사 회원가입' />
         <form onSubmit={handleFormSubmit} className={styles['lawyer-signup-form-section']}>
           <AccountInfoSection register={register} errors={errors} watch={watch} onIdError={setIsIdError} />
-          {/* 변호사 인증 섹션
-          <section className={styles['lawyer-cert-section']}>
-            <h2 className={styles['lawyer-cert-title']}>변호사 인증</h2>
-            <div className={styles['lawyer-cert-fields']}>
-              <label>
-                이름
-                <input
-                  type='text'
-                  {...register('lawyerName')}
-                  className={errors.lawyerName ? styles['input-error'] : ''}
-                />
-                {errors.lawyerName && <span className={styles['error-message']}>{errors.lawyerName.message}</span>}
-              </label>
-              <label>
-                연락처
-                <input
-                  type='text'
-                  {...register('lawyerContact')}
-                  className={errors.lawyerContact ? styles['input-error'] : ''}
-                />
-                {errors.lawyerContact && (
-                  <span className={styles['error-message']}>{errors.lawyerContact.message}</span>
-                )}
-              </label>
-              <label>
-                출신시험
-                <input
-                  type='number'
-                  {...register('lawyerExam', { valueAsNumber: true })}
-                  className={errors.lawyerExam ? styles['input-error'] : ''}
-                />
-                {errors.lawyerExam && <span className={styles['error-message']}>{errors.lawyerExam.message}</span>}
-              </label>
-            </div>
-          </section> */}
+          <LawyerCertification register={register} errors={errors} />
           <EmailInputSection register={register} errors={errors} onEmailError={setIsEmailError} />
           <TermsAgreementSection register={register} errors={errors} setValue={setValue} watch={watch} />
           <Button

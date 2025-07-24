@@ -20,6 +20,7 @@ export const lawyerSignupSchema = z
     // 변호사 인증
     lawyerName: z.string().min(1, { message: '변호사 이름을 입력해주세요.' }),
     lawyerContact: z.string().min(1, { message: '변호사 연락처를 입력해주세요.' }),
+    lawyerFirm: z.string().min(1, { message: '소속(법인,회사)을 입력해주세요.' }),
     lawyerExam: z.number({ invalid_type_error: '출신시험은 숫자여야 합니다.' }),
 
     // 이메일

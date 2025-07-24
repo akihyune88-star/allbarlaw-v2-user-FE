@@ -1,24 +1,21 @@
-import type { UseFormRegister, FieldErrors, UseFormSetValue, UseFormWatch } from 'react-hook-form'
+import { FieldValues, Path, UseFormRegister, FieldErrors, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import React from 'react'
-import type { SignUpFormData } from '@/pages/auth/signUp/signUpForm/signUpSchema'
 import styles from './termsAgreementSection.module.scss'
 import Divider from '@/components/divider/Divider'
 import CheckBox from '@/components/checkBox'
 
-type TermsAgreementSectionProps = {
-  register: UseFormRegister<SignUpFormData>
-  errors: FieldErrors<SignUpFormData>
-  setValue: UseFormSetValue<SignUpFormData>
-  watch: UseFormWatch<SignUpFormData>
+export type TermsAgreementSectionProps<T extends FieldValues> = {
+  register: UseFormRegister<T>
+  errors: FieldErrors<T>
+  setValue: UseFormSetValue<T>
+  watch: UseFormWatch<T>
 }
 
 const TermsLink = ({ text = '[이용약관 보기]' }: { text?: string }) => {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
-    // TODO: 이용약관 모달 또는 페이지 로직 구현
     alert(`${text} 클릭!`)
   }
-
   return (
     <a href='/' onClick={handleClick} className={styles['terms-link']}>
       {text}
@@ -26,15 +23,15 @@ const TermsLink = ({ text = '[이용약관 보기]' }: { text?: string }) => {
   )
 }
 
-const AgreementRow = ({
+const AgreementRow = <T extends FieldValues>({
   name,
   label,
   register,
   link,
 }: {
-  name: keyof SignUpFormData
+  name: Path<T>
   label: string
-  register: UseFormRegister<SignUpFormData>
+  register: UseFormRegister<T>
   link?: React.ReactNode
 }) => {
   return (
@@ -48,16 +45,18 @@ const AgreementRow = ({
   )
 }
 
-const TermsAgreementSection = ({ register, errors, setValue, watch }: TermsAgreementSectionProps) => {
-  const watchAllAgreement = watch(['agreeToTerms', 'agreeToPrivacy', 'agreeToMarketing'])
-  const isAllChecked = watchAllAgreement.every(Boolean)
+function TermsAgreementSection<
+  T extends { agreeToTerms: boolean; agreeToPrivacy: boolean; agreeToMarketing?: boolean } & FieldValues
+>({ register, errors, setValue, watch }: TermsAgreementSectionProps<T>) {
+  const watchAllAgreement = watch(['agreeToTerms', 'agreeToPrivacy', 'agreeToMarketing'].map(k => k as Path<T>))
+  const isAllChecked = Array.isArray(watchAllAgreement) && watchAllAgreement.every(Boolean)
   const hasError = errors.agreeToTerms || errors.agreeToPrivacy
 
   const handleAllAgreeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target
-    setValue('agreeToTerms', checked, { shouldValidate: true })
-    setValue('agreeToPrivacy', checked, { shouldValidate: true })
-    setValue('agreeToMarketing', checked)
+    setValue('agreeToTerms' as Path<T>, checked as any, { shouldValidate: true })
+    setValue('agreeToPrivacy' as Path<T>, checked as any, { shouldValidate: true })
+    setValue('agreeToMarketing' as Path<T>, checked as any)
   }
 
   return (
@@ -65,15 +64,20 @@ const TermsAgreementSection = ({ register, errors, setValue, watch }: TermsAgree
       <h2 className={styles.title}>올바로 서비스 이용약관 동의</h2>
       <Divider padding={1} />
       <div className={styles['checkbox-group']}>
-        <AgreementRow name='agreeToTerms' label='서비스 이용약관 동의' register={register} link={<TermsLink />} />
-        <AgreementRow
-          name='agreeToPrivacy'
+        <AgreementRow<T>
+          name={'agreeToTerms' as Path<T>}
+          label='서비스 이용약관 동의'
+          register={register}
+          link={<TermsLink />}
+        />
+        <AgreementRow<T>
+          name={'agreeToPrivacy' as Path<T>}
           label='개인정보 처리방침 동의'
           register={register}
           link={<TermsLink text='[개인정보 처리방침 보기]' />}
         />
-        <AgreementRow
-          name='agreeToMarketing'
+        <AgreementRow<T>
+          name={'agreeToMarketing' as Path<T>}
           label='마케팅 정보 수신 동의'
           register={register}
           link={<TermsLink text='[마케팅 정보 수신 동의 보기]' />}

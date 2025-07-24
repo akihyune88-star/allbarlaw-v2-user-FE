@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react'
-import type { UseFormRegister, FieldErrors } from 'react-hook-form'
-import LabelInput from '@/components/labelInput/LabelInput'
-import type { SignUpFormData } from '@/pages/auth/signUp/signUpForm/signUpSchema'
+import { FieldValues, Path, UseFormRegister, FieldErrors } from 'react-hook-form'
 import styles from './emailInputSection.module.scss'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useEmailCheck } from '@/hooks/mutatate/useEmailCheck'
+import LabelInput from '@/components/labelInput/LabelInput'
 
-type EmailInputSectionProps = {
-  register: UseFormRegister<SignUpFormData>
-  errors: FieldErrors<SignUpFormData>
+export type EmailInputSectionProps<T extends FieldValues> = {
+  register: UseFormRegister<T>
+  errors: FieldErrors<T>
   onEmailError?: (isError: boolean) => void
 }
 
-const EmailInputSection = ({ register, errors, onEmailError }: EmailInputSectionProps) => {
+function EmailInputSection<T extends { email: string } & FieldValues>({
+  register,
+  errors,
+  onEmailError,
+}: EmailInputSectionProps<T>) {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const debounceTimer = useRef<ReturnType<typeof setTimeout>>(null)
   const [emailMessage, setEmailMessage] = useState<string | undefined>(undefined)
@@ -40,16 +43,12 @@ const EmailInputSection = ({ register, errors, onEmailError }: EmailInputSection
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
-
-    // 새로운 입력이 시작되면 메시지와 에러 상태 초기화
     setEmailMessage(undefined)
     setIsEmailError(false)
     onEmailError?.(false)
-
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current)
     }
-
     debounceTimer.current = setTimeout(() => {
       if (value && value.includes('@')) {
         checkEmail({ userEmail: value })
@@ -71,12 +70,13 @@ const EmailInputSection = ({ register, errors, onEmailError }: EmailInputSection
       {!isMobile && <Divider padding={1} />}
       <LabelInput
         label='이메일'
+        type='email'
         placeholder='이메일을 입력해주세요'
-        {...register('email', {
+        {...register('email' as Path<T>, {
           onChange: handleEmailChange,
         })}
         isError={!!errors.email || isEmailError}
-        message={errors.email?.message || emailMessage}
+        message={(errors.email as any)?.message || emailMessage}
       />
     </section>
   )
