@@ -207,17 +207,15 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
 
   .category-group {
     width: 100%;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .category-row {
-    justify-content: center;
-    gap: 4.27dvw;
+    gap: 0.5rem;
     padding: 0;
   }
 

@@ -5,6 +5,7 @@ import { Category, Subcategory } from '@/types/categoryTypes'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import SvgIcon from '@/components/SvgIcon'
 import { useCategory } from '@/hooks/queries/useCategory'
+import { useCategoryRenderChunk } from '@/hooks/useCategoryRenderChunk'
 
 type CategorySelectorProps = {
   title?: string
@@ -28,7 +29,7 @@ const CategorySelector = ({
 
   // 모바일 분기 처리
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const chunkSize = isMobile ? 5 : 9
+  const { chunkSize } = useCategoryRenderChunk()
 
   const handleMainCategoryClick = (categoryId: number) => {
     setSelectedMainCategory(categoryId)
