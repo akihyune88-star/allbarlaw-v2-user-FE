@@ -18,7 +18,7 @@ const HeaderNavigation = () => {
   const filteredMenuList = MENU_LIST.filter(item => {
     // 로그인 상태일 때는 로그인 버튼을 숨기고 마이페이지를 보여줌
     if (isLoggedIn) {
-      return item.name !== '로그인'
+      return item.name !== '로그인/회원가입'
     }
     // 로그아웃 상태일 때는 마이페이지를 숨기고 로그인 버튼을 보여줌
     return item.name !== '마이페이지'
