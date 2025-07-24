@@ -172,6 +172,26 @@
 
 .login-footer {
   padding-top: 3.125rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 3.125rem 2.625rem 0 2.625rem; // 버튼 너비 패딩
+}
+
+.lawyer-footer-button {
+  background-color: transparent;
+  border: 1px solid $color-line-borderbox;
+  border-radius: 0.5rem;
+
+  width: 100%;
+  height: 2.75rem;
+
+  font-size: 1rem;
+  font-weight: $font-weight-semibold;
+  text-align: center;
 }
 
 @media (max-width: $breakpoint-desktop) {

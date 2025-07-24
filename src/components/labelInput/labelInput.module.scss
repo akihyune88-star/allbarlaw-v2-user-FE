@@ -7,12 +7,14 @@
 .field-container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; // ← label이 왼쪽에 고정
   width: 100%;
 }
 
 .label {
-  width: 7.5rem;
+  width: 120px;
+  min-width: 120px;
+  flex-shrink: 0;
   font-size: 1rem;
   font-weight: $font-weight-semibold;
   color: $color-text-black;
@@ -54,6 +56,8 @@
 
   .label {
     font-size: 0.875rem;
+    width: 100%;
+    min-width: 0;
   }
 
   .field-message {
