@@ -5,9 +5,10 @@ type LabelInputProps = {
   label: string
   isError?: boolean
   message?: string
+  children?: React.ReactNode
 } & React.InputHTMLAttributes<HTMLInputElement>
 
-const LabelInput = ({ label, isError, message, ...rest }: LabelInputProps) => {
+const LabelInput = ({ label, isError, message, children, ...rest }: LabelInputProps) => {
   const id = useId()
 
   return (
@@ -16,7 +17,7 @@ const LabelInput = ({ label, isError, message, ...rest }: LabelInputProps) => {
         <label htmlFor={id} className={styles['label']}>
           {label}
         </label>
-        <input id={id} className={styles['input']} aria-invalid={isError} {...rest} />
+        {children ? children : <input id={id} className={styles['input']} aria-invalid={isError} {...rest} />}
       </div>
       <span className={styles['field-message']} data-error={isError}>
         {message || ''}

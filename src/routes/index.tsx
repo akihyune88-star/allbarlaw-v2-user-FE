@@ -39,7 +39,7 @@ import SocialCheck from '@/pages/auth/socialCheck/SocialCheck'
 import FaqLayout from '@/pages/support/faq/FaqLayout'
 import FaqListByCategory from '@/pages/support/faq/faqListByCategory/FaqListByCategory'
 import MainLayout from '@/pages/MainLayout'
-import { Mypage } from '@/pages'
+import { LawyerSignupForm, Mypage } from '@/pages'
 
 const router = createBrowserRouter([
   {
@@ -62,6 +62,10 @@ const router = createBrowserRouter([
           {
             path: ROUTER.SIGNUP_FORM,
             element: <SignUpForm />,
+          },
+          {
+            path: ROUTER.LAWYER_SIGNUP_FORM,
+            element: <LawyerSignupForm />,
           },
         ],
       },
