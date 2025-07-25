@@ -1,0 +1,51 @@
+.bubbleWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 8px 0;
+  &.right {
+    align-items: flex-end;
+  }
+}
+
+.bubbleRow {
+  display: flex;
+  align-items: flex-start;
+}
+
+.bubble {
+  max-width: 80vw;
+  padding: 1rem 1.5rem;
+  color: #fff;
+  font-size: 1.1rem;
+  word-break: break-word;
+  background-color: #22c55e;
+  transition: background 0.2s;
+}
+
+.right .bubble {
+  border-radius: 8px 0 8px 8px;
+}
+
+.left .bubble {
+  border-radius: 0 8px 8px 8px;
+}
+
+.tailSvg {
+  width: 13px;
+  height: 16px;
+  display: block;
+}
+
+.left .tailSvg {
+  transform: scaleX(-1);
+}
+
+.meta {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

@@ -1,6 +1,7 @@
 import ChatHeader from '@/container/baroTalk/chatHeader/ChatHeader'
 import styles from './chat.module.scss'
 import ChatList from '@/container/baroTalk/chatList/ChatList'
+import ChatBubble from '@/components/chatBubble/ChatBubble'
 
 const Chat = () => {
   return (
@@ -16,6 +17,7 @@ const Chat = () => {
           description={`로스쿨 수석!강력사건 전문 해결, 전문 변호사
             오랜 경험과 깊은 지식, 경험과 실력은 활동내역이 증명합니다.`}
         />
+        <ChatBubble message='안녕하세요' direction='left' />
       </section>
       <aside className={`aside ${styles['mobile-aside']}`}>
         <ChatList />
