@@ -55,7 +55,7 @@ const ChatList = () => {
                 key={index}
                 name='김바로'
                 profileImage='https://picsum.photos/200/300'
-                lastMessage='안녕하세요'
+                lastMessage='안녕하세요,안녕하세요,안녕하세요,안녕하세요,안녕하세요,안녕하세요'
                 lastMessageTime='2025-07-25 10:00'
                 isOnline={false}
               />

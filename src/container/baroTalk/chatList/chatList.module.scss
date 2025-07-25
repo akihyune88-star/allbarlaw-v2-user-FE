@@ -74,6 +74,7 @@
 }
 
 .lawyer-chat-item-content {
+  min-width: 0;
   &-name {
     font-size: 0.9375rem;
     font-weight: $font-weight-semibold;
@@ -81,15 +82,14 @@
 
   &-last-message-time {
     margin-top: 0.125rem;
-
     font-size: 0.6875rem;
     color: $color-green-01;
   }
 
   &-last-message {
     margin-top: 0.5rem;
-
     font-size: 0.6875rem;
+    width: 100%;
     @include ellipsis(1);
   }
 }
