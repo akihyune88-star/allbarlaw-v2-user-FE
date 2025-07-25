@@ -7,11 +7,21 @@ interface ChatHeaderProps extends Lawyer {
     total: number
     month: number
   }
+  className?: string
 }
 
-const ChatHeader = ({ id, name, lawfirm, profileImage, description, isActive = false, count }: ChatHeaderProps) => {
+const ChatHeader = ({
+  id,
+  name,
+  lawfirm,
+  profileImage,
+  description,
+  isActive = false,
+  count,
+  className,
+}: ChatHeaderProps) => {
   return (
-    <header className={styles['chat-header']}>
+    <header className={`${styles['chat-header']} ${className}`}>
       <section className={styles['header-right']}>
         <figure>
           <img src={profileImage} alt={name} />

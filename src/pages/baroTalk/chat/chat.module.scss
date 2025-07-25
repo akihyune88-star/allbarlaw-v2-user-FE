@@ -1,0 +1,23 @@
+.chat {
+  background-color: $color-bg-gray-02;
+  padding: 1.5rem;
+  will-change: autodm;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .chat {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .chat-content {
+    display: none;
+  }
+
+  .mobile-aside {
+    display: block;
+    width: 100%;
+  }
+}
