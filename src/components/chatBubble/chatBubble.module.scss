@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 8px 0;
+
   &.right {
     align-items: flex-end;
   }
@@ -24,6 +24,7 @@
   word-break: break-word;
   white-space: pre-line;
   position: relative;
+  margin-bottom: 2rem;
 }
 
 .right .bubble {
