@@ -2,6 +2,7 @@ import styles from './lawyerCertification.module.scss'
 import LabelInput from '@/components/labelInput/LabelInput'
 import { FieldErrors, UseFormRegister, Path, FieldValues } from 'react-hook-form'
 import Divider from '@/components/divider/Divider'
+import { getLawyerExamOptions } from '@/utils/auth'
 
 export type LawyerCertificationProps<T extends FieldValues> = {
   register: UseFormRegister<T>
@@ -39,11 +40,11 @@ function LawyerCertification<
         />
         <LabelInput label='출신시험' isError={!!errors.lawyerExam} message={(errors.lawyerExam as any)?.message}>
           <select {...register('lawyerExam' as Path<T>)} className={styles['select']} defaultValue=''>
-            <option value='' disabled>
-              출신시험 선택
-            </option>
-            <option value='1'>사법시험</option>
-            <option value='2'>변호사시험</option>
+            {getLawyerExamOptions().map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
           </select>
         </LabelInput>
       </div>
