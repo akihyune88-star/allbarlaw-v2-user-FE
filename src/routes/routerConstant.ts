@@ -7,6 +7,7 @@ export const ROUTER = {
   SIGNUP: 'signup',
   SIGNUP_FORM: 'signup-form',
   SOCIAL_CHECK: '/social-check',
+  LAWYER_SIGNUP_FORM: 'lawyer-signup-form',
   // 마이페이지
   MYPAGE: '/mypage',
   KEEP_LIST: 'keep-list',

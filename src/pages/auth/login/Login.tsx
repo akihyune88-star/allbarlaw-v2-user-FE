@@ -16,7 +16,7 @@ import { useLogin } from '@/hooks/mutatate/useLogin'
 type AuthActionType = 'ID_FIND' | 'PASSWORD_RESET' | 'SIGNUP'
 
 const Login = () => {
-  const [_activeTab, setActiveTab] = useState('')
+  const [activeTab, setActiveTab] = useState('/user')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const navigate = useNavigate()
 
@@ -51,6 +51,8 @@ const Login = () => {
     setValue('rememberMe', !rememberMe)
   }
 
+  console.log(activeTab)
+
   const { mutate: login, isPending } = useLogin({
     onSuccess: () => {
       navigate(ROUTER.MAIN)
@@ -75,6 +77,14 @@ const Login = () => {
       userPassword: data.password,
       rememberMe: data.rememberMe,
     })
+  }
+
+  const handleSignup = () => {
+    if (activeTab === '/user') {
+      navigate(ROUTER.SIGNUP)
+    } else {
+      navigate(ROUTER.LAWYER_SIGNUP_FORM)
+    }
   }
 
   return (
@@ -123,11 +133,15 @@ const Login = () => {
           <span>|</span>
           <button onClick={() => handleAuthAction('PASSWORD_RESET')}>비밀번호 찾기</button>
           <span>|</span>
-          <button onClick={() => handleAuthAction('SIGNUP')}>회원가입</button>
+          <button onClick={handleSignup}>회원가입</button>
         </div>
 
         <footer className={styles['login-footer']}>
-          <SocialLoginButton type='icon' />
+          {activeTab === '/user' ? (
+            <SocialLoginButton type='icon' />
+          ) : (
+            <button className={styles['lawyer-footer-button']}>변호사 가입 안내</button>
+          )}
         </footer>
       </section>
     </div>
