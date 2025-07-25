@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './category-selector.module.scss'
 import { chunk } from '@/utils/arrayUtils'
 import { Category, Subcategory } from '@/types/categoryTypes'
@@ -51,6 +51,18 @@ const CategorySelector = ({
 
   const categoryGroups = categoryList ? chunk(categoryList, chunkSize) : []
 
+  // 디버깅용 로그
+  useEffect(() => {
+    if (categoryGroups.length > 0) {
+      console.log(
+        'Category groups:',
+        categoryGroups.map(group => group.length)
+      )
+      console.log('Chunk size:', chunkSize)
+      console.log('Is mobile:', isMobile)
+    }
+  }, [categoryGroups, chunkSize, isMobile])
+
   // 모바일에서 보여줄 그룹 결정
   const visibleGroups =
     isMobile && enableMobileExpand && !isExpanded
@@ -76,7 +88,9 @@ const CategorySelector = ({
           return (
             <div key={groupIndex} className={styles['category-group']}>
               {/* 현재 그룹의 카테고리들 */}
-              <div className={styles['category-row']}>
+              <div
+                className={`${styles['category-row']} ${isMobile && group.length === chunkSize ? styles.center : ''}`}
+              >
                 {group.map(category => (
                   <div
                     className={`${styles['icon-wrapper']} ${
