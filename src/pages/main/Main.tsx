@@ -26,6 +26,7 @@ const Main = () => {
           onSubcategoryClick={handleSubcategoryClick}
           className={styles['category-selector']}
           horizontalPadding={20}
+          enableMobileExpand={true}
         />
         <BlogFeedContainer />
         {!isMobile && <BaroTalkBanner />}

@@ -71,10 +71,6 @@
 }
 
 @media (max-width: $breakpoint-desktop) {
-  .content-wrapper {
-    flex-direction: column-reverse;
-  }
-
   .form-body-gap {
     gap: 1rem;
   }

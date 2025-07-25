@@ -19,7 +19,7 @@ type CategorySelectorProps = {
 const CategorySelector = ({
   title,
   onSubcategoryClick,
-  enableMobileExpand = true, // 기본값: 펼쳐보기 기능 사용
+  enableMobileExpand = false, // 기본값: 펼쳐보기 기능 사용
   initialVisibleGroups = 2, // 기본값: 2그룹 표시
   className,
   horizontalPadding = 20,
@@ -50,18 +50,6 @@ const CategorySelector = ({
   }
 
   const categoryGroups = categoryList ? chunk(categoryList, chunkSize) : []
-
-  // 디버깅용 로그
-  useEffect(() => {
-    if (categoryGroups.length > 0) {
-      console.log(
-        'Category groups:',
-        categoryGroups.map(group => group.length)
-      )
-      console.log('Chunk size:', chunkSize)
-      console.log('Is mobile:', isMobile)
-    }
-  }, [categoryGroups, chunkSize, isMobile])
 
   // 모바일에서 보여줄 그룹 결정
   const visibleGroups =

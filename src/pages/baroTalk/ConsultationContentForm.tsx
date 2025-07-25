@@ -39,6 +39,7 @@ const ConsultationContentForm = () => {
           steps={3}
           currentStep={2}
           onCancel={handleCancel}
+          onPrev={() => navigate(ROUTER.REQUEST_BARO_TALK)}
           onNext={() => navigate(ROUTER.BARO_TALK_LAWYER_SELECTION)}
         />
       </div>

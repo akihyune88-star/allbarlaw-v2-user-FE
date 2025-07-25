@@ -6,13 +6,14 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 type ProgressButtonProps = {
   onCancel: () => void
+  onPrev?: () => void
   onNext: () => void
   style?: React.CSSProperties
   steps: number
   currentStep: number
 }
 
-const ProgressButton = ({ onCancel, onNext, style, steps, currentStep }: ProgressButtonProps) => {
+const ProgressButton = ({ onCancel, onNext, onPrev, style, steps, currentStep }: ProgressButtonProps) => {
   const isMobile = useMediaQuery('(max-width: 1279px)')
 
   if (isMobile) {
@@ -20,12 +21,19 @@ const ProgressButton = ({ onCancel, onNext, style, steps, currentStep }: Progres
       <div className={styles['button-navigation']} style={style}>
         <StepProgressBar steps={steps} currentStep={currentStep} className={styles['progress-bar']} />
         <div className={styles['button-wrapper']}>
-          <Button variant='normal' onClick={onCancel}>
+          <Button variant='normal' onClick={onCancel} style={{ width: 80 }}>
             취소
           </Button>
-          <Button variant='fill' size='large' style={{ width: 120 }} onClick={onNext}>
-            저장 및 다음
-          </Button>
+          <div style={{ display: 'flex', gap: 10 }}>
+            {onPrev && (
+              <Button variant='normal' onClick={onCancel} className={styles['prev-button']}>
+                이전
+              </Button>
+            )}
+            <Button variant='fill' size='large' style={{ width: 120 }} onClick={onNext}>
+              저장 및 다음
+            </Button>
+          </div>
         </div>
       </div>
     )
@@ -38,9 +46,16 @@ const ProgressButton = ({ onCancel, onNext, style, steps, currentStep }: Progres
         <div className={styles['progress-wrapper']}>
           <StepProgressBar steps={steps} currentStep={currentStep} className={styles['progress-bar']} />
         </div>
-        <Button variant='fill' size='large' onClick={onNext}>
-          저장 및 다음
-        </Button>
+        <div style={{ display: 'flex', gap: 10 }}>
+          {onPrev && (
+            <Button variant='normal' onClick={onCancel} className={styles['prev-button']}>
+              이전
+            </Button>
+          )}
+          <Button variant='fill' size='large' onClick={onNext}>
+            저장 및 다음
+          </Button>
+        </div>
       </div>
     )
   }
