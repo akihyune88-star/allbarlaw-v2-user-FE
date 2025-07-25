@@ -4,11 +4,20 @@ import styles from './ChatBubble.module.scss'
 interface ChatBubbleProps {
   message: string
   color?: string
+  colorText?: string
   direction?: 'left' | 'right'
+  maxWidth?: string | number
   children?: React.ReactNode
 }
 
-const ChatBubble = ({ message, color = '#22c55e', direction = 'left', children }: ChatBubbleProps) => {
+const ChatBubble = ({
+  message,
+  color = '#22c55e',
+  colorText = '#fff',
+  direction = 'left',
+  maxWidth = '80vw',
+  children,
+}: ChatBubbleProps) => {
   return (
     <div className={`${styles.bubbleWrap} ${styles[direction]}`}>
       <div className={styles.bubbleRow}>
@@ -28,7 +37,7 @@ const ChatBubble = ({ message, color = '#22c55e', direction = 'left', children }
             />
           </svg>
         )}
-        <div className={styles.bubble} style={{ backgroundColor: color }}>
+        <div className={styles.bubble} style={{ backgroundColor: color, color: colorText, maxWidth }}>
           {message}
         </div>
         {direction === 'right' && (
