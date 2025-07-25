@@ -20,7 +20,7 @@ const ChatBubble = ({
 }: ChatBubbleProps) => {
   return (
     <div className={`${styles.bubbleWrap} ${styles[direction]}`}>
-      <div className={styles.bubbleRow}>
+      <div className={styles.bubbleRow} style={{ position: 'relative' }}>
         {direction === 'left' && (
           <svg
             className={styles.tailSvg}
@@ -37,8 +37,12 @@ const ChatBubble = ({
             />
           </svg>
         )}
-        <div className={styles.bubble} style={{ backgroundColor: color, color: colorText, maxWidth }}>
+        <div
+          className={styles.bubble}
+          style={{ backgroundColor: color, color: colorText, maxWidth, position: 'relative' }}
+        >
           {message}
+          {children && <div className={styles.meta}>{children}</div>}
         </div>
         {direction === 'right' && (
           <svg
@@ -57,7 +61,6 @@ const ChatBubble = ({
           </svg>
         )}
       </div>
-      {children && <div className={styles.meta}>{children}</div>}
     </div>
   )
 }

@@ -16,15 +16,14 @@
 .bubble {
   max-width: 80vw;
   padding: 1rem;
-
   background-color: #22c55e;
   transition: background 0.2s;
-
   color: #fff;
   font-size: 0.8125rem;
   line-height: 18px;
   word-break: break-word;
   white-space: pre-line;
+  position: relative;
 }
 
 .right .bubble {
@@ -46,6 +45,9 @@
 }
 
 .meta {
+  position: absolute;
+  left: 0;
+  top: 100%;
   margin-top: 0.5rem;
   font-size: 0.9rem;
   color: #888;
