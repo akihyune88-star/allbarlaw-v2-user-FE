@@ -8,7 +8,7 @@ export type Lawyer = {
   name: string
   lawfirm: string
   profileImage: string
-  tags: string[]
+  tags?: string[]
   description: string
 }
 
