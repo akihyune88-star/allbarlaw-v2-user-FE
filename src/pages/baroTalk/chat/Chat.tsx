@@ -17,7 +17,7 @@ const Chat = () => {
           description={`로스쿨 수석!강력사건 전문 해결, 전문 변호사
             오랜 경험과 깊은 지식, 경험과 실력은 활동내역이 증명합니다.`}
         />
-        <ChatBody />
+        <ChatBody isChatStart={true} />
       </section>
       <aside className={`aside ${styles['mobile-aside']}`}>
         <ChatList />

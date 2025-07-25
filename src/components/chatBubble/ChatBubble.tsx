@@ -7,6 +7,7 @@ interface ChatBubbleProps {
   colorText?: string
   direction?: 'left' | 'right'
   maxWidth?: string | number
+  profileImage?: string
   children?: React.ReactNode
 }
 
@@ -16,11 +17,13 @@ const ChatBubble = ({
   colorText = '#fff',
   direction = 'left',
   maxWidth = '80vw',
+  profileImage,
   children,
 }: ChatBubbleProps) => {
   return (
     <div className={`${styles.bubbleWrap} ${styles[direction]}`}>
       <div className={styles.bubbleRow} style={{ position: 'relative' }}>
+        {direction === 'left' && profileImage && <img src={profileImage} alt='profile' className={styles.profileImg} />}
         {direction === 'left' && (
           <svg
             className={styles.tailSvg}
@@ -37,10 +40,7 @@ const ChatBubble = ({
             />
           </svg>
         )}
-        <div
-          className={styles.bubble}
-          style={{ backgroundColor: color, color: colorText, maxWidth, position: 'relative' }}
-        >
+        <div className={styles.bubble} style={{ backgroundColor: color, color: colorText, maxWidth }}>
           {message}
           {children && <div className={styles.meta}>{children}</div>}
         </div>
@@ -59,6 +59,9 @@ const ChatBubble = ({
               fill='currentColor'
             />
           </svg>
+        )}
+        {direction === 'right' && profileImage && (
+          <img src={profileImage} alt='profile' className={styles.profileImg} />
         )}
       </div>
     </div>

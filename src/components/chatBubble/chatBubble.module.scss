@@ -56,3 +56,11 @@
   align-items: center;
   gap: 0.5rem;
 }
+
+.profileImg {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 0.5rem;
+}

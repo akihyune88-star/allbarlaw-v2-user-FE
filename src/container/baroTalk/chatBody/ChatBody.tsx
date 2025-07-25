@@ -2,7 +2,19 @@ import ChatBubble from '@/components/chatBubble/ChatBubble'
 import { COLOR } from '@/styles/color'
 import styles from './chatBody.module.scss'
 
-const ChatBody = () => {
+type ChatBodyProps = {
+  isChatStart: boolean
+}
+
+const ChatWaitingBlogList = () => {
+  return (
+    <div>
+      <div></div>
+    </div>
+  )
+}
+
+const ChatBody = ({ isChatStart }: ChatBodyProps) => {
   return (
     <div className={styles.chatBody}>
       <ChatBubble message={rightMessage} direction='right'>
@@ -10,11 +22,18 @@ const ChatBody = () => {
           <span>2025-07-25</span>
         </div>
       </ChatBubble>
-      <ChatBubble message={leftMessage} direction='left' color={COLOR.white} colorText={COLOR.black}>
+      <ChatBubble
+        message={leftMessage}
+        direction='left'
+        color={COLOR.white}
+        colorText={COLOR.black}
+        profileImage={'https://picsum.photos/200/300'}
+      >
         <div>
           <span>2025-07-25</span>
         </div>
       </ChatBubble>
+      {isChatStart && <ChatWaitingBlogList />}
     </div>
   )
 }
