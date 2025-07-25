@@ -44,15 +44,87 @@
   }
 }
 
+.chat-list-wrapper {
+  padding-bottom: 1.5rem;
+}
+
+.lawyer-chat-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.75rem 1.5rem;
+}
+
+.lawyer-chat-item-profile {
+  figure {
+    width: 3rem;
+    height: 3rem;
+
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.lawyer-chat-item-content {
+  &-name {
+    font-size: 0.9375rem;
+    font-weight: $font-weight-semibold;
+  }
+
+  &-last-message-time {
+    margin-top: 0.125rem;
+
+    font-size: 0.6875rem;
+    color: $color-green-01;
+  }
+
+  &-last-message {
+    margin-top: 0.5rem;
+
+    font-size: 0.6875rem;
+    @include ellipsis(1);
+  }
+}
+
+.lawyer-chat-item-content-name-badge-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.lawyer-chat-item-content-name {
+  display: inline-block;
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  right: -12px;
+  width: 8px;
+  height: 8px;
+  background: var(--badge-color, $color-green-01);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
 @media (max-width: $breakpoint-desktop) {
   .chat-list {
-    background-color: transparent;
+    background-color: $color-bg-gray-02;
   }
 
   .chat-list-header {
     background-color: $color-white;
     padding: 1.5rem 1.25rem;
     gap: 1.0625rem;
+
+    border-bottom: none;
 
     h3 {
       font-size: 1rem;
@@ -82,5 +154,13 @@
 
       font-size: 0.75rem;
     }
+  }
+
+  .chat-list-wrapper {
+    padding: 1rem 1.25rem;
+  }
+
+  .chat-list-content {
+    background-color: $color-white;
   }
 }
