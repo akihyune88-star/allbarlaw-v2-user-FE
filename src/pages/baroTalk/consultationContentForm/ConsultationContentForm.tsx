@@ -2,7 +2,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import RequestHeader from '@/container/baroTalk/RequestHeader'
 import ProgressButton from '@/components/progressButton/ProgressButton'
 import Input from '@/components/input/Input'
-import styles from '@/pages/baroTalk/consultation-content-form.module.scss'
+import styles from './consultation-content-form.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 

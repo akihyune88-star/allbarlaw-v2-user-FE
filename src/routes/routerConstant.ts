@@ -15,7 +15,14 @@ export const ROUTER = {
 
   SUPPORT: '/support',
   ABOUT: '/about',
+
+  // baroTalk
   BARO_TALK: '/baro-talk',
+  REQUEST_BARO_TALK: '/request-baro-talk',
+  CONSULTATION_CONTENT_FORM: '/consultation-content-form',
+  BARO_TALK_LAWYER_SELECTION: '/baro-talk-lawyer-selection',
+  CHAT: '/chat',
+
   LEGAL_DICTIONARY: '/legal-dictionary',
   LAWYER_SEARCH: '/lawyer-search',
   LAW_FIRM: '/law-firm',
@@ -26,9 +33,7 @@ export const ROUTER = {
   VIDEO: '/video',
   LEGAL_KNOWLEDGE: '/legal-knowledge',
   LAWYER: '/lawyer',
-  REQUEST_BARO_TALK: '/request-baro-talk',
-  CONSULTATION_CONTENT_FORM: '/consultation-content-form',
-  BARO_TALK_LAWYER_SELECTION: '/baro-talk-lawyer-selection',
+
   SEARCH_MAIN: '/search',
   MOBILE_MENU_LIST: '/mobile-menu-list',
   FAQ: '/faq',

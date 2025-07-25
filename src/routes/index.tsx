@@ -6,9 +6,6 @@ import Main from '@/pages/main/Main'
 import SubMain from '@/pages/subMain/SubMain'
 import BlogLayout from '@/pages/blog/Blog'
 import BlogDetail from '@/pages/blog/BlogDetail'
-import RequestBaroTalk from '@/pages/baroTalk/RequestBaroTalk'
-import ConsultationContentForm from '@/pages/baroTalk/ConsultationContentForm'
-import BaroTalkLawyerSelection from '@/pages/baroTalk/BaroTalkLawyerSelection'
 import VideoLayout from '@/pages/video/Video'
 import VideoDetail from '@/pages/video/VideoDetail'
 import LegalKnowledgeLayout from '@/pages/legalKnowledge/LegalKnowledge'
@@ -39,7 +36,14 @@ import SocialCheck from '@/pages/auth/socialCheck/SocialCheck'
 import FaqLayout from '@/pages/support/faq/FaqLayout'
 import FaqListByCategory from '@/pages/support/faq/faqListByCategory/FaqListByCategory'
 import MainLayout from '@/pages/MainLayout'
-import { LawyerSignupForm, Mypage } from '@/pages'
+import {
+  BaroTalkLawyerSelection,
+  Chat,
+  ConsultationContentForm,
+  LawyerSignupForm,
+  Mypage,
+  RequestBaroTalk,
+} from '@/pages'
 
 const router = createBrowserRouter([
   {
@@ -128,6 +132,7 @@ const router = createBrowserRouter([
             path: ':subcategoryId/legal-knowledge/:knowledgeId',
             element: <LegalKnowledgeDetail />,
           },
+          // baroTalk
           {
             path: ROUTER.REQUEST_BARO_TALK,
             element: <RequestBaroTalk />,
@@ -140,6 +145,11 @@ const router = createBrowserRouter([
             path: ROUTER.BARO_TALK_LAWYER_SELECTION,
             element: <BaroTalkLawyerSelection />,
           },
+          {
+            path: ROUTER.CHAT,
+            element: <Chat />,
+          },
+          //myPage
           {
             path: ROUTER.MYPAGE,
             element: <Mypage />,

@@ -1,8 +1,7 @@
 import RequestHeader from '@/container/baroTalk/RequestHeader'
-import styles from '@/pages/baroTalk/baro-talk-lawyer-selection.module.scss'
+import styles from './baro-talk-lawyer-selection.module.scss'
 import { Lawyer } from '@/types/lawyerTypes'
 import { useCallback, useMemo, useState } from 'react'
-
 import Input from '@/components/input/Input'
 import CheckBoxGroup from '@/components/checkBox/CheckBoxGroup'
 import ProgressButton from '@/components/progressButton/ProgressButton'
@@ -10,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import BaroTalkLawyersList from '@/container/baroTalk/BaroTalkLawyersList'
 import { lawyersMockData, noticeInputMockData } from '@/constants/baroTalkMockData'
+import { ROUTER } from '@/routes/routerConstant'
 
 const BaroTalkLawyerSelection = () => {
   const navigate = useNavigate()
@@ -55,6 +55,14 @@ const BaroTalkLawyerSelection = () => {
     setAgreementChecked(values)
   }, [])
 
+  const handleNext = useCallback(() => {
+    navigate(ROUTER.CHAT)
+  }, [])
+
+  const handlePrev = useCallback(() => {
+    navigate(ROUTER.CONSULTATION_CONTENT_FORM)
+  }, [])
+
   return (
     <main className='form-container'>
       <RequestHeader
@@ -93,7 +101,7 @@ const BaroTalkLawyerSelection = () => {
               />
             }
           />
-          <ProgressButton steps={3} currentStep={3} onCancel={handleCancel} onNext={handleCancel} />
+          <ProgressButton steps={3} currentStep={3} onCancel={handleCancel} onNext={handleNext} onPrev={handlePrev} />
         </div>
       </section>
     </main>
