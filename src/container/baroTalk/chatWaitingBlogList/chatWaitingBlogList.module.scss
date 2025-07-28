@@ -28,6 +28,7 @@
 
 .chatWaitingBlogList__header__startChat {
   display: flex;
+  align-items: center;
   gap: 1.9375rem;
 
   font-size: 0.8125rem;
@@ -39,7 +40,20 @@
     text-align: center;
   }
 
+  .chatWaitingBlogList__header__startChat__button {
+    display: flex;
+    gap: 0.5rem;
+  }
+
   button {
-    background-color: $color-green-02;
+    background-color: $color-green-01;
+    padding: 0.3438rem 0.5rem;
+    border-radius: 0.625rem;
+    color: $color-white;
+  }
+
+  button:last-child {
+    background-color: $color-white;
+    color: $color-text-index;
   }
 }

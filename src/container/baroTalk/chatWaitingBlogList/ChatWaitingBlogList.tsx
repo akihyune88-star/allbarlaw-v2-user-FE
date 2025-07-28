@@ -21,8 +21,10 @@ const ChatWaitingBlogList = ({ isWaiting }: ChatWaitingBlogListProps) => {
         ) : (
           <div className={styles.chatWaitingBlogList__header__startChat}>
             <span>채팅을 시작 하시겠습니까? </span>
-            <button>채팅 시작하기</button>
-            <button>대화방 나가기</button>
+            <div className={styles.chatWaitingBlogList__header__startChat__button}>
+              <button>채팅 시작하기</button>
+              <button>대화방 나가기</button>
+            </div>
           </div>
         )}
       </header>
