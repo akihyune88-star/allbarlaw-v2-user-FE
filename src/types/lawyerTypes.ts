@@ -14,7 +14,7 @@ export type Lawyer = {
   lawyerName: string
   lawyerProfileImage: string
   tags?: Tag[]
-  lawyerDescription: string
+  lawyerDescription?: string
 }
 
 export type AIRecommenderLawyerItem = Pick<

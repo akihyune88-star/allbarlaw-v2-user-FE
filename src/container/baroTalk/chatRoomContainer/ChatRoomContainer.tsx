@@ -80,17 +80,15 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
   return (
     <section className={`contents-section ${styles['chat-content']}`}>
       <ChatHeader
-        lawyerId={1}
+        lawyerId={roomInfo?.chatRoomLawyerId || 0}
         isActive={true}
-        lawyerName={'홍길동'}
+        lawyerName={roomInfo?.chatRoomLawyer.lawyerName || ''}
         count={{ total: 1256, month: 251 }}
         lawfirmName={'example로펌'}
-        lawyerProfileImage='https://picsum.photos/200/300'
-        lawyerDescription={`로스쿨 수석!강력사건 전문 해결, 전문 변호사
-          오랜 경험과 깊은 지식, 경험과 실력은 활동내역이 증명합니다.`}
+        lawyerProfileImage={roomInfo?.chatRoomLawyer.lawyerProfileImage || 'https://picsum.photos/200/300'}
       />
       <ChatBody
-        chatStatus={roomInfo?.chatRoomStatus || 'PENDING'}
+        chatStatus={(roomInfo?.chatRoomStatus as 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED') || 'PENDING'}
         messages={messages}
         onSendMessage={handleSendMessage}
         isConnected={isConnected}

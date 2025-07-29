@@ -15,7 +15,6 @@ const ChatHeader = ({
   lawfirmName,
   lawyerName,
   lawyerProfileImage,
-  lawyerDescription,
   isActive = false,
   count,
   className,

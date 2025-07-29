@@ -94,9 +94,13 @@ export type JoinRoomSuccessData = {
     chatRoomUserId: number
     chatRoomLawyerId: number
     chatRoomStatus: ChatRoomStatus
+    chatRoomIsActive: boolean
+    chatRoomCreatedAt: string
+    chatRoomUpdatedAt: string
     chatRoomLawyer: {
       lawyerId: number
       lawyerName: string
+      lawyerProfileImage: string
     }
   }
   recentMessages: ChatMessage[]
