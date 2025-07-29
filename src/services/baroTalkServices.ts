@@ -5,6 +5,8 @@ import {
   BaroTalkLawyerListResponse,
   BaroTalkChatListRequest,
   BaroTalkChatListResponse,
+  ChatRoomStatus,
+  UpdateChatRoomStatusRequest,
 } from '@/types/baroTalkTypes'
 
 export const baroTalkServices = {
@@ -33,6 +35,10 @@ export const baroTalkServices = {
     if (request.chatRoomSort) params.append('chatRoomSort', request.chatRoomSort)
 
     const response = await instance.get<BaroTalkChatListResponse>(`/chat/${userId}/rooms?${params.toString()}`)
+    return response.data
+  },
+  updateChatRoomStatus: async (userId: number, request: UpdateChatRoomStatusRequest) => {
+    const response = await instance.post(`/chat/${request.chatRoomId}/status`, { status: request.status, userId })
     return response.data
   },
 }

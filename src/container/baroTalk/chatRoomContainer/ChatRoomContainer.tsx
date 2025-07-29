@@ -1,7 +1,7 @@
 import ChatHeader from '@/container/baroTalk/chatHeader/ChatHeader'
 import ChatBody from '@/container/baroTalk/chatBody/ChatBody'
 import styles from './chatRoomContainer.module.scss'
-import { ChatMessage, JoinRoomSuccessData } from '@/types/baroTalkTypes'
+import { ChatMessage, JoinRoomSuccessData, JoinRoomRequest } from '@/types/baroTalkTypes'
 import { useState, useEffect, useCallback } from 'react'
 import { Socket } from 'socket.io-client'
 
@@ -13,6 +13,21 @@ interface ChatRoomContainerProps {
 
 const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContainerProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [roomInfo, setRoomInfo] = useState<JoinRoomSuccessData['chatRoom'] | null>(null)
+  console.log('roomInfo', roomInfo)
+
+  // chatRoomId가 변경될 때 방 입장
+  useEffect(() => {
+    if (chatRoomId && socket && isConnected) {
+      const joinRoomRequest: JoinRoomRequest = {
+        chatRoomId: chatRoomId,
+        loadRecentMessages: true,
+        messageLimit: 50,
+      }
+
+      socket.emit('joinRoom', joinRoomRequest)
+    }
+  }, [chatRoomId, socket, isConnected])
 
   // 소켓 이벤트 리스너 설정
   useEffect(() => {
@@ -20,8 +35,8 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
 
     // 채팅방 입장 성공
     const handleJoinRoomSuccess = (data: JoinRoomSuccessData) => {
-      console.log('채팅방 입장 성공:', data)
       setMessages(data.recentMessages)
+      setRoomInfo(data.chatRoom)
     }
 
     // 채팅방 입장 실패
@@ -41,6 +56,7 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
     socket.on('newMessage', handleNewMessage)
 
     // 클린업
+    // eslint-disable-next-line
     return () => {
       socket.off('joinRoomSuccess', handleJoinRoomSuccess)
       socket.off('joinRoomError', handleJoinRoomError)
@@ -73,7 +89,12 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
         lawyerDescription={`로스쿨 수석!강력사건 전문 해결, 전문 변호사
           오랜 경험과 깊은 지식, 경험과 실력은 활동내역이 증명합니다.`}
       />
-      <ChatBody isChatStart={true} messages={messages} onSendMessage={handleSendMessage} isConnected={isConnected} />
+      <ChatBody
+        chatStatus={roomInfo?.chatRoomStatus || 'PENDING'}
+        messages={messages}
+        onSendMessage={handleSendMessage}
+        isConnected={isConnected}
+      />
     </section>
   )
 }

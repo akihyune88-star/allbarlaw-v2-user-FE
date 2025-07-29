@@ -2,7 +2,6 @@ import ChatBubble from '@/components/chatBubble/ChatBubble'
 import { COLOR } from '@/styles/color'
 import styles from './chatBody.module.scss'
 import ChatWaitingBlogList from '../chatWaitingBlogList/ChatWaitingBlogList'
-import Input from '@/components/input/Input'
 import InputBox from '@/components/inputBox/InputBox'
 import SvgIcon from '@/components/SvgIcon'
 import React, { ChangeEvent, useState } from 'react'
@@ -10,13 +9,13 @@ import { ChatMessage } from '@/types/baroTalkTypes'
 import { formatTimeAgo } from '@/utils/date'
 
 type ChatBodyProps = {
-  isChatStart: boolean
+  chatStatus: 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
   messages: ChatMessage[]
   onSendMessage: (content: string) => void
   isConnected: boolean
 }
 
-const ChatBody = ({ isChatStart, messages, onSendMessage, isConnected }: ChatBodyProps) => {
+const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected }: ChatBodyProps) => {
   const [message, setMessage] = useState('')
 
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +61,7 @@ const ChatBody = ({ isChatStart, messages, onSendMessage, isConnected }: ChatBod
           ))
         )}
       </div>
-      {isChatStart ? (
+      {chatStatus === 'ACTIVE' ? (
         <InputBox
           icon={<SvgIcon name='send' />}
           value={message}
@@ -71,7 +70,7 @@ const ChatBody = ({ isChatStart, messages, onSendMessage, isConnected }: ChatBod
           disabled={!isConnected}
         />
       ) : (
-        <ChatWaitingBlogList isWaiting={false} />
+        <ChatWaitingBlogList chatStatus={chatStatus} />
       )}
     </>
   )

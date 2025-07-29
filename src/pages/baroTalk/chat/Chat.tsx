@@ -25,12 +25,10 @@ const Chat = () => {
 
     // 연결 이벤트
     newSocket.on('connect', () => {
-      console.log('✅ WebSocket 연결 성공')
       setIsConnected(true)
     })
 
     newSocket.on('disconnect', () => {
-      console.log('❌ WebSocket 연결 해제')
       setIsConnected(false)
     })
 
@@ -48,22 +46,9 @@ const Chat = () => {
   }, [getUserIdFromToken])
 
   // 채팅방 클릭 핸들러
-  const handleChatRoomClick = useCallback(
-    (chatRoomId: number) => {
-      setSelectedChatRoomId(chatRoomId)
-
-      if (socket && isConnected) {
-        const joinRoomRequest: JoinRoomRequest = {
-          chatRoomId: chatRoomId,
-          loadRecentMessages: true,
-          messageLimit: 50,
-        }
-
-        socket.emit('joinRoom', joinRoomRequest)
-      }
-    },
-    [socket, isConnected]
-  )
+  const handleChatRoomClick = useCallback((chatRoomId: number) => {
+    setSelectedChatRoomId(chatRoomId)
+  }, [])
 
   return (
     <main className={`w-full sub-main-container ${styles.chat}`}>

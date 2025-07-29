@@ -52,7 +52,7 @@ export type ChatRoom = {
   chatRoomUserId: number
   chatRoomLawyerId: number
   chatRoomConsultationRequestId: number
-  chatRoomStatus: 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
+  chatRoomStatus: ChatRoomStatus
   chatRoomIsActive: boolean
   chatRoomCreatedAt: string
   chatRoomUpdatedAt: string
@@ -83,6 +83,8 @@ export type JoinRoomRequest = {
   messageLimit?: number
 }
 
+export type ChatRoomStatus = 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
+
 export type JoinRoomSuccessData = {
   chatRoomId: number
   connectedUsers: number
@@ -91,7 +93,7 @@ export type JoinRoomSuccessData = {
     chatRoomId: number
     chatRoomUserId: number
     chatRoomLawyerId: number
-    chatRoomStatus: string
+    chatRoomStatus: ChatRoomStatus
     chatRoomLawyer: {
       lawyerId: number
       lawyerName: string
@@ -108,4 +110,9 @@ export type UserJoinedData = {
 export type SendMessageRequest = {
   chatRoomId: number
   content: string
+}
+
+export type UpdateChatRoomStatusRequest = {
+  chatRoomId: number
+  status: ChatRoomStatus
 }

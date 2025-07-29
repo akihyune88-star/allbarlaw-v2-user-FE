@@ -1,7 +1,12 @@
 import { useMutation, useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import { baroTalkServices } from '@/services/baroTalkServices'
 import { useAuth } from '@/contexts/AuthContext'
-import { CreateBaroTalkRequest, BaroTalkLawyerListRequest, BaroTalkChatListRequest } from '@/types/baroTalkTypes'
+import {
+  CreateBaroTalkRequest,
+  BaroTalkLawyerListRequest,
+  BaroTalkChatListRequest,
+  UpdateChatRoomStatusRequest,
+} from '@/types/baroTalkTypes'
 import { QUERY_KEY } from '@/constants/queryKey'
 
 interface UseCreateBaroTalkOptions {
@@ -63,5 +68,20 @@ export const useGetBaroTalkChatList = (request: BaroTalkChatListRequest) => {
       return undefined
     },
     initialPageParam: 1,
+  })
+}
+
+export const useUpdateChatRoomStatus = (options?: UseCreateBaroTalkOptions) => {
+  const { getUserIdFromToken } = useAuth()
+  const userId = getUserIdFromToken()
+
+  return useMutation({
+    mutationFn: (request: UpdateChatRoomStatusRequest) => baroTalkServices.updateChatRoomStatus(userId!, request),
+    onSuccess: () => {
+      options?.onSuccess?.()
+    },
+    onError: (error: Error) => {
+      options?.onError?.(error)
+    },
   })
 }
