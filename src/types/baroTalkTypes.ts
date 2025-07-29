@@ -83,7 +83,7 @@ export type JoinRoomRequest = {
   messageLimit?: number
 }
 
-export type ChatRoomStatus = 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
+export type ChatRoomStatus = 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED' | 'CONSULTING'
 
 export type JoinRoomSuccessData = {
   chatRoomId: number
@@ -100,6 +100,7 @@ export type JoinRoomSuccessData = {
     chatRoomLawyer: {
       lawyerId: number
       lawyerName: string
+      lawfirmName: string
       lawyerProfileImage: string
     }
   }

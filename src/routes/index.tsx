@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate, redirect } from 'react-router-dom'
 import App from '../App'
 import NotFound from '../pages/NotFound'
 import { ROUTER } from './routerConstant'

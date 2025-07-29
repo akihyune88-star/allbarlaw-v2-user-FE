@@ -14,7 +14,6 @@ interface ChatRoomContainerProps {
 const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContainerProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [roomInfo, setRoomInfo] = useState<JoinRoomSuccessData['chatRoom'] | null>(null)
-  console.log('roomInfo', roomInfo)
 
   // chatRoomId가 변경될 때 방 입장
   useEffect(() => {
@@ -84,7 +83,7 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
         isActive={true}
         lawyerName={roomInfo?.chatRoomLawyer.lawyerName || ''}
         count={{ total: 1256, month: 251 }}
-        lawfirmName={'example로펌'}
+        lawfirmName={roomInfo?.chatRoomLawyer.lawfirmName || ''}
         lawyerProfileImage={roomInfo?.chatRoomLawyer.lawyerProfileImage || 'https://picsum.photos/200/300'}
       />
       <ChatBody

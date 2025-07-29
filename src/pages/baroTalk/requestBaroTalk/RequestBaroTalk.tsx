@@ -12,8 +12,8 @@ const RequestBaroTalk = () => {
   const isMobile = useMediaQuery('(max-width: 1279px)')
   const navigate = useNavigate()
 
-  // 세션에 저장된 값을 초기값으로 사용
-  const { consultationRequestSubcategoryId, setSubcategoryId, isStep1Complete } = useBaroTalkStore()
+  // 세션에 저장된 값을  초기 값으로 사용
+  const { consultationRequestSubcategoryId, setSubcategoryId } = useBaroTalkStore()
   const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<number | null>(
     consultationRequestSubcategoryId || null
   )

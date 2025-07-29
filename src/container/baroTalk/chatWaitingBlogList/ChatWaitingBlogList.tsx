@@ -20,7 +20,7 @@ const ChatWaitingBlogList = ({ chatStatus }: ChatWaitingBlogListProps) => {
         {chatStatus === 'PENDING' && (
           <p className={styles.chatWaitingBlogList__description}>해당 질문에대한 답변을 기다리는 중입니다.</p>
         )}
-        {chatStatus === 'ACTIVE' && (
+        {chatStatus === 'CONSULTING' && (
           <div className={styles.chatWaitingBlogList__header__startChat}>
             <span>채팅을 시작 하시겠습니까? </span>
             <div className={styles.chatWaitingBlogList__header__startChat__button}>
