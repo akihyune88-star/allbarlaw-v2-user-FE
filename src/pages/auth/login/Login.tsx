@@ -11,7 +11,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginFormData, defaultValues } from './loginSchema'
 import LabelInput from '@/components/labelInput/LabelInput'
-import { useLogin } from '@/hooks/mutatate/useLogin'
+import { useLogin, useLawyerLogin } from '@/hooks/queries/useLogin'
+import { useAuth } from '@/contexts/AuthContext'
 
 type AuthActionType = 'ID_FIND' | 'PASSWORD_RESET' | 'SIGNUP'
 
@@ -19,6 +20,7 @@ const Login = () => {
   const [activeTab, setActiveTab] = useState('/user')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const navigate = useNavigate()
+  const { userInfo } = useAuth()
 
   useEffect(() => {
     if (errorMessage) {
@@ -53,9 +55,20 @@ const Login = () => {
 
   console.log(activeTab)
 
-  const { mutate: login, isPending } = useLogin({
+  const { mutate: login, isPending: isLoginPending } = useLogin({
     onSuccess: () => {
+      // 일반 사용자 로그인 시 메인 페이지로
       navigate(ROUTER.MAIN)
+    },
+    onError: message => {
+      setErrorMessage(message)
+    },
+  })
+
+  const { mutate: lawyerLogin, isPending: isLawyerLoginPending } = useLawyerLogin({
+    onSuccess: () => {
+      // 변호사 로그인 시 관리 페이지로
+      navigate(ROUTER.LAWYER_ADMIN)
     },
     onError: message => {
       setErrorMessage(message)
@@ -72,11 +85,22 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     setErrorMessage('')
-    login({
-      userAccount: data.id,
-      userPassword: data.password,
-      rememberMe: data.rememberMe,
-    })
+
+    if (activeTab === '/user') {
+      // 일반 사용자 로그인
+      login({
+        userAccount: data.id,
+        userPassword: data.password,
+        rememberMe: data.rememberMe,
+      })
+    } else {
+      // 변호사 로그인
+      lawyerLogin({
+        userAccount: data.id,
+        userPassword: data.password,
+        rememberMe: data.rememberMe,
+      })
+    }
   }
 
   const handleSignup = () => {
@@ -86,6 +110,8 @@ const Login = () => {
       navigate(ROUTER.LAWYER_SIGNUP_FORM)
     }
   }
+
+  const isPending = isLoginPending || isLawyerLoginPending
 
   return (
     <div className={styles['login-container']}>

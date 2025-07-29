@@ -8,6 +8,8 @@ export const ROUTER = {
   SIGNUP_FORM: 'signup-form',
   SOCIAL_CHECK: '/social-check',
   LAWYER_SIGNUP_FORM: 'lawyer-signup-form',
+  LAWYER_LOGIN: '/lawyer-login',
+  LAWYER_ADMIN: '/lawyer-admin',
   // 마이페이지
   MYPAGE: '/mypage',
   KEEP_LIST: 'keep-list',

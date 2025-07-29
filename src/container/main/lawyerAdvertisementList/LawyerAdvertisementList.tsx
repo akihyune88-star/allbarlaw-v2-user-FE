@@ -37,7 +37,7 @@ const LawyerAdvertisementList = () => {
               lawfirm='법무법인 대한법률사무소'
               socialLink={SOCIAL_LINK_LIST}
               profileImage='https://picsum.photos/200/300'
-              tags={['재산범죄', '사기', '지식재산권', '형사기타', '이면계약중지', '이면계약중지']}
+              tags={['재산범죄', '사기', '지식재산권', '형사기타', '이면계약중지']}
               buttonComponent={
                 <div className={styles['footer']}>
                   <button className={`${styles['footer-button']} ${styles['left']}`}>더보기</button>
@@ -47,12 +47,13 @@ const LawyerAdvertisementList = () => {
             />
           ) : (
             <LawyerVertical
+              key={item}
               className={styles['custom-lawyer-vertical']}
               name='김철수'
               profileImage='https://picsum.photos/200/300'
               type={1}
               socialLink={SOCIAL_LINK_LIST}
-              tags={['재산범죄', '사기', '지식재산권', '형사기타', '이면계약중지', '이면계약중지']}
+              tags={['재산범죄', '사기', '지식재산권', '형사기타', '이면계약중지']}
               footer={
                 <div className={styles['footer']}>
                   <button className={`${styles['footer-button']} ${styles['left']}`}>더보기</button>

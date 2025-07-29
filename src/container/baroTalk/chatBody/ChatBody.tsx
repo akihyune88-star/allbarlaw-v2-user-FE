@@ -2,12 +2,22 @@ import ChatBubble from '@/components/chatBubble/ChatBubble'
 import { COLOR } from '@/styles/color'
 import styles from './chatBody.module.scss'
 import ChatWaitingBlogList from '../chatWaitingBlogList/ChatWaitingBlogList'
+import Input from '@/components/input/Input'
+import InputBox from '@/components/inputBox/InputBox'
+import SvgIcon from '@/components/SvgIcon'
+import { ChangeEvent, useState } from 'react'
 
 type ChatBodyProps = {
   isChatStart: boolean
 }
 
 const ChatBody = ({ isChatStart }: ChatBodyProps) => {
+  const [message, setMessage] = useState('')
+
+  const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value)
+  }
+
   return (
     <>
       <div className={styles.chatBody}>
@@ -28,7 +38,11 @@ const ChatBody = ({ isChatStart }: ChatBodyProps) => {
           </div>
         </ChatBubble>
       </div>
-      {isChatStart && <ChatWaitingBlogList isWaiting={false} />}
+      {isChatStart ? (
+        <InputBox icon={<SvgIcon name='send' />} value={message} onChange={handleChangeMessage} />
+      ) : (
+        <ChatWaitingBlogList isWaiting={false} />
+      )}
     </>
   )
 }

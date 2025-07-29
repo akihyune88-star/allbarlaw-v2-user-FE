@@ -36,10 +36,12 @@ import SocialCheck from '@/pages/auth/socialCheck/SocialCheck'
 import FaqLayout from '@/pages/support/faq/FaqLayout'
 import FaqListByCategory from '@/pages/support/faq/faqListByCategory/FaqListByCategory'
 import MainLayout from '@/pages/MainLayout'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
 import {
   BaroTalkLawyerSelection,
   Chat,
   ConsultationContentForm,
+  LawyerAdmin,
   LawyerSignupForm,
   Mypage,
   RequestBaroTalk,
@@ -237,6 +239,14 @@ const router = createBrowserRouter([
         element: <AboutAllbarlaw />,
       },
     ],
+  },
+  {
+    path: ROUTER.LAWYER_ADMIN,
+    element: (
+      <ProtectedRoute requireLawyer={true}>
+        <LawyerAdmin />
+      </ProtectedRoute>
+    ),
   },
 ])
 

@@ -10,4 +10,15 @@ import ConsultationContentForm from './baroTalk/consultationContentForm/Consulta
 import RequestBaroTalk from './baroTalk/requestBaroTalk/RequestBaroTalk'
 import Chat from './baroTalk/chat/Chat'
 
-export { Mypage, LawyerSignupForm, BaroTalkLawyerSelection, ConsultationContentForm, RequestBaroTalk, Chat }
+// 변호사 관리페이지
+import LawyerAdmin from './lawyerAdmin/LawyerAdmin'
+
+export {
+  Mypage,
+  LawyerSignupForm,
+  BaroTalkLawyerSelection,
+  ConsultationContentForm,
+  RequestBaroTalk,
+  Chat,
+  LawyerAdmin,
+}

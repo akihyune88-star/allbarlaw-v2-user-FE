@@ -7,12 +7,15 @@ import { useAuth } from '@/contexts/AuthContext'
 
 const HeaderNavigation = () => {
   const navigate = useNavigate()
-  const { isLoggedIn, logout } = useAuth()
+  const { logout, getDisplayLoginStatus } = useAuth()
 
   const handleLogout = () => {
     logout()
     navigate(ROUTER.MAIN)
   }
+
+  // 메인 레이아웃에서는 변호사 로그인을 숨김
+  const isLoggedIn = getDisplayLoginStatus(true)
 
   // 로그인 상태에 따라 메뉴 필터링
   const filteredMenuList = MENU_LIST.filter(item => {
