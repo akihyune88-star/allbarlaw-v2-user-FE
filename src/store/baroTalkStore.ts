@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { CreateBaroTalkRequest } from '@/types/baroTalkTypes'
+import { BaroTalkSessionData } from '@/types/baroTalkTypes'
 
 // 바로톡 요청 상태 타입
 interface BaroTalkState {
@@ -8,20 +8,17 @@ interface BaroTalkState {
   consultationRequestSubcategoryId?: number
   consultationRequestTitle?: string
   consultationRequestDescription?: string
-  selectedLawyerIds?: number[]
 
   // 액션들
   setSubcategoryId: (subcategoryId: number) => void
   setTitle: (title: string) => void
   setDescription: (description: string) => void
-  setSelectedLawyerIds: (lawyerIds: number[]) => void
 
   // 유틸리티 액션들
   reset: () => void
-  getCreateBaroTalkRequest: () => CreateBaroTalkRequest | null
+  getCreateBaroTalkRequest: () => BaroTalkSessionData | null
   isStep1Complete: () => boolean
   isStep2Complete: () => boolean
-  isStep3Complete: () => boolean
 }
 
 export const useBaroTalkStore = create<BaroTalkState>()(
@@ -31,7 +28,6 @@ export const useBaroTalkStore = create<BaroTalkState>()(
       consultationRequestSubcategoryId: undefined,
       consultationRequestTitle: undefined,
       consultationRequestDescription: undefined,
-      selectedLawyerIds: undefined,
 
       // 액션들
       setSubcategoryId: (subcategoryId: number) => set({ consultationRequestSubcategoryId: subcategoryId }),
@@ -40,15 +36,12 @@ export const useBaroTalkStore = create<BaroTalkState>()(
 
       setDescription: (description: string) => set({ consultationRequestDescription: description }),
 
-      setSelectedLawyerIds: (lawyerIds: number[]) => set({ selectedLawyerIds: lawyerIds }),
-
       // 유틸리티 액션들
       reset: () =>
         set({
           consultationRequestSubcategoryId: undefined,
           consultationRequestTitle: undefined,
           consultationRequestDescription: undefined,
-          selectedLawyerIds: undefined,
         }),
 
       getCreateBaroTalkRequest: () => {
@@ -56,15 +49,12 @@ export const useBaroTalkStore = create<BaroTalkState>()(
         if (
           state.consultationRequestSubcategoryId &&
           state.consultationRequestTitle &&
-          state.consultationRequestDescription &&
-          state.selectedLawyerIds &&
-          state.selectedLawyerIds.length > 0
+          state.consultationRequestDescription
         ) {
           return {
             consultationRequestSubcategoryId: state.consultationRequestSubcategoryId,
             consultationRequestTitle: state.consultationRequestTitle,
             consultationRequestDescription: state.consultationRequestDescription,
-            selectedLawyerIds: state.selectedLawyerIds,
           }
         }
         return null
@@ -81,17 +71,6 @@ export const useBaroTalkStore = create<BaroTalkState>()(
           state.consultationRequestSubcategoryId &&
           state.consultationRequestTitle &&
           state.consultationRequestDescription
-        )
-      },
-
-      isStep3Complete: () => {
-        const state = get()
-        return !!(
-          state.consultationRequestSubcategoryId &&
-          state.consultationRequestTitle &&
-          state.consultationRequestDescription &&
-          state.selectedLawyerIds &&
-          state.selectedLawyerIds.length > 0
         )
       },
     }),

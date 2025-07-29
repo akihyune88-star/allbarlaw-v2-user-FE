@@ -3,7 +3,7 @@ import Tag from '../tag/Tag'
 import SvgIcon from '../SvgIcon'
 import { COLOR } from '@/styles/color'
 import React from 'react'
-import { SocialLink } from '@/types/lawyerTypes'
+import { SocialLink, Tag as TagType } from '@/types/lawyerTypes'
 import { blog, instagram, youtube } from '@/assets/imgs'
 
 type LawyerHorizonProps = {
@@ -11,7 +11,7 @@ type LawyerHorizonProps = {
   profileImage: string
   description?: string
   lawfirm?: string
-  tags?: string[]
+  tags?: TagType[]
   socialLink?: SocialLink[]
   size?: 'x-small' | 'small' | 'large'
   className?: string
@@ -55,7 +55,7 @@ const LawyerHorizon = ({
         {tags && tags.length > 0 && (
           <div className={styles['tags']}>
             {tags.map((tag, index) => (
-              <Tag key={index} tag={tag} />
+              <Tag key={index} tag={tag.name} />
             ))}
           </div>
         )}

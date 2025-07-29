@@ -3,13 +3,21 @@ export type SocialLink = {
   link: string
 }
 
-export type Lawyer = {
+export type Tag = {
   id: number
   name: string
-  lawfirm: string
-  profileImage: string
-  tags?: string[]
-  description: string
 }
 
-export type AIRecommenderLawyerItem = Pick<Lawyer, 'id' | 'name' | 'description' | 'profileImage'>
+export type Lawyer = {
+  lawyerId: number
+  lawfirmName: string
+  lawyerName: string
+  lawyerProfileImage: string
+  tags?: Tag[]
+  lawyerDescription: string
+}
+
+export type AIRecommenderLawyerItem = Pick<
+  Lawyer,
+  'lawyerId' | 'lawfirmName' | 'lawyerName' | 'lawyerProfileImage' | 'tags' | 'lawyerDescription'
+>
