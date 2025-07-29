@@ -11,11 +11,11 @@ interface ChatHeaderProps extends Lawyer {
 }
 
 const ChatHeader = ({
-  id,
-  name,
-  lawfirm,
-  profileImage,
-  description,
+  lawyerId,
+  lawfirmName,
+  lawyerName,
+  lawyerProfileImage,
+  lawyerDescription,
   isActive = false,
   count,
   className,
@@ -24,14 +24,14 @@ const ChatHeader = ({
     <header className={`${styles['chat-header']} ${className}`}>
       <section className={styles['header-right']}>
         <figure>
-          <img src={profileImage} alt={name} />
+          <img src={lawyerProfileImage} alt={lawyerName} />
         </figure>
         <div className={styles['lawyer-info-text']}>
           <div className={styles['lawyer-name-badge-wrap']}>
-            <span className={styles['lawyer-name']}>{name} 변호사</span>
+            <span className={styles['lawyer-name']}>{lawyerName} 변호사</span>
             {isActive && <span className={styles['badge']} />}
           </div>
-          <p className={styles['lawyer-lawfirm']}>{lawfirm}</p>
+          <p className={styles['lawyer-lawfirm']}>{lawfirmName}</p>
         </div>
         <button className={styles['lawyer-info-button']}>
           <span>변호사 정보</span>

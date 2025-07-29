@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import { baroTalkServices } from '@/services/baroTalkServices'
 import { useAuth } from '@/contexts/AuthContext'
-import { CreateBaroTalkRequest } from '@/types/baroTalkTypes'
-import { BaroTalkLawyerListRequest } from '@/types/baroTalkTypes'
+import { CreateBaroTalkRequest, BaroTalkLawyerListRequest, BaroTalkChatListRequest } from '@/types/baroTalkTypes'
+import { QUERY_KEY } from '@/constants/queryKey'
 
 interface UseCreateBaroTalkOptions {
   onSuccess?: () => void
@@ -12,7 +12,6 @@ interface UseCreateBaroTalkOptions {
 export const useCreateBaroTalk = (options?: UseCreateBaroTalkOptions) => {
   const { getUserIdFromToken } = useAuth()
   const userId = getUserIdFromToken()
-  console.log('userId', userId)
 
   return useMutation({
     mutationFn: (request: CreateBaroTalkRequest) => baroTalkServices.createBaroTalk(userId!, request),
@@ -27,7 +26,7 @@ export const useCreateBaroTalk = (options?: UseCreateBaroTalkOptions) => {
 
 export const useGetBaroTalkLawyerList = (request: BaroTalkLawyerListRequest) => {
   return useInfiniteQuery({
-    queryKey: ['baroTalkLawyerList', request],
+    queryKey: [QUERY_KEY.BARO_TALK_LAWYER_LIST, request],
     queryFn: ({ pageParam = 1 }) =>
       baroTalkServices.getBaroTalkLawyerList({
         ...request,
@@ -40,6 +39,28 @@ export const useGetBaroTalkLawyerList = (request: BaroTalkLawyerListRequest) => 
         return undefined
       }
       return allPages.length + 1
+    },
+    initialPageParam: 1,
+  })
+}
+
+export const useGetBaroTalkChatList = (request: BaroTalkChatListRequest) => {
+  const { getUserIdFromToken } = useAuth()
+  const userId = getUserIdFromToken()
+
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEY.BARO_TALK_CHAT_LIST, request],
+    queryFn: ({ pageParam = 1 }) =>
+      baroTalkServices.getBaroTalkChatList(userId!, {
+        ...request,
+        chatRoomPage: pageParam,
+      }),
+    getNextPageParam: (lastPage, allPages) => {
+      // 현재 페이지가 전체 페이지보다 작으면 다음 페이지가 있음
+      if (lastPage.page < lastPage.totalPages) {
+        return allPages.length + 1
+      }
+      return undefined
     },
     initialPageParam: 1,
   })

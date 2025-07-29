@@ -17,4 +17,6 @@ export const QUERY_KEY = {
   NOTICE_DETAIL: 'noticeDetail',
   FAQ_TYPES: 'faqTypes',
   FAQ_LIST: 'faqList',
+  BARO_TALK_CHAT_LIST: 'baroTalkChatList',
+  BARO_TALK_LAWYER_LIST: 'baroTalkLawyerList',
 } as const

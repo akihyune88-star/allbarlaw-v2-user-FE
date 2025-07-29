@@ -1,5 +1,11 @@
 import instance from '@/lib/axios'
-import { CreateBaroTalkRequest, BaroTalkLawyerListRequest, BaroTalkLawyerListResponse } from '@/types/baroTalkTypes'
+import {
+  CreateBaroTalkRequest,
+  BaroTalkLawyerListRequest,
+  BaroTalkLawyerListResponse,
+  BaroTalkChatListRequest,
+  BaroTalkChatListResponse,
+} from '@/types/baroTalkTypes'
 
 export const baroTalkServices = {
   createBaroTalk: async (userId: number, request: CreateBaroTalkRequest) => {
@@ -17,6 +23,16 @@ export const baroTalkServices = {
     const response = await instance.get<BaroTalkLawyerListResponse>(
       `/lawyer/recommend/${request.consultationRequestId}/${request.subcategoryId}?${params.toString()}`
     )
+    return response.data
+  },
+
+  getBaroTalkChatList: async (userId: number, request: BaroTalkChatListRequest) => {
+    const params = new URLSearchParams()
+    if (request.chatRoomPage) params.append('chatRoomPage', request.chatRoomPage.toString())
+    if (request.chatRoomOrderBy) params.append('chatRoomOrderBy', request.chatRoomOrderBy)
+    if (request.chatRoomSort) params.append('chatRoomSort', request.chatRoomSort)
+
+    const response = await instance.get<BaroTalkChatListResponse>(`/chat/${userId}/rooms?${params.toString()}`)
     return response.data
   },
 }

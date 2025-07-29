@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { formatTimeAgo } from '@/utils/date'
 import styles from './chatList.module.scss'
 import Divider from '@/components/divider/Divider'
 import { COLOR } from '@/styles/color'
+import { useGetBaroTalkChatList } from '@/hooks/queries/useBaroTalk'
+import { ChatRoom } from '@/types/baroTalkTypes'
 
 type LawyerChatItemProps = {
   name: string
@@ -28,7 +30,6 @@ const LawyerChatItem = ({ name, profileImage, lastMessage, lastMessageTime, isOn
             style={{ '--badge-color': isOnline ? COLOR.green_01 : 'rgba(0, 0, 0, 0.7)' } as React.CSSProperties}
           />
         </div>
-        {/* <span /> */}
         <div className={styles['lawyer-chat-item-content-last-message-time']}>{formatTimeAgo(lastMessageTime)}</div>
         <div className={styles['lawyer-chat-item-content-last-message']}>{lastMessage}</div>
       </div>
@@ -37,7 +38,40 @@ const LawyerChatItem = ({ name, profileImage, lastMessage, lastMessageTime, isOn
 }
 
 const ChatList = () => {
-  const lawyerChatList = [1, 2, 3, 4]
+  // 채팅방 리스트 데이터 불러오기
+  const {
+    data: chatPages,
+    isLoading,
+    error,
+  } = useGetBaroTalkChatList({
+    chatRoomOrderBy: 'lastMessageAt',
+    chatRoomSort: 'desc',
+  })
+
+  // 모든 채팅방 데이터를 하나의 배열로 합치기
+  const allChatRooms = useMemo(() => {
+    if (!chatPages) return []
+    return chatPages.pages.flatMap(page => page.chatRooms)
+  }, [chatPages])
+
+  // 로딩 상태 처리
+  if (isLoading) {
+    return (
+      <main className={styles['chat-list']}>
+        <div>채팅방 목록을 불러오는 중...</div>
+      </main>
+    )
+  }
+
+  // 에러 상태 처리
+  if (error) {
+    return (
+      <main className={styles['chat-list']}>
+        <div>채팅방 목록을 불러오는데 실패했습니다.</div>
+      </main>
+    )
+  }
+
   return (
     <main className={styles['chat-list']}>
       <header className={styles['chat-list-header']}>
@@ -49,19 +83,25 @@ const ChatList = () => {
       </header>
       <section className={styles['chat-list-wrapper']}>
         <div className={styles['chat-list-content']}>
-          {lawyerChatList.map((item, index) => (
-            <>
-              <LawyerChatItem
-                key={index}
-                name='김바로'
-                profileImage='https://picsum.photos/200/300'
-                lastMessage='안녕하세요,안녕하세요,안녕하세요,안녕하세요,안녕하세요,안녕하세요'
-                lastMessageTime='2025-07-25 10:00'
-                isOnline={false}
-              />
-              {index !== lawyerChatList.length - 1 && <Divider padding={0} />}
-            </>
-          ))}
+          {allChatRooms.length === 0 ? (
+            <div className={styles['empty-state']}>
+              <p>아직 상담 중인 채팅방이 없습니다.</p>
+              <p>새로운 상담을 시작해보세요!</p>
+            </div>
+          ) : (
+            allChatRooms.map((chatRoom: ChatRoom, index: number) => (
+              <React.Fragment key={chatRoom.chatRoomId}>
+                <LawyerChatItem
+                  name={chatRoom.chatRoomLawyer.lawyerName}
+                  profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
+                  lastMessage={chatRoom.chatRoomLastMessage.chatMessageContent}
+                  lastMessageTime={chatRoom.chatRoomLastMessage.chatMessageCreatedAt}
+                  isOnline={chatRoom.chatRoomIsActive}
+                />
+                {index !== allChatRooms.length - 1 && <Divider padding={0} />}
+              </React.Fragment>
+            ))
+          )}
         </div>
       </section>
     </main>

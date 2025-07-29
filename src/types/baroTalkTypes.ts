@@ -1,18 +1,18 @@
 // Lawyer 타입 import
 import { Lawyer } from './lawyerTypes'
 
-export type CreateBaroTalkRequest = {
-  consultationRequestTitle: string
-  consultationRequestDescription: string
-  consultationRequestSubcategoryId: number
-  selectedLawyerIds: number[]
-}
-
 // 세션 저장용 타입 (selectedLawyerIds 제외)
 export type BaroTalkSessionData = {
   consultationRequestTitle: string
   consultationRequestDescription: string
   consultationRequestSubcategoryId: number
+}
+
+export type CreateBaroTalkRequest = {
+  consultationRequestTitle: string
+  consultationRequestDescription: string
+  consultationRequestSubcategoryId: number
+  selectedLawyerIds: number[]
 }
 
 export type BaroTalkLawyerListRequest = {
@@ -25,4 +25,45 @@ export type BaroTalkLawyerListRequest = {
 
 export type BaroTalkLawyerListResponse = {
   lawyers: Lawyer[]
+}
+
+export type BaroTalkChatListRequest = {
+  chatRoomPage?: number
+  chatRoomOrderBy?: 'createdAt' | 'updatedAt' | 'lastMessageAt'
+  chatRoomSort?: 'asc' | 'desc'
+}
+
+// 채팅방 관련 타입들
+export type ChatRoomLawyer = {
+  lawyerId: number
+  lawyerName: string
+  lawyerProfileImage: string
+}
+
+export type ChatRoomLastMessage = {
+  chatMessageId: number
+  chatMessageContent: string
+  chatMessageSenderType: 'USER' | 'LAWYER'
+  chatMessageCreatedAt: string
+}
+
+export type ChatRoom = {
+  chatRoomId: number
+  chatRoomUserId: number
+  chatRoomLawyerId: number
+  chatRoomConsultationRequestId: number
+  chatRoomStatus: 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
+  chatRoomIsActive: boolean
+  chatRoomCreatedAt: string
+  chatRoomUpdatedAt: string
+  chatRoomLastMessageAt: string
+  chatRoomLawyer: ChatRoomLawyer
+  chatRoomLastMessage: ChatRoomLastMessage
+}
+
+export type BaroTalkChatListResponse = {
+  chatRooms: ChatRoom[]
+  total: number
+  page: number
+  totalPages: number
 }
