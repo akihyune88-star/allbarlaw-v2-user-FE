@@ -5,6 +5,8 @@ import Divider from '@/components/divider/Divider'
 import { COLOR } from '@/styles/color'
 import { useGetBaroTalkChatList } from '@/hooks/queries/useBaroTalk'
 import { ChatRoom } from '@/types/baroTalkTypes'
+import { ROUTER } from '@/routes/routerConstant'
+import { useNavigate } from 'react-router-dom'
 
 type LawyerChatItemProps = {
   name: string
@@ -12,6 +14,10 @@ type LawyerChatItemProps = {
   lastMessage: string
   lastMessageTime: string
   isOnline: boolean
+}
+
+type ChatListItemProps = {
+  onChatRoomClick: (chatRoomId: number) => void
 }
 
 const LawyerChatItem = ({ name, profileImage, lastMessage, lastMessageTime, isOnline }: LawyerChatItemProps) => {
@@ -37,7 +43,7 @@ const LawyerChatItem = ({ name, profileImage, lastMessage, lastMessageTime, isOn
   )
 }
 
-const ChatList = () => {
+const ChatList = ({ onChatRoomClick }: ChatListItemProps) => {
   // 채팅방 리스트 데이터 불러오기
   const {
     data: chatPages,
@@ -48,6 +54,7 @@ const ChatList = () => {
     chatRoomSort: 'desc',
   })
 
+  const navigate = useNavigate()
   // 모든 채팅방 데이터를 하나의 배열로 합치기
   const allChatRooms = useMemo(() => {
     if (!chatPages) return []
@@ -72,13 +79,17 @@ const ChatList = () => {
     )
   }
 
+  const handleAddConsultation = () => {
+    navigate(ROUTER.REQUEST_BARO_TALK)
+  }
+
   return (
     <main className={styles['chat-list']}>
       <header className={styles['chat-list-header']}>
         <h3>바로톡 목록</h3>
         <div className={styles['chat-list-header-button']}>
           <span className={styles['chat-list-header-button-text']}>변호사와 1:1 상담을 진행할 수 있습니다.</span>
-          <button>추가 상담하기</button>
+          <button onClick={handleAddConsultation}>추가 상담하기</button>
         </div>
       </header>
       <section className={styles['chat-list-wrapper']}>
@@ -90,7 +101,7 @@ const ChatList = () => {
             </div>
           ) : (
             allChatRooms.map((chatRoom: ChatRoom, index: number) => (
-              <React.Fragment key={chatRoom.chatRoomId}>
+              <div key={chatRoom.chatRoomId} onClick={() => onChatRoomClick(chatRoom.chatRoomId)}>
                 <LawyerChatItem
                   name={chatRoom.chatRoomLawyer.lawyerName}
                   profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
@@ -99,7 +110,7 @@ const ChatList = () => {
                   isOnline={chatRoom.chatRoomIsActive}
                 />
                 {index !== allChatRooms.length - 1 && <Divider padding={0} />}
-              </React.Fragment>
+              </div>
             ))
           )}
         </div>

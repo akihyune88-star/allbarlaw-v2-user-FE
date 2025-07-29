@@ -67,3 +67,45 @@ export type BaroTalkChatListResponse = {
   page: number
   totalPages: number
 }
+
+// 소켓 관련 타입들
+export type ChatMessage = {
+  chatMessageId: number
+  chatMessageContent: string
+  chatMessageSenderType: 'USER' | 'LAWYER'
+  chatMessageSenderId: number
+  chatMessageCreatedAt: string
+}
+
+export type JoinRoomRequest = {
+  chatRoomId: number
+  loadRecentMessages?: boolean
+  messageLimit?: number
+}
+
+export type JoinRoomSuccessData = {
+  chatRoomId: number
+  connectedUsers: number
+  lastReadMessageId: number
+  chatRoom: {
+    chatRoomId: number
+    chatRoomUserId: number
+    chatRoomLawyerId: number
+    chatRoomStatus: string
+    chatRoomLawyer: {
+      lawyerId: number
+      lawyerName: string
+    }
+  }
+  recentMessages: ChatMessage[]
+}
+
+export type UserJoinedData = {
+  userId: number
+  connectedUsers: number
+}
+
+export type SendMessageRequest = {
+  chatRoomId: number
+  content: string
+}

@@ -1,13 +1,75 @@
 import ChatRoomContainer from '@/container/baroTalk/chatRoomContainer/ChatRoomContainer'
 import styles from './chat.module.scss'
 import ChatList from '@/container/baroTalk/chatList/ChatList'
+import { useState, useEffect, useCallback } from 'react'
+import { io, Socket } from 'socket.io-client'
+import { useAuth } from '@/contexts/AuthContext'
+import { JoinRoomRequest, JoinRoomSuccessData, UserJoinedData } from '@/types/baroTalkTypes'
 
 const Chat = () => {
+  const [selectedChatRoomId, setSelectedChatRoomId] = useState<number | null>(null)
+  const [socket, setSocket] = useState<Socket | null>(null)
+  const [isConnected, setIsConnected] = useState(false)
+  const { getUserIdFromToken } = useAuth()
+
+  // 소켓 연결
+  useEffect(() => {
+    const userId = getUserIdFromToken()
+    if (!userId) return
+
+    const newSocket = io(import.meta.env.VITE_SERVER_API + '/chat', {
+      auth: {
+        token: localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken') || '',
+      },
+    })
+
+    // 연결 이벤트
+    newSocket.on('connect', () => {
+      console.log('✅ WebSocket 연결 성공')
+      setIsConnected(true)
+    })
+
+    newSocket.on('disconnect', () => {
+      console.log('❌ WebSocket 연결 해제')
+      setIsConnected(false)
+    })
+
+    // 다른 사용자 입장 알림
+    newSocket.on('userJoined', (data: UserJoinedData) => {
+      console.log(`사용자 ${data.userId} 입장 (총 ${data.connectedUsers}명)`)
+    })
+
+    setSocket(newSocket)
+
+    // 컴포넌트 언마운트 시 소켓 연결 해제
+    return () => {
+      newSocket.disconnect()
+    }
+  }, [getUserIdFromToken])
+
+  // 채팅방 클릭 핸들러
+  const handleChatRoomClick = useCallback(
+    (chatRoomId: number) => {
+      setSelectedChatRoomId(chatRoomId)
+
+      if (socket && isConnected) {
+        const joinRoomRequest: JoinRoomRequest = {
+          chatRoomId: chatRoomId,
+          loadRecentMessages: true,
+          messageLimit: 50,
+        }
+
+        socket.emit('joinRoom', joinRoomRequest)
+      }
+    },
+    [socket, isConnected]
+  )
+
   return (
     <main className={`w-full sub-main-container ${styles.chat}`}>
-      <ChatRoomContainer />
+      <ChatRoomContainer chatRoomId={selectedChatRoomId} socket={socket} isConnected={isConnected} />
       <aside className={`aside ${styles['mobile-aside']}`}>
-        <ChatList />
+        <ChatList onChatRoomClick={handleChatRoomClick} />
       </aside>
     </main>
   )
