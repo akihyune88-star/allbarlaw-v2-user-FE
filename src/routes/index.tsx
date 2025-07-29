@@ -134,27 +134,47 @@ const router = createBrowserRouter([
             path: ':subcategoryId/legal-knowledge/:knowledgeId',
             element: <LegalKnowledgeDetail />,
           },
-          // baroTalk
+          // baroTalk - 일반 유저만 접근 가능
           {
             path: ROUTER.REQUEST_BARO_TALK,
-            element: <RequestBaroTalk />,
+            element: (
+              <ProtectedRoute requireUser={true}>
+                <RequestBaroTalk />
+              </ProtectedRoute>
+            ),
           },
           {
             path: ROUTER.CONSULTATION_CONTENT_FORM,
-            element: <ConsultationContentForm />,
+            element: (
+              <ProtectedRoute requireUser={true}>
+                <ConsultationContentForm />
+              </ProtectedRoute>
+            ),
           },
           {
             path: ROUTER.BARO_TALK_LAWYER_SELECTION,
-            element: <BaroTalkLawyerSelection />,
+            element: (
+              <ProtectedRoute requireUser={true}>
+                <BaroTalkLawyerSelection />
+              </ProtectedRoute>
+            ),
           },
           {
             path: ROUTER.CHAT,
-            element: <Chat />,
+            element: (
+              <ProtectedRoute requireUser={true}>
+                <Chat />
+              </ProtectedRoute>
+            ),
           },
-          //myPage
+          //myPage - 일반 유저만 접근 가능
           {
             path: ROUTER.MYPAGE,
-            element: <Mypage />,
+            element: (
+              <ProtectedRoute requireUser={true}>
+                <Mypage />
+              </ProtectedRoute>
+            ),
           },
           {
             path: ROUTER.LEGAL_DICTIONARY,

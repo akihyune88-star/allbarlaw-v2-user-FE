@@ -11,9 +11,18 @@ type ProgressButtonProps = {
   style?: React.CSSProperties
   steps: number
   currentStep: number
+  disabled?: boolean // 추가된 disabled prop
 }
 
-const ProgressButton = ({ onCancel, onNext, onPrev, style, steps, currentStep }: ProgressButtonProps) => {
+const ProgressButton = ({
+  onCancel,
+  onNext,
+  onPrev,
+  style,
+  steps,
+  currentStep,
+  disabled = false,
+}: ProgressButtonProps) => {
   const isMobile = useMediaQuery('(max-width: 1279px)')
 
   if (isMobile) {
@@ -30,7 +39,7 @@ const ProgressButton = ({ onCancel, onNext, onPrev, style, steps, currentStep }:
                 이전
               </Button>
             )}
-            <Button variant='fill' size='large' style={{ width: 120 }} onClick={onNext}>
+            <Button variant='fill' size='large' style={{ width: 120 }} onClick={onNext} disabled={disabled}>
               저장 및 다음
             </Button>
           </div>
@@ -52,7 +61,7 @@ const ProgressButton = ({ onCancel, onNext, onPrev, style, steps, currentStep }:
               이전
             </Button>
           )}
-          <Button variant='fill' size='large' onClick={onNext}>
+          <Button variant='fill' size='large' onClick={onNext} disabled={disabled}>
             저장 및 다음
           </Button>
         </div>

@@ -14,6 +14,7 @@ type CategorySelectorProps = {
   enableMobileExpand?: boolean // 모바일에서 펼쳐보기 기능 사용 여부
   initialVisibleGroups?: number // 초기에 보여줄 그룹 수 (모바일에서)
   horizontalPadding?: number
+  defaultSubcategoryId?: number // 기본 서브카테고리 ID
 }
 
 const CategorySelector = ({
@@ -23,10 +24,11 @@ const CategorySelector = ({
   initialVisibleGroups = 2, // 기본값: 2그룹 표시
   className,
   horizontalPadding = 20,
+  defaultSubcategoryId,
 }: CategorySelectorProps) => {
   const { data: categoryList } = useCategory()
-  const [selectedCategory, setSelectedMainCategory] = useState<number | null>(null) // 부동산을 기본 선택
-  const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(null) // 기타부동산을 기본 선택
+  const [selectedCategory, setSelectedMainCategory] = useState<number | null>(null)
+  const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(null)
   const [isExpanded, setIsExpanded] = useState<boolean>(false) // 모바일에서 펼침 상태
 
   // 모바일 분기 처리
@@ -34,6 +36,21 @@ const CategorySelector = ({
   const { chunkSize } = useCategoryRenderChunk({
     horizontalPadding: horizontalPadding,
   })
+
+  // 기본 서브카테고리 ID가 있으면 해당 카테고리와 서브카테고리를 자동으로 선택
+  useEffect(() => {
+    if (defaultSubcategoryId && categoryList) {
+      // 모든 카테고리에서 해당 서브카테고리를 찾기
+      for (const category of categoryList) {
+        const foundSubcategory = category.subcategories.find(sub => sub.subcategoryId === defaultSubcategoryId)
+        if (foundSubcategory) {
+          setSelectedMainCategory(category.categoryId)
+          setSelectedSubcategory(defaultSubcategoryId)
+          break
+        }
+      }
+    }
+  }, [defaultSubcategoryId, categoryList])
 
   const handleMainCategoryClick = (categoryId: number) => {
     setSelectedMainCategory(categoryId)
