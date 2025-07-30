@@ -32,7 +32,7 @@ export type LoginRequest = {
 }
 
 export type LoginResponse = {
-  userAccessToken: string
+  accessToken: string
   userType: 'user' | 'lawyer' // 사용자 타입 추가
   userId: number
   lawyerId?: number
@@ -44,13 +44,6 @@ export type LawyerLoginRequest = {
   lawyerAccount: string
   lawyerPassword: string
   rememberMe: boolean
-}
-
-export type LawyerLoginResponse = {
-  lawyerAccessToken: string
-  lawyerId: number
-  lawyerName: string
-  lawFirmName?: string
 }
 
 export type SocialLoginRequest = {

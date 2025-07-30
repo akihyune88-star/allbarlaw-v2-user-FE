@@ -70,18 +70,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const hasToken = !!(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN))
     const storedUserInfo = localStorage.getItem(LOCAL.USER_INFO)
 
+    console.log('🔍 checkLoginStatus 실행:')
+    console.log('- hasToken:', hasToken)
+    console.log('- storedUserInfo:', storedUserInfo)
+    console.log('- LOCAL.TOKEN:', LOCAL.TOKEN)
+
     if (hasToken && storedUserInfo) {
       try {
         const parsedUserInfo: UserInfo = JSON.parse(storedUserInfo)
+        console.log('- parsedUserInfo:', parsedUserInfo)
         setUserInfo(parsedUserInfo)
         setIsLoggedIn(true)
         setIsLawyer(parsedUserInfo.userType === 'lawyer')
+        console.log('- 로그인 성공, isLawyer:', parsedUserInfo.userType === 'lawyer')
       } catch (error) {
         console.error('Failed to parse user info:', error)
         logout()
       }
     } else {
       // 로그인 상태가 아닌 경우 즉시 로딩 완료
+      console.log('- 로그인 상태 아님')
       setIsLoggedIn(false)
       setIsLawyer(false)
       setUserInfo(null)

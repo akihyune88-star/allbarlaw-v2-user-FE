@@ -5,19 +5,22 @@ import ChatWaitingBlogList from '../chatWaitingBlogList/ChatWaitingBlogList'
 import InputBox from '@/components/inputBox/InputBox'
 import SvgIcon from '@/components/SvgIcon'
 import React, { ChangeEvent, useState } from 'react'
-import { ChatMessage } from '@/types/baroTalkTypes'
+import { ChatMessage, ChatRoomStatus } from '@/types/baroTalkTypes'
 import { formatTimeAgo } from '@/utils/date'
+import { useChatStore } from '@/store/chatStore'
 
 type ChatBodyProps = {
-  chatStatus: 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
+  chatStatus: ChatRoomStatus
   type?: 'USER' | 'LAWYER'
   messages: ChatMessage[]
   onSendMessage: (content: string) => void
   isConnected: boolean
+  chatRoomId: number | null
 }
 
-const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected, type = 'USER' }: ChatBodyProps) => {
+const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected, type = 'USER', chatRoomId }: ChatBodyProps) => {
   const [message, setMessage] = useState('')
+  const { chatStatus: globalChatStatus } = useChatStore()
 
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value)
@@ -36,6 +39,9 @@ const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected, type = 'US
       handleSendMessage()
     }
   }
+
+  // 전역 상태의 chatStatus를 우선 사용
+  const currentChatStatus = globalChatStatus || chatStatus
 
   return (
     <>
@@ -62,18 +68,19 @@ const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected, type = 'US
           ))
         )}
       </div>
-      {chatStatus === 'ACTIVE' || type === 'LAWYER' ? (
+      {currentChatStatus === 'ACTIVE' || type === 'LAWYER' ? (
         <InputBox
           icon={<SvgIcon name='send' />}
           value={message}
           onChange={handleChangeMessage}
           onKeyDown={handleKeyPress}
+          onIconClick={handleSendMessage}
           // disabled={!isConnected}
           className={styles['chat-input']}
           style={type === 'LAWYER' ? { height: '3rem', minHeight: '3rem' } : undefined}
         />
       ) : (
-        <ChatWaitingBlogList chatStatus={chatStatus} />
+        <ChatWaitingBlogList chatStatus={currentChatStatus} chatRoomId={chatRoomId} />
       )}
     </>
   )

@@ -5,8 +5,8 @@ import {
   BaroTalkLawyerListResponse,
   BaroTalkChatListRequest,
   BaroTalkChatListResponse,
-  ChatRoomStatus,
   UpdateChatRoomStatusRequest,
+  UpdateChatRoomStatusResponse,
 } from '@/types/baroTalkTypes'
 
 export const baroTalkServices = {
@@ -38,7 +38,10 @@ export const baroTalkServices = {
     return response.data
   },
   updateChatRoomStatus: async (userId: number, request: UpdateChatRoomStatusRequest) => {
-    const response = await instance.post(`/chat/${request.chatRoomId}/status`, { status: request.status, userId })
+    const response = await instance.post<UpdateChatRoomStatusResponse>(`/chat/${request.chatRoomId}/status`, {
+      status: request.status,
+      userId,
+    })
     return response.data
   },
 }

@@ -5,12 +5,13 @@ import { useState, useEffect, useCallback } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { useAuth } from '@/contexts/AuthContext'
 import { JoinRoomRequest, JoinRoomSuccessData, UserJoinedData } from '@/types/baroTalkTypes'
+import { useChatStore } from '@/store/chatStore'
 
 const Chat = () => {
-  const [selectedChatRoomId, setSelectedChatRoomId] = useState<number | null>(null)
   const [socket, setSocket] = useState<Socket | null>(null)
   const [isConnected, setIsConnected] = useState(false)
   const { getUserIdFromToken } = useAuth()
+  const { chatRoomId, setChatRoomId, setIsConnected: setGlobalIsConnected } = useChatStore()
 
   // 소켓 연결
   useEffect(() => {
@@ -26,10 +27,12 @@ const Chat = () => {
     // 연결 이벤트
     newSocket.on('connect', () => {
       setIsConnected(true)
+      setGlobalIsConnected(true)
     })
 
     newSocket.on('disconnect', () => {
       setIsConnected(false)
+      setGlobalIsConnected(false)
     })
 
     // 다른 사용자 입장 알림
@@ -43,16 +46,19 @@ const Chat = () => {
     return () => {
       newSocket.disconnect()
     }
-  }, [getUserIdFromToken])
+  }, [getUserIdFromToken, setGlobalIsConnected])
 
   // 채팅방 클릭 핸들러
-  const handleChatRoomClick = useCallback((chatRoomId: number) => {
-    setSelectedChatRoomId(chatRoomId)
-  }, [])
+  const handleChatRoomClick = useCallback(
+    (chatRoomId: number) => {
+      setChatRoomId(chatRoomId)
+    },
+    [setChatRoomId]
+  )
 
   return (
     <main className={`w-full sub-main-container ${styles.chat}`}>
-      <ChatRoomContainer chatRoomId={selectedChatRoomId} socket={socket} isConnected={isConnected} />
+      <ChatRoomContainer chatRoomId={chatRoomId} socket={socket} isConnected={isConnected} />
       <aside className={`aside ${styles['mobile-aside']}`}>
         <ChatList onChatRoomClick={handleChatRoomClick} />
       </aside>

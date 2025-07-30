@@ -21,13 +21,13 @@ export const ProtectedRoute = ({
 
   // 부드러운 리다이렉트를 위한 useEffect
   useEffect(() => {
-    if (requireUser && (!isLoggedIn || isLawyer)) {
+    if (requireUser && !isLoggedIn) {
       const timer = setTimeout(() => {
         setShouldRedirect(true)
       }, 150)
       return () => clearTimeout(timer)
     }
-  }, [requireUser, isLoggedIn, isLawyer])
+  }, [requireUser, isLoggedIn])
 
   // 로딩 중이 아닐 때만 로그 출력 (깜빡거림 방지)
   if (!isLoading) {
@@ -44,8 +44,8 @@ export const ProtectedRoute = ({
   }
 
   // 일반 유저만 접근 가능한 페이지인 경우
-  if (requireUser && (!isLoggedIn || isLawyer)) {
-    console.log('❌ 일반 유저가 아님! 로그인 페이지로 리다이렉트')
+  if (requireUser && !isLoggedIn) {
+    console.log('❌ 로그인하지 않음! 로그인 페이지로 리다이렉트')
 
     if (shouldRedirect) {
       return <Navigate to={ROUTER.AUTH} replace />

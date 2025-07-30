@@ -23,7 +23,7 @@ export const useLogin = (options?: UseLoginOptions) => {
       console.log('userLoginData', data)
 
       const storage = variables.rememberMe ? localStorage : sessionStorage
-      storage.setItem(LOCAL.TOKEN, data.userAccessToken)
+      storage.setItem(LOCAL.TOKEN, data.accessToken)
 
       // 사용자 정보 저장
       const userInfo: UserInfo = {
@@ -61,7 +61,8 @@ export const useLawyerLogin = (options?: UseLoginOptions) => {
     },
     onSuccess: (data, variables) => {
       const storage = variables.rememberMe ? localStorage : sessionStorage
-      storage.setItem(LOCAL.TOKEN, data.userAccessToken)
+      storage.setItem(LOCAL.TOKEN, data.accessToken)
+      console.log('lawyerLoginData', data)
 
       // 사용자 정보 저장
       const userInfo: UserInfo = {

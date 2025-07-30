@@ -5,13 +5,14 @@ import { useState, useEffect, useCallback } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { useAuth } from '@/contexts/AuthContext'
 import { JoinRoomRequest, JoinRoomSuccessData, UserJoinedData } from '@/types/baroTalkTypes'
+import { useChatStore } from '@/store/chatStore'
 
 const LawyerChat = () => {
-  const [selectedChatRoomId, setSelectedChatRoomId] = useState<number | null>(null)
   const [socket, setSocket] = useState<Socket | null>(null)
   const [isConnected, setIsConnected] = useState(false)
   const [testChatRoomId, setTestChatRoomId] = useState<string>('')
   const { getUserIdFromToken } = useAuth()
+  const { chatRoomId, setChatRoomId, setIsConnected: setGlobalIsConnected } = useChatStore()
 
   // 소켓 연결
   useEffect(() => {
@@ -28,11 +29,13 @@ const LawyerChat = () => {
     newSocket.on('connect', () => {
       console.log('✅ 변호사 WebSocket 연결 성공')
       setIsConnected(true)
+      setGlobalIsConnected(true)
     })
 
     newSocket.on('disconnect', () => {
       console.log('❌ 변호사 WebSocket 연결 해제')
       setIsConnected(false)
+      setGlobalIsConnected(false)
     })
 
     // 다른 사용자 입장 알림
@@ -46,18 +49,21 @@ const LawyerChat = () => {
     return () => {
       newSocket.disconnect()
     }
-  }, [getUserIdFromToken])
+  }, [getUserIdFromToken, setGlobalIsConnected])
 
   // 채팅방 클릭 핸들러
-  const handleChatRoomClick = useCallback((chatRoomId: number) => {
-    setSelectedChatRoomId(chatRoomId)
-  }, [])
+  const handleChatRoomClick = useCallback(
+    (chatRoomId: number) => {
+      setChatRoomId(chatRoomId)
+    },
+    [setChatRoomId]
+  )
 
   // 테스트용 채팅방 입장 핸들러
   const handleTestChatRoomEnter = () => {
     const chatRoomId = parseInt(testChatRoomId)
     if (!isNaN(chatRoomId)) {
-      setSelectedChatRoomId(chatRoomId)
+      setChatRoomId(chatRoomId)
       setTestChatRoomId('')
     } else {
       alert('올바른 채팅방 ID를 입력해주세요.')
@@ -79,7 +85,7 @@ const LawyerChat = () => {
         </button>
       </div>
 
-      <ChatRoomContainer chatRoomId={selectedChatRoomId} socket={socket} isConnected={isConnected} />
+      <ChatRoomContainer chatRoomId={chatRoomId} socket={socket} isConnected={isConnected} />
     </main>
   )
 }

@@ -2,17 +2,38 @@ import BlogItem from '@/components/blogItem/BlogItem'
 import styles from './chatWaitingBlogList.module.scss'
 import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 import Divider from '@/components/divider/Divider'
-import { ChatRoomStatus } from '@/types/baroTalkTypes'
+import { ChatRoomStatus, UpdateChatRoomStatusResponse } from '@/types/baroTalkTypes'
+import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
+import { useChatStore } from '@/store/chatStore'
 
 type ChatWaitingBlogListProps = {
   chatStatus: ChatRoomStatus
+  chatRoomId: number | null
 }
 
-const ChatWaitingBlogList = ({ chatStatus }: ChatWaitingBlogListProps) => {
+const ChatWaitingBlogList = ({ chatStatus, chatRoomId }: ChatWaitingBlogListProps) => {
   const { blogList } = useGetBlogList({
     subcategoryId: 'all',
     take: 4,
   })
+
+  const { setChatStatus } = useChatStore()
+
+  const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
+    onSuccess: (data: UpdateChatRoomStatusResponse) => {
+      console.log('updateChatRoomStatus 성공:', data)
+      // 전역 상태도 업데이트
+      setChatStatus(data.chatRoomStatus)
+    },
+  })
+
+  const handleStartChat = () => {
+    if (!chatRoomId) return
+    updateChatRoomStatus({
+      chatRoomId: chatRoomId,
+      status: 'ACTIVE',
+    })
+  }
 
   return (
     <main className={styles.chatWaitingBlogList}>
@@ -24,7 +45,7 @@ const ChatWaitingBlogList = ({ chatStatus }: ChatWaitingBlogListProps) => {
           <div className={styles.chatWaitingBlogList__header__startChat}>
             <span>채팅을 시작 하시겠습니까? </span>
             <div className={styles.chatWaitingBlogList__header__startChat__button}>
-              <button>채팅 시작하기</button>
+              <button onClick={handleStartChat}>채팅 시작하기</button>
               <button>대화방 나가기</button>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { useMutation, useInfiniteQuery } from '@tanstack/react-query'
 import { baroTalkServices } from '@/services/baroTalkServices'
 import { useAuth } from '@/contexts/AuthContext'
 import {
@@ -6,11 +6,12 @@ import {
   BaroTalkLawyerListRequest,
   BaroTalkChatListRequest,
   UpdateChatRoomStatusRequest,
+  UpdateChatRoomStatusResponse,
 } from '@/types/baroTalkTypes'
 import { QUERY_KEY } from '@/constants/queryKey'
 
 interface UseCreateBaroTalkOptions {
-  onSuccess?: () => void
+  onSuccess?: (data?: any) => void
   onError?: (error: Error) => void
 }
 
@@ -75,10 +76,11 @@ export const useUpdateChatRoomStatus = (options?: UseCreateBaroTalkOptions) => {
   const { getUserIdFromToken } = useAuth()
   const userId = getUserIdFromToken()
 
-  return useMutation({
-    mutationFn: (request: UpdateChatRoomStatusRequest) => baroTalkServices.updateChatRoomStatus(userId!, request),
-    onSuccess: () => {
-      options?.onSuccess?.()
+  return useMutation<UpdateChatRoomStatusResponse, Error, UpdateChatRoomStatusRequest>({
+    mutationFn: ({ chatRoomId, status }: UpdateChatRoomStatusRequest) =>
+      baroTalkServices.updateChatRoomStatus(userId!, { chatRoomId, status }),
+    onSuccess: data => {
+      options?.onSuccess?.(data)
     },
     onError: (error: Error) => {
       options?.onError?.(error)

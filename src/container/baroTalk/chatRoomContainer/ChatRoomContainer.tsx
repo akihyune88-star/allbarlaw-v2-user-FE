@@ -1,10 +1,11 @@
 import ChatHeader from '@/container/baroTalk/chatHeader/ChatHeader'
 import ChatBody from '@/container/baroTalk/chatBody/ChatBody'
 import styles from './chatRoomContainer.module.scss'
-import { ChatMessage, JoinRoomSuccessData, JoinRoomRequest } from '@/types/baroTalkTypes'
-import { useState, useEffect, useCallback } from 'react'
+import { ChatMessage, JoinRoomSuccessData, JoinRoomRequest, ChatRoomStatus } from '@/types/baroTalkTypes'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Socket } from 'socket.io-client'
 import { useLocation } from 'react-router-dom'
+import { useChatStore } from '@/store/chatStore'
 
 interface ChatRoomContainerProps {
   chatRoomId: number | null
@@ -13,11 +14,11 @@ interface ChatRoomContainerProps {
 }
 
 const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContainerProps) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([])
-  const [roomInfo, setRoomInfo] = useState<JoinRoomSuccessData['chatRoom'] | null>(null)
+  const { messages, roomInfo, chatStatus, setMessages, setRoomInfo, setChatStatus, addMessage, setIsConnected } =
+    useChatStore()
+
   const location = useLocation()
 
-  // 주소에 lawyer-admin이 포함되어 있으면 변호사로 구분
   const isLawyer = location.pathname.includes('lawyer-admin')
 
   // chatRoomId가 변경될 때 방 입장
@@ -33,6 +34,11 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
     }
   }, [chatRoomId, socket, isConnected])
 
+  // 소켓 연결 상태를 전역 상태에 반영
+  useEffect(() => {
+    setIsConnected(isConnected)
+  }, [isConnected, setIsConnected])
+
   // 소켓 이벤트 리스너 설정
   useEffect(() => {
     if (!socket) return
@@ -41,6 +47,7 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
     const handleJoinRoomSuccess = (data: JoinRoomSuccessData) => {
       setMessages(data.recentMessages)
       setRoomInfo(data.chatRoom)
+      setChatStatus(data.chatRoom.chatRoomStatus)
     }
 
     // 채팅방 입장 실패
@@ -50,8 +57,7 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
 
     // 새 메시지 수신
     const handleNewMessage = (message: ChatMessage) => {
-      console.log('새 메시지 수신:', message)
-      setMessages(prev => [...prev, message])
+      addMessage(message)
     }
 
     // 이벤트 리스너 등록
@@ -66,7 +72,7 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
       socket.off('joinRoomError', handleJoinRoomError)
       socket.off('newMessage', handleNewMessage)
     }
-  }, [socket])
+  }, [socket, setMessages, setRoomInfo, setChatStatus, addMessage])
 
   // 메시지 전송 핸들러
   const handleSendMessage = useCallback(
@@ -75,10 +81,13 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
         socket.emit('sendMessage', {
           chatRoomId: chatRoomId,
           content: content,
+          receiverId: isLawyer ? roomInfo?.chatRoomUserId || 0 : roomInfo?.chatRoomLawyerId || 0,
+          receiverType: isLawyer ? 'USER' : 'LAWYER',
+          tempId: `temp_${Date.now()}`, // 임시 ID 생성
         })
       }
     },
-    [socket, chatRoomId, isConnected]
+    [socket, chatRoomId, isConnected, location.pathname, roomInfo]
   )
 
   return (
@@ -92,7 +101,8 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
         lawyerProfileImage={roomInfo?.chatRoomLawyer.lawyerProfileImage || 'https://picsum.photos/200/300'}
       />
       <ChatBody
-        chatStatus={(roomInfo?.chatRoomStatus as 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED') || 'PENDING'}
+        chatRoomId={chatRoomId}
+        chatStatus={chatStatus}
         messages={messages}
         onSendMessage={handleSendMessage}
         isConnected={isConnected}

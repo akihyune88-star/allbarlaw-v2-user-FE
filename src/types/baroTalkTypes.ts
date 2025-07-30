@@ -121,3 +121,19 @@ export type UpdateChatRoomStatusRequest = {
   chatRoomId: number
   status: ChatRoomStatus
 }
+
+export type UpdateChatRoomStatusResponse = {
+  chatRoomId: number
+  chatRoomUserId: number
+  chatRoomLawyerId: number
+  chatRoomStatus: ChatRoomStatus
+  chatRoomIsActive: boolean
+  chatRoomCreatedAt: string
+  chatRoomUpdatedAt: string
+  chatRoomLastMessageAt: string | null
+  chatRoomLawyer: {
+    lawyerId: number
+    lawyerName: string
+    lawyerProfileImage: string | null
+  }
+}
