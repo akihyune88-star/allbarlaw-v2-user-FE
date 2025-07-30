@@ -12,7 +12,9 @@ import Chat from './baroTalk/chat/Chat'
 
 // 변호사 관리페이지
 import LawyerAdminLayout from './lawyerAdmin/LawyerAdminLayout'
+// 변호사+채팅
 import LawyerChat from './lawyerAdmin/chat/lawyerChat/LawyerChat'
+import LawyerChatList from './lawyerAdmin/chat/lawyerChatList/LawyerChatList'
 
 export {
   Mypage,
@@ -22,4 +24,6 @@ export {
   RequestBaroTalk,
   Chat,
   LawyerAdminLayout,
+  LawyerChat,
+  LawyerChatList,
 }

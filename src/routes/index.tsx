@@ -42,6 +42,7 @@ import {
   Chat,
   ConsultationContentForm,
   LawyerAdminLayout,
+  LawyerChatList,
   LawyerSignupForm,
   Mypage,
   RequestBaroTalk,
@@ -274,7 +275,11 @@ const router = createBrowserRouter([
         element: <div>변호사 관리 메인 페이지</div>,
       },
       {
-        path: 'chat',
+        path: ROUTER.LAWYER_ADMIN_CHAT_LIST,
+        element: <LawyerChatList />,
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CHAT,
         element: <LawyerChat />,
       },
     ],

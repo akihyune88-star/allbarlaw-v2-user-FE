@@ -7,6 +7,7 @@ import {
   BaroTalkChatListResponse,
   UpdateChatRoomStatusRequest,
   UpdateChatRoomStatusResponse,
+  LawyerChatListResponse,
 } from '@/types/baroTalkTypes'
 
 export const baroTalkServices = {
@@ -42,6 +43,17 @@ export const baroTalkServices = {
       status: request.status,
       userId,
     })
+    return response.data
+  },
+
+  getLawyerChatList: async (lawyerId: number, request?: { page?: number; take?: number; status?: string; sort?: string }) => {
+    const params = new URLSearchParams()
+    if (request?.page) params.append('page', request.page.toString())
+    if (request?.take) params.append('take', request.take.toString())
+    if (request?.status) params.append('status', request.status)
+    if (request?.sort) params.append('sort', request.sort)
+
+    const response = await instance.get<LawyerChatListResponse>(`/lawyer/${lawyerId}/chat-rooms?${params.toString()}`)
     return response.data
   },
 }

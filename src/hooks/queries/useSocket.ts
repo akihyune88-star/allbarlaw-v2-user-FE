@@ -37,7 +37,6 @@ export const useChatRoomId = () => {
 
   const setChatRoomId = useCallback(
     (roomId: number | null) => {
-      console.log('🟢 useChatRoomId: setChatRoomId 호출됨:', roomId)
       queryClient.setQueryData(['chat', 'currentRoomId'], roomId)
     },
     [queryClient]

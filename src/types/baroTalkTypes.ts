@@ -138,3 +138,25 @@ export type UpdateChatRoomStatusResponse = {
     lawyerProfileImage: string | null
   }
 }
+
+// 변호사용 채팅방 목록 관련 타입들
+export type LawyerChatRoom = {
+  chatRoomId: number
+  chatRoomStatus: ChatRoomStatus
+  chatRoomCreatedAt: string
+  clientId: number
+  clientName: string
+  clientMessageCount: number
+  lawyerMessageCount: number
+  lawyerFirstResponseAt: string | null
+  consultationRequestTitle: string
+  lawyerName: string
+}
+
+export type LawyerChatListResponse = {
+  chatRooms: LawyerChatRoom[]
+  total: number
+  page: number
+  totalPages: number
+  hasNextPage: boolean
+}

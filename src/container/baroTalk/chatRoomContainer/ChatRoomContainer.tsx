@@ -28,6 +28,7 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
   const { setConnected } = useSocketConnection()
   const { setChatRoomId } = useChatRoomId() // 🆕 채팅방 ID 초기화용
 
+
   const location = useLocation()
   const isLawyer = location.pathname.includes('lawyer-admin')
 
@@ -74,14 +75,6 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
 
   // chatRoomId가 변경될 때 방 입장
   useEffect(() => {
-    console.log(
-      '🟢 ChatRoomContainer: chatRoomId 변경됨:',
-      chatRoomId,
-      'socket:',
-      !!socket,
-      'isConnected:',
-      isConnected
-    )
     if (chatRoomId && socket && isConnected) {
       const joinRoomRequest: JoinRoomRequest = {
         chatRoomId: chatRoomId,
@@ -89,7 +82,6 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
         messageLimit: 50,
       }
 
-      console.log('🟢 ChatRoomContainer: joinRoom 요청:', joinRoomRequest)
       socket.emit('joinRoom', joinRoomRequest)
     }
   }, [chatRoomId, socket, isConnected])
@@ -105,7 +97,6 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
 
     // 채팅방 입장 성공
     const handleJoinRoomSuccess = (data: JoinRoomSuccessData) => {
-      console.log('🟢 ChatRoomContainer: joinRoomSuccess:', data)
       setMessages(data.recentMessages)
       setRoomInfo(data.chatRoom)
       setChatStatus(data.chatRoom.chatRoomStatus)
@@ -113,42 +104,37 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
 
     // 채팅방 입장 실패
     const handleJoinRoomError = (error: { message: string }) => {
-      console.error('❌ ChatRoomContainer: joinRoomError:', error.message)
+      console.error('채팅방 입장 실패:', error.message)
     }
 
     // 새 메시지 수신
     const handleNewMessage = (message: ChatMessage) => {
-      console.log('🟢 ChatRoomContainer: newMessage:', message)
       addMessage(message)
     }
 
-    // 🆕 상대방 퇴장 처리
+    // 상대방 퇴장 처리
     const handleUserLeft = (data: { userId: number; userName: string }) => {
-      console.log('🟢 ChatRoomContainer: userLeft:', data)
-
       // 상대방 퇴장 메시지 추가 (시스템 메시지로 처리)
       const leaveMessage: ChatMessage = {
-        chatMessageId: Date.now(), // 현재 시간을 ID로 사용
+        chatMessageId: Date.now(),
         chatMessageContent: `${data.userName}님이 상담을 종료했습니다.`,
-        chatMessageSenderType: 'LAWYER', // 시스템 메시지는 LAWYER로 표시
-        chatMessageSenderId: 0, // 시스템 메시지이므로 0
+        chatMessageSenderType: 'LAWYER',
+        chatMessageSenderId: 0,
         chatMessageCreatedAt: new Date().toISOString(),
       }
 
       addMessage(leaveMessage)
-
-      // 채팅방 상태를 COMPLETED로 변경
       setChatStatus('COMPLETED')
     }
 
-    // 🆕 채팅방 퇴장 성공
+    // 채팅방 퇴장 성공
     const handleLeaveRoomSuccess = (data: { chatRoomId: number }) => {
-      console.log('🟢 ChatRoomContainer: leaveRoomSuccess:', data)
+      // 퇴장 성공 처리
     }
 
-    // 🆕 채팅방 퇴장 실패
+    // 채팅방 퇴장 실패
     const handleLeaveRoomError = (error: { message: string }) => {
-      console.error('❌ ChatRoomContainer: leaveRoomError:', error.message)
+      console.error('채팅방 퇴장 실패:', error.message)
     }
 
     // 이벤트 리스너 등록

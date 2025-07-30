@@ -10,7 +10,7 @@ export const ROUTER = {
   LAWYER_SIGNUP_FORM: 'lawyer-signup-form',
   LAWYER_LOGIN: '/lawyer-login',
   LAWYER_ADMIN: '/lawyer-admin',
-  LAWYER_ADMIN_CHAT: '/lawyer-admin/chat',
+
   // 마이페이지
   MYPAGE: '/mypage',
   KEEP_LIST: 'keep-list',
@@ -43,4 +43,8 @@ export const ROUTER = {
   SUPPORT_NOTICE: '/support-notice',
   LAWYER_DETAIL: '/lawyer',
   NOT_FOUND: '*',
+
+  // 변호사 관리
+  LAWYER_ADMIN_CHAT_LIST: '/lawyer-admin/chat-list',
+  LAWYER_ADMIN_CHAT: '/lawyer-admin/chat',
 } as const

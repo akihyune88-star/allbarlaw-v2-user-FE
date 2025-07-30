@@ -21,7 +21,7 @@ const LawyerAdminLayout = () => {
 
     // 채팅리스트 서브카테고리 클릭 시 채팅 페이지로 이동
     if (id === 1) {
-      navigate(ROUTER.LAWYER_ADMIN_CHAT)
+      navigate(ROUTER.LAWYER_ADMIN_CHAT_LIST)
     }
   }
 

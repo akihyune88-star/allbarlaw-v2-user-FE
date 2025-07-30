@@ -1,4 +1,4 @@
-import { useMutation, useInfiniteQuery } from '@tanstack/react-query'
+import { useMutation, useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { baroTalkServices } from '@/services/baroTalkServices'
 import { useAuth } from '@/contexts/AuthContext'
 import {
@@ -85,5 +85,23 @@ export const useUpdateChatRoomStatus = (options?: UseCreateBaroTalkOptions) => {
     onError: (error: Error) => {
       options?.onError?.(error)
     },
+  })
+}
+
+export const useGetLawyerChatList = (lawyerId: number, request: { take: number; sort: string }) => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEY.LAWYER_CHAT_LIST, lawyerId, request],
+    queryFn: ({ pageParam = 1 }) =>
+      baroTalkServices.getLawyerChatList(lawyerId, {
+        ...request,
+        page: pageParam,
+      }),
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.hasNextPage) {
+        return allPages.length + 1
+      }
+      return undefined
+    },
+    initialPageParam: 1,
   })
 }

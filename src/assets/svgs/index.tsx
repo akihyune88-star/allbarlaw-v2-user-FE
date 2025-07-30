@@ -35,6 +35,7 @@ import checkRoundLine from '@/assets/svgs/check-round-line.svg?react'
 import kakao from '@/assets/svgs/kakao.svg?react'
 import google from '@/assets/svgs/google.svg?react'
 import naver from '@/assets/svgs/naver.svg?react'
+import clip from '@/assets/svgs/clip.svg?react'
 
 export {
   react,
@@ -74,4 +75,5 @@ export {
   kakao,
   google,
   naver,
+  clip,
 }
