@@ -160,23 +160,33 @@ export const useUserStatuses = () => {
   return { userStatuses, updateUserStatus, updateBatchUserStatus }
 }
 
+// 전역 소켓 상태 (React Query 문제 해결을 위해)
+let globalSocket: Socket | null = null
+
 // 소켓 인스턴스 관리
 export const useSocketInstance = () => {
   const queryClient = useQueryClient()
 
-  const { data: socket = null } = useQuery({
+  const { data: socket = globalSocket } = useQuery({
     queryKey: ['socket', 'instance'],
-    queryFn: () => null as Socket | null,
+    queryFn: () => globalSocket,
     staleTime: Infinity,
-    placeholderData: previousData => previousData,
+    gcTime: Infinity,
   })
+  
+  console.log('🔍 useSocketInstance hook - socket:', !!socket, 'globalSocket:', !!globalSocket)
 
   const setSocket = useCallback(
     (newSocket: Socket | null) => {
+      console.log('🔍 setSocket 호출:', !!newSocket)
+      globalSocket = newSocket // 전역 상태에 저장
       queryClient.setQueryData(['socket', 'instance'], newSocket)
+      // 강제 리프레시
+      queryClient.invalidateQueries({ queryKey: ['socket', 'instance'] })
+      console.log('🔍 setSocket 후 globalSocket:', !!globalSocket)
     },
     [queryClient]
   )
 
-  return { socket, setSocket }
+  return { socket: globalSocket, setSocket } // 전역 상태 직접 반환
 }

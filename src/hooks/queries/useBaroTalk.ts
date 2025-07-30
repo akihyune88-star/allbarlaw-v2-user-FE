@@ -1,4 +1,4 @@
-import { useMutation, useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useMutation, useInfiniteQuery } from '@tanstack/react-query'
 import { baroTalkServices } from '@/services/baroTalkServices'
 import { useAuth } from '@/contexts/AuthContext'
 import {

@@ -20,7 +20,7 @@ const Login = () => {
   const [activeTab, setActiveTab] = useState('/user')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const navigate = useNavigate()
-  const { userInfo } = useAuth()
+  const { _userInfo } = useAuth()
 
   useEffect(() => {
     if (errorMessage) {
@@ -78,7 +78,9 @@ const Login = () => {
       // navigate(ROUTER.i)
     } else if (type === 'PASSWORD_RESET') {
       console.log('PASSWORD_RESET')
-    } else if (type === 'SIGNUP') navigate(ROUTER.SIGNUP)
+    } else if (type === 'SIGNUP') {
+      navigate(ROUTER.SIGNUP)
+    }
   }
 
   const onSubmit = async (data: LoginFormData) => {

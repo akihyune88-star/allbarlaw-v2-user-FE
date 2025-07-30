@@ -1,24 +1,36 @@
 import ChatRoomContainer from '@/container/baroTalk/chatRoomContainer/ChatRoomContainer'
 import styles from './chat.module.scss'
 import ChatList from '@/container/baroTalk/chatList/ChatList'
-import { useState, useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useMemo } from 'react'
 import { io } from 'socket.io-client'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserJoinedData } from '@/types/baroTalkTypes'
-import { useSocketInstance, useSocketConnection, useChatRoomId } from '@/hooks/queries/useSocket'
+import {
+  useSocket,
+  useIsConnected,
+  useChatRoomId,
+  useSetSocket,
+  useSetConnected,
+  useSetChatRoomId,
+} from '@/stores/socketStore'
 
 const Chat = () => {
   const { getUserIdFromToken } = useAuth()
 
-  // 🟢 React Query 훅들 사용
-  const { socket, setSocket } = useSocketInstance()
-  const { isConnected, setConnected } = useSocketConnection()
-  const { chatRoomId, setChatRoomId } = useChatRoomId()
+  // Zustand 상태 구독
+  const socket = useSocket()
+  const isConnected = useIsConnected()
+  const chatRoomId = useChatRoomId()
+  const setSocket = useSetSocket()
+  const setConnected = useSetConnected()
+  const setChatRoomId = useSetChatRoomId()
+
+  // userId를 안정적으로 메모이제이션
+  const userId = useMemo(() => getUserIdFromToken(), [getUserIdFromToken])
 
   // 소켓 연결
   useEffect(() => {
-    const userId = getUserIdFromToken()
-    if (!userId) return
+    if (!userId) return undefined
 
     const newSocket = io(import.meta.env.VITE_SERVER_API + '/chat', {
       auth: {
@@ -45,7 +57,7 @@ const Chat = () => {
     return () => {
       newSocket.disconnect()
     }
-  }, [getUserIdFromToken()])
+  }, [userId])
 
   // 채팅방 클릭 핸들러
   const handleChatRoomClick = useCallback(

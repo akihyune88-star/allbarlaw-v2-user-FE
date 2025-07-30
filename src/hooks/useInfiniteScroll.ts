@@ -25,6 +25,7 @@ export const useInfiniteScroll = ({
       scrollContainer.addEventListener('scroll', handleScroll)
       return () => scrollContainer.removeEventListener('scroll', handleScroll)
     }
+    return undefined
   }, [handleScroll, containerSelector])
 
   return { handleScroll }

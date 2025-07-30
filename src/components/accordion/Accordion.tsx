@@ -5,8 +5,8 @@ import SvgIcon from '../SvgIcon'
 
 interface AccordionContextType {
   openItems: Set<string | number>
-  toggleItem: (itemId: string | number) => void
-  isOpen: (itemId: string | number) => boolean
+  toggleItem: (_itemId: string | number) => void
+  isOpen: (_itemId: string | number) => boolean
   allowMultiple: boolean
 }
 

@@ -22,7 +22,6 @@ const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected, type = 'US
   const [message, setMessage] = useState('')
 
   // 🟢 React Query 훅 사용
-  const { chatStatus: globalChatStatus } = useChatStatus(chatRoomId)
 
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value)
@@ -41,9 +40,6 @@ const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected, type = 'US
       handleSendMessage()
     }
   }
-
-  // 전역 상태의 chatStatus를 우선 사용
-  const currentChatStatus = globalChatStatus || chatStatus
 
   return (
     <>
@@ -88,7 +84,7 @@ const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected, type = 'US
           })
         )}
       </div>
-      {currentChatStatus === 'ACTIVE' || type === 'LAWYER' ? (
+      {chatStatus === 'ACTIVE' || type === 'LAWYER' ? (
         <InputBox
           icon={<SvgIcon name='send' />}
           value={message}
@@ -100,7 +96,7 @@ const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected, type = 'US
           style={type === 'LAWYER' ? { height: '3rem', minHeight: '3rem' } : undefined}
         />
       ) : (
-        <ChatWaitingBlogList chatStatus={currentChatStatus} chatRoomId={chatRoomId} />
+        <ChatWaitingBlogList chatStatus={chatStatus} chatRoomId={chatRoomId} />
       )}
     </>
   )

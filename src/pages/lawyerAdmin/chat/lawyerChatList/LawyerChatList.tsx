@@ -5,7 +5,7 @@ import { useGetLawyerChatList } from '@/hooks/queries/useBaroTalk'
 import { useAuth } from '@/contexts/AuthContext'
 import React, { useEffect, useCallback, useState } from 'react'
 import { toggleClipChatRoom, isClippedChatRoom, sortChatRoomsByClip } from '@/utils/localStorage'
-import { useChatRoomId } from '@/hooks/queries/useSocket'
+import { useSetChatRoomId } from '@/stores/socketStore'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 
@@ -17,7 +17,7 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
   const { getUserIdFromToken } = useAuth()
   const lawyerId = getUserIdFromToken() // 임시로 userId를 lawyerId로 사용
   const [clipStates, setClipStates] = useState<Record<number, boolean>>({})
-  const { setChatRoomId } = useChatRoomId()
+  const setChatRoomId = useSetChatRoomId()
   const navigate = useNavigate()
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } = useGetLawyerChatList(
@@ -49,7 +49,7 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
     }
   }
 
-  const getResponseStatus = (responseTime: string | null, status: ChatRoomStatus) => {
+  const getResponseStatus = (responseTime: string | null, _status: ChatRoomStatus) => {
     if (!responseTime) {
       return <span className={styles.pendingResponse}>답변 대기중</span>
     }
@@ -107,13 +107,13 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
 
   const handleChatRoomClick = (chatRoomId: number) => {
     console.log('🗋 LawyerChatList: 채팅방 클릭:', chatRoomId)
-    
+
     // 1. 전역 상태에 채팅방 ID 설정
     setChatRoomId(chatRoomId)
-    
+
     // 2. LawyerChat 페이지로 네비게이션
     navigate(ROUTER.LAWYER_ADMIN_CHAT)
-    
+
     // 3. 만약 onChatRoomSelect prop이 있다면 호출 (선택사항)
     if (onChatRoomSelect) {
       onChatRoomSelect(chatRoomId)

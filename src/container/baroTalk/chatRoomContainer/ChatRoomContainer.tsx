@@ -1,18 +1,22 @@
 import ChatHeader from '@/container/baroTalk/chatHeader/ChatHeader'
 import ChatBody from '@/container/baroTalk/chatBody/ChatBody'
 import styles from './chatRoomContainer.module.scss'
-import { ChatMessage, JoinRoomSuccessData, JoinRoomRequest, ChatRoomStatus } from '@/types/baroTalkTypes'
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { ChatMessage, JoinRoomSuccessData, JoinRoomRequest } from '@/types/baroTalkTypes'
+import { useEffect, useCallback } from 'react'
 import { Socket } from 'socket.io-client'
 import { useLocation } from 'react-router-dom'
-import {
-  useChatMessages,
-  useChatStatus,
-  useChatRoomInfo,
-  useSocketConnection,
-  useChatRoomId,
-} from '@/hooks/queries/useSocket'
 import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
+import {
+  useMessages,
+  useChatStatus,
+  useRoomInfo,
+  useAddMessage,
+  useSetMessages,
+  useSetChatStatus,
+  useSetRoomInfo,
+  useSetConnected,
+  useSetChatRoomId,
+} from '@/stores/socketStore'
 
 interface ChatRoomContainerProps {
   chatRoomId: number | null
@@ -21,13 +25,16 @@ interface ChatRoomContainerProps {
 }
 
 const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContainerProps) => {
-  // 🟢 React Query 훅들 사용
-  const { messages, addMessage, setMessages } = useChatMessages(chatRoomId)
-  const { chatStatus, setChatStatus } = useChatStatus(chatRoomId)
-  const { roomInfo, setRoomInfo } = useChatRoomInfo(chatRoomId)
-  const { setConnected } = useSocketConnection()
-  const { setChatRoomId } = useChatRoomId() // 🆕 채팅방 ID 초기화용
-
+  // 🟢 Zustand 상태 구독
+  const messages = useMessages()
+  const chatStatus = useChatStatus()
+  const roomInfo = useRoomInfo()
+  const addMessage = useAddMessage()
+  const setMessages = useSetMessages()
+  const setChatStatus = useSetChatStatus()
+  const setRoomInfo = useSetRoomInfo()
+  const setConnected = useSetConnected()
+  const setChatRoomId = useSetChatRoomId()
 
   const location = useLocation()
   const isLawyer = location.pathname.includes('lawyer-admin')
@@ -82,6 +89,7 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
         messageLimit: 50,
       }
 
+      console.log('🟢 joinRoom 요청:', joinRoomRequest)
       socket.emit('joinRoom', joinRoomRequest)
     }
   }, [chatRoomId, socket, isConnected])
@@ -97,6 +105,8 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
 
     // 채팅방 입장 성공
     const handleJoinRoomSuccess = (data: JoinRoomSuccessData) => {
+      console.log('🟢 joinRoomSuccess 응답:', data)
+      console.log('🟢 로드된 메시지 수:', data.recentMessages.length)
       setMessages(data.recentMessages)
       setRoomInfo(data.chatRoom)
       setChatStatus(data.chatRoom.chatRoomStatus)
@@ -104,7 +114,7 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
 
     // 채팅방 입장 실패
     const handleJoinRoomError = (error: { message: string }) => {
-      console.error('채팅방 입장 실패:', error.message)
+      console.error('❌ joinRoomError:', error.message)
     }
 
     // 새 메시지 수신
@@ -128,7 +138,7 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
     }
 
     // 채팅방 퇴장 성공
-    const handleLeaveRoomSuccess = (data: { chatRoomId: number }) => {
+    const handleLeaveRoomSuccess = () => {
       // 퇴장 성공 처리
     }
 

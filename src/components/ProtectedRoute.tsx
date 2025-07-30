@@ -7,15 +7,9 @@ interface ProtectedRouteProps {
   children: ReactNode
   requireLawyer?: boolean
   requireUser?: boolean // 일반 유저만 접근 가능
-  redirectTo?: string
 }
 
-export const ProtectedRoute = ({
-  children,
-  requireLawyer = false,
-  requireUser = false,
-  redirectTo = ROUTER.AUTH,
-}: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ children, requireLawyer = false, requireUser = false }: ProtectedRouteProps) => {
   const { isLoggedIn, isLawyer, userInfo, isLoading } = useAuth()
   const [shouldRedirect, setShouldRedirect] = useState(false)
 
