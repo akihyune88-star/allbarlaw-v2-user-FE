@@ -59,6 +59,7 @@ export type ChatRoom = {
   chatRoomLastMessageAt: string
   chatRoomLawyer: ChatRoomLawyer
   chatRoomLastMessage: ChatRoomLastMessage
+  partnerOnlineStatus?: 'online' | 'offline' | 'away'
 }
 
 export type BaroTalkChatListResponse = {

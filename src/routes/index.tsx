@@ -41,12 +41,12 @@ import {
   BaroTalkLawyerSelection,
   Chat,
   ConsultationContentForm,
+  LawyerAdminLayout,
   LawyerSignupForm,
   Mypage,
   RequestBaroTalk,
 } from '@/pages'
-import LawyerChat from '@/pages/lawyerAdmin/lawyerChat/LawyerChat'
-import LawyerAdminLayout from '@/pages/lawyerAdmin/LawyerAdminLayout'
+import LawyerChat from '@/pages/lawyerAdmin/chat/lawyerChat/LawyerChat'
 
 const router = createBrowserRouter([
   {

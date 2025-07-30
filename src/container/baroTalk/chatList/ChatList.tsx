@@ -7,20 +7,39 @@ import { useGetBaroTalkChatList } from '@/hooks/queries/useBaroTalk'
 import { ChatRoom } from '@/types/baroTalkTypes'
 import { ROUTER } from '@/routes/routerConstant'
 import { useNavigate } from 'react-router-dom'
+import { useUserStatuses } from '@/hooks/queries/useSocket'
 
 type LawyerChatItemProps = {
   name: string
   profileImage: string
   lastMessage: string
   lastMessageTime: string
-  isOnline: boolean
+  partnerOnlineStatus?: 'online' | 'offline' | 'away'
 }
 
 type ChatListItemProps = {
   onChatRoomClick: (chatRoomId: number) => void
 }
 
-const LawyerChatItem = ({ name, profileImage, lastMessage, lastMessageTime, isOnline }: LawyerChatItemProps) => {
+const LawyerChatItem = ({
+  name,
+  profileImage,
+  lastMessage,
+  lastMessageTime,
+  partnerOnlineStatus = 'offline',
+}: LawyerChatItemProps) => {
+  const getStatusColor = (status: 'online' | 'offline' | 'away') => {
+    switch (status) {
+      case 'online':
+        return COLOR.green_01
+      case 'away':
+        return '#ffff00' // 노란색
+      case 'offline':
+      default:
+        return 'rgba(0, 0, 0, 0.7)'
+    }
+  }
+
   return (
     <div className={styles['lawyer-chat-item']}>
       <div className={styles['lawyer-chat-item-profile']}>
@@ -33,7 +52,7 @@ const LawyerChatItem = ({ name, profileImage, lastMessage, lastMessageTime, isOn
           <div className={styles['lawyer-chat-item-content-name']}>{name} 변호사</div>
           <span
             className={styles['badge']}
-            style={{ '--badge-color': isOnline ? COLOR.green_01 : 'rgba(0, 0, 0, 0.7)' } as React.CSSProperties}
+            style={{ '--badge-color': getStatusColor(partnerOnlineStatus) } as React.CSSProperties}
           />
         </div>
         <div className={styles['lawyer-chat-item-content-last-message-time']}>{formatTimeAgo(lastMessageTime)}</div>
@@ -44,6 +63,9 @@ const LawyerChatItem = ({ name, profileImage, lastMessage, lastMessageTime, isOn
 }
 
 const ChatList = ({ onChatRoomClick }: ChatListItemProps) => {
+  // 🟡 사용자 온라인 상태만 구독 (ChatList만 리렌더링)
+  const { userStatuses } = useUserStatuses()
+
   // 채팅방 리스트 데이터 불러오기
   const {
     data: chatPages,
@@ -107,7 +129,12 @@ const ChatList = ({ onChatRoomClick }: ChatListItemProps) => {
                   profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
                   lastMessage={chatRoom.chatRoomLastMessage.chatMessageContent}
                   lastMessageTime={chatRoom.chatRoomLastMessage.chatMessageCreatedAt}
-                  isOnline={chatRoom.chatRoomIsActive}
+                  partnerOnlineStatus={
+                    ((userStatuses as Record<number, string>)[chatRoom.chatRoomLawyer.lawyerId] as
+                      | 'online'
+                      | 'offline'
+                      | 'away') || chatRoom.partnerOnlineStatus
+                  }
                 />
                 {index !== allChatRooms.length - 1 && <Divider padding={0} />}
               </div>

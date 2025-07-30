@@ -12,6 +12,7 @@ import Chat from './baroTalk/chat/Chat'
 
 // 변호사 관리페이지
 import LawyerAdminLayout from './lawyerAdmin/LawyerAdminLayout'
+import LawyerChat from './lawyerAdmin/chat/lawyerChat/LawyerChat'
 
 export {
   Mypage,

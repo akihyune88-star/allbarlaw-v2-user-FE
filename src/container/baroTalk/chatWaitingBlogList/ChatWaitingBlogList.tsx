@@ -4,7 +4,8 @@ import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 import Divider from '@/components/divider/Divider'
 import { ChatRoomStatus, UpdateChatRoomStatusResponse } from '@/types/baroTalkTypes'
 import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
-import { useChatStore } from '@/store/chatStore'
+import { useChatStatus } from '@/hooks/queries/useSocket'
+import React from 'react'
 
 type ChatWaitingBlogListProps = {
   chatStatus: ChatRoomStatus
@@ -17,12 +18,11 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId }: ChatWaitingBlogListProp
     take: 4,
   })
 
-  const { setChatStatus } = useChatStore()
+  // 🟢 React Query 훅 사용
+  const { setChatStatus } = useChatStatus(chatRoomId)
 
   const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
     onSuccess: (data: UpdateChatRoomStatusResponse) => {
-      console.log('updateChatRoomStatus 성공:', data)
-      // 전역 상태도 업데이트
       setChatStatus(data.chatRoomStatus)
     },
   })
@@ -57,10 +57,10 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId }: ChatWaitingBlogListProp
         </h3>
         <div className={styles.chatWaitingBlogList__content__list}>
           {blogList.map((blog, index) => (
-            <>
-              <BlogItem key={index} item={blog} />
+            <React.Fragment key={blog.blogCaseId || index}>
+              <BlogItem item={blog} />
               {index !== blogList.length - 1 && <Divider padding={0} />}
-            </>
+            </React.Fragment>
           ))}
         </div>
       </div>

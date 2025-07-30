@@ -8,17 +8,24 @@ interface ChatHeaderProps extends Lawyer {
     month: number
   }
   className?: string
+  onEndChat?: () => void
 }
 
 const ChatHeader = ({
-  lawyerId,
   lawfirmName,
   lawyerName,
   lawyerProfileImage,
   isActive = false,
   count,
   className,
+  onEndChat,
 }: ChatHeaderProps) => {
+  const handleEndChat = () => {
+    if (onEndChat) {
+      onEndChat()
+    }
+  }
+
   return (
     <header className={`${styles['chat-header']} ${className}`}>
       <section className={styles['header-right']}>
@@ -43,7 +50,9 @@ const ChatHeader = ({
             전체 {count.total.toLocaleString()}건&nbsp;&nbsp;&nbsp;한달이네 {count.month.toLocaleString()}건
           </span>
         </div>
-        <button className={styles['chat-end-button']}>상담 끝내기</button>
+        <button className={styles['chat-end-button']} onClick={handleEndChat}>
+          상담 끝내기
+        </button>
       </section>
     </header>
   )
