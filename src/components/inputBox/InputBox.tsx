@@ -11,6 +11,7 @@ type InputBoxProps = {
   icon?: React.ReactNode
   disabled?: boolean
   className?: string
+  style?: React.CSSProperties
 }
 
 const InputBox = ({
@@ -22,17 +23,19 @@ const InputBox = ({
   icon,
   disabled = false,
   className = '',
+  style,
 }: InputBoxProps) => {
   return (
-    <div className={`${styles['input-container']} ${className}`}>
+    <div className={`${styles['input-container']} ${className}`} style={style}>
       <input
         type={type}
-        className={styles.input}
+        className={`${styles.input} ${className}`}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
         onKeyDown={onKeyDown}
         disabled={disabled}
+        style={style}
       />
       {icon}
     </div>

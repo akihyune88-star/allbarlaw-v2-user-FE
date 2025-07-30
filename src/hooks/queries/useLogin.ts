@@ -20,6 +20,8 @@ export const useLogin = (options?: UseLoginOptions) => {
       return response
     },
     onSuccess: (data, variables) => {
+      console.log('userLoginData', data)
+
       const storage = variables.rememberMe ? localStorage : sessionStorage
       storage.setItem(LOCAL.TOKEN, data.userAccessToken)
 

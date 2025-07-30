@@ -1,0 +1,51 @@
+.lawyer-chat {
+  flex: 1;
+  display: flex;
+  background-color: $color-bg-gray-03;
+  height: calc(100vh - 5.25rem - 44px); // 헤더와 푸터 높이 제외
+  padding: 1.5rem;
+}
+
+.test-input-container {
+  position: fixed;
+  top: 6rem;
+  left: 1rem;
+  z-index: 1000;
+  display: flex;
+  gap: 0.5rem;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.test-input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.test-button {
+  padding: 0.5rem 1rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.test-button:hover {
+  background: #0056b3;
+}
+
+.mobile-aside {
+  display: none;
+}
+
+@media (max-width: 1279px) {
+  .mobile-aside {
+    display: block;
+  }
+}

@@ -4,6 +4,7 @@ import styles from './chatRoomContainer.module.scss'
 import { ChatMessage, JoinRoomSuccessData, JoinRoomRequest } from '@/types/baroTalkTypes'
 import { useState, useEffect, useCallback } from 'react'
 import { Socket } from 'socket.io-client'
+import { useLocation } from 'react-router-dom'
 
 interface ChatRoomContainerProps {
   chatRoomId: number | null
@@ -14,6 +15,10 @@ interface ChatRoomContainerProps {
 const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContainerProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [roomInfo, setRoomInfo] = useState<JoinRoomSuccessData['chatRoom'] | null>(null)
+  const location = useLocation()
+
+  // 주소에 lawyer-admin이 포함되어 있으면 변호사로 구분
+  const isLawyer = location.pathname.includes('lawyer-admin')
 
   // chatRoomId가 변경될 때 방 입장
   useEffect(() => {
@@ -91,6 +96,7 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
         messages={messages}
         onSendMessage={handleSendMessage}
         isConnected={isConnected}
+        type={isLawyer ? 'LAWYER' : 'USER'}
       />
     </section>
   )

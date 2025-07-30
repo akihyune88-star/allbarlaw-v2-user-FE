@@ -53,8 +53,6 @@ const Login = () => {
     setValue('rememberMe', !rememberMe)
   }
 
-  console.log(activeTab)
-
   const { mutate: login, isPending: isLoginPending } = useLogin({
     onSuccess: () => {
       // 일반 사용자 로그인 시 메인 페이지로

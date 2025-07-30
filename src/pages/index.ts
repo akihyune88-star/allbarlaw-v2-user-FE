@@ -11,7 +11,7 @@ import RequestBaroTalk from './baroTalk/requestBaroTalk/RequestBaroTalk'
 import Chat from './baroTalk/chat/Chat'
 
 // 변호사 관리페이지
-import LawyerAdmin from './lawyerAdmin/LawyerAdmin'
+import LawyerAdminLayout from './lawyerAdmin/LawyerAdminLayout'
 
 export {
   Mypage,
@@ -20,5 +20,5 @@ export {
   ConsultationContentForm,
   RequestBaroTalk,
   Chat,
-  LawyerAdmin,
+  LawyerAdminLayout,
 }

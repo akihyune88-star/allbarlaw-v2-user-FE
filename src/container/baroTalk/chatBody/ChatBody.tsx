@@ -10,12 +10,13 @@ import { formatTimeAgo } from '@/utils/date'
 
 type ChatBodyProps = {
   chatStatus: 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
+  type?: 'USER' | 'LAWYER'
   messages: ChatMessage[]
   onSendMessage: (content: string) => void
   isConnected: boolean
 }
 
-const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected }: ChatBodyProps) => {
+const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected, type = 'USER' }: ChatBodyProps) => {
   const [message, setMessage] = useState('')
 
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -61,13 +62,15 @@ const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected }: ChatBody
           ))
         )}
       </div>
-      {chatStatus === 'ACTIVE' ? (
+      {chatStatus === 'ACTIVE' || type === 'LAWYER' ? (
         <InputBox
           icon={<SvgIcon name='send' />}
           value={message}
           onChange={handleChangeMessage}
           onKeyDown={handleKeyPress}
-          disabled={!isConnected}
+          // disabled={!isConnected}
+          className={styles['chat-input']}
+          style={type === 'LAWYER' ? { height: '3rem', minHeight: '3rem' } : undefined}
         />
       ) : (
         <ChatWaitingBlogList chatStatus={chatStatus} />

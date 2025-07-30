@@ -41,11 +41,12 @@ import {
   BaroTalkLawyerSelection,
   Chat,
   ConsultationContentForm,
-  LawyerAdmin,
   LawyerSignupForm,
   Mypage,
   RequestBaroTalk,
 } from '@/pages'
+import LawyerChat from '@/pages/lawyerAdmin/lawyerChat/LawyerChat'
+import LawyerAdminLayout from '@/pages/lawyerAdmin/LawyerAdminLayout'
 
 const router = createBrowserRouter([
   {
@@ -264,9 +265,19 @@ const router = createBrowserRouter([
     path: ROUTER.LAWYER_ADMIN,
     element: (
       <ProtectedRoute requireLawyer={true}>
-        <LawyerAdmin />
+        <LawyerAdminLayout />
       </ProtectedRoute>
     ),
+    children: [
+      {
+        path: '',
+        element: <div>변호사 관리 메인 페이지</div>,
+      },
+      {
+        path: 'chat',
+        element: <LawyerChat />,
+      },
+    ],
   },
 ])
 

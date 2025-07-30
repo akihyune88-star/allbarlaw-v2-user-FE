@@ -9,6 +9,7 @@ interface SideBarProps {
   selectedSubcategory: number | null
   onMainCategoryClick: (id: number) => void
   onSubcategoryClick: (id: number) => void
+  alwaysExpanded?: boolean // 항상 펼쳐보기 옵션
 }
 
 interface CategoryItemProps {
@@ -17,20 +18,34 @@ interface CategoryItemProps {
   onClick: () => void
   selectedSubcategory: number | null
   onSubcategoryClick: (id: number) => void
+  alwaysExpanded?: boolean // 항상 펼쳐보기 옵션
 }
 
-const CategoryItem = ({ category, isActive, onClick, selectedSubcategory, onSubcategoryClick }: CategoryItemProps) => {
+const CategoryItem = ({
+  category,
+  isActive,
+  onClick,
+  selectedSubcategory,
+  onSubcategoryClick,
+  alwaysExpanded,
+}: CategoryItemProps) => {
+  const shouldShowSubcategories = alwaysExpanded || isActive
+
   return (
     <li className={styles['category-list-item']}>
       <div className={styles['category-list-header']}>
-        <h3 className={`${styles.categoryName} ${isActive ? styles.active : ''}`} onClick={onClick}>
+        <h3
+          className={`${styles.categoryName} ${isActive ? styles.active : ''}`}
+          onClick={alwaysExpanded ? undefined : onClick}
+          style={{ cursor: alwaysExpanded ? 'default' : 'pointer' }}
+        >
           {category.categoryName}
         </h3>
-        {isActive && (
+        {isActive && !alwaysExpanded && (
           <SvgIcon name='arrowSmall' color={COLOR.green_01} size={16} style={{ transform: 'rotate(180deg)' }} />
         )}
       </div>
-      {isActive && (
+      {shouldShowSubcategories && (
         <ul className={styles['subcategory-list']}>
           {category.subcategories.map(subcategory => (
             <li
@@ -56,6 +71,7 @@ const SideBar = ({
   selectedSubcategory,
   onMainCategoryClick,
   onSubcategoryClick,
+  alwaysExpanded = false,
 }: SideBarProps) => {
   return (
     <nav className={styles.container} aria-label='카테고리 네비게이션'>
@@ -68,6 +84,7 @@ const SideBar = ({
             onClick={() => onMainCategoryClick(category.categoryId)}
             selectedSubcategory={selectedSubcategory}
             onSubcategoryClick={onSubcategoryClick}
+            alwaysExpanded={alwaysExpanded}
           />
         ))}
       </ul>

@@ -10,6 +10,7 @@ export const ROUTER = {
   LAWYER_SIGNUP_FORM: 'lawyer-signup-form',
   LAWYER_LOGIN: '/lawyer-login',
   LAWYER_ADMIN: '/lawyer-admin',
+  LAWYER_ADMIN_CHAT: '/lawyer-admin/chat',
   // 마이페이지
   MYPAGE: '/mypage',
   KEEP_LIST: 'keep-list',
