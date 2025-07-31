@@ -1,4 +1,4 @@
-import { useMutation, useInfiniteQuery } from '@tanstack/react-query'
+import { useMutation, useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { baroTalkServices } from '@/services/baroTalkServices'
 import { useAuth } from '@/contexts/AuthContext'
 import {
@@ -108,9 +108,11 @@ export const useGetLawyerChatList = (lawyerId: number, request: { take: number; 
 }
 
 export const useLeaveChatRoom = (options?: UseCreateBaroTalkOptions) => {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (request: LeaveChatRoomRequest) => baroTalkServices.leaveChatRoom(request),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_CHAT_LIST] })
       options?.onSuccess?.()
     },
     onError: (error: Error) => {

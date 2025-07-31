@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react'
 import { LOCAL } from '@/constants/local'
 import { UserInfo } from '@/types/authTypes'
 
@@ -13,6 +13,7 @@ interface AuthContextType {
   getDisplayLoginStatus: (_isMainLayout: boolean) => boolean
   getUserIdFromToken: () => number | null
   getLawyerIdFromToken: () => number | null
+  userKeyId: number | null // 추가된 캐싱된 userKeyId
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -65,6 +66,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLawyer, setIsLawyer] = useState(false)
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  // userKeyId를 useMemo로 캐싱
+  const userKeyId = useMemo(() => {
+    return getUserIdFromToken()
+  }, [isLoggedIn]) // 로그인 상태가 변경될 때만 재계산
 
   const checkLoginStatus = () => {
     const hasToken = !!(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN))
@@ -157,6 +163,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         getDisplayLoginStatus,
         getUserIdFromToken: getUserIdFromTokenContext,
         getLawyerIdFromToken: getLawyerIdFromTokenContext,
+        userKeyId,
       }}
     >
       {children}

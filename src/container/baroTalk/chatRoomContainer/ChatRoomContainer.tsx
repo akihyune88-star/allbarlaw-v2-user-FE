@@ -5,6 +5,7 @@ import { useCallback } from 'react'
 import { useLeaveChatRoom, useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
 import { useMessages, useChatStatus, useRoomInfo, useSetChatRoomId, useSetChatStatus } from '@/stores/socketStore'
 import { useChatSocket } from '@/hooks/useChatSocket'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface ChatRoomContainerProps {
   chatRoomId: number | null
@@ -17,6 +18,7 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
   const roomInfo = useRoomInfo()
   const setChatRoomId = useSetChatRoomId()
   const setChatStatus = useSetChatStatus()
+  const { userKeyId } = useAuth()
 
   // 🆕 커스텀 훅 사용
   const { isConnected, sendMessage, leaveRoom, isLawyer } = useChatSocket({
@@ -27,6 +29,9 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
   const { mutate: leaveChatRoom } = useLeaveChatRoom({
     onSuccess: () => {
       console.log('🟢 채팅방 나가기 성공')
+      setChatStatus('COMPLETED')
+      leaveRoom()
+      setChatRoomId(null)
     },
     onError: error => {
       console.error('❌ 채팅방 나가기 실패:', error)
@@ -68,7 +73,7 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
       roomId: chatRoomId,
       userType: isLawyer ? 'LAWYER' : 'USER',
       reason: 'USER_LEFT',
-      userId: 1,
+      userId: userKeyId!,
     })
   }, [chatRoomId, updateChatRoomStatus])
 
