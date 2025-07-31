@@ -7,8 +7,8 @@ interface SideBarProps {
   categories: CategoryList
   selectedMainCategory: number | null
   selectedSubcategory: number | null
-  onMainCategoryClick: (id: number) => void
-  onSubcategoryClick: (id: number) => void
+  onMainCategoryClick: (_id: number) => void
+  onSubcategoryClick: (_id: number) => void
   alwaysExpanded?: boolean // 항상 펼쳐보기 옵션
 }
 
@@ -17,7 +17,7 @@ interface CategoryItemProps {
   isActive: boolean
   onClick: () => void
   selectedSubcategory: number | null
-  onSubcategoryClick: (id: number) => void
+  onSubcategoryClick: (_id: number) => void
   alwaysExpanded?: boolean // 항상 펼쳐보기 옵션
 }
 

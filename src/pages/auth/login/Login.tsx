@@ -27,6 +27,7 @@ const Login = () => {
       }, 3000)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [errorMessage])
 
   const {

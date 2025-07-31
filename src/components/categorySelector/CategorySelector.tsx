@@ -18,16 +18,18 @@ type CategorySelectorProps = {
 }
 
 const CategorySelector = ({
-  category: _category,
-  subcategory: _subcategory,
-  onCategoryChange,
-  onSubcategoryChange,
   title,
+  className,
+  onSubcategoryClick,
   enableMobileExpand = false,
   initialVisibleGroups = 2,
-  className,
   horizontalPadding = 20,
   defaultSubcategoryId,
+  // 사용하지 않는 props는 _ prefix
+  category: _category,
+  subcategory: _subcategory,
+  onCategoryChange: _onCategoryChange,
+  onSubcategoryChange: _onSubcategoryChange,
 }: CategorySelectorProps) => {
   const { data: categoryList } = useCategory()
   const [selectedCategory, setSelectedMainCategory] = useState<number | null>(null)

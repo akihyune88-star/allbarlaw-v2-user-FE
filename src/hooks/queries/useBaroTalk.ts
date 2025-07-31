@@ -7,12 +7,13 @@ import {
   BaroTalkChatListRequest,
   UpdateChatRoomStatusRequest,
   UpdateChatRoomStatusResponse,
+  LeaveChatRoomRequest,
 } from '@/types/baroTalkTypes'
 import { QUERY_KEY } from '@/constants/queryKey'
 
 interface UseCreateBaroTalkOptions {
-  onSuccess?: (data?: any) => void
-  onError?: (error: Error) => void
+  onSuccess?: (_data?: any) => void
+  onError?: (_error: Error) => void
 }
 
 export const useCreateBaroTalk = (options?: UseCreateBaroTalkOptions) => {
@@ -103,5 +104,17 @@ export const useGetLawyerChatList = (lawyerId: number, request: { take: number; 
       return undefined
     },
     initialPageParam: 1,
+  })
+}
+
+export const useLeaveChatRoom = (options?: UseCreateBaroTalkOptions) => {
+  return useMutation({
+    mutationFn: (request: LeaveChatRoomRequest) => baroTalkServices.leaveChatRoom(request),
+    onSuccess: () => {
+      options?.onSuccess?.()
+    },
+    onError: (error: Error) => {
+      options?.onError?.(error)
+    },
   })
 }

@@ -8,7 +8,7 @@ import { isAxiosError } from 'axios'
 
 interface UseSocialLoginOptions {
   onSuccess?: () => void
-  onError?: (message: string) => void
+  onError?: (_message: string) => void
 }
 
 export const useSocialLogin = (options?: UseSocialLoginOptions) => {

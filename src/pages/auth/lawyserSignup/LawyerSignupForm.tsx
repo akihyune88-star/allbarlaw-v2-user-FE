@@ -28,7 +28,7 @@ const LawyerSignupForm = () => {
     watch,
   } = methods
 
-  const onSubmit = async (data: LawyerSignupFormData) => {
+  const onSubmit = async (_data: LawyerSignupFormData) => {
     // try {
     //   const verificationToken = sessionStorage.getItem(LOCAL.VERIFICATION_TOKEN)
     //   if (!verificationToken) {

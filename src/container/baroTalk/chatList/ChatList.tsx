@@ -17,8 +17,8 @@ type LawyerChatItemProps = {
   partnerOnlineStatus?: 'online' | 'offline' | 'away'
 }
 
-type ChatListItemProps = {
-  onChatRoomClick: (chatRoomId: number) => void
+type _ChatListItemProps = {
+  onChatRoomClick: (_chatRoomId: number) => void
 }
 
 const LawyerChatItem = ({

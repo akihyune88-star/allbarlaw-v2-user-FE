@@ -22,8 +22,9 @@ const CheckBoxGroup = ({
   options,
   onChange,
   className,
-  direction = 'vertical',
-  gap = '1rem',
+  // 사용하지 않는 props는 _ prefix
+  direction: _direction = 'vertical',
+  gap: _gap = '1rem',
 }: CheckBoxGroupProps) => {
   const handleChange = (value: string) => {
     const newValues = _values.includes(value) ? _values.filter(v => v !== value) : [..._values, value]

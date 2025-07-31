@@ -27,12 +27,13 @@ const defaultConfig: ReconnectConfig = {
 
 export const useSocketReconnect = (config: Partial<ReconnectConfig> = {}) => {
   const socket = useSocket()
-  const setSocket = useSetSocket()
+  // 사용하지 않는 변수들은 _ prefix
+  const _setSocket = useSetSocket()
   const setConnected = useSetConnected()
   const setReconnecting = useSetReconnecting()
-  const setReconnectAttempts = useSetReconnectAttempts()
+  const _setReconnectAttempts = useSetReconnectAttempts()
   const setLastDisconnectTime = useSetLastDisconnectTime()
-  const setReconnectInterval = useSetReconnectInterval()
+  const _setReconnectInterval = useSetReconnectInterval()
   const incrementReconnectAttempts = useIncrementReconnectAttempts()
   const resetReconnectState = useResetReconnectState()
 
@@ -69,7 +70,7 @@ export const useSocketReconnect = (config: Partial<ReconnectConfig> = {}) => {
   }, [socket, mergedConfig, calculateDelay, resetReconnectState])
 
   useEffect(() => {
-    if (!socket) return
+    if (!socket) return undefined
 
     const handleDisconnect = (reason: string) => {
       console.log('소켓 연결 해제:', reason)

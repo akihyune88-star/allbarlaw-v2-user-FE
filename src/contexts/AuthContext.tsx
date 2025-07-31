@@ -9,8 +9,8 @@ interface AuthContextType {
   isLoading: boolean
   logout: () => void
   checkLoginStatus: () => void
-  setUserInfo: (userInfo: UserInfo) => void
-  getDisplayLoginStatus: (isMainLayout: boolean) => boolean
+  setUserInfo: (_userInfo: UserInfo) => void
+  getDisplayLoginStatus: (_isMainLayout: boolean) => boolean
   getUserIdFromToken: () => number | null
   getLawyerIdFromToken: () => number | null
 }
@@ -116,8 +116,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   // 메인 레이아웃에서 사용할 함수
-  const getDisplayLoginStatus = (isMainLayout: boolean) => {
-    return isMainLayout ? isLoggedIn && !isLawyer : isLoggedIn
+  const getDisplayLoginStatus = (_isMainLayout: boolean) => {
+    return _isMainLayout ? isLoggedIn && !isLawyer : isLoggedIn
   }
 
   // 토큰에서 유저 ID 추출 함수

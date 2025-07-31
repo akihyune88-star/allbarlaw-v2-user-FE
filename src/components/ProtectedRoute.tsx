@@ -21,6 +21,7 @@ export const ProtectedRoute = ({ children, requireLawyer = false, requireUser = 
       }, 150)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [requireUser, isLoggedIn])
 
   // 로딩 중이 아닐 때만 로그 출력 (깜빡거림 방지)

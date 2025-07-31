@@ -2,7 +2,7 @@ import ChatHeader from '@/container/baroTalk/chatHeader/ChatHeader'
 import ChatBody from '@/container/baroTalk/chatBody/ChatBody'
 import styles from './chatRoomContainer.module.scss'
 import { useCallback } from 'react'
-import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
+import { useLeaveChatRoom, useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
 import { useMessages, useChatStatus, useRoomInfo, useSetChatRoomId, useSetChatStatus } from '@/stores/socketStore'
 import { useChatSocket } from '@/hooks/useChatSocket'
 
@@ -22,6 +22,15 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
   const { isConnected, sendMessage, leaveRoom, isLawyer } = useChatSocket({
     chatRoomId,
     setChatStatus,
+  })
+
+  const { mutate: leaveChatRoom } = useLeaveChatRoom({
+    onSuccess: () => {
+      console.log('🟢 채팅방 나가기 성공')
+    },
+    onError: error => {
+      console.error('❌ 채팅방 나가기 실패:', error)
+    },
   })
 
   // 🆕 상담 끝내기 mutation
@@ -55,10 +64,11 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
     )
     if (!confirmed) return
 
-    console.log('🟢 상담 끝내기 요청:', chatRoomId)
-    updateChatRoomStatus({
-      chatRoomId: chatRoomId,
-      status: 'COMPLETED',
+    leaveChatRoom({
+      roomId: chatRoomId,
+      userType: isLawyer ? 'LAWYER' : 'USER',
+      reason: 'USER_LEFT',
+      userId: 1,
     })
   }, [chatRoomId, updateChatRoomStatus])
 

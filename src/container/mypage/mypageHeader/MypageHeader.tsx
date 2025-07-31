@@ -11,7 +11,18 @@ interface MypageHeaderProps {
   onSortChange?: (sortOrder: 'recent' | 'oldest') => void
 }
 
-const MypageHeader = ({ _tab, _sortOrder, onTabChange, onSortChange }: MypageHeaderProps) => {
+const MypageHeader = ({
+  tabs,
+  onTabClick,
+  currentTab,
+  sortOrder,
+  onSortChange,
+  // 사용하지 않는 props는 _ prefix
+  tab: _tab,
+  sortOrder: _sortOrder,
+  onTabChange: _onTabChange,
+  onSortChange: _onSortChange,
+}: MypageHeaderProps) => {
   const getTabInfo = (tab: string): { name: string; icon: KeyOfIcon } => {
     switch (tab) {
       case 'keepList':

@@ -160,3 +160,20 @@ export type LawyerChatListResponse = {
   totalPages: number
   hasNextPage: boolean
 }
+
+export type LeaveChatRoomRequest = {
+  userId: number
+  userType: 'USER' | 'LAWYER'
+  reason: string
+  roomId: number
+}
+
+export type LeaveChatRoomResponse = {
+  chatRoomId: number
+  chatRoomStatus: ChatRoomStatus
+  chatRoomIsActive: boolean
+  userLeft: boolean
+  lawyerLeft: boolean
+  currentUserLeft: boolean
+  timestamp: string
+}

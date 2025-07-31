@@ -58,8 +58,8 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
   sliderSettings = {},
   showTitle = false,
   showDescription = false,
-  imageObjectFit = 'cover',
   // 사용하지 않는 props는 _ prefix
+  imageObjectFit: _imageObjectFit = 'cover',
   loading: _loading = 'lazy',
   renderCustomContent: _renderCustomContent,
   onSlideChange,

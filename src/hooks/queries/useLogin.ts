@@ -8,7 +8,7 @@ import { isAxiosError } from 'axios'
 
 interface UseLoginOptions {
   onSuccess?: () => void
-  onError?: (message: string) => void
+  onError?: (_message: string) => void
 }
 
 export const useLogin = (options?: UseLoginOptions) => {
@@ -19,16 +19,16 @@ export const useLogin = (options?: UseLoginOptions) => {
       const response = await authService.login(inputValue)
       return response
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (data, _variables) => {
       console.log('userLoginData', data)
 
-      const storage = variables.rememberMe ? localStorage : sessionStorage
+      const storage = _variables.rememberMe ? localStorage : sessionStorage
       storage.setItem(LOCAL.TOKEN, data.accessToken)
 
       // 사용자 정보 저장
       const userInfo: UserInfo = {
         userId: data.userId,
-        userAccount: variables.userAccount,
+        userAccount: _variables.userAccount,
         userEmail: '', // API에서 이메일 정보를 받아와야 함
         userType: data.userType,
         lawyerId: data.lawyerId,
@@ -59,15 +59,15 @@ export const useLawyerLogin = (options?: UseLoginOptions) => {
       const response = await authService.lawyerLogin(inputValue)
       return response
     },
-    onSuccess: (data, variables) => {
-      const storage = variables.rememberMe ? localStorage : sessionStorage
+    onSuccess: (data, _variables) => {
+      const storage = _variables.rememberMe ? localStorage : sessionStorage
       storage.setItem(LOCAL.TOKEN, data.accessToken)
       console.log('lawyerLoginData', data)
 
       // 사용자 정보 저장
       const userInfo: UserInfo = {
         userId: data.userId,
-        userAccount: variables.userAccount,
+        userAccount: _variables.userAccount,
         userEmail: '', // API에서 이메일 정보를 받아와야 함
         userType: 'lawyer', // 변호사 로그인이므로 항상 'lawyer'
         lawyerId: data.lawyerId,

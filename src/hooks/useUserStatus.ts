@@ -10,7 +10,7 @@ const useUserStatus = (partnerIds: number[]) => {
   const statusSocket = useRef<Socket | null>(null)
 
   useEffect(() => {
-    if (partnerIds.length === 0) return
+    if (partnerIds.length === 0) return undefined
 
     console.log('🔍 useUserStatus - 상태 소켓 연결 시작, partnerIds:', partnerIds)
 
