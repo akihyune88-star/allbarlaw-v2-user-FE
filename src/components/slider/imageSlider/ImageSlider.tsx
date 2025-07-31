@@ -59,8 +59,9 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
   showTitle = false,
   showDescription = false,
   imageObjectFit = 'cover',
-  loading = 'lazy',
-  renderCustomContent,
+  // 사용하지 않는 props는 _ prefix
+  loading: _loading = 'lazy',
+  renderCustomContent: _renderCustomContent,
   onSlideChange,
   onImageClick,
   customArrows,
@@ -127,62 +128,22 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
         : height,
   }
 
-  const imageStyle: React.CSSProperties = {
-    objectFit: imageObjectFit,
-    ...(height !== 'auto' && { height: typeof height === 'number' ? `${height}px` : height }),
-  }
-
-  const handleImageClick = (item: ImageItem) => {
-    item.onClick?.()
-  }
-
-  const renderSlideContent = (item: ImageItem, index: number) => {
-    // 커스텀 렌더링이 제공되면 사용
-    if (renderCustomContent) {
-      return renderCustomContent(item, index)
-    }
-
-    // 기본 렌더링
+  const renderSlideContent = (_item: ImageItem, _index: number) => {
     return (
       <div className={styles['slide-content']}>
-        <div
-          className={styles['image-container']}
-          onClick={() => handleImageClick(item)}
-          role={item.onClick ? 'button' : undefined}
-          tabIndex={item.onClick ? 0 : undefined}
-          onKeyDown={e => {
-            if (item.onClick && (e.key === 'Enter' || e.key === ' ')) {
-              e.preventDefault()
-              item.onClick()
-            }
-          }}
-        >
-          <img
-            src={item.src}
-            alt={item.alt || `Slide ${index + 1}`}
-            className={styles['slide-image']}
-            style={imageStyle}
-            loading={loading}
-          />
-
-          {(showTitle || showDescription) && (item.title || item.description) && (
-            <div className={styles['slide-overlay']}>
-              {showTitle && item.title && <h3 className={styles['slide-title']}>{item.title}</h3>}
-              {showDescription && item.description && <p className={styles['slide-description']}>{item.description}</p>}
-            </div>
-          )}
-        </div>
+        {showTitle && _item.title && <h3 className={styles.title}>{_item.title}</h3>}
+        {showDescription && _item.description && <p className={styles.description}>{_item.description}</p>}
       </div>
     )
   }
 
   // 기본 커스텀 닷 렌더링
-  const renderDefaultCustomDot = (index: number, isActive: boolean, onClick: () => void) => (
+  const renderDefaultCustomDot = (_index: number, _isActive: boolean, _onClick: () => void) => (
     <button
-      key={index}
-      className={`${styles['custom-dot']} ${isActive ? styles['custom-dot-active'] : ''}`}
-      onClick={onClick}
-      aria-label={`${index + 1}번째 슬라이드로 이동`}
+      key={_index}
+      className={`${styles['custom-dot']} ${_isActive ? styles.active : ''}`}
+      onClick={_onClick}
+      aria-label={`슬라이드 ${_index + 1}로 이동`}
     />
   )
 

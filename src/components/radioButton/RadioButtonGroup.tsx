@@ -23,6 +23,8 @@ const RadioButtonGroup = ({
   direction = 'vertical',
   gap = '1rem',
   gapUnit = 'rem',
+  // 사용하지 않는 props는 _ prefix
+  value: _value,
 }: RadioButtonGroupProps) => {
   return (
     <div className={`${styles['radio-group']} ${className || ''}`}>

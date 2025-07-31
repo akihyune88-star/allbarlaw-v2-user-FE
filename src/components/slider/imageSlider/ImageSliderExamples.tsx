@@ -46,47 +46,47 @@ const detailedImages: ImageItem[] = [
   },
 ]
 
+// 커스텀 화살표 컴포넌트들을 함수 밖으로 이동
+const CustomPrevArrow = (props: any) => (
+  <button
+    {...props}
+    style={{
+      ...props.style,
+      display: 'block',
+      background: '#ff6b6b',
+      borderRadius: '50%',
+      border: 'none',
+      width: '50px',
+      height: '50px',
+      left: '10px',
+      zIndex: 2,
+    }}
+  >
+    ←
+  </button>
+)
+
+const CustomNextArrow = (props: any) => (
+  <button
+    {...props}
+    style={{
+      ...props.style,
+      display: 'block',
+      background: '#51cf66',
+      borderRadius: '50%',
+      border: 'none',
+      width: '50px',
+      height: '50px',
+      right: '10px',
+      zIndex: 2,
+    }}
+  >
+    →
+  </button>
+)
+
 const ImageSliderExamples: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
-
-  // 커스텀 화살표 컴포넌트
-  const CustomPrevArrow = (props: any) => (
-    <button
-      {...props}
-      style={{
-        ...props.style,
-        display: 'block',
-        background: '#ff6b6b',
-        borderRadius: '50%',
-        border: 'none',
-        width: '50px',
-        height: '50px',
-        left: '10px',
-        zIndex: 2,
-      }}
-    >
-      ←
-    </button>
-  )
-
-  const CustomNextArrow = (props: any) => (
-    <button
-      {...props}
-      style={{
-        ...props.style,
-        display: 'block',
-        background: '#51cf66',
-        borderRadius: '50%',
-        border: 'none',
-        width: '50px',
-        height: '50px',
-        right: '10px',
-        zIndex: 2,
-      }}
-    >
-      →
-    </button>
-  )
 
   // 다양한 슬라이더 설정
   const autoplaySettings: Partial<Settings> = {

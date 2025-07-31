@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import { formatTimeAgo } from '@/utils/date'
 import styles from './chatList.module.scss'
 import Divider from '@/components/divider/Divider'
@@ -7,7 +7,7 @@ import { useGetBaroTalkChatList } from '@/hooks/queries/useBaroTalk'
 import { ChatRoom } from '@/types/baroTalkTypes'
 import { ROUTER } from '@/routes/routerConstant'
 import { useNavigate } from 'react-router-dom'
-import { useUserStatuses } from '@/hooks/queries/useSocket'
+import useUserStatus from '@/hooks/useUserStatus'
 
 type LawyerChatItemProps = {
   name: string
@@ -52,7 +52,12 @@ const LawyerChatItem = ({
           <div className={styles['lawyer-chat-item-content-name']}>{name} 변호사</div>
           <span
             className={styles['badge']}
-            style={{ '--badge-color': getStatusColor(partnerOnlineStatus) } as React.CSSProperties}
+            style={
+              {
+                '--badge-color': getStatusColor(partnerOnlineStatus),
+                backgroundColor: getStatusColor(partnerOnlineStatus), // 직접 배경색도 설정
+              } as React.CSSProperties
+            }
           />
         </div>
         <div className={styles['lawyer-chat-item-content-last-message-time']}>{formatTimeAgo(lastMessageTime)}</div>
@@ -62,10 +67,12 @@ const LawyerChatItem = ({
   )
 }
 
-const ChatList = ({ onChatRoomClick }: ChatListItemProps) => {
-  // 🟡 사용자 온라인 상태만 구독 (ChatList만 리렌더링)
-  const { userStatuses } = useUserStatuses()
+type ChatListProps = {
+  _chatRoomId?: number
+  onChatRoomClick: (chatRoomId: number) => void
+}
 
+const ChatList = ({ _chatRoomId, onChatRoomClick }: ChatListProps) => {
   // 채팅방 리스트 데이터 불러오기
   const {
     data: chatPages,
@@ -82,6 +89,35 @@ const ChatList = ({ onChatRoomClick }: ChatListItemProps) => {
     if (!chatPages) return []
     return chatPages.pages.flatMap(page => page.chatRooms)
   }, [chatPages])
+
+  // 변호사 ID들 추출
+  const partnerIds = useMemo(() => {
+    return allChatRooms.map(room => room.chatRoomLawyer.lawyerId)
+  }, [allChatRooms])
+
+  // 서버 가이드 방식으로 상태 관리
+  const userStatuses = useUserStatus(partnerIds)
+
+  // 🔍 변호사 로그인 시나리오 디버깅
+  useEffect(() => {
+    console.log('🔍 ChatList - userStatuses 변경됨:', userStatuses)
+  }, [userStatuses])
+
+  // 🔍 변호사 로그인 시나리오 디버깅
+  useEffect(() => {
+    if (allChatRooms.length > 0) {
+      console.log(
+        '🔍 ChatList - 변호사 상태 확인:',
+        allChatRooms.map(room => ({
+          lawyerId: room.chatRoomLawyer.lawyerId,
+          lawyerName: room.chatRoomLawyer.lawyerName,
+          apiStatus: room.partnerOnlineStatus,
+          realtimeStatus: userStatuses[room.chatRoomLawyer.lawyerId],
+          finalStatus: userStatuses[room.chatRoomLawyer.lawyerId] || room.partnerOnlineStatus,
+        }))
+      )
+    }
+  }, [allChatRooms, userStatuses])
 
   // 로딩 상태 처리
   if (isLoading) {
@@ -114,6 +150,17 @@ const ChatList = ({ onChatRoomClick }: ChatListItemProps) => {
           <button onClick={handleAddConsultation}>추가 상담하기</button>
         </div>
       </header>
+
+      {/* 🔍 변호사 로그인 시뮬레이션 테스트 */}
+      {allChatRooms.length > 0 && (
+        <div style={{ padding: '10px', background: '#f0f0f0', margin: '10px 0', borderRadius: '4px' }}>
+          <h4>🔍 변호사 로그인 시뮬레이션</h4>
+          <p>현재 userStatuses: {JSON.stringify(userStatuses)}</p>
+          <p>💡 변호사로 로그인해보세요! 소켓 이벤트가 오는지 확인됩니다.</p>
+          <p>🔍 partnerIds: {JSON.stringify(partnerIds)}</p>
+        </div>
+      )}
+
       <section className={styles['chat-list-wrapper']}>
         <div className={styles['chat-list-content']}>
           {allChatRooms.length === 0 ? (
@@ -122,23 +169,24 @@ const ChatList = ({ onChatRoomClick }: ChatListItemProps) => {
               <p>새로운 상담을 시작해보세요!</p>
             </div>
           ) : (
-            allChatRooms.map((chatRoom: ChatRoom, index: number) => (
-              <div key={chatRoom.chatRoomId} onClick={() => onChatRoomClick(chatRoom.chatRoomId)}>
-                <LawyerChatItem
-                  name={chatRoom.chatRoomLawyer.lawyerName}
-                  profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
-                  lastMessage={chatRoom.chatRoomLastMessage.chatMessageContent}
-                  lastMessageTime={chatRoom.chatRoomLastMessage.chatMessageCreatedAt}
-                  partnerOnlineStatus={
-                    ((userStatuses as Record<number, string>)[chatRoom.chatRoomLawyer.lawyerId] as
-                      | 'online'
-                      | 'offline'
-                      | 'away') || chatRoom.partnerOnlineStatus
-                  }
-                />
-                {index !== allChatRooms.length - 1 && <Divider padding={0} />}
-              </div>
-            ))
+            allChatRooms.map((chatRoom: ChatRoom, index: number) => {
+              const lawyerId = chatRoom.chatRoomLawyer.lawyerId
+              const realtimeStatus = userStatuses[lawyerId] as 'online' | 'offline' | 'away' | undefined
+              const finalStatus = realtimeStatus || chatRoom.partnerOnlineStatus
+
+              return (
+                <div key={chatRoom.chatRoomId} onClick={() => onChatRoomClick(chatRoom.chatRoomId)}>
+                  <LawyerChatItem
+                    name={chatRoom.chatRoomLawyer.lawyerName}
+                    profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
+                    lastMessage={chatRoom.chatRoomLastMessage.chatMessageContent}
+                    lastMessageTime={chatRoom.chatRoomLastMessage.chatMessageCreatedAt}
+                    partnerOnlineStatus={finalStatus}
+                  />
+                  {index !== allChatRooms.length - 1 && <Divider padding={0} />}
+                </div>
+              )
+            })
           )}
         </div>
       </section>

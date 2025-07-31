@@ -18,10 +18,13 @@ type CategorySelectorProps = {
 }
 
 const CategorySelector = ({
+  category: _category,
+  subcategory: _subcategory,
+  onCategoryChange,
+  onSubcategoryChange,
   title,
-  onSubcategoryClick,
-  enableMobileExpand = false, // 기본값: 펼쳐보기 기능 사용
-  initialVisibleGroups = 2, // 기본값: 2그룹 표시
+  enableMobileExpand = false,
+  initialVisibleGroups = 2,
   className,
   horizontalPadding = 20,
   defaultSubcategoryId,

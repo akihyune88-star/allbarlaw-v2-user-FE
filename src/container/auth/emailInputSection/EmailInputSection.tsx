@@ -9,7 +9,7 @@ import LabelInput from '@/components/labelInput/LabelInput'
 export type EmailInputSectionProps<T extends FieldValues> = {
   register: UseFormRegister<T>
   errors: FieldErrors<T>
-  onEmailError?: (isError: boolean) => void
+  onEmailError?: (_isError: boolean) => void
 }
 
 function EmailInputSection<T extends { email: string } & FieldValues>({

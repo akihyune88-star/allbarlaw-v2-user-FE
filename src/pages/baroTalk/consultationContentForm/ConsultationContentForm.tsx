@@ -13,8 +13,7 @@ const ConsultationContentForm = () => {
   const isMobile = useMediaQuery('(max-width: 1279px)')
 
   // Zustand 스토어에서 상태와 액션 가져오기
-  const { consultationRequestTitle, consultationRequestDescription, setTitle, setDescription, isStep2Complete } =
-    useBaroTalkStore()
+  const { consultationRequestTitle, consultationRequestDescription, setTitle, setDescription } = useBaroTalkStore()
 
   // 로컬 상태로 폼 데이터 관리
   const [title, setTitleLocal] = useState<string>(consultationRequestTitle || '')

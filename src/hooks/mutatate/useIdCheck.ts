@@ -5,8 +5,8 @@ import { isAxiosError } from 'axios'
 import { CheckResponse } from '@/types/authTypes'
 
 interface UseIdCheckOptions {
-  onSuccess?: (data: CheckResponse) => void
-  onError?: (message: string) => void
+  onSuccess?: (_data: CheckResponse) => void
+  onError?: (_message: string) => void
 }
 
 export const useIdCheck = (options?: UseIdCheckOptions) => {

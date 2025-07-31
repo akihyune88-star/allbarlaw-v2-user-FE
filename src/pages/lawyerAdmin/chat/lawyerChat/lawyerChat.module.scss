@@ -6,6 +6,13 @@
   padding: 1.5rem;
 }
 
+.connectionStatusWrapper {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-bottom: 1rem;
+}
+
 .test-input-container {
   position: fixed;
   top: 6rem;

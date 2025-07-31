@@ -46,7 +46,10 @@ export const baroTalkServices = {
     return response.data
   },
 
-  getLawyerChatList: async (lawyerId: number, request?: { page?: number; take?: number; status?: string; sort?: string }) => {
+  getLawyerChatList: async (
+    lawyerId: number,
+    request?: { page?: number; take?: number; status?: string; sort?: string }
+  ) => {
     const params = new URLSearchParams()
     if (request?.page) params.append('page', request.page.toString())
     if (request?.take) params.append('take', request.take.toString())

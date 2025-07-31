@@ -1,6 +1,5 @@
 import RequestHeader from '@/container/baroTalk/RequestHeader'
 import styles from './baro-talk-lawyer-selection.module.scss'
-import { Lawyer } from '@/types/lawyerTypes'
 import { useMemo } from 'react'
 import Input from '@/components/input/Input'
 import CheckBoxGroup from '@/components/checkBox/CheckBoxGroup'

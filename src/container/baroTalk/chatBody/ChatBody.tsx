@@ -7,7 +7,6 @@ import SvgIcon from '@/components/SvgIcon'
 import React, { ChangeEvent, useState } from 'react'
 import { ChatMessage, ChatRoomStatus } from '@/types/baroTalkTypes'
 import { formatTimeAgo } from '@/utils/date'
-import { useChatStatus } from '@/hooks/queries/useSocket'
 
 type ChatBodyProps = {
   chatStatus: ChatRoomStatus
@@ -20,8 +19,6 @@ type ChatBodyProps = {
 
 const ChatBody = ({ chatStatus, messages, onSendMessage, isConnected, type = 'USER', chatRoomId }: ChatBodyProps) => {
   const [message, setMessage] = useState('')
-
-  // 🟢 React Query 훅 사용
 
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value)

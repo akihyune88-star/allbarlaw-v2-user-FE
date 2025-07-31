@@ -11,7 +11,7 @@ interface MypageHeaderProps {
   onSortChange?: (sortOrder: 'recent' | 'oldest') => void
 }
 
-const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder = 'recent', onSortChange }: MypageHeaderProps) => {
+const MypageHeader = ({ _tab, _sortOrder, onTabChange, onSortChange }: MypageHeaderProps) => {
   const getTabInfo = (tab: string): { name: string; icon: KeyOfIcon } => {
     switch (tab) {
       case 'keepList':

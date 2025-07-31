@@ -4,7 +4,7 @@ import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 import Divider from '@/components/divider/Divider'
 import { ChatRoomStatus, UpdateChatRoomStatusResponse } from '@/types/baroTalkTypes'
 import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
-import { useChatStatus } from '@/hooks/queries/useSocket'
+import { useSetChatStatus } from '@/stores/socketStore'
 import React from 'react'
 
 type ChatWaitingBlogListProps = {
@@ -18,8 +18,8 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId }: ChatWaitingBlogListProp
     take: 4,
   })
 
-  // 🟢 React Query 훅 사용
-  const { setChatStatus } = useChatStatus(chatRoomId)
+  // 🟢 Zustand 스토어 사용
+  const setChatStatus = useSetChatStatus()
 
   const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
     onSuccess: (data: UpdateChatRoomStatusResponse) => {

@@ -1,43 +1,28 @@
 import ChatHeader from '@/container/baroTalk/chatHeader/ChatHeader'
 import ChatBody from '@/container/baroTalk/chatBody/ChatBody'
 import styles from './chatRoomContainer.module.scss'
-import { ChatMessage, JoinRoomSuccessData, JoinRoomRequest } from '@/types/baroTalkTypes'
-import { useEffect, useCallback } from 'react'
-import { Socket } from 'socket.io-client'
-import { useLocation } from 'react-router-dom'
+import { useCallback } from 'react'
 import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
-import {
-  useMessages,
-  useChatStatus,
-  useRoomInfo,
-  useAddMessage,
-  useSetMessages,
-  useSetChatStatus,
-  useSetRoomInfo,
-  useSetConnected,
-  useSetChatRoomId,
-} from '@/stores/socketStore'
+import { useMessages, useChatStatus, useRoomInfo, useSetChatRoomId, useSetChatStatus } from '@/stores/socketStore'
+import { useChatSocket } from '@/hooks/useChatSocket'
 
 interface ChatRoomContainerProps {
   chatRoomId: number | null
-  socket: Socket | null
-  isConnected: boolean
 }
 
-const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContainerProps) => {
+const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
   // 🟢 Zustand 상태 구독
   const messages = useMessages()
   const chatStatus = useChatStatus()
   const roomInfo = useRoomInfo()
-  const addMessage = useAddMessage()
-  const setMessages = useSetMessages()
-  const setChatStatus = useSetChatStatus()
-  const setRoomInfo = useSetRoomInfo()
-  const setConnected = useSetConnected()
   const setChatRoomId = useSetChatRoomId()
+  const setChatStatus = useSetChatStatus()
 
-  const location = useLocation()
-  const isLawyer = location.pathname.includes('lawyer-admin')
+  // 🆕 커스텀 훅 사용
+  const { isConnected, sendMessage, leaveRoom, isLawyer } = useChatSocket({
+    chatRoomId,
+    setChatStatus,
+  })
 
   // 🆕 상담 끝내기 mutation
   const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
@@ -47,10 +32,7 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
       setChatStatus('COMPLETED')
 
       // 🆕 소켓 연결은 유지하고 채팅방만 나가기 (소켓 연결은 끊지 않음)
-      if (socket && chatRoomId) {
-        console.log('🟢 채팅방에서 나가기 (소켓 연결 유지):', chatRoomId)
-        socket.emit('leaveRoom', { chatRoomId })
-      }
+      leaveRoom()
 
       // 채팅방 ID를 null로 설정하여 채팅창 닫기
       setChatRoomId(null)
@@ -80,108 +62,24 @@ const ChatRoomContainer = ({ chatRoomId, socket, isConnected }: ChatRoomContaine
     })
   }, [chatRoomId, updateChatRoomStatus])
 
-  // chatRoomId가 변경될 때 방 입장
-  useEffect(() => {
-    if (chatRoomId && socket && isConnected) {
-      const joinRoomRequest: JoinRoomRequest = {
-        chatRoomId: chatRoomId,
-        loadRecentMessages: true,
-        messageLimit: 50,
-      }
-
-      console.log('🟢 joinRoom 요청:', joinRoomRequest)
-      socket.emit('joinRoom', joinRoomRequest)
-    }
-  }, [chatRoomId, socket, isConnected])
-
-  // 소켓 연결 상태를 전역 상태에 반영
-  useEffect(() => {
-    setConnected(isConnected)
-  }, [isConnected, setConnected])
-
-  // 소켓 이벤트 리스너 설정
-  useEffect(() => {
-    if (!socket) return
-
-    // 채팅방 입장 성공
-    const handleJoinRoomSuccess = (data: JoinRoomSuccessData) => {
-      console.log('🟢 joinRoomSuccess 응답:', data)
-      console.log('🟢 로드된 메시지 수:', data.recentMessages.length)
-      setMessages(data.recentMessages)
-      setRoomInfo(data.chatRoom)
-      setChatStatus(data.chatRoom.chatRoomStatus)
-    }
-
-    // 채팅방 입장 실패
-    const handleJoinRoomError = (error: { message: string }) => {
-      console.error('❌ joinRoomError:', error.message)
-    }
-
-    // 새 메시지 수신
-    const handleNewMessage = (message: ChatMessage) => {
-      addMessage(message)
-    }
-
-    // 상대방 퇴장 처리
-    const handleUserLeft = (data: { userId: number; userName: string }) => {
-      // 상대방 퇴장 메시지 추가 (시스템 메시지로 처리)
-      const leaveMessage: ChatMessage = {
-        chatMessageId: Date.now(),
-        chatMessageContent: `${data.userName}님이 상담을 종료했습니다.`,
-        chatMessageSenderType: 'LAWYER',
-        chatMessageSenderId: 0,
-        chatMessageCreatedAt: new Date().toISOString(),
-      }
-
-      addMessage(leaveMessage)
-      setChatStatus('COMPLETED')
-    }
-
-    // 채팅방 퇴장 성공
-    const handleLeaveRoomSuccess = () => {
-      // 퇴장 성공 처리
-    }
-
-    // 채팅방 퇴장 실패
-    const handleLeaveRoomError = (error: { message: string }) => {
-      console.error('채팅방 퇴장 실패:', error.message)
-    }
-
-    // 이벤트 리스너 등록
-    socket.on('joinRoomSuccess', handleJoinRoomSuccess)
-    socket.on('joinRoomError', handleJoinRoomError)
-    socket.on('newMessage', handleNewMessage)
-    socket.on('userLeft', handleUserLeft) // 🆕 상대방 퇴장
-    socket.on('leaveRoomSuccess', handleLeaveRoomSuccess) // 🆕 퇴장 성공
-    socket.on('leaveRoomError', handleLeaveRoomError) // 🆕 퇴장 실패
-
-    // 클린업
-    // eslint-disable-next-line
-    return () => {
-      socket.off('joinRoomSuccess', handleJoinRoomSuccess)
-      socket.off('joinRoomError', handleJoinRoomError)
-      socket.off('newMessage', handleNewMessage)
-      socket.off('userLeft', handleUserLeft) // 🆕 상대방 퇴장
-      socket.off('leaveRoomSuccess', handleLeaveRoomSuccess) // 🆕 퇴장 성공
-      socket.off('leaveRoomError', handleLeaveRoomError) // 🆕 퇴장 실패
-    }
-  }, [socket, setMessages, setRoomInfo, setChatStatus, addMessage, chatRoomId])
-
   // 메시지 전송 핸들러
   const handleSendMessage = useCallback(
     (content: string) => {
-      if (socket && chatRoomId && isConnected) {
-        socket.emit('sendMessage', {
-          chatRoomId: chatRoomId,
-          content: content,
-          receiverId: isLawyer ? (roomInfo as any)?.chatRoomUserId || 0 : (roomInfo as any)?.chatRoomLawyerId || 0,
-          receiverType: isLawyer ? 'USER' : 'LAWYER',
-          tempId: `temp_${Date.now()}`, // 임시 ID 생성
-        })
-      }
+      sendMessage(content, roomInfo)
     },
-    [socket, chatRoomId, isConnected, location.pathname, roomInfo]
+    [sendMessage, roomInfo]
   )
+
+  // 🆕 chatRoomId가 null이면 빈 화면 표시
+  if (!chatRoomId) {
+    return (
+      <section className={`contents-section ${styles['chat-content']}`}>
+        <div className='flex items-center justify-center h-full'>
+          <p className='text-gray-500'>채팅방을 선택해주세요.</p>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className={`contents-section ${styles['chat-content']}`}>

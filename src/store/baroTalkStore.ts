@@ -10,9 +10,9 @@ interface BaroTalkState {
   consultationRequestDescription?: string
 
   // 액션들
-  setSubcategoryId: (subcategoryId: number) => void
-  setTitle: (title: string) => void
-  setDescription: (description: string) => void
+  setSubcategoryId: (_subcategoryId: number) => void
+  setTitle: (_title: string) => void
+  setDescription: (_description: string) => void
 
   // 유틸리티 액션들
   reset: () => void

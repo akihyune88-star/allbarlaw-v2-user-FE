@@ -10,7 +10,7 @@ export type AccountInfoSectionProps<T extends FieldValues> = {
   register: UseFormRegister<T>
   errors: FieldErrors<T>
   watch: UseFormWatch<T>
-  onIdError: (isError: boolean) => void
+  onIdError: (_isError: boolean) => void
 }
 
 function AccountInfoSection<T extends { id: string; password: string; confirmPassword: string } & FieldValues>({

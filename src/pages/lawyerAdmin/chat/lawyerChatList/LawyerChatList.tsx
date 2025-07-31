@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 
 interface LawyerChatListProps {
-  onChatRoomSelect?: (chatRoomId: number) => void
+  onChatRoomSelect?: (_chatRoomId: number) => void
 }
 
 const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {

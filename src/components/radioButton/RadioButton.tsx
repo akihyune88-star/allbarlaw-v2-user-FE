@@ -26,6 +26,11 @@ const RadioButton = ({
   direction = 'vertical',
   gap = '1rem',
   gapUnit = 'rem',
+  // 사용하지 않는 props는 _ prefix
+  value: _value,
+  label: _label,
+  checked: _checked,
+  disabled: _disabled,
 }: RadioButtonProps) => {
   const [selectedValue, setSelectedValue] = useState<string>(defaultValue || options[0]?.value || '')
 

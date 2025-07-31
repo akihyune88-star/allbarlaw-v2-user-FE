@@ -1,6 +1,5 @@
 import SideBar from '@/components/sideBar/SideBar'
 import LawyerAdminHeader from '@/container/lawyerAdmin/lawyerAdminHeader/LawyerAdminHeader'
-import Footer from '@/components/footer/Footer'
 import { CategoryList } from '@/types/categoryTypes'
 import styles from '@/styles/app.module.scss'
 import { useState } from 'react'

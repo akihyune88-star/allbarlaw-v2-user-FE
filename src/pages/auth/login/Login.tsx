@@ -12,7 +12,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginFormData, defaultValues } from './loginSchema'
 import LabelInput from '@/components/labelInput/LabelInput'
 import { useLogin, useLawyerLogin } from '@/hooks/queries/useLogin'
-import { useAuth } from '@/contexts/AuthContext'
 
 type AuthActionType = 'ID_FIND' | 'PASSWORD_RESET' | 'SIGNUP'
 
@@ -20,7 +19,6 @@ const Login = () => {
   const [activeTab, setActiveTab] = useState('/user')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const navigate = useNavigate()
-  const { _userInfo } = useAuth()
 
   useEffect(() => {
     if (errorMessage) {
