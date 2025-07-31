@@ -23,9 +23,12 @@ export const baroTalkServices = {
     if (request.excludeLawyerIds) {
       request.excludeLawyerIds.forEach(id => params.append('excludeLawyerIds', id.toString()))
     }
+    if (request.tags) {
+      params.append('tags', JSON.stringify(request.tags))
+    }
 
     const response = await instance.get<BaroTalkLawyerListResponse>(
-      `/lawyer/recommend/${request.consultationRequestId}/${request.subcategoryId}?${params.toString()}`
+      `/lawyer/recommend/${request.subcategoryId}?${params.toString()}`
     )
     return response.data
   },

@@ -1,4 +1,4 @@
-import { useMutation, useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useInfiniteQuery, useQueryClient, useQuery } from '@tanstack/react-query'
 import { baroTalkServices } from '@/services/baroTalkServices'
 import { useAuth } from '@/contexts/AuthContext'
 import {
@@ -32,22 +32,16 @@ export const useCreateBaroTalk = (options?: UseCreateBaroTalkOptions) => {
 }
 
 export const useGetBaroTalkLawyerList = (request: BaroTalkLawyerListRequest) => {
-  return useInfiniteQuery({
-    queryKey: [QUERY_KEY.BARO_TALK_LAWYER_LIST, request],
-    queryFn: ({ pageParam = 1 }) =>
+  return useQuery({
+    queryKey: [QUERY_KEY.BARO_TALK_LAWYER_LIST, request.subcategoryId, request.tags], // excludeLawyerIds 제거
+    queryFn: () =>
       baroTalkServices.getBaroTalkLawyerList({
         ...request,
-        take: 10, // 한 번에 10개씩 로드
-        page: pageParam,
+        take: 6,
       }),
-    getNextPageParam: (lastPage, allPages) => {
-      // 마지막 페이지에 변호사가 10명 미만이면 더 이상 페이지가 없음
-      if (lastPage.lawyers.length < 10) {
-        return undefined
-      }
-      return allPages.length + 1
-    },
-    initialPageParam: 1,
+    select: data => data.lawyers,
+    staleTime: 0,
+    gcTime: 0,
   })
 }
 
@@ -98,8 +92,8 @@ export const useGetLawyerChatList = (lawyerId: number, request: { take: number; 
         page: pageParam,
       }),
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.page < lastPage.totalPages) {
-        return lastPage.page + 1
+      if (lastPage.hasNextPage) {
+        return allPages.length + 1
       }
       return undefined
     },

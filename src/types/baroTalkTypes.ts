@@ -16,11 +16,10 @@ export type CreateBaroTalkRequest = {
 }
 
 export type BaroTalkLawyerListRequest = {
-  consultationRequestId: number
   subcategoryId: number
   take?: number
-  page?: number
   excludeLawyerIds?: number[]
+  tags?: string[]
 }
 
 export type BaroTalkLawyerListResponse = {

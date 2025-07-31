@@ -3,7 +3,7 @@ import styles from './lawyerChatList.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { useGetLawyerChatList } from '@/hooks/queries/useBaroTalk'
 import { useAuth } from '@/contexts/AuthContext'
-import React, { useEffect, useCallback, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { toggleClipChatRoom, isClippedChatRoom, sortChatRoomsByClip } from '@/utils/localStorage'
 import { useSetChatRoomId } from '@/stores/socketStore'
 import { useNavigate } from 'react-router-dom'
@@ -79,10 +79,15 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
     }
   }
 
-  const getResponseStatus = (responseTime: string | null, _status: ChatRoomStatus) => {
+  const getResponseStatus = (responseTime: string | null, status: ChatRoomStatus) => {
     if (!responseTime) {
       return <span className={styles.pendingResponse}>답변 대기중</span>
     }
+
+    if (status === 'CONSULTING') {
+      return <span className={styles.pendingResponse}>채팅시작 대기중</span>
+    }
+
     return new Date(responseTime).toLocaleString('ko-KR', {
       year: 'numeric',
       month: '2-digit',
