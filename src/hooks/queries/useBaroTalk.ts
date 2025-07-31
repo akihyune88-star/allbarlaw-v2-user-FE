@@ -112,7 +112,7 @@ export const useLeaveChatRoom = (options?: UseCreateBaroTalkOptions) => {
   return useMutation({
     mutationFn: (request: LeaveChatRoomRequest) => baroTalkServices.leaveChatRoom(request),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_CHAT_LIST] })
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.BARO_TALK_CHAT_LIST] })
       options?.onSuccess?.()
     },
     onError: (error: Error) => {
