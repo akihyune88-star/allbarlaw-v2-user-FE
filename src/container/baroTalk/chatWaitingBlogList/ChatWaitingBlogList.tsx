@@ -5,6 +5,7 @@ import Divider from '@/components/divider/Divider'
 import { ChatRoomStatus, UpdateChatRoomStatusResponse } from '@/types/baroTalkTypes'
 import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
 import { useSetChatStatus } from '@/stores/socketStore'
+import { useNavigate } from 'react-router-dom'
 import React from 'react'
 
 type ChatWaitingBlogListProps = {
@@ -20,6 +21,7 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId }: ChatWaitingBlogListProp
 
   // 🟢 Zustand 스토어 사용
   const setChatStatus = useSetChatStatus()
+  const navigate = useNavigate()
 
   const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
     onSuccess: (data: UpdateChatRoomStatusResponse) => {
@@ -33,6 +35,11 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId }: ChatWaitingBlogListProp
       chatRoomId: chatRoomId,
       status: 'ACTIVE',
     })
+  }
+
+  // 블로그 아이템 클릭 핸들러
+  const handleBlogClick = (subcategoryId: number, blogCaseId: number) => {
+    navigate(`/${subcategoryId}/blog/${blogCaseId}`)
   }
 
   return (
@@ -58,7 +65,11 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId }: ChatWaitingBlogListProp
         <div className={styles.chatWaitingBlogList__content__list}>
           {blogList.map((blog, index) => (
             <React.Fragment key={blog.blogCaseId || index}>
-              <BlogItem item={blog} />
+              <BlogItem
+                item={blog}
+                onClick={() => handleBlogClick(blog.subcategoryId, blog.blogCaseId)}
+                // subcategory 정보가 item 객체에 포함되어 있다면 자동으로 전달됨
+              />
               {index !== blogList.length - 1 && <Divider padding={0} />}
             </React.Fragment>
           ))}
