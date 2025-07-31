@@ -2,7 +2,7 @@ import ChatHeader from '@/container/baroTalk/chatHeader/ChatHeader'
 import ChatBody from '@/container/baroTalk/chatBody/ChatBody'
 import styles from './chatRoomContainer.module.scss'
 import { useCallback } from 'react'
-import { useLeaveChatRoom, useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
+import { useLeaveChatRoom } from '@/hooks/queries/useBaroTalk'
 import { useMessages, useChatStatus, useRoomInfo, useSetChatRoomId, useSetChatStatus } from '@/stores/socketStore'
 import { useChatSocket } from '@/hooks/useChatSocket'
 import { useAuth } from '@/contexts/AuthContext'
@@ -28,7 +28,6 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
 
   const { mutate: leaveChatRoom } = useLeaveChatRoom({
     onSuccess: () => {
-      console.log('🟢 채팅방 나가기 성공')
       setChatStatus('COMPLETED')
       leaveRoom()
       setChatRoomId(null)
@@ -38,26 +37,6 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
     },
   })
 
-  // 🆕 상담 끝내기 mutation
-  const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
-    onSuccess: data => {
-      console.log('🟢 상담 끝내기 성공:', data)
-      // 채팅방 상태를 COMPLETED로 업데이트
-      setChatStatus('COMPLETED')
-
-      // 🆕 소켓 연결은 유지하고 채팅방만 나가기 (소켓 연결은 끊지 않음)
-      leaveRoom()
-
-      // 채팅방 ID를 null로 설정하여 채팅창 닫기
-      setChatRoomId(null)
-    },
-    onError: error => {
-      console.error('❌ 상담 끝내기 실패:', error)
-      alert('상담을 끝내는데 실패했습니다. 다시 시도해주세요.')
-    },
-  })
-
-  // 🆕 상담 끝내기 핸들러
   const handleEndChat = useCallback(() => {
     if (!chatRoomId) return
 
@@ -75,7 +54,7 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
       reason: 'USER_LEFT',
       userId: userKeyId!,
     })
-  }, [chatRoomId, updateChatRoomStatus])
+  }, [chatRoomId])
 
   // 메시지 전송 핸들러
   const handleSendMessage = useCallback(
@@ -84,17 +63,6 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
     },
     [sendMessage, roomInfo]
   )
-
-  // 🆕 chatRoomId가 null이면 빈 화면 표시
-  if (!chatRoomId) {
-    return (
-      <section className={`contents-section ${styles['chat-content']}`}>
-        <div className='flex items-center justify-center h-full'>
-          <p className='text-gray-500'>채팅방을 선택해주세요.</p>
-        </div>
-      </section>
-    )
-  }
 
   return (
     <section className={`contents-section ${styles['chat-content']}`}>
@@ -105,7 +73,7 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
         count={{ total: 1256, month: 251 }}
         lawfirmName={(roomInfo as any)?.chatRoomLawyer?.lawfirmName || ''}
         lawyerProfileImage={(roomInfo as any)?.chatRoomLawyer?.lawyerProfileImage || 'https://picsum.photos/200/300'}
-        onEndChat={handleEndChat} // 🆕 상담 끝내기 핸들러 전달
+        onEndChat={handleEndChat}
       />
       <ChatBody
         chatRoomId={chatRoomId}

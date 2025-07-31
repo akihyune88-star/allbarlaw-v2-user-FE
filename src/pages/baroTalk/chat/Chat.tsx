@@ -18,7 +18,15 @@ const Chat = () => {
 
   return (
     <main className={`w-full sub-main-container ${styles.chat}`}>
-      {chatRoomId && <ChatRoomContainer chatRoomId={chatRoomId} />}
+      {chatRoomId ? (
+        <ChatRoomContainer chatRoomId={chatRoomId} />
+      ) : (
+        <section className={`contents-section ${styles['chat-content']}`}>
+          <div className='flex items-center justify-center h-full'>
+            <p className='text-gray-500'>채팅방을 선택해주세요.</p>
+          </div>
+        </section>
+      )}
       <aside className={`aside ${styles['mobile-aside']}`}>
         <ChatList onChatRoomClick={handleChatRoomClick} />
       </aside>

@@ -69,10 +69,10 @@ const LawyerChatItem = ({
 
 type ChatListProps = {
   _chatRoomId?: number
-  onChatRoomClick: (chatRoomId: number) => void
+  onChatRoomClick: (_chatRoomId: number) => void
 }
 
-const ChatList = ({ _chatRoomId, onChatRoomClick }: ChatListProps) => {
+const ChatList = ({ onChatRoomClick }: ChatListProps) => {
   // 채팅방 리스트 데이터 불러오기
   const {
     data: chatPages,
@@ -150,16 +150,6 @@ const ChatList = ({ _chatRoomId, onChatRoomClick }: ChatListProps) => {
           <button onClick={handleAddConsultation}>추가 상담하기</button>
         </div>
       </header>
-
-      {/* 🔍 변호사 로그인 시뮬레이션 테스트 */}
-      {allChatRooms.length > 0 && (
-        <div style={{ padding: '10px', background: '#f0f0f0', margin: '10px 0', borderRadius: '4px' }}>
-          <h4>🔍 변호사 로그인 시뮬레이션</h4>
-          <p>현재 userStatuses: {JSON.stringify(userStatuses)}</p>
-          <p>💡 변호사로 로그인해보세요! 소켓 이벤트가 오는지 확인됩니다.</p>
-          <p>🔍 partnerIds: {JSON.stringify(partnerIds)}</p>
-        </div>
-      )}
 
       <section className={styles['chat-list-wrapper']}>
         <div className={styles['chat-list-content']}>
