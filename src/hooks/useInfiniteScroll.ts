@@ -14,10 +14,28 @@ export const useInfiniteScroll = ({
   containerSelector = '.lawyer-selection-container',
 }: UseInfiniteScrollProps) => {
   const handleScroll = useCallback(() => {
-    if (hasNextPage && !isFetchingNextPage) {
+    const scrollContainer = document.querySelector(containerSelector) as HTMLElement
+    if (!scrollContainer) return
+
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainer
+
+    // 스크롤이 끝에서 100px 이내에 도달했을 때 다음 페이지 로드
+    const isNearBottom = scrollTop + clientHeight >= scrollHeight - 100
+
+    console.log('🔍 useInfiniteScroll - 스크롤 상태:', {
+      scrollTop,
+      scrollHeight,
+      clientHeight,
+      isNearBottom,
+      hasNextPage,
+      isFetchingNextPage,
+    })
+
+    if (isNearBottom && hasNextPage && !isFetchingNextPage) {
+      console.log('🟢 useInfiniteScroll - 다음 페이지 로드 시작')
       fetchNextPage()
     }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, containerSelector])
 
   useEffect(() => {
     const scrollContainer = document.querySelector(containerSelector)

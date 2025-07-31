@@ -53,7 +53,6 @@ export const baroTalkServices = {
   ) => {
     const params = new URLSearchParams()
     if (request?.page) params.append('page', request.page.toString())
-    if (request?.take) params.append('take', request.take.toString())
     if (request?.status) params.append('status', request.status)
     if (request?.sort) params.append('sort', request.sort)
 

@@ -89,7 +89,7 @@ export const useUpdateChatRoomStatus = (options?: UseCreateBaroTalkOptions) => {
   })
 }
 
-export const useGetLawyerChatList = (lawyerId: number, request: { take: number; sort: string }) => {
+export const useGetLawyerChatList = (lawyerId: number, request: { take: number; sort: string; page?: number }) => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.LAWYER_CHAT_LIST, lawyerId, request],
     queryFn: ({ pageParam = 1 }) =>
@@ -98,8 +98,8 @@ export const useGetLawyerChatList = (lawyerId: number, request: { take: number; 
         page: pageParam,
       }),
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.hasNextPage) {
-        return allPages.length + 1
+      if (lastPage.page < lastPage.totalPages) {
+        return lastPage.page + 1
       }
       return undefined
     },

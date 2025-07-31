@@ -3,7 +3,7 @@ import styles from './lawyerChatList.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { useGetLawyerChatList } from '@/hooks/queries/useBaroTalk'
 import { useAuth } from '@/contexts/AuthContext'
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState, useRef } from 'react'
 import { toggleClipChatRoom, isClippedChatRoom, sortChatRoomsByClip } from '@/utils/localStorage'
 import { useSetChatRoomId } from '@/stores/socketStore'
 import { useNavigate } from 'react-router-dom'
@@ -19,14 +19,44 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
   const [clipStates, setClipStates] = useState<Record<number, boolean>>({})
   const setChatRoomId = useSetChatRoomId()
   const navigate = useNavigate()
+  const observerRef = useRef<HTMLDivElement>(null)
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } = useGetLawyerChatList(
     lawyerId || 0,
     {
       take: 20,
       sort: 'desc',
+      page: 1,
     }
   )
+
+  // IntersectionObserver를 사용한 무한스크롤
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        const target = entries[0]
+        if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          console.log('🟢 LawyerChatList - IntersectionObserver: 다음 페이지 로드 시작')
+          fetchNextPage()
+        }
+      },
+      {
+        root: null,
+        rootMargin: '100px',
+        threshold: 0.1,
+      }
+    )
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current)
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current)
+      }
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   // 모든 페이지의 채팅방 데이터를 하나의 배열로 합치기
   const allChatRooms = data?.pages.flatMap((page: any) => page.chatRooms) || []
@@ -71,20 +101,6 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
       minute: '2-digit',
     })
   }
-
-  // 무한 스크롤 핸들러
-  const handleScroll = useCallback(() => {
-    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 1000) {
-      if (hasNextPage && !isFetchingNextPage) {
-        fetchNextPage()
-      }
-    }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [handleScroll])
 
   useEffect(() => {
     if (chatRooms.length > 0) {
@@ -171,7 +187,11 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
           ))}
         </tbody>
       </table>
-      {isFetchingNextPage && <div className={styles.loadingMore}>더 많은 데이터를 불러오는 중...</div>}
+
+      {/* IntersectionObserver 타겟 요소 */}
+      <div ref={observerRef} style={{ height: '20px', width: '100%' }}>
+        {isFetchingNextPage && <div className={styles.loadingMore}>더 많은 데이터를 불러오는 중...</div>}
+      </div>
     </div>
   )
 }
