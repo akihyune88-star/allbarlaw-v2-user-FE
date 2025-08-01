@@ -1,4 +1,3 @@
-import { Lawyer } from '@/types/lawyerTypes'
 import styles from './chatHeader.module.scss'
 
 interface ChatHeaderProps {
@@ -60,19 +59,16 @@ const ChatHeader = ({
         ) : (
           // 변호사가 보는 화면 - 유저 정보 표시
           <>
-            <figure>
+            {/* <figure>
               <img src='https://picsum.photos/200/300' alt={userName || `사용자 ${userId}`} />
-            </figure>
+            </figure> */}
             <div className={styles['lawyer-info-text']}>
               <div className={styles['lawyer-name-badge-wrap']}>
                 <span className={styles['lawyer-name']}>{userName ? `${userName} 님` : `사용자 ${userId}`}</span>
                 {isActive && <span className={styles['badge']} />}
               </div>
-              <p className={styles['lawyer-lawfirm']}>상담 의뢰자</p>
+              {/* <p className={styles['lawyer-lawfirm']}>상담 의뢰자</p> */}
             </div>
-            <button className={styles['lawyer-info-button']}>
-              <span>사용자 정보</span>
-            </button>
           </>
         )}
       </section>
