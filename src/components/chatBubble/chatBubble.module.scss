@@ -64,3 +64,34 @@
   object-fit: cover;
   margin: 0 0.5rem;
 }
+
+// 메시지 상태 아이콘
+.statusIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.25rem;
+  opacity: 0.7;
+  
+  &.delivered {
+    opacity: 0.5;
+  }
+  
+  &.read {
+    opacity: 1;
+  }
+  
+  &.failed {
+    opacity: 1;
+    cursor: pointer;
+    
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}

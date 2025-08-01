@@ -74,7 +74,13 @@ export type ChatMessage = {
   chatMessageContent: string
   chatMessageSenderType: 'USER' | 'LAWYER'
   chatMessageSenderId: number
+  chatMessageReceiverId?: number
+  chatMessageReceiverType?: 'USER' | 'LAWYER'
+  chatMessageIsRead?: boolean
   chatMessageCreatedAt: string
+  // 로컬 상태 (전송 상태 추적용)
+  tempId?: string
+  status?: 'sending' | 'sent' | 'failed'
 }
 
 export type JoinRoomRequest = {
@@ -83,7 +89,14 @@ export type JoinRoomRequest = {
   messageLimit?: number
 }
 
-export type ChatRoomStatus = 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED' | 'CONSULTING'
+export type ChatRoomStatus =
+  | 'PENDING'
+  | 'ACTIVE'
+  | 'COMPLETED'
+  | 'CANCELLED'
+  | 'CONSULTING'
+  | 'PARTIAL_LEFT'
+  | 'REJECTED'
 
 export type JoinRoomSuccessData = {
   chatRoomId: number
@@ -97,6 +110,9 @@ export type JoinRoomSuccessData = {
     chatRoomIsActive: boolean
     chatRoomCreatedAt: string
     chatRoomUpdatedAt: string
+    // 🆕 개별 나가기 상태 정보 (서버 API 업데이트 필요)
+    userLeft?: boolean
+    lawyerLeft?: boolean
     chatRoomLawyer: {
       lawyerId: number
       lawyerName: string
@@ -175,4 +191,47 @@ export type LeaveChatRoomResponse = {
   lawyerLeft: boolean
   currentUserLeft: boolean
   timestamp: string
+}
+
+// 읽음 처리 관련 타입들
+export type MarkAsReadRequest = {
+  chatRoomId: number
+  messageIds?: number[]
+}
+
+export type MarkAsReadSuccessData = {
+  chatRoomId: number
+  processedMessageIds: number[]
+  timestamp: string
+}
+
+export type MessagesMarkedAsReadData = {
+  userId: number
+  chatRoomId: number
+  messageIds: number[]
+  timestamp: string
+}
+
+// 메시지 전송 성공/실패 타입들
+export type SendMessageSuccessData = {
+  tempId?: string
+  messageId: number
+  timestamp: string
+}
+
+export type SendMessageErrorData = {
+  tempId?: string
+  message: string
+  code?: string
+}
+
+// 새로운 userLeft 이벤트 타입
+export type UserLeftData = {
+  chatRoomId: number
+  connectedUsers: number
+  userLeft: boolean
+  lawyerLeft: boolean
+  chatRoomIsActive: boolean
+  leftUserType?: 'USER' | 'LAWYER'
+  leftUserName?: string
 }

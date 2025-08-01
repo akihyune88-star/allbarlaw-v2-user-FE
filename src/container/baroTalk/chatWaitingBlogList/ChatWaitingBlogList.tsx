@@ -14,6 +14,8 @@ type ChatWaitingBlogListProps = {
 }
 
 const ChatWaitingBlogList = ({ chatStatus, chatRoomId }: ChatWaitingBlogListProps) => {
+  console.log('chatStatus', chatStatus)
+
   const { blogList } = useGetBlogList({
     subcategoryId: 'all',
     take: 4,
@@ -46,7 +48,7 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId }: ChatWaitingBlogListProp
     <main className={styles.chatWaitingBlogList}>
       <header className={styles.chatWaitingBlogList__header}>
         {chatStatus === 'PENDING' && (
-          <p className={styles.chatWaitingBlogList__description}>해당 질문에대한 답변을 기다리는 중입니다.</p>
+          <p className={styles.chatWaitingBlogList__description}>해당 질문에 대한 답변을 기다리는 중입니다.</p>
         )}
         {chatStatus === 'CONSULTING' && (
           <div className={styles.chatWaitingBlogList__header__startChat}>

@@ -43,6 +43,9 @@ interface SocketActions {
   setChatRoomId: (_chatRoomId: number | null) => void
   setMessages: (_messages: ChatMessage[]) => void
   addMessage: (_message: ChatMessage) => void
+  updateMessage: (_messageId: number, _updates: Partial<ChatMessage>) => void
+  updateMessageByTempId: (_tempId: string, _updates: Partial<ChatMessage>) => void
+  markMessagesAsRead: (_messageIds: number[]) => void 
   setChatStatus: (_status: ChatRoomStatus) => void
   setRoomInfo: (_roomInfo: any) => void
 
@@ -128,6 +131,32 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
   addMessage: message => {
     set(state => ({
       messages: [...state.messages, message],
+    }))
+  },
+
+  updateMessage: (messageId, updates) => {
+    set(state => ({
+      messages: state.messages.map(msg =>
+        msg.chatMessageId === messageId ? { ...msg, ...updates } : msg
+      ),
+    }))
+  },
+
+  updateMessageByTempId: (tempId, updates) => {
+    set(state => ({
+      messages: state.messages.map(msg =>
+        msg.tempId === tempId ? { ...msg, ...updates } : msg
+      ),
+    }))
+  },
+
+  markMessagesAsRead: messageIds => {
+    set(state => ({
+      messages: state.messages.map(msg =>
+        messageIds.includes(msg.chatMessageId)
+          ? { ...msg, chatMessageIsRead: true }
+          : msg
+      ),
     }))
   },
 
@@ -239,6 +268,9 @@ export const useResetReconnectState = () => useSocketStore(state => state.resetR
 export const useSetChatRoomId = () => useSocketStore(state => state.setChatRoomId)
 export const useSetMessages = () => useSocketStore(state => state.setMessages)
 export const useAddMessage = () => useSocketStore(state => state.addMessage)
+export const useUpdateMessage = () => useSocketStore(state => state.updateMessage)
+export const useUpdateMessageByTempId = () => useSocketStore(state => state.updateMessageByTempId)
+export const useMarkMessagesAsRead = () => useSocketStore(state => state.markMessagesAsRead)
 export const useSetChatStatus = () => useSocketStore(state => state.setChatStatus)
 export const useSetRoomInfo = () => useSocketStore(state => state.setRoomInfo)
 export const useUpdateUserStatus = () => useSocketStore(state => state.updateUserStatus)

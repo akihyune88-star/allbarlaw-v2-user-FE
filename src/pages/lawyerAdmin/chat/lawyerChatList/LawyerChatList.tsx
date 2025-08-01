@@ -20,6 +20,7 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
   const setChatRoomId = useSetChatRoomId()
   const navigate = useNavigate()
   const observerRef = useRef<HTMLDivElement>(null)
+  const disabledStatus = ['COMPLETED', 'CANCELLED', 'REJECTED']
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } = useGetLawyerChatList(
     lawyerId || 0,
@@ -126,18 +127,22 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
     }))
   }
 
-  const handleChatRoomClick = (chatRoomId: number) => {
-    console.log('🗋 LawyerChatList: 채팅방 클릭:', chatRoomId)
+  const handleChatRoomClick = (chatRoom: LawyerChatRoom) => {
+    if (disabledStatus.includes(chatRoom.chatRoomStatus)) {
+      return
+    }
+
+    console.log('🗋 LawyerChatList: 채팅방 클릭:', chatRoom)
 
     // 1. 전역 상태에 채팅방 ID 설정
-    setChatRoomId(chatRoomId)
+    setChatRoomId(chatRoom.chatRoomId)
 
     // 2. LawyerChat 페이지로 네비게이션
     navigate(ROUTER.LAWYER_ADMIN_CHAT)
 
     // 3. 만약 onChatRoomSelect prop이 있다면 호출 (선택사항)
     if (onChatRoomSelect) {
-      onChatRoomSelect(chatRoomId)
+      onChatRoomSelect(chatRoom.chatRoomId)
     }
   }
 
@@ -166,30 +171,36 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
           </tr>
         </thead>
         <tbody>
-          {chatRooms.map((room: LawyerChatRoom) => (
-            <tr
-              key={room.chatRoomId}
-              onClick={() => handleChatRoomClick(room.chatRoomId)}
-              className={styles.clickableRow}
-            >
-              <td className={styles.clipColumn}>
-                <button
-                  className={`${styles.clipButton} ${clipStates[room.chatRoomId] ? styles.clipped : ''}`}
-                  onClick={e => handleClipRoom(room.chatRoomId, e)}
-                >
-                  <SvgIcon name='clip' size={16} />
-                </button>
-              </td>
-              <td>{room.chatRoomId}</td>
-              <td>{room.clientName}</td>
-              <td className={styles.chatCount}>{room.clientMessageCount}</td>
-              <td>{room.lawyerName}</td>
-              <td className={styles.chatCount}>{room.lawyerMessageCount}</td>
-              <td>{formatDateTime(room.chatRoomCreatedAt)}</td>
-              <td>{getResponseStatus(room.lawyerFirstResponseAt, room.chatRoomStatus)}</td>
-              <td>{getStatusBadge(room.chatRoomStatus)}</td>
-            </tr>
-          ))}
+          {chatRooms.map((room: LawyerChatRoom) => {
+            const isDisabled = disabledStatus.includes(room.chatRoomStatus)
+            return (
+              <tr
+                key={room.chatRoomId}
+                onClick={() => !isDisabled && handleChatRoomClick(room)}
+                className={`${styles.clickableRow} ${isDisabled ? styles.disabled : ''}`}
+              >
+                <td className={styles.clipColumn}>
+                  <button
+                    className={`${styles.clipButton} ${clipStates[room.chatRoomId] ? styles.clipped : ''} ${
+                      isDisabled ? styles.disabled : ''
+                    }`}
+                    onClick={e => !isDisabled && handleClipRoom(room.chatRoomId, e)}
+                    disabled={isDisabled}
+                  >
+                    <SvgIcon name='clip' size={16} />
+                  </button>
+                </td>
+                <td>{room.chatRoomId}</td>
+                <td>{room.clientName}</td>
+                <td className={styles.chatCount}>{room.clientMessageCount}</td>
+                <td>{room.lawyerName}</td>
+                <td className={styles.chatCount}>{room.lawyerMessageCount}</td>
+                <td>{formatDateTime(room.chatRoomCreatedAt)}</td>
+                <td>{getResponseStatus(room.lawyerFirstResponseAt, room.chatRoomStatus)}</td>
+                <td>{getStatusBadge(room.chatRoomStatus)}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
 
