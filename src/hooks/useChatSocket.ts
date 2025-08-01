@@ -74,6 +74,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 기존 소켓이 있으면 먼저 정리
     if (socket) {
+      console.log('🔄 [SOCKET] 기존 소켓 연결 해제')
       socket.disconnect()
     }
 
@@ -120,14 +121,16 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       socketConnectedRef.current = false
     })
 
-    newSocket.on('disconnect', () => {
-      console.log('🔌 [SOCKET] 소켓 연결 끊김')
+    newSocket.on('disconnect', (reason) => {
+      console.log('🔌 [SOCKET] 소켓 연결 끊김 - 이유:', reason)
+      console.trace('🔌 [SOCKET] 소켓 끊김 스택 트레이스')
       setConnected(false)
       socketConnectedRef.current = false
       joinRoomAttemptedRef.current = false
     })
 
     return () => {
+      console.log('🧹 [SOCKET] useEffect cleanup - 소켓 연결 해제')
       newSocket.disconnect()
       socketConnectedRef.current = false
       joinRoomAttemptedRef.current = false
