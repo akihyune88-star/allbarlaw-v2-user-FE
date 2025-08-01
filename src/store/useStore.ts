@@ -21,11 +21,11 @@ interface StoreState {
   theme: 'light' | 'dark'
 
   // Actions
-  setLoggedIn: (status: boolean) => void
-  setUserInfo: (info: { id: string | null; name: string | null; email: string | null }) => void
+  setLoggedIn: (_status: boolean) => void
+  setUserInfo: (_info: { id: string | null; name: string | null; email: string | null }) => void
   logout: () => void
   toggleMobileMenu: () => void
-  setTheme: (theme: 'light' | 'dark') => void
+  setTheme: (_theme: 'light' | 'dark') => void
 }
 
 export const useStore = create<StoreState>()(

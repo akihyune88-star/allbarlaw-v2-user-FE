@@ -19,7 +19,7 @@ export const MENU_LIST = [
   },
 
   {
-    name: '로그인',
+    name: '로그인/회원가입',
     path: ROUTER.AUTH,
   },
 ]

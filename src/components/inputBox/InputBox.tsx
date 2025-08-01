@@ -11,6 +11,8 @@ type InputBoxProps = {
   icon?: React.ReactNode
   disabled?: boolean
   className?: string
+  style?: React.CSSProperties
+  onIconClick?: () => void
 }
 
 const InputBox = ({
@@ -22,19 +24,26 @@ const InputBox = ({
   icon,
   disabled = false,
   className = '',
+  style,
+  onIconClick,
 }: InputBoxProps) => {
   return (
-    <div className={`${styles['input-container']} ${className}`}>
+    <div className={`${styles['input-container']} ${className}`} style={style}>
       <input
         type={type}
-        className={styles.input}
+        className={`${styles.input} ${className}`}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
         onKeyDown={onKeyDown}
         disabled={disabled}
+        style={style}
       />
-      {icon}
+      {icon && (
+        <div className={styles.icon} onClick={onIconClick} style={{ cursor: onIconClick ? 'pointer' : 'default' }}>
+          {icon}
+        </div>
+      )}
     </div>
   )
 }

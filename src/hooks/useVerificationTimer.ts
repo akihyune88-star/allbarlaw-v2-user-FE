@@ -9,7 +9,7 @@ const useVerificationTimer = (initialTime: number) => {
       if (isTimerRunning) {
         setIsTimerRunning(false)
       }
-      return
+      return undefined
     }
 
     const intervalId = setInterval(() => {

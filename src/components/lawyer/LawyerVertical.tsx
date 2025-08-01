@@ -5,7 +5,7 @@ import { blog, instagram, youtube } from '@/assets/imgs'
 import ImageSlider from '../slider/imageSlider'
 import Button from '../button/Button'
 import SvgIcon from '../SvgIcon'
-import { SocialLink } from '@/types/lawyerTypes'
+import { SocialLink, Tag as TagType } from '@/types/lawyerTypes'
 
 type LawyerVerticalProps = {
   name: string
@@ -17,7 +17,7 @@ type LawyerVerticalProps = {
   instagramUrl?: string
   shareHandler?: () => void
   saveHandler?: () => void
-  tags?: string[]
+  tags?: TagType[]
   footer?: React.ReactNode
   profileImageWidth?: string | number
   profileImageHeight?: string | number
@@ -93,7 +93,7 @@ const LawyerVertical = ({
         {tags && (
           <div className={styles['tag-list']}>
             {tags.map(tagItem => (
-              <Tag tag={tagItem} key={tagItem} />
+              <Tag tag={tagItem.name} key={tagItem.id} />
             ))}
           </div>
         )}

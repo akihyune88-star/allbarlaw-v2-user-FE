@@ -6,9 +6,6 @@ import Main from '@/pages/main/Main'
 import SubMain from '@/pages/subMain/SubMain'
 import BlogLayout from '@/pages/blog/Blog'
 import BlogDetail from '@/pages/blog/BlogDetail'
-import RequestBaroTalk from '@/pages/baroTalk/RequestBaroTalk'
-import ConsultationContentForm from '@/pages/baroTalk/ConsultationContentForm'
-import BaroTalkLawyerSelection from '@/pages/baroTalk/BaroTalkLawyerSelection'
 import VideoLayout from '@/pages/video/Video'
 import VideoDetail from '@/pages/video/VideoDetail'
 import LegalKnowledgeLayout from '@/pages/legalKnowledge/LegalKnowledge'
@@ -39,7 +36,18 @@ import SocialCheck from '@/pages/auth/socialCheck/SocialCheck'
 import FaqLayout from '@/pages/support/faq/FaqLayout'
 import FaqListByCategory from '@/pages/support/faq/faqListByCategory/FaqListByCategory'
 import MainLayout from '@/pages/MainLayout'
-import { LawyerSignupForm, Mypage } from '@/pages'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
+import {
+  BaroTalkLawyerSelection,
+  Chat,
+  ConsultationContentForm,
+  LawyerAdminLayout,
+  LawyerChatList,
+  LawyerSignupForm,
+  Mypage,
+  RequestBaroTalk,
+} from '@/pages'
+import LawyerChat from '@/pages/lawyerAdmin/chat/lawyerChat/LawyerChat'
 
 const router = createBrowserRouter([
   {
@@ -128,21 +136,47 @@ const router = createBrowserRouter([
             path: ':subcategoryId/legal-knowledge/:knowledgeId',
             element: <LegalKnowledgeDetail />,
           },
+          // baroTalk - 일반 유저만 접근 가능
           {
             path: ROUTER.REQUEST_BARO_TALK,
-            element: <RequestBaroTalk />,
+            element: (
+              <ProtectedRoute requireUser={true}>
+                <RequestBaroTalk />
+              </ProtectedRoute>
+            ),
           },
           {
             path: ROUTER.CONSULTATION_CONTENT_FORM,
-            element: <ConsultationContentForm />,
+            element: (
+              <ProtectedRoute requireUser={true}>
+                <ConsultationContentForm />
+              </ProtectedRoute>
+            ),
           },
           {
             path: ROUTER.BARO_TALK_LAWYER_SELECTION,
-            element: <BaroTalkLawyerSelection />,
+            element: (
+              <ProtectedRoute requireUser={true}>
+                <BaroTalkLawyerSelection />
+              </ProtectedRoute>
+            ),
           },
           {
+            path: ROUTER.CHAT,
+            element: (
+              <ProtectedRoute requireUser={true}>
+                <Chat />
+              </ProtectedRoute>
+            ),
+          },
+          //myPage - 일반 유저만 접근 가능
+          {
             path: ROUTER.MYPAGE,
-            element: <Mypage />,
+            element: (
+              <ProtectedRoute requireUser={true}>
+                <Mypage />
+              </ProtectedRoute>
+            ),
           },
           {
             path: ROUTER.LEGAL_DICTIONARY,
@@ -225,6 +259,28 @@ const router = createBrowserRouter([
       {
         path: ROUTER.ABOUT,
         element: <AboutAllbarlaw />,
+      },
+    ],
+  },
+  {
+    path: ROUTER.LAWYER_ADMIN,
+    element: (
+      <ProtectedRoute requireLawyer={true}>
+        <LawyerAdminLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        path: '',
+        element: <div>변호사 관리 메인 페이지</div>,
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CHAT_LIST,
+        element: <LawyerChatList />,
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CHAT,
+        element: <LawyerChat />,
       },
     ],
   },

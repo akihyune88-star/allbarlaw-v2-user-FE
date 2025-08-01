@@ -4,12 +4,6 @@ import { ROUTER } from '@/routes/routerConstant'
 import { useSocialLogin } from './mutatate/useSocialLogin'
 import axios from 'axios'
 
-declare global {
-  interface Window {
-    naver_id_login: any
-  }
-}
-
 type SocialProvider = 'kakao' | 'naver' | 'google'
 
 const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_KEY

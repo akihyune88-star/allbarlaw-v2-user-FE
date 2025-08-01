@@ -1,3 +1,7 @@
+@use '../../styles/abstracts/variables' as *;
+@use '../../styles/abstracts/colors' as *;
+@use '../../styles/abstracts/mixins' as *;
+
 .progress-bar {
   display: none;
   height: 0.25rem;

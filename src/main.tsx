@@ -5,12 +5,15 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import './styles/main.scss'
 import Router from '@/routes'
 import { queryClient } from '@/lib/queryClient'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Router />
-      <ReactQueryDevtools initialIsOpen={false} />
+      <AuthProvider>
+        <Router />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>
 )

@@ -66,4 +66,16 @@ export const authService = {
       throw error
     }
   },
+  lawyerLogin: async (inputValue: LoginRequest) => {
+    try {
+      const response = await instance.post('/lawyer/login', {
+        lawyerAccount: inputValue.userAccount,
+        lawyerPassword: inputValue.userPassword,
+      })
+      return response.data
+    } catch (error) {
+      console.error('Failed to lawyer login:', error)
+      throw error
+    }
+  },
 }

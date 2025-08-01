@@ -1,0 +1,9 @@
+.chat-content {
+  gap: 2.375rem;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .chat-content {
+    display: none;
+  }
+}

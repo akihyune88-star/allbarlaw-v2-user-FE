@@ -6,7 +6,15 @@ interface KeepSidebarProps {
   setActiveButton: (button: string) => void
 }
 
-const KeepSidebar = ({ buttonList, activeButton, setActiveButton }: KeepSidebarProps) => {
+const KeepSidebar = ({
+  buttonList,
+  activeButton,
+  setActiveButton,
+  // 사용하지 않는 props는 _ prefix
+  button: _button,
+  onTabChange: _onTabChange,
+  activeTab: _activeTab,
+}: KeepSidebarProps) => {
   return (
     <div className={styles.keepSidebar}>
       {buttonList.map(button => (

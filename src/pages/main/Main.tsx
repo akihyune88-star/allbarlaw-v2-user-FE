@@ -25,6 +25,8 @@ const Main = () => {
           title='분류별 법률 정보를 찾아보세요'
           onSubcategoryClick={handleSubcategoryClick}
           className={styles['category-selector']}
+          horizontalPadding={20}
+          enableMobileExpand={true}
         />
         <BlogFeedContainer />
         {!isMobile && <BaroTalkBanner />}

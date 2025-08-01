@@ -39,13 +39,13 @@ const BaroTalkLawyersList = ({ type, lawyers, onLawyerClick, onRefresh, title }:
       <ul className={styles['lawyer-list']}>
         {lawyers.map(lawyer => (
           <LawyerHorizon
-            key={lawyer.id}
+            key={lawyer.lawyerId}
             selected={isSelected}
             className={styles['lawyer-list-item']}
-            name={lawyer.name}
-            lawfirm={lawyer.lawfirm}
-            profileImage='https://picsum.photos/200/300'
-            description={lawyer.description}
+            name={lawyer.lawyerName}
+            lawfirm={lawyer.lawfirmName}
+            profileImage={lawyer.lawyerProfileImage}
+            description={lawyer.lawyerDescription}
             tags={lawyer.tags}
             size='small'
             onClick={() => onLawyerClick(lawyer)}

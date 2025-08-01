@@ -1,1 +1,1 @@
-export const useMediaQuery: (query: string) => boolean
+declare function _useMediaQuery(_query: string): boolean

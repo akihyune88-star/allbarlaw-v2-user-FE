@@ -1,0 +1,15 @@
+.lawyer-admin-header {
+  width: 100%;
+  height: 5.25rem;
+  border-bottom: 1px solid $color-line-divider;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.lawyer-admin-header-inner {
+  width: 80rem;
+
+  display: flex;
+}

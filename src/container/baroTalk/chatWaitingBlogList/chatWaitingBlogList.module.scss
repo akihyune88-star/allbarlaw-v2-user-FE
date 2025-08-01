@@ -1,0 +1,59 @@
+.chatWaitingBlogList {
+}
+
+.chatWaitingBlogList__header {
+  height: 3rem;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatWaitingBlogList__description {
+  font-size: 0.8125rem;
+  color: $color-white;
+}
+
+.chatWaitingBlogList__content {
+  padding: 1.5rem;
+}
+
+.chatWaitingBlogList__content__title {
+  font-size: 1.25rem;
+  font-weight: $font-weight-extra-bold;
+
+  color: $color-green-02;
+}
+
+.chatWaitingBlogList__header__startChat {
+  display: flex;
+  align-items: center;
+  gap: 1.9375rem;
+
+  font-size: 0.8125rem;
+  color: $color-white;
+
+  span {
+    width: 12.875rem;
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .chatWaitingBlogList__header__startChat__button {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  button {
+    background-color: $color-green-01;
+    padding: 0.3438rem 0.5rem;
+    border-radius: 0.625rem;
+    color: $color-white;
+  }
+
+  button:last-child {
+    background-color: $color-white;
+    color: $color-text-index;
+  }
+}

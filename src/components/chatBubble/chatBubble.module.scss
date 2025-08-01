@@ -1,0 +1,98 @@
+.bubbleWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  &.right {
+    align-items: flex-end;
+  }
+}
+
+.bubbleRow {
+  display: flex;
+  align-items: flex-start;
+}
+
+.bubble {
+  max-width: 80vw;
+  min-width: 100px;
+  padding: 1rem;
+  background-color: #22c55e;
+  transition: background 0.2s;
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 18px;
+  word-break: break-word;
+  white-space: pre-line;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.right .bubble {
+  border-radius: 8px 0 8px 8px;
+}
+
+.left .bubble {
+  border-radius: 0 8px 8px 8px;
+}
+
+.tailSvg {
+  width: 13px;
+  height: 16px;
+  display: block;
+}
+
+.left .tailSvg {
+  transform: scaleX(-1);
+}
+
+.meta {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profileImg {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 0.5rem;
+}
+
+// 메시지 상태 아이콘
+.statusIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.25rem;
+  opacity: 0.7;
+
+  &.delivered {
+    opacity: 0.5;
+  }
+
+  &.read {
+    opacity: 1;
+  }
+
+  &.failed {
+    opacity: 1;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}

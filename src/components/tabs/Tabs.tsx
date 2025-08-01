@@ -48,7 +48,7 @@ type TabsProps = {
   children?: React.ReactNode
   items?: MenuItem[]
   initialPath?: string
-  onChange?: (path: string) => void
+  onChange?: (_path: string) => void
 }
 
 const Tabs = ({ children, items, initialPath, onChange }: TabsProps) => {

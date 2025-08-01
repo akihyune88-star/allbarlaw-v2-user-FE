@@ -1,0 +1,166 @@
+.chat-list {
+  background-color: $color-white;
+  border-radius: 0.5rem;
+}
+
+.chat-list-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  padding: 1.5rem;
+
+  border-bottom: 1px solid $color-line-divider;
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: $font-weight-bold;
+    color: $color-green-hover;
+  }
+}
+
+.chat-list-header-button {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  button {
+    height: 2.5rem;
+    background-color: transparent;
+
+    border-radius: 0.5rem;
+    border: 1px solid $color-green-01;
+
+    color: $color-green-01;
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+
+    text-align: center;
+  }
+
+  .chat-list-header-button-text {
+    display: none;
+    font-size: 0.875rem;
+  }
+}
+
+.chat-list-wrapper {
+  padding-bottom: 1.5rem;
+}
+
+.lawyer-chat-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.75rem 1.5rem;
+}
+
+.lawyer-chat-item-profile {
+  figure {
+    width: 3rem;
+    height: 3rem;
+
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.lawyer-chat-item-content {
+  min-width: 0;
+  &-name {
+    font-size: 0.9375rem;
+    font-weight: $font-weight-semibold;
+  }
+
+  &-last-message-time {
+    margin-top: 0.125rem;
+    font-size: 0.6875rem;
+    color: $color-green-01;
+  }
+
+  &-last-message {
+    margin-top: 0.5rem;
+    font-size: 0.6875rem;
+    width: 100%;
+    @include ellipsis(1);
+  }
+}
+
+.lawyer-chat-item-content-name-badge-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.lawyer-chat-item-content-name {
+  display: inline-block;
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  right: -12px;
+  width: 8px;
+  height: 8px;
+  background: var(--badge-color, $color-green-01);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .chat-list {
+    background-color: $color-bg-gray-02;
+  }
+
+  .chat-list-header {
+    background-color: $color-white;
+    padding: 1.5rem 1.25rem;
+    gap: 1.0625rem;
+
+    border-bottom: none;
+
+    h3 {
+      font-size: 1rem;
+    }
+  }
+
+  .chat-list-header-button {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .chat-list-header-button-text {
+      display: block;
+      font-size: 0.8125rem;
+    }
+
+    button {
+      height: auto;
+      padding: 0.3438rem 0.5rem;
+
+      background-color: $color-green-01;
+      color: $color-white;
+
+      border-radius: 0.625rem;
+
+      font-size: 0.75rem;
+    }
+  }
+
+  .chat-list-wrapper {
+    padding: 1rem 1.25rem;
+  }
+
+  .chat-list-content {
+    background-color: $color-white;
+  }
+}

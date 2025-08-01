@@ -18,23 +18,23 @@ interface CheckBoxGroupProps {
 }
 
 const CheckBoxGroup = ({
+  values: _values,
   options,
-  name,
-  values,
   onChange,
   className,
-  direction = 'vertical',
-  gap = '1rem',
+  // 사용하지 않는 props는 _ prefix
+  direction: _direction = 'vertical',
+  gap: _gap = '1rem',
 }: CheckBoxGroupProps) => {
   const handleChange = (value: string) => {
-    const newValues = values.includes(value) ? values.filter(v => v !== value) : [...values, value]
+    const newValues = _values.includes(value) ? _values.filter(v => v !== value) : [..._values, value]
     onChange(newValues)
   }
 
   const containerStyle = {
     display: 'flex',
-    flexDirection: direction === 'horizontal' ? 'row' : 'column',
-    gap: typeof gap === 'number' ? `${gap}rem` : gap,
+    flexDirection: 'vertical',
+    gap: '1rem',
   } as React.CSSProperties
 
   return (
@@ -44,7 +44,7 @@ const CheckBoxGroup = ({
           <CheckBox
             name={name}
             value={option.value}
-            checked={values.includes(option.value)}
+            checked={_values.includes(option.value)}
             onChange={() => handleChange(option.value)}
           />
           <span className={styles['checkbox-text']}>{option.label}</span>

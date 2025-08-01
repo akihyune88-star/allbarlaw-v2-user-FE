@@ -7,7 +7,7 @@ import { getErrorMessage } from '@/utils/errorHandler'
 
 interface UseVerifyVerificationCodeOptions {
   onSuccess?: () => void
-  onError?: (message: string) => void
+  onError?: (_message: string) => void
 }
 
 // 휴대폰 인증번호 발송 뮤테이션 훅
