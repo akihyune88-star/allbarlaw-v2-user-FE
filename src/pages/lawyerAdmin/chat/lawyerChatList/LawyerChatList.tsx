@@ -138,7 +138,11 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
     setChatRoomId(chatRoom.chatRoomId)
 
     // 2. LawyerChat 페이지로 네비게이션
-    navigate(ROUTER.LAWYER_ADMIN_CHAT)
+    navigate(ROUTER.LAWYER_ADMIN_CHAT, {
+      state: {
+        userLeft: chatRoom.userLeft,
+      },
+    })
 
     // 3. 만약 onChatRoomSelect prop이 있다면 호출 (선택사항)
     if (onChatRoomSelect) {

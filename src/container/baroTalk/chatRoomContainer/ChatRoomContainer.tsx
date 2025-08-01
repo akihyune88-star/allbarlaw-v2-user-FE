@@ -6,21 +6,24 @@ import { useLeaveChatRoom } from '@/hooks/queries/useBaroTalk'
 import { useMessages, useChatStatus, useRoomInfo, useSetChatRoomId, useSetChatStatus } from '@/stores/socketStore'
 import { useChatSocket } from '@/hooks/useChatSocket'
 import { useAuth } from '@/contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 interface ChatRoomContainerProps {
   chatRoomId: number | null
+  userLeft: boolean
 }
 
-const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
-  // 🟢 Zustand 상태 구독
+const ChatRoomContainer = ({ chatRoomId, userLeft }: ChatRoomContainerProps) => {
+  // Zustand 상태 구독
   const messages = useMessages()
   const chatStatus = useChatStatus()
   const roomInfo = useRoomInfo()
   const setChatRoomId = useSetChatRoomId()
   const setChatStatus = useSetChatStatus()
   const { userKeyId } = useAuth()
+  const navigate = useNavigate()
 
-  // 🆕 커스텀 훅 사용
+  // 커스텀 훅 사용
   const { isConnected, sendMessage, leaveRoom, isLawyer } = useChatSocket({
     chatRoomId,
     setChatStatus,
@@ -28,37 +31,22 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
 
   const { mutate: leaveChatRoom } = useLeaveChatRoom({
     onSuccess: data => {
-      console.log('🟢 [DEBUG] ===== REST API 나가기 성공 =====')
-      console.log('🟢 [DEBUG] 응답 데이터:', JSON.stringify(data, null, 2))
-      console.log('🟢 [DEBUG] 현재 사용자 타입:', isLawyer ? 'LAWYER' : 'USER')
-      console.log('🟢 [DEBUG] 서버에서 userLeft 이벤트 브로드캐스트 대기 중...')
-
       // 서버가 WebSocket 이벤트를 보내지 않는 경우를 대비해 WebSocket leaveRoom도 호출
-      console.log('🟢 [DEBUG] WebSocket leaveRoom 이벤트도 전송하여 상대방에게 알림')
       leaveRoom()
-
-      // 5초 후에 userLeft 이벤트가 오지 않으면 경고 (디버깅용)
-      setTimeout(() => {
-        console.warn('⚠️ [DEBUG] userLeft 이벤트가 5초 내에 수신되지 않았습니다. 서버 구현을 확인해주세요.')
-      }, 5000)
-
       setChatRoomId(null)
-      console.log('🟢 [DEBUG] ===== REST API 나가기 처리 완료 =====')
+      
+      // 변호사인 경우 변호사 채팅 목록으로 이동
+      if (isLawyer) {
+        navigate('/lawyer-admin/chat')
+      }
     },
-    onError: _error => {
-      console.error('❌ [DEBUG] ===== 채팅방 나가기 실패 =====')
-      console.error('❌ [DEBUG] 에러:', _error)
+    onError: error => {
+      console.error('채팅방 나가기 실패:', error)
     },
   })
 
   const handleEndChat = useCallback(() => {
-    console.log('🟢 [DEBUG] 나가기 버튼 클릭됨')
-    console.log('🟢 [DEBUG] chatRoomId:', chatRoomId)
-    console.log('🟢 [DEBUG] isLawyer:', isLawyer)
-    console.log('🟢 [DEBUG] userKeyId:', userKeyId)
-
     if (!chatRoomId) {
-      console.log('❌ [DEBUG] chatRoomId가 없어서 나가기 중단')
       return
     }
 
@@ -70,19 +58,16 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
     )
 
     if (!confirmed) {
-      console.log('🟡 [DEBUG] 사용자가 나가기를 취소함')
       return
     }
 
-    console.log('🟢 [DEBUG] REST API 나가기 요청 전송 중...')
+    const userType: 'USER' | 'LAWYER' = isLawyer ? 'LAWYER' : 'USER'
     const leaveRequest = {
       roomId: chatRoomId,
-      userType: isLawyer ? 'LAWYER' : 'USER',
-      reason: '사용자 요청', // API 문서에 맞게 수정
+      userType,
+      reason: '사용자 요청',
       userId: userKeyId!,
     }
-    console.log('🟢 [DEBUG] 나가기 요청 데이터:', leaveRequest)
-    console.log('🟢 [DEBUG] API 문서에 따르면 서버는 userLeft 이벤트를 브로드캐스트해야 함')
 
     leaveChatRoom(leaveRequest)
   }, [chatRoomId, isLawyer, userKeyId, leaveChatRoom])
@@ -113,6 +98,7 @@ const ChatRoomContainer = ({ chatRoomId }: ChatRoomContainerProps) => {
         onSendMessage={handleSendMessage}
         isConnected={isConnected}
         type={isLawyer ? 'LAWYER' : 'USER'}
+        userLeft={userLeft}
       />
     </section>
   )

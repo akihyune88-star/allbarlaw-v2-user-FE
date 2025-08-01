@@ -98,6 +98,10 @@ export const useGetLawyerChatList = (lawyerId: number, request: { take: number; 
       return undefined
     },
     initialPageParam: 1,
+    staleTime: 0, // 즉시 stale로 처리
+    gcTime: 0, // 가비지 컬렉션 즉시 실행
+    refetchOnMount: true, // 컴포넌트 마운트 시 항상 refetch
+    refetchOnWindowFocus: true, // 윈도우 포커스 시 refetch
   })
 }
 

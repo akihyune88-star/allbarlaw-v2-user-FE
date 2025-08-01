@@ -53,11 +53,10 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   // 채팅방 상태 업데이트 훅
   const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
     onSuccess: data => {
-      console.log('🟢 채팅방 상태 업데이트 성공:', data)
       setChatStatus(data.chatRoomStatus)
     },
     onError: error => {
-      console.error('❌ 채팅방 상태 업데이트 실패:', error)
+      console.error('채팅방 상태 업데이트 실패:', error)
     },
   })
 
@@ -71,15 +70,11 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   // 소켓 연결
   useEffect(() => {
     if (!userId || !chatRoomId) {
-      console.log('❌ useChatSocket - 소켓 연결 조건 불충족:', { userId, chatRoomId })
       return undefined
     }
 
-    console.log('🔍 useChatSocket - 채팅 소켓 연결 시작, userId:', userId, 'chatRoomId:', chatRoomId)
-
     // 기존 소켓이 있으면 먼저 정리
     if (socket) {
-      console.log('🔍 useChatSocket - 기존 소켓 정리')
       socket.disconnect()
     }
 
@@ -94,13 +89,11 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     joinRoomAttemptedRef.current = false
 
     newSocket.on('connect', () => {
-      console.log('✅ 채팅 소켓 연결 성공, socketId:', newSocket.id)
       setConnected(true)
       socketConnectedRef.current = true
 
       // 소켓 연결 후 즉시 방 입장 시도
       if (chatRoomId) {
-        console.log('🟢 소켓 연결 후 방 입장 시도:', chatRoomId)
         const joinRoomRequest: JoinRoomRequest = {
           chatRoomId: chatRoomId,
           loadRecentMessages: true,
@@ -112,20 +105,18 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     })
 
     newSocket.on('connect_error', error => {
-      console.log('❌ 채팅 소켓 연결 실패:', error.message)
+      console.error('채팅 소켓 연결 실패:', error.message)
       setConnected(false)
       socketConnectedRef.current = false
     })
 
     newSocket.on('disconnect', reason => {
-      console.log('❌ 채팅 소켓 연결 해제, reason:', reason)
       setConnected(false)
       socketConnectedRef.current = false
       joinRoomAttemptedRef.current = false
     })
 
     return () => {
-      console.log('🔍 useChatSocket - 채팅 소켓 연결 해제')
       newSocket.disconnect()
       socketConnectedRef.current = false
       joinRoomAttemptedRef.current = false
@@ -146,7 +137,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           chatRoomId,
           messageIds,
         }
-        console.log('🟢 markAsRead 전송:', request)
         socket.emit('markAsRead', request)
       }
     },
@@ -158,15 +148,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
   // chatRoomId가 변경될 때 방 입장
   useEffect(() => {
-    console.log('🔍 useChatSocket - joinRoom useEffect 실행:', {
-      chatRoomId,
-      socket: !!socket,
-      socketConnected: socket?.connected,
-      socketId: socket?.id,
-      socketConnectedRef: socketConnectedRef.current,
-      joinRoomAttemptedRef: joinRoomAttemptedRef.current,
-    })
-
     if (chatRoomId && socket && socket.connected && !joinRoomAttemptedRef.current) {
       const joinRoomRequest: JoinRoomRequest = {
         chatRoomId: chatRoomId,
@@ -174,16 +155,8 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         messageLimit: 50,
       }
 
-      console.log('🟢 joinRoom 요청:', joinRoomRequest)
       socket.emit('joinRoom', joinRoomRequest)
       joinRoomAttemptedRef.current = true
-    } else {
-      console.log('❌ joinRoom 요청 조건 불충족:', {
-        chatRoomId: !!chatRoomId,
-        socket: !!socket,
-        socketConnected: socket?.connected,
-        alreadyAttempted: joinRoomAttemptedRef.current,
-      })
     }
   }, [chatRoomId, socket])
 
@@ -200,12 +173,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 채팅방 입장 성공
     const handleJoinRoomSuccess = (data: JoinRoomSuccessData) => {
-      console.log('🟢 [DEBUG] ===== joinRoomSuccess 응답 =====')
-      console.log('🟢 [DEBUG] joinRoomSuccess 데이터:', data)
-      console.log('🟢 [DEBUG] 현재 사용자 타입:', isLawyer ? 'LAWYER' : 'USER')
-      console.log('🟢 [DEBUG] 접속한 채팅방 ID:', data.chatRoomId)
-      console.log('🟢 [DEBUG] 연결된 사용자 수:', data.connectedUsers)
-      console.log('🟢 [DEBUG] 로드된 메시지 수:', data.recentMessages.length)
       setMessages(data.recentMessages)
       setRoomInfo(data.chatRoom)
 
@@ -213,8 +180,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       const { userLeft, lawyerLeft, chatRoomIsActive } = data.chatRoom
 
       if (userLeft !== undefined && lawyerLeft !== undefined) {
-        console.log('🟢 채팅방 나가기 상태 확인:', { userLeft, lawyerLeft, chatRoomIsActive })
-
         if (!chatRoomIsActive) {
           // 양쪽 모두 나간 경우
           setChatStatus('COMPLETED')
@@ -264,7 +229,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           .map(msg => msg.chatMessageId)
 
         if (unreadMessages.length > 0 && markAsReadRef.current) {
-          console.log('🟢 채팅방 입장 시 읽음 처리:', unreadMessages)
           markAsReadRef.current(unreadMessages)
         }
         timeoutRefs.current.delete(timeoutId)
@@ -281,14 +245,11 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 새 메시지 수신
     const handleNewMessage = (message: ChatMessage) => {
-      console.log('🟢 newMessage 수신:', message)
-
       // 내가 보낸 메시지인지 확인
       const isMyMessage = message.chatMessageSenderType === (isLawyer ? 'LAWYER' : 'USER')
 
       if (isMyMessage) {
         // 내가 보낸 메시지는 이미 임시로 추가되었으므로 중복 방지
-        console.log('🟡 내가 보낸 메시지이므로 중복 추가 방지:', message.chatMessageId)
         return
       }
 
@@ -297,7 +258,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
       // 상대방 메시지 자동 읽음 처리
       const timeoutId = setTimeout(() => {
-        console.log('🟢 상대방 메시지 읽음 처리:', [message.chatMessageId])
         if (markAsReadRef.current) {
           markAsReadRef.current([message.chatMessageId])
         }
@@ -309,7 +269,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 메시지 전송 성공
     const handleSendMessageSuccess = (data: SendMessageSuccessData) => {
-      console.log('🟢 sendMessageSuccess:', data)
       if (data.tempId) {
         // 임시 메시지를 실제 메시지 ID로 업데이트
         updateMessageByTempId(data.tempId, {
@@ -317,7 +276,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           status: 'sent',
           tempId: undefined, // tempId 제거
         })
-        console.log(`🔄 임시 메시지 ${data.tempId} → 실제 메시지 ${data.messageId}로 업데이트`)
       }
     }
 
@@ -334,57 +292,37 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 읽음 처리 성공
     const handleMarkAsReadSuccess = (data: MarkAsReadSuccessData) => {
-      console.log('🟢 markAsReadSuccess:', data)
       // 성공적으로 읽음 처리된 메시지들의 상태 업데이트는 서버에서 처리
     }
 
     // 상대방이 메시지를 읽음
     const handleMessagesMarkedAsRead = (data: MessagesMarkedAsReadData) => {
-      console.log('🟢 messagesMarkedAsRead:', data)
       // 내가 보낸 메시지들이 읽혔을 때
       markMessagesAsRead(data.messageIds)
     }
 
     // 상대방 퇴장 처리 (새로운 API)
     const handleUserLeft = (data: UserLeftData) => {
-      console.log('🟢 [DEBUG] ===== userLeft 이벤트 수신 =====')
-      console.log('🟢 [DEBUG] 수신된 데이터:', data)
-      console.log('🟢 [DEBUG] 현재 사용자 타입:', isLawyer ? 'LAWYER' : 'USER')
-      console.log('🟢 [DEBUG] 현재 chatRoomId:', chatRoomId)
-
       // 내가 나간 경우와 상대방이 나간 경우 구분
       const currentUserLeft = (isLawyer && data.lawyerLeft) || (!isLawyer && data.userLeft)
-      console.log('🟢 [DEBUG] 내가 나간 경우인가?', currentUserLeft)
-      console.log('🟢 [DEBUG] 조건 체크:', {
-        isLawyer,
-        'data.lawyerLeft': data.lawyerLeft,
-        'data.userLeft': data.userLeft,
-        'isLawyer && data.lawyerLeft': isLawyer && data.lawyerLeft,
-        '!isLawyer && data.userLeft': !isLawyer && data.userLeft,
-      })
 
       // 시스템 메시지 생성 및 상태 업데이트
       let messageContent = ''
 
       if (!data.chatRoomIsActive) {
         // 양쪽 모두 나간 경우 - 완전 종료
-        console.log('🟢 [DEBUG] 양쪽 모두 나간 경우 - 완전 종료')
         messageContent = '채팅이 종료되었습니다.'
         setChatStatus('COMPLETED')
       } else if (currentUserLeft) {
         // 내가 나간 경우
-        console.log('🟢 [DEBUG] 내가 나간 경우 - COMPLETED 상태로 변경')
         messageContent = '채팅을 나갔습니다. 상대방은 계속 메시지를 보낼 수 있습니다.'
         setChatStatus('COMPLETED')
       } else {
         // 상대방이 나간 경우 - 일방향 채팅 상태
         const leftUserType = data.userLeft ? '사용자' : '변호사'
-        console.log('🟢 [DEBUG] 상대방이 나간 경우 - PARTIAL_LEFT 상태로 변경:', leftUserType)
         messageContent = `${leftUserType}가 채팅을 나갔습니다.`
         setChatStatus('PARTIAL_LEFT')
       }
-
-      console.log('🟢 [DEBUG] 시스템 메시지 내용:', messageContent)
 
       // 중복 메시지 방지: 같은 내용의 시스템 메시지가 이미 있는지 확인
       const currentMessages = useSocketStore.getState().messages
@@ -404,28 +342,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           chatMessageCreatedAt: new Date().toISOString(),
         }
 
-        console.log('🟢 [DEBUG] 시스템 메시지 추가:', leaveMessage)
         addMessage(leaveMessage)
-      } else {
-        console.log('🟡 [DEBUG] 중복 시스템 메시지 방지됨:', messageContent)
       }
-
-      console.log('🟢 [DEBUG] ===== userLeft 처리 완료 =====')
     }
 
     // 채팅방 퇴장 성공
     const handleLeaveRoomSuccess = (data: any) => {
-      console.log('🟢 [DEBUG] ===== leaveRoomSuccess 이벤트 수신 =====')
-      console.log('🟢 [DEBUG] leaveRoomSuccess 데이터:', JSON.stringify(data, null, 2))
-      console.log('🟢 [DEBUG] 현재 사용자 타입:', isLawyer ? 'LAWYER' : 'USER')
-
       // API 문서에 따른 새로운 응답 형식 처리
       if (data && typeof data.chatRoomIsActive !== 'undefined') {
-        console.log('🟢 [DEBUG] 새로운 leaveRoomSuccess 응답 형식 감지')
-        console.log('🟢 [DEBUG] chatRoomIsActive:', data.chatRoomIsActive)
-        console.log('🟢 [DEBUG] userLeft:', data.userLeft)
-        console.log('🟢 [DEBUG] lawyerLeft:', data.lawyerLeft)
-
         // 내가 나간 경우와 상대방이 나간 경우 구분
         const currentUserLeft = (isLawyer && data.lawyerLeft) || (!isLawyer && data.userLeft)
 
@@ -454,10 +378,8 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           chatMessageCreatedAt: new Date().toISOString(),
         }
 
-        console.log('🟢 [DEBUG] leaveRoomSuccess에서 시스템 메시지 추가:', leaveMessage)
         addMessage(leaveMessage)
       } else {
-        console.log('🟡 [DEBUG] 기존 leaveRoomSuccess 응답 형식 - 기본 메시지 표시')
         const leaveMessage: ChatMessage = {
           chatMessageId: Date.now(),
           chatMessageContent: '상대방이 채팅을 나갔습니다.',
@@ -468,8 +390,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         addMessage(leaveMessage)
         setChatStatus('PARTIAL_LEFT')
       }
-
-      console.log('🟢 [DEBUG] leaveRoomSuccess 처리 완료')
     }
 
     // 채팅방 퇴장 실패
@@ -478,16 +398,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     }
 
     // 이벤트 리스너 등록
-    console.log('🟢 [DEBUG] WebSocket 이벤트 리스너 등록 중...')
-    console.log('🟢 [DEBUG] 현재 사용자:', { isLawyer, chatRoomId, userId })
-
-    // 🆕 모든 이벤트에 기본 로그 추가
     socket.on('joinRoomSuccess', handleJoinRoomSuccess)
     socket.on('joinRoomError', handleJoinRoomError)
-    socket.on('newMessage', data => {
-      console.log('🟢 [DEBUG] newMessage 이벤트 수신:', data.chatMessageId)
-      handleNewMessage(data)
-    })
+    socket.on('newMessage', handleNewMessage)
     socket.on('sendMessageSuccess', handleSendMessageSuccess)
     socket.on('sendMessageError', handleSendMessageError)
     socket.on('markAsReadSuccess', handleMarkAsReadSuccess)
@@ -496,157 +409,12 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     socket.on('leaveRoomSuccess', handleLeaveRoomSuccess)
     socket.on('leaveRoomError', handleLeaveRoomError)
 
-    // 🆕 다른 가능한 나가기 이벤트 이름들도 리스닝
-    socket.on('user_left', data => {
-      console.log('🟢 [DEBUG] user_left 이벤트 수신:', data)
-      handleUserLeft(data)
-    })
-    socket.on('userDisconnected', data => {
-      console.log('🟢 [DEBUG] userDisconnected 이벤트 수신:', data)
-      handleUserLeft(data)
-    })
-    socket.on('memberLeft', data => {
-      console.log('🟢 [DEBUG] memberLeft 이벤트 수신:', data)
-      handleUserLeft(data)
-    })
-    socket.on('chatRoomLeft', data => {
-      console.log('🟢 [DEBUG] chatRoomLeft 이벤트 수신:', data)
-      handleUserLeft(data)
-    })
-    socket.on('roomLeft', data => {
-      console.log('🟢 [DEBUG] roomLeft 이벤트 수신:', data)
-      handleUserLeft(data)
-    })
-
-    // 🆕 모든 WebSocket 이벤트 캐치 (디버깅용)
-    const originalEmit = socket.emit
-    socket.emit = function (...args) {
-      console.log('🟢 [DEBUG] WebSocket 이벤트 전송:', args[0], args[1])
-      return originalEmit.apply(this, args)
-    }
-
-    // 🆕 모든 수신 WebSocket 이벤트 로그 (디버깅용) - 완전한 캐치
-    socket.onAny((eventName, ...args) => {
-      console.log('📡 [SOCKET] 이벤트 수신:', eventName)
-      console.log('📡 [SOCKET] 데이터:', JSON.stringify(args, null, 2))
-
-      // 나가기 관련 이벤트들을 특별히 강조
-      if (eventName.includes('leave') || eventName.includes('Left') || eventName.includes('left')) {
-        console.log('🚨🚨🚨 [SOCKET] 나가기 관련 이벤트 감지!!! 🚨🚨🚨')
-        console.log('🚨 [SOCKET] 이벤트명:', eventName)
-        console.log('🚨 [SOCKET] 전체 데이터:', JSON.stringify(args, null, 2))
-      }
-    })
-
-    // 🆕 Socket.IO의 모든 내부 이벤트도 캐치
-    socket.onAnyOutgoing((eventName, ...args) => {
-      console.log('📤 [SOCKET] 이벤트 전송:', eventName, args)
-    })
-
-    // 🆕 소켓 연결/해제 상태 모니터링
-    socket.on('connect', () => {
-      console.log('✅ [SOCKET] 연결됨 - ID:', socket.id)
-    })
-
-    socket.on('disconnect', reason => {
-      console.log('❌ [SOCKET] 연결 해제 - 이유:', reason)
-    })
-
-    socket.on('connect_error', error => {
-      console.log('🔥 [SOCKET] 연결 오류:', error)
-    })
-
-    // 🆕 Socket.IO 저수준 이벤트들도 모니터링
-    const originalEmitWithAck = socket.emitWithAck
-    socket.emitWithAck = function (...args) {
-      console.log('📤 [SOCKET] emitWithAck:', args)
-      return originalEmitWithAck.apply(this, args)
-    }
-
-    // 🆕 Socket.IO 내부 패킷 모니터링 (가능한 경우)
-    if (socket.engine) {
-      socket.engine.on('packet', packet => {
-        console.log('📦 [SOCKET] Raw packet:', packet)
-      })
-
-      socket.engine.on('packetCreate', packet => {
-        console.log('📦 [SOCKET] Packet created:', packet)
-      })
-    }
-
-    // 🆕 모든 가능한 소켓 이벤트를 수동으로 리스닝
-    const commonSocketEvents = [
-      'connect',
-      'disconnect',
-      'connect_error',
-      'reconnect',
-      'reconnect_error',
-      'joinRoom',
-      'joinRoomSuccess',
-      'joinRoomError',
-      'joinRoomFailed',
-      'leaveRoom',
-      'leaveRoomSuccess',
-      'leaveRoomError',
-      'leaveRoomFailed',
-      'userJoined',
-      'userLeft',
-      'userDisconnected',
-      'user_left',
-      'user_joined',
-      'memberLeft',
-      'memberJoined',
-      'chatRoomLeft',
-      'roomLeft',
-      'roomJoined',
-      'sendMessage',
-      'sendMessageSuccess',
-      'sendMessageError',
-      'sendMessageFailed',
-      'newMessage',
-      'messageReceived',
-      'messageDelivered',
-      'markAsRead',
-      'markAsReadSuccess',
-      'markAsReadError',
-      'messagesMarkedAsRead',
-      'messageRead',
-      'messageStatus',
-      'typing',
-      'stopTyping',
-      'userTyping',
-      'chatRoomStatus',
-      'statusUpdate',
-      'roomUpdate',
-      'error',
-      'warning',
-      'info',
-      'notification',
-    ]
-
-    commonSocketEvents.forEach(eventName => {
-      socket.on(eventName, (...args) => {
-        console.log(`🎯 [SOCKET] 개별 리스너 - ${eventName}:`, args)
-      })
-    })
-
-    // 🆕 WebSocket 연결 상태 주기적 체크
-    const connectionCheckInterval = setInterval(() => {
-      console.log('🔍 [SOCKET] 연결 상태 체크:', {
-        connected: socket.connected,
-        id: socket.id,
-        chatRoomId: chatRoomId,
-        isLawyer: isLawyer,
-        rooms: socket.rooms ? Array.from(socket.rooms) : '알 수 없음',
-      })
-    }, 15000) // 15초마다 체크
-
-    console.log('🟢 [DEBUG] WebSocket 이벤트 리스너 등록 완료 (userLeft 포함)')
-    console.log('🟢 [DEBUG] 소켓 객체 정보:', {
-      connected: socket.connected,
-      id: socket.id,
-      hasListeners: true,
-    })
+    // 다른 가능한 나가기 이벤트 이름들도 리스닝
+    socket.on('user_left', handleUserLeft)
+    socket.on('userDisconnected', handleUserLeft)
+    socket.on('memberLeft', handleUserLeft)
+    socket.on('chatRoomLeft', handleUserLeft)
+    socket.on('roomLeft', handleUserLeft)
 
     // 클린업
     return () => {
@@ -673,11 +441,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         clearTimeout(timeoutId)
       })
       timeoutRefs.current.clear()
-
-      // interval 정리
-      if (connectionCheckInterval) {
-        clearInterval(connectionCheckInterval)
-      }
     }
   }, [
     socket,
@@ -698,9 +461,8 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       if (socket && chatRoomId && socket.connected) {
         const tempId = `temp_${Date.now()}`
 
-        // 🆕 변호사가 PENDING 상태에서 첫 메시지를 보낼 때 CONSULTING으로 상태 변경
+        // 변호사가 PENDING 상태에서 첫 메시지를 보낼 때 CONSULTING으로 상태 변경
         if (isLawyer && currentChatStatus === 'PENDING') {
-          console.log('🟢 변호사 첫 메시지 → PENDING에서 CONSULTING으로 상태 변경')
           updateChatRoomStatus({
             chatRoomId: chatRoomId,
             status: 'CONSULTING',
@@ -738,17 +500,8 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
   // 채팅방 나가기 함수
   const leaveRoom = useCallback(() => {
-    console.log('🟢 [DEBUG] leaveRoom 함수 호출됨')
-    console.log('🟢 [DEBUG] socket 상태:', !!socket)
-    console.log('🟢 [DEBUG] socket.connected:', socket?.connected)
-    console.log('🟢 [DEBUG] chatRoomId:', chatRoomId)
-
     if (socket && chatRoomId) {
-      console.log('🟢 [DEBUG] WebSocket leaveRoom 이벤트 전송 중:', { chatRoomId })
       socket.emit('leaveRoom', { chatRoomId })
-      console.log('🟢 [DEBUG] WebSocket leaveRoom 이벤트 전송 완료')
-    } else {
-      console.log('❌ [DEBUG] leaveRoom 조건 불충족:', { socket: !!socket, chatRoomId })
     }
   }, [socket, chatRoomId])
 

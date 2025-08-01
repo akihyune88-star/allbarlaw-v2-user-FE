@@ -166,6 +166,8 @@ export type LawyerChatRoom = {
   lawyerFirstResponseAt: string | null
   consultationRequestTitle: string
   lawyerName: string
+  userLeft: boolean
+  lawyerLeft: boolean
 }
 
 export type LawyerChatListResponse = {
