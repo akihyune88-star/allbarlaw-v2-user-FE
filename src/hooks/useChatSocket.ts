@@ -252,6 +252,16 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         return
       }
 
+      // 중복 메시지 방지: 같은 ID의 메시지가 이미 있는지 확인
+      const currentMessages = useSocketStore.getState().messages
+      const isDuplicateMessage = currentMessages.some(
+        msg => msg.chatMessageId === message.chatMessageId
+      )
+
+      if (isDuplicateMessage) {
+        return
+      }
+
       // 상대방이 보낸 메시지만 추가
       addMessage(message)
 
@@ -458,15 +468,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   const sendMessage = useCallback(
     (content: string, roomInfo: any) => {
       if (socket && chatRoomId && socket.connected) {
-        const tempId = `temp_${Date.now()}`
-
-        // 변호사가 PENDING 상태에서 첫 메시지를 보낼 때 CONSULTING으로 상태 변경
-        if (isLawyer && currentChatStatus === 'PENDING') {
-          updateChatRoomStatus({
-            chatRoomId: chatRoomId,
-            status: 'CONSULTING',
-          })
-        }
+        const tempId = `temp_${Date.now()}_${Math.random()}`
 
         // 임시 메시지를 먼저 UI에 표시
         const tempMessage: ChatMessage = {
@@ -484,7 +486,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
         addMessage(tempMessage)
 
-        // 서버로 메시지 전송
+        // 서버로 메시지 전송 (상태 변경은 서버에서 처리하도록)
         socket.emit('sendMessage', {
           chatRoomId: chatRoomId,
           content: content,
@@ -492,6 +494,17 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           receiverType: isLawyer ? 'USER' : 'LAWYER',
           tempId,
         })
+
+        // 변호사가 PENDING 상태에서 첫 메시지를 보낼 때 CONSULTING으로 상태 변경 (메시지 전송 후)
+        if (isLawyer && currentChatStatus === 'PENDING') {
+          // 약간의 지연을 두어 메시지 전송이 완료된 후 상태 변경
+          setTimeout(() => {
+            updateChatRoomStatus({
+              chatRoomId: chatRoomId,
+              status: 'CONSULTING',
+            })
+          }, 100)
+        }
       }
     },
     [socket, chatRoomId, isLawyer, userId, addMessage, currentChatStatus, updateChatRoomStatus]
