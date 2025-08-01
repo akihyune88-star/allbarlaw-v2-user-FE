@@ -141,6 +141,8 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
     navigate(ROUTER.LAWYER_ADMIN_CHAT, {
       state: {
         userLeft: chatRoom.userLeft,
+        clientName: chatRoom.clientName,
+        clientId: chatRoom.clientId,
       },
     })
 

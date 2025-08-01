@@ -11,9 +11,11 @@ import { useNavigate } from 'react-router-dom'
 interface ChatRoomContainerProps {
   chatRoomId: number | null
   userLeft?: boolean
+  clientName?: string
+  clientId?: number
 }
 
-const ChatRoomContainer = ({ chatRoomId, userLeft }: ChatRoomContainerProps) => {
+const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId }: ChatRoomContainerProps) => {
   // Zustand 상태 구독
   const messages = useMessages()
   const chatStatus = useChatStatus()
@@ -22,6 +24,8 @@ const ChatRoomContainer = ({ chatRoomId, userLeft }: ChatRoomContainerProps) => 
   const setChatStatus = useSetChatStatus()
   const { userKeyId } = useAuth()
   const navigate = useNavigate()
+
+  console.log('messages', messages)
 
   // 커스텀 훅 사용
   const { isConnected, sendMessage, leaveRoom, isLawyer } = useChatSocket({
@@ -87,13 +91,17 @@ const ChatRoomContainer = ({ chatRoomId, userLeft }: ChatRoomContainerProps) => 
   return (
     <section className={`contents-section ${styles['chat-content']}`}>
       <ChatHeader
-        lawyerId={(roomInfo as any)?.chatRoomLawyerId || 0}
         isActive={true}
-        lawyerName={(roomInfo as any)?.chatRoomLawyer?.lawyerName || ''}
         count={{ total: 1256, month: 251 }}
+        onEndChat={handleEndChat}
+        isLawyer={isLawyer}
+        // 변호사 정보 (유저가 볼 때)
+        lawyerName={(roomInfo as any)?.chatRoomLawyer?.lawyerName || ''}
         lawfirmName={(roomInfo as any)?.chatRoomLawyer?.lawfirmName || ''}
         lawyerProfileImage={(roomInfo as any)?.chatRoomLawyer?.lawyerProfileImage || 'https://picsum.photos/200/300'}
-        onEndChat={handleEndChat}
+        // 유저 정보 (변호사가 볼 때)
+        userId={clientId || (roomInfo as any)?.chatRoomUserId || 0}
+        userName={clientName}
       />
       <ChatBody
         chatRoomId={chatRoomId}
