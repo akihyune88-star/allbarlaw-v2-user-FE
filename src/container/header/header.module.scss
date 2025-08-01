@@ -1,6 +1,7 @@
 //* 전반적인 헤더 스타일링
 .container {
   width: 100%;
+  border-top: 2px solid $color-green-01;
   border-bottom: 1px solid $color-line-divider;
 
   @media (max-width: $breakpoint-desktop) {
