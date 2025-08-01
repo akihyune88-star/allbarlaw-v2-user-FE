@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './ChatBubble.module.scss'
+import styles from './chatBubble.module.scss'
 
 interface ChatBubbleProps {
   message: string
