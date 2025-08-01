@@ -16,6 +16,8 @@ type ChatBodyProps = {
   isConnected: boolean
   chatRoomId: number | null
   userLeft: boolean
+  leaveRoom?: () => void
+  isLawyer?: boolean
 }
 
 const ChatBody = ({
@@ -26,6 +28,8 @@ const ChatBody = ({
   type = 'USER',
   chatRoomId,
   userLeft,
+  leaveRoom,
+  isLawyer,
 }: ChatBodyProps) => {
   const [message, setMessage] = useState('')
 
@@ -88,7 +92,13 @@ const ChatBody = ({
   )
 
   const renderWaitingChat = () => (
-    <ChatWaitingBlogList chatStatus={chatStatus} chatRoomId={chatRoomId} messagesLength={messages.length} />
+    <ChatWaitingBlogList 
+      chatStatus={chatStatus} 
+      chatRoomId={chatRoomId} 
+      messagesLength={messages.length} 
+      leaveRoom={leaveRoom}
+      isLawyer={isLawyer}
+    />
   )
 
   // 채팅 입력창 렌더링 로직

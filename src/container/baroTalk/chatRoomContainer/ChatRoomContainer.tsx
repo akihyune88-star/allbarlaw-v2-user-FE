@@ -111,6 +111,8 @@ const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId }: ChatR
         isConnected={isConnected}
         type={isLawyer ? 'LAWYER' : 'USER'}
         userLeft={userLeft || false}
+        leaveRoom={leaveRoom}
+        isLawyer={isLawyer}
       />
     </section>
   )
