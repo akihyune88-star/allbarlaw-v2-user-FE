@@ -7,16 +7,23 @@ import { useUpdateChatRoomStatus, useLeaveChatRoom } from '@/hooks/queries/useBa
 import { useSetChatStatus, useSetChatRoomId } from '@/stores/socketStore'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
-import { useChatSocket } from '@/hooks/useChatSocket'
 import React from 'react'
 
 type ChatWaitingBlogListProps = {
   chatStatus: ChatRoomStatus
   chatRoomId: number | null
   messagesLength: number
+  leaveRoom?: () => void
+  isLawyer?: boolean
 }
 
-const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength }: ChatWaitingBlogListProps) => {
+const ChatWaitingBlogList = ({
+  chatStatus,
+  chatRoomId,
+  messagesLength,
+  leaveRoom,
+  isLawyer,
+}: ChatWaitingBlogListProps) => {
   console.log('chatStatus', chatStatus)
 
   const { blogList } = useGetBlogList({
@@ -30,12 +37,6 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength }: ChatWai
   const navigate = useNavigate()
   const { userKeyId } = useAuth()
 
-  // WebSocket 연결 (채팅방 나가기용)
-  const { leaveRoom, isLawyer } = useChatSocket({
-    chatRoomId,
-    setChatStatus,
-  })
-
   const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
     onSuccess: (data: UpdateChatRoomStatusResponse) => {
       setChatStatus(data.chatRoomStatus)
@@ -45,7 +46,9 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength }: ChatWai
   const { mutate: leaveChatRoom } = useLeaveChatRoom({
     onSuccess: () => {
       // REST API 성공 후 WebSocket으로도 나가기 처리
-      leaveRoom()
+      if (leaveRoom) {
+        leaveRoom()
+      }
       setChatRoomId(null)
 
       // 변호사인 경우 변호사 채팅 목록으로 이동
