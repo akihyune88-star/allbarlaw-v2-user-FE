@@ -52,10 +52,11 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   // 채팅방 상태 업데이트 훅
   const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
     onSuccess: data => {
+      console.log('✅ [STATUS] 채팅방 상태 업데이트 성공:', data)
       setChatStatus(data.chatRoomStatus)
     },
     onError: error => {
-      console.error('채팅방 상태 업데이트 실패:', error)
+      console.error('❌ [STATUS] 채팅방 상태 업데이트 실패:', error)
     },
   })
 
@@ -529,8 +530,10 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
         // 변호사가 PENDING 상태에서 첫 메시지를 보낼 때 CONSULTING으로 상태 변경 (메시지 전송 후)
         if (isLawyer && currentChatStatus === 'PENDING') {
+          console.log('🔄 [STATUS] 채팅방 상태 변경 시도: PENDING -> CONSULTING')
           // 약간의 지연을 두어 메시지 전송이 완료된 후 상태 변경
           setTimeout(() => {
+            console.log('🔄 [STATUS] updateChatRoomStatus 호출')
             updateChatRoomStatus({
               chatRoomId: chatRoomId,
               status: 'CONSULTING',
