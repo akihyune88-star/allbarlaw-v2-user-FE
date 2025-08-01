@@ -103,10 +103,7 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength }: ChatWai
   return (
     <main className={styles.chatWaitingBlogList}>
       <header className={styles.chatWaitingBlogList__header}>
-        {chatStatus === 'PENDING' && (
-          <p className={styles.chatWaitingBlogList__description}>해당 질문에 대한 답변을 기다리는 중입니다.</p>
-        )}
-        {(chatStatus === 'CONSULTING' || messagesLength > 1) && (
+        {chatStatus === 'CONSULTING' || messagesLength > 1 ? (
           <div className={styles.chatWaitingBlogList__header__startChat}>
             <span>채팅을 시작 하시겠습니까? </span>
             <div className={styles.chatWaitingBlogList__header__startChat__button}>
@@ -114,6 +111,8 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength }: ChatWai
               <button onClick={handleLeaveChat}>대화방 나가기</button>
             </div>
           </div>
+        ) : (
+          <p className={styles.chatWaitingBlogList__description}>해당 질문에 대한 답변을 기다리는 중입니다.</p>
         )}
       </header>
       <div className={styles.chatWaitingBlogList__content}>
