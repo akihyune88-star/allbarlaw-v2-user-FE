@@ -753,7 +753,7 @@ const [chatRoomState, setChatRoomState] = useState({
   lawyerLeft: false,
   currentUserCanChat: true,
 })
-
+이거 
 // WebSocket 이벤트로 상태 업데이트
 socket.on('userLeft', data => {
   setChatRoomState({
