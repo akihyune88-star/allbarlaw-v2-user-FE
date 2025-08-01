@@ -43,11 +43,11 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength }: ChatWai
   })
 
   const { mutate: leaveChatRoom } = useLeaveChatRoom({
-    onSuccess: data => {
+    onSuccess: () => {
       // REST API 성공 후 WebSocket으로도 나가기 처리
       leaveRoom()
       setChatRoomId(null)
-      
+
       // 변호사인 경우 변호사 채팅 목록으로 이동
       if (isLawyer) {
         navigate('/lawyer-admin/chat-list')

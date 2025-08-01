@@ -7,7 +7,6 @@ import {
   JoinRoomSuccessData,
   JoinRoomRequest,
   MarkAsReadRequest,
-  MarkAsReadSuccessData,
   MessagesMarkedAsReadData,
   SendMessageSuccessData,
   SendMessageErrorData,
@@ -110,7 +109,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       socketConnectedRef.current = false
     })
 
-    newSocket.on('disconnect', reason => {
+    newSocket.on('disconnect', () => {
       setConnected(false)
       socketConnectedRef.current = false
       joinRoomAttemptedRef.current = false
@@ -291,7 +290,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     }
 
     // 읽음 처리 성공
-    const handleMarkAsReadSuccess = (data: MarkAsReadSuccessData) => {
+    const handleMarkAsReadSuccess = () => {
       // 성공적으로 읽음 처리된 메시지들의 상태 업데이트는 서버에서 처리
     }
 

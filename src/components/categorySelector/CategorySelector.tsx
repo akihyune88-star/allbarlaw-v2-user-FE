@@ -10,7 +10,7 @@ import { useCategoryRenderChunk } from '@/hooks/useCategoryRenderChunk'
 type CategorySelectorProps = {
   title?: string
   className?: string
-  onSubcategoryClick?: (category: Category, subcategory: Subcategory) => void
+  onSubcategoryClick?: (_category: Category, _subcategory: Subcategory) => void
   enableMobileExpand?: boolean // 모바일에서 펼쳐보기 기능 사용 여부
   initialVisibleGroups?: number // 초기에 보여줄 그룹 수 (모바일에서)
   horizontalPadding?: number
@@ -25,11 +25,6 @@ const CategorySelector = ({
   initialVisibleGroups = 2,
   horizontalPadding = 20,
   defaultSubcategoryId,
-  // 사용하지 않는 props는 _ prefix
-  category: _category,
-  subcategory: _subcategory,
-  onCategoryChange: _onCategoryChange,
-  onSubcategoryChange: _onSubcategoryChange,
 }: CategorySelectorProps) => {
   const { data: categoryList } = useCategory()
   const [selectedCategory, setSelectedMainCategory] = useState<number | null>(null)

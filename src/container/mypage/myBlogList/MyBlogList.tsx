@@ -17,7 +17,7 @@ const MyBlogList = () => {
 
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
-    isFetching: isFetchingNextPage,
+    isFetchingNextPage,
     fetchNextPage,
   })
 

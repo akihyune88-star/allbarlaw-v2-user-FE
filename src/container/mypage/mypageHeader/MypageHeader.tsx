@@ -5,24 +5,13 @@ import styles from './mypageHeader.module.scss'
 
 interface MypageHeaderProps {
   tabs: string[]
-  onTabClick: (tab: string) => void
+  onTabClick: (_tab: string) => void
   currentTab: string
   sortOrder?: 'recent' | 'oldest'
-  onSortChange?: (sortOrder: 'recent' | 'oldest') => void
+  onSortChange?: (_sortOrder: 'recent' | 'oldest') => void
 }
 
-const MypageHeader = ({
-  tabs,
-  onTabClick,
-  currentTab,
-  sortOrder,
-  onSortChange,
-  // 사용하지 않는 props는 _ prefix
-  tab: _tab,
-  sortOrder: _sortOrder,
-  onTabChange: _onTabChange,
-  onSortChange: _onSortChange,
-}: MypageHeaderProps) => {
+const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange }: MypageHeaderProps) => {
   const getTabInfo = (tab: string): { name: string; icon: KeyOfIcon } => {
     switch (tab) {
       case 'keepList':

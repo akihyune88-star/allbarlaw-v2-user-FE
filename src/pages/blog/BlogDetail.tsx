@@ -86,10 +86,10 @@ const BlogDetail = () => {
                       <div className={styles['ai-recommender-lawyer']}>
                         {mockLawyerList.map(lawyer => (
                           <LawyerHorizon
-                            key={lawyer.id}
-                            name={lawyer.name}
-                            profileImage={lawyer.profileImage}
-                            description={lawyer.description}
+                            key={lawyer.lawyerId}
+                            name={lawyer.lawyerName}
+                            profileImage={lawyer.lawyerProfileImage}
+                            description={lawyer.lawfirmName}
                             size='x-small'
                           />
                         ))}
@@ -113,21 +113,21 @@ export default BlogDetail
 
 const mockLawyerList = [
   {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
+    lawyerId: 1,
+    lawyerName: '이보람',
+    lawfirmName: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
+    lawyerProfileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
   },
   {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
+    lawyerId: 2,
+    lawyerName: '이보람',
+    lawfirmName: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
+    lawyerProfileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
   },
   {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
+    lawyerId: 1,
+    lawyerName: '이보람',
+    lawfirmName: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
+    lawyerProfileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
   },
 ]

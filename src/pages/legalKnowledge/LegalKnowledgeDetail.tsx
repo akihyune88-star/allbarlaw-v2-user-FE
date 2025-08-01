@@ -61,10 +61,10 @@ const LegalKnowledgeDetail = () => {
                     <div className={styles['lawyer-list']}>
                       {mockLawyerList.map(lawyer => (
                         <LawyerHorizon
-                          key={lawyer.id}
-                          name={lawyer.name}
-                          profileImage={lawyer.profileImage}
-                          description={lawyer.description}
+                          key={lawyer.lawyerId}
+                          name={lawyer.lawyerName}
+                          profileImage={lawyer.lawyerProfileImage}
+                          description={lawyer.lawfirmName}
                           size='x-small'
                         />
                       ))}

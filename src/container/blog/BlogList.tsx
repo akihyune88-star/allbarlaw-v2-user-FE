@@ -23,7 +23,7 @@ const BlogList = () => {
   // 무한스크롤 적용
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
-    isFetching: isFetchingNextPage,
+    isFetchingNextPage,
     fetchNextPage,
   })
 
