@@ -77,6 +77,15 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       socket.disconnect()
     }
 
+    // 🆕 배포환경 디버깅을 위한 로그
+    console.log('🔍 [SOCKET] 소켓 연결 시도:', {
+      userId,
+      chatRoomId,
+      serverUrl: import.meta.env.VITE_SERVER_API + '/chat',
+      token: localStorage.getItem('accessToken') ? '토큰 존재' : '토큰 없음',
+      sessionToken: sessionStorage.getItem('accessToken') ? '세션토큰 존재' : '세션토큰 없음'
+    })
+
     const newSocket = io(import.meta.env.VITE_SERVER_API + '/chat', {
       auth: {
         token: localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken') || '',
@@ -88,6 +97,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     joinRoomAttemptedRef.current = false
 
     newSocket.on('connect', () => {
+      console.log('✅ [SOCKET] 소켓 연결 성공')
       setConnected(true)
       socketConnectedRef.current = true
 
@@ -98,18 +108,20 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           loadRecentMessages: true,
           messageLimit: 50,
         }
+        console.log('🔍 [SOCKET] 방 입장 요청:', joinRoomRequest)
         newSocket.emit('joinRoom', joinRoomRequest)
         joinRoomAttemptedRef.current = true
       }
     })
 
     newSocket.on('connect_error', error => {
-      console.error('채팅 소켓 연결 실패:', error.message)
+      console.error('❌ [SOCKET] 소켓 연결 실패:', error.message)
       setConnected(false)
       socketConnectedRef.current = false
     })
 
     newSocket.on('disconnect', () => {
+      console.log('🔌 [SOCKET] 소켓 연결 끊김')
       setConnected(false)
       socketConnectedRef.current = false
       joinRoomAttemptedRef.current = false
@@ -154,6 +166,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         messageLimit: 50,
       }
 
+      console.log('🔍 [SOCKET] 방 입장 재시도:', joinRoomRequest)
       socket.emit('joinRoom', joinRoomRequest)
       joinRoomAttemptedRef.current = true
     }
@@ -172,6 +185,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 채팅방 입장 성공
     const handleJoinRoomSuccess = (data: JoinRoomSuccessData) => {
+      console.log('✅ [SOCKET] 방 입장 성공:', data)
       setMessages(data.recentMessages)
       setRoomInfo(data.chatRoom)
 
@@ -238,12 +252,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 채팅방 입장 실패
     const handleJoinRoomError = (error: { message: string }) => {
-      console.error('❌ joinRoomError:', error.message)
+      console.error('❌ [SOCKET] 방 입장 실패:', error.message)
       joinRoomAttemptedRef.current = false
     }
 
     // 새 메시지 수신
     const handleNewMessage = (message: ChatMessage) => {
+      console.log('📨 [SOCKET] 새 메시지 수신:', message)
+      
       // 내가 보낸 메시지인지 확인
       const isMyMessage = message.chatMessageSenderType === (isLawyer ? 'LAWYER' : 'USER')
 
@@ -278,6 +294,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 메시지 전송 성공
     const handleSendMessageSuccess = (data: SendMessageSuccessData) => {
+      console.log('✅ [SOCKET] 메시지 전송 성공:', data)
       if (data.tempId) {
         // 임시 메시지를 실제 메시지 ID로 업데이트
         updateMessageByTempId(data.tempId, {
@@ -290,7 +307,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 메시지 전송 실패
     const handleSendMessageError = (error: SendMessageErrorData) => {
-      console.error('❌ sendMessageError:', error)
+      console.error('❌ [SOCKET] 메시지 전송 실패:', error)
       if (error.tempId) {
         updateMessageByTempId(error.tempId, {
           status: 'failed',
@@ -467,6 +484,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   // 메시지 전송 함수
   const sendMessage = useCallback(
     (content: string, roomInfo: any) => {
+      console.log('📤 [SOCKET] 메시지 전송 시도:', {
+        content,
+        socket: !!socket,
+        connected: socket?.connected,
+        chatRoomId,
+        roomInfo: roomInfo ? '존재' : '없음'
+      })
+
       if (socket && chatRoomId && socket.connected) {
         const tempId = `temp_${Date.now()}_${Math.random()}`
 
@@ -484,16 +509,20 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           status: 'sending',
         }
 
+        console.log('📤 [SOCKET] 임시 메시지 추가:', tempMessage)
         addMessage(tempMessage)
 
         // 서버로 메시지 전송 (상태 변경은 서버에서 처리하도록)
-        socket.emit('sendMessage', {
+        const messagePayload = {
           chatRoomId: chatRoomId,
           content: content,
           receiverId: isLawyer ? roomInfo?.chatRoomUserId || 0 : roomInfo?.chatRoomLawyerId || 0,
           receiverType: isLawyer ? 'USER' : 'LAWYER',
           tempId,
-        })
+        }
+        
+        console.log('📤 [SOCKET] 서버로 메시지 전송:', messagePayload)
+        socket.emit('sendMessage', messagePayload)
 
         // 변호사가 PENDING 상태에서 첫 메시지를 보낼 때 CONSULTING으로 상태 변경 (메시지 전송 후)
         if (isLawyer && currentChatStatus === 'PENDING') {
@@ -505,6 +534,12 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
             })
           }, 100)
         }
+      } else {
+        console.error('❌ [SOCKET] 메시지 전송 실패 - 조건 미충족:', {
+          socket: !!socket,
+          connected: socket?.connected,
+          chatRoomId
+        })
       }
     },
     [socket, chatRoomId, isLawyer, userId, addMessage, currentChatStatus, updateChatRoomStatus]
