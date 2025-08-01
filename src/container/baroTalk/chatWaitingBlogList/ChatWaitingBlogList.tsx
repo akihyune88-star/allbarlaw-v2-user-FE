@@ -11,9 +11,10 @@ import React from 'react'
 type ChatWaitingBlogListProps = {
   chatStatus: ChatRoomStatus
   chatRoomId: number | null
+  messagesLength: number
 }
 
-const ChatWaitingBlogList = ({ chatStatus, chatRoomId }: ChatWaitingBlogListProps) => {
+const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength }: ChatWaitingBlogListProps) => {
   console.log('chatStatus', chatStatus)
 
   const { blogList } = useGetBlogList({
@@ -50,15 +51,16 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId }: ChatWaitingBlogListProp
         {chatStatus === 'PENDING' && (
           <p className={styles.chatWaitingBlogList__description}>해당 질문에 대한 답변을 기다리는 중입니다.</p>
         )}
-        {chatStatus === 'CONSULTING' && (
-          <div className={styles.chatWaitingBlogList__header__startChat}>
-            <span>채팅을 시작 하시겠습니까? </span>
-            <div className={styles.chatWaitingBlogList__header__startChat__button}>
-              <button onClick={handleStartChat}>채팅 시작하기</button>
-              <button>대화방 나가기</button>
+        {chatStatus === 'CONSULTING' ||
+          (messagesLength > 1 && (
+            <div className={styles.chatWaitingBlogList__header__startChat}>
+              <span>채팅을 시작 하시겠습니까? </span>
+              <div className={styles.chatWaitingBlogList__header__startChat__button}>
+                <button onClick={handleStartChat}>채팅 시작하기</button>
+                <button>대화방 나가기</button>
+              </div>
             </div>
-          </div>
-        )}
+          ))}
       </header>
       <div className={styles.chatWaitingBlogList__content}>
         <h3 className={styles.chatWaitingBlogList__content__title}>

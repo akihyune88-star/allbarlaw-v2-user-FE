@@ -85,7 +85,9 @@ const ChatBody = ({
     />
   )
 
-  const renderWaitingChat = () => <ChatWaitingBlogList chatStatus={chatStatus} chatRoomId={chatRoomId} />
+  const renderWaitingChat = () => (
+    <ChatWaitingBlogList chatStatus={chatStatus} chatRoomId={chatRoomId} messagesLength={messages.length} />
+  )
 
   // 채팅 입력창 렌더링 로직
   const renderChatInput = () => {
