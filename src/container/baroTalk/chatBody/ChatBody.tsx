@@ -43,7 +43,9 @@ const ChatBody = ({
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
+    console.log('키 눌림:', e.key, 'Shift:', e.shiftKey)
     if (e.key === 'Enter' && !e.shiftKey) {
+      console.log('엔터키 감지, 메시지 전송 시도')
       e.preventDefault()
       handleSendMessage()
     }
