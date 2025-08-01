@@ -1,5 +1,7 @@
+import { Chat } from '@/pages'
+
 const MyChatList = () => {
-  return <div>MyChatList</div>
+  return <Chat />
 }
 
 export default MyChatList

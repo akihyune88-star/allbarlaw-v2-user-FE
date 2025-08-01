@@ -3,9 +3,11 @@ import styles from './chatWaitingBlogList.module.scss'
 import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 import Divider from '@/components/divider/Divider'
 import { ChatRoomStatus, UpdateChatRoomStatusResponse } from '@/types/baroTalkTypes'
-import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
-import { useSetChatStatus } from '@/stores/socketStore'
+import { useUpdateChatRoomStatus, useLeaveChatRoom } from '@/hooks/queries/useBaroTalk'
+import { useSetChatStatus, useSetChatRoomId } from '@/stores/socketStore'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/contexts/AuthContext'
+import { useChatSocket } from '@/hooks/useChatSocket'
 import React from 'react'
 
 type ChatWaitingBlogListProps = {
@@ -24,11 +26,39 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength }: ChatWai
 
   // 🟢 Zustand 스토어 사용
   const setChatStatus = useSetChatStatus()
+  const setChatRoomId = useSetChatRoomId()
   const navigate = useNavigate()
+  const { userKeyId } = useAuth()
+
+  // WebSocket 연결 (채팅방 나가기용)
+  const { leaveRoom, isLawyer } = useChatSocket({
+    chatRoomId,
+    setChatStatus,
+  })
 
   const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
     onSuccess: (data: UpdateChatRoomStatusResponse) => {
       setChatStatus(data.chatRoomStatus)
+    },
+  })
+
+  const { mutate: leaveChatRoom } = useLeaveChatRoom({
+    onSuccess: data => {
+      // REST API 성공 후 WebSocket으로도 나가기 처리
+      leaveRoom()
+      setChatRoomId(null)
+      
+      // 변호사인 경우 변호사 채팅 목록으로 이동
+      if (isLawyer) {
+        navigate('/lawyer-admin/chat-list')
+      } else {
+        // 일반 사용자는 메인 채팅 페이지로 이동 (또는 다른 적절한 페이지)
+        navigate('/chat')
+      }
+    },
+    onError: error => {
+      console.error('채팅방 나가기 실패:', error)
+      alert('채팅방 나가기에 실패했습니다.')
     },
   })
 
@@ -38,6 +68,31 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength }: ChatWai
       chatRoomId: chatRoomId,
       status: 'ACTIVE',
     })
+  }
+
+  const handleLeaveChat = () => {
+    if (!chatRoomId || !userKeyId) return
+
+    const confirmed = window.confirm(
+      '정말로 채팅방을 나가시겠습니까?\n\n' +
+        '• 채팅방에서 나가게 됩니다\n' +
+        '• 나간 후에도 상대방은 메시지를 보낼 수 있습니다\n' +
+        '• 이 작업은 되돌릴 수 없습니다'
+    )
+
+    if (!confirmed) {
+      return
+    }
+
+    const userType: 'USER' | 'LAWYER' = isLawyer ? 'LAWYER' : 'USER'
+    const leaveRequest = {
+      roomId: chatRoomId,
+      userType,
+      reason: '사용자 요청',
+      userId: userKeyId,
+    }
+
+    leaveChatRoom(leaveRequest)
   }
 
   // 블로그 아이템 클릭 핸들러
@@ -56,7 +111,7 @@ const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength }: ChatWai
             <span>채팅을 시작 하시겠습니까? </span>
             <div className={styles.chatWaitingBlogList__header__startChat__button}>
               <button onClick={handleStartChat}>채팅 시작하기</button>
-              <button>대화방 나가기</button>
+              <button onClick={handleLeaveChat}>대화방 나가기</button>
             </div>
           </div>
         )}
