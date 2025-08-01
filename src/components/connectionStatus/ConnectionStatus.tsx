@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './connectionStatus.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { useIsConnected, useIsReconnecting, useReconnectAttempts } from '@/stores/socketStore'
@@ -8,7 +7,7 @@ const ConnectionStatus = () => {
   const isConnected = useIsConnected()
   const isReconnecting = useIsReconnecting()
   const reconnectAttempts = useReconnectAttempts()
-  const { manualReconnect, maxAttempts } = useSocketReconnect()
+  const { attemptReconnect } = useSocketReconnect()
 
   // 연결 상태에 따른 아이콘과 텍스트
   const getStatusInfo = () => {
@@ -23,7 +22,7 @@ const ConnectionStatus = () => {
     if (isReconnecting) {
       return {
         icon: 'refresh' as const,
-        text: `재연결 중... (${reconnectAttempts}/${maxAttempts})`,
+        text: `재연결 중... (${reconnectAttempts}/5)`,
         className: styles.reconnecting,
       }
     }
@@ -43,7 +42,7 @@ const ConnectionStatus = () => {
       <span className={styles.text}>{statusInfo.text}</span>
 
       {!isConnected && !isReconnecting && (
-        <button onClick={manualReconnect} className={styles.reconnectButton} disabled={isReconnecting}>
+        <button onClick={attemptReconnect} className={styles.reconnectButton} disabled={isReconnecting}>
           재연결
         </button>
       )}

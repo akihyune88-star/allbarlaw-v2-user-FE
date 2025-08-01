@@ -85,10 +85,10 @@ export const generateRandomLawyer = (id?: number) => {
   const profileImage = `https://picsum.photos/seed/${randomImageId}/200/200`
 
   return {
-    id: id || getRandomInt(1, 1000),
-    name,
-    description,
-    profileImage,
+    lawyerId: id || getRandomInt(1, 1000),
+    lawyerName: name,
+    lawfirmName: description,
+    lawyerProfileImage: profileImage,
     specialties: selectedSpecialties,
   }
 }

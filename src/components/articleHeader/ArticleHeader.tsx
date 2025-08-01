@@ -36,11 +36,6 @@ const ArticleHeader = ({
   activeKey,
   totalBlogCount,
   recentBlogCount,
-  // 사용하지 않는 props는 _ prefix
-  key: _key,
-  date: _date,
-  author: _author,
-  readTime: _readTime,
 }: ArticleHeaderProps) => {
   const mainClassName = [styles[type], className].filter(Boolean).join(' ')
   const isMobile = useMediaQuery('(max-width: 80rem)')

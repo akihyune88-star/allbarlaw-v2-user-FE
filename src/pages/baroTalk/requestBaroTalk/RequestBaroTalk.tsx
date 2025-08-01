@@ -25,7 +25,7 @@ const RequestBaroTalk = () => {
     }
   }, [consultationRequestSubcategoryId])
 
-  const handleSubcategoryClick = (category: any, subcategory: any) =>
+  const handleSubcategoryClick = (_category: any, subcategory: any) =>
     setSelectedSubcategoryId(subcategory.subcategoryId)
 
   const handleNext = () => {

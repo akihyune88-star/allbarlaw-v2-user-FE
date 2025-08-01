@@ -11,10 +11,10 @@ type BlogDetailSideBarProps = {
     profileImage: string
   }
   recommendLawyerList: {
-    id: number
-    name: string
-    description: string
-    profileImage: string
+    lawyerId: number
+    lawyerName: string
+    lawfirmName: string
+    lawyerProfileImage: string
   }[]
 }
 

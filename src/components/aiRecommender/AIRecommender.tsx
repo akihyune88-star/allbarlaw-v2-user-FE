@@ -45,10 +45,10 @@ export const LawyerItem = ({
       <div className={styles['lawyer-list']}>
         {lawyerList.map(lawyer => (
           <LawyerHorizon
-            key={lawyer.id}
-            name={lawyer.name}
-            profileImage={lawyer.profileImage}
-            description={lawyer.description}
+            key={lawyer.lawyerId}
+            name={lawyer.lawyerName}
+            profileImage={lawyer.lawyerProfileImage}
+            description={lawyer.lawfirmName}
             size='x-small'
           />
         ))}

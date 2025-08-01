@@ -7,10 +7,10 @@ import { generateRandomLawyers } from '@/utils/mockDataGenerator'
 
 type LegalKnowledgeDetailSideBarProps = {
   recommendLawyerList: {
-    id: number
-    name: string
-    description: string
-    profileImage: string
+    lawyerId: number
+    lawyerName: string
+    lawfirmName: string
+    lawyerProfileImage: string
   }[]
 }
 
@@ -32,10 +32,10 @@ const LegalKnowledgeDetailSideBar = ({ recommendLawyerList }: LegalKnowledgeDeta
             <div className={styles['list']}>
               {mockLawyerList.map(lawyer => (
                 <LawyerHorizon
-                  key={lawyer.id}
-                  name={lawyer.name}
-                  profileImage={lawyer.profileImage}
-                  description={lawyer.description}
+                  key={lawyer.lawyerId}
+                  name={lawyer.lawyerName}
+                  profileImage={lawyer.lawyerProfileImage}
+                  description={lawyer.lawfirmName}
                   size='x-small'
                 />
               ))}

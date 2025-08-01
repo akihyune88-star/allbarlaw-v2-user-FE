@@ -15,7 +15,7 @@ const MyVideoList = () => {
 
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
-    isFetching: isFetchingNextPage,
+    isFetchingNextPage,
     fetchNextPage,
   })
 

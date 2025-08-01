@@ -11,7 +11,7 @@ interface CheckBoxGroupProps {
   options: CheckOption[]
   name: string
   values: string[]
-  onChange: (values: string[]) => void
+  onChange: (_values: string[]) => void
   className?: string
   direction?: 'horizontal' | 'vertical'
   gap?: string | number
@@ -20,6 +20,7 @@ interface CheckBoxGroupProps {
 const CheckBoxGroup = ({
   values: _values,
   options,
+  name,
   onChange,
   className,
   // 사용하지 않는 props는 _ prefix
@@ -33,7 +34,7 @@ const CheckBoxGroup = ({
 
   const containerStyle = {
     display: 'flex',
-    flexDirection: 'vertical',
+    flexDirection: 'column',
     gap: '1rem',
   } as React.CSSProperties
 

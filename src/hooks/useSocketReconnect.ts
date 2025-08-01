@@ -1,12 +1,9 @@
 import { useEffect, useRef, useCallback } from 'react'
 import {
   useSocket,
-  useSetSocket,
   useSetConnected,
   useSetReconnecting,
-  useSetReconnectAttempts,
   useSetLastDisconnectTime,
-  useSetReconnectInterval,
   useIncrementReconnectAttempts,
   useResetReconnectState,
 } from '@/stores/socketStore'
@@ -27,13 +24,9 @@ const defaultConfig: ReconnectConfig = {
 
 export const useSocketReconnect = (config: Partial<ReconnectConfig> = {}) => {
   const socket = useSocket()
-  // 사용하지 않는 변수들은 _ prefix
-  const _setSocket = useSetSocket()
   const setConnected = useSetConnected()
   const setReconnecting = useSetReconnecting()
-  const _setReconnectAttempts = useSetReconnectAttempts()
   const setLastDisconnectTime = useSetLastDisconnectTime()
-  const _setReconnectInterval = useSetReconnectInterval()
   const incrementReconnectAttempts = useIncrementReconnectAttempts()
   const resetReconnectState = useResetReconnectState()
 
