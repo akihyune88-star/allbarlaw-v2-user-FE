@@ -102,6 +102,8 @@ const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId }: ChatR
         // 유저 정보 (변호사가 볼 때)
         userId={clientId || (roomInfo as any)?.chatRoomUserId || 0}
         userName={clientName}
+        // 유저 나가기 상태 (변호사 상담 끝내기 버튼 제어용)
+        userLeft={userLeft || (roomInfo as any)?.userLeft || false}
       />
       <ChatBody
         chatRoomId={chatRoomId}

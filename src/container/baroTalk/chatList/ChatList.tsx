@@ -149,31 +149,26 @@ const ChatList = ({ onChatRoomClick }: ChatListProps) => {
 
       <section className={styles['chat-list-wrapper']}>
         <div className={styles['chat-list-content']}>
-          {allChatRooms.length === 0 ? (
-            <div className={styles['empty-state']}>
-              <p>아직 상담 중인 채팅방이 없습니다.</p>
-              <p>새로운 상담을 시작해보세요!</p>
-            </div>
-          ) : (
-            allChatRooms.map((chatRoom: ChatRoom, index: number) => {
-              const lawyerId = chatRoom.chatRoomLawyer.lawyerId
-              const realtimeStatus = userStatuses[lawyerId] as 'online' | 'offline' | 'away' | undefined
-              const finalStatus = realtimeStatus || chatRoom.partnerOnlineStatus
+          {allChatRooms.length === 0
+            ? null
+            : allChatRooms.map((chatRoom: ChatRoom, index: number) => {
+                const lawyerId = chatRoom.chatRoomLawyer.lawyerId
+                const realtimeStatus = userStatuses[lawyerId] as 'online' | 'offline' | 'away' | undefined
+                const finalStatus = realtimeStatus || chatRoom.partnerOnlineStatus
 
-              return (
-                <div key={chatRoom.chatRoomId} onClick={() => onChatRoomClick(chatRoom.chatRoomId)}>
-                  <LawyerChatItem
-                    name={chatRoom.chatRoomLawyer.lawyerName}
-                    profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
-                    lastMessage={chatRoom.chatRoomLastMessage.chatMessageContent}
-                    lastMessageTime={chatRoom.chatRoomLastMessage.chatMessageCreatedAt}
-                    partnerOnlineStatus={finalStatus}
-                  />
-                  {index !== allChatRooms.length - 1 && <Divider padding={0} />}
-                </div>
-              )
-            })
-          )}
+                return (
+                  <div key={chatRoom.chatRoomId} onClick={() => onChatRoomClick(chatRoom.chatRoomId)}>
+                    <LawyerChatItem
+                      name={chatRoom.chatRoomLawyer.lawyerName}
+                      profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
+                      lastMessage={chatRoom.chatRoomLastMessage.chatMessageContent}
+                      lastMessageTime={chatRoom.chatRoomLastMessage.chatMessageCreatedAt}
+                      partnerOnlineStatus={finalStatus}
+                    />
+                    {index !== allChatRooms.length - 1 && <Divider padding={0} />}
+                  </div>
+                )
+              })}
         </div>
       </section>
     </main>
