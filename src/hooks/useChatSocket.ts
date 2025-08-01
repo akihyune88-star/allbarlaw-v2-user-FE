@@ -74,6 +74,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 기존 소켓이 있으면 먼저 정리
     if (socket) {
+      console.log('🔄 [SOCKET] 기존 소켓 연결 해제')
       socket.disconnect()
     }
 
@@ -83,7 +84,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       chatRoomId,
       serverUrl: import.meta.env.VITE_SERVER_API + '/chat',
       token: localStorage.getItem('accessToken') ? '토큰 존재' : '토큰 없음',
-      sessionToken: sessionStorage.getItem('accessToken') ? '세션토큰 존재' : '세션토큰 없음'
+      sessionToken: sessionStorage.getItem('accessToken') ? '세션토큰 존재' : '세션토큰 없음',
     })
 
     const newSocket = io(import.meta.env.VITE_SERVER_API + '/chat', {
@@ -120,14 +121,16 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       socketConnectedRef.current = false
     })
 
-    newSocket.on('disconnect', () => {
-      console.log('🔌 [SOCKET] 소켓 연결 끊김')
+    newSocket.on('disconnect', reason => {
+      console.log('🔌 [SOCKET] 소켓 연결 끊김 - 이유:', reason)
+      console.trace('🔌 [SOCKET] 소켓 끊김 스택 트레이스')
       setConnected(false)
       socketConnectedRef.current = false
       joinRoomAttemptedRef.current = false
     })
 
     return () => {
+      console.log('🧹 [SOCKET] useEffect cleanup - 소켓 연결 해제')
       newSocket.disconnect()
       socketConnectedRef.current = false
       joinRoomAttemptedRef.current = false
@@ -259,7 +262,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     // 새 메시지 수신
     const handleNewMessage = (message: ChatMessage) => {
       console.log('📨 [SOCKET] 새 메시지 수신:', message)
-      
+
       // 내가 보낸 메시지인지 확인
       const isMyMessage = message.chatMessageSenderType === (isLawyer ? 'LAWYER' : 'USER')
 
@@ -270,9 +273,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
       // 중복 메시지 방지: 같은 ID의 메시지가 이미 있는지 확인
       const currentMessages = useSocketStore.getState().messages
-      const isDuplicateMessage = currentMessages.some(
-        msg => msg.chatMessageId === message.chatMessageId
-      )
+      const isDuplicateMessage = currentMessages.some(msg => msg.chatMessageId === message.chatMessageId)
 
       if (isDuplicateMessage) {
         return
@@ -467,6 +468,8 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         clearTimeout(timeoutId)
       })
       timeoutRefs.current.clear()
+
+      return undefined
     }
   }, [
     socket,
@@ -489,7 +492,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         socket: !!socket,
         connected: socket?.connected,
         chatRoomId,
-        roomInfo: roomInfo ? '존재' : '없음'
+        roomInfo: roomInfo ? '존재' : '없음',
       })
 
       if (socket && chatRoomId && socket.connected) {
@@ -520,7 +523,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           receiverType: isLawyer ? 'USER' : 'LAWYER',
           tempId,
         }
-        
+
         console.log('📤 [SOCKET] 서버로 메시지 전송:', messagePayload)
         socket.emit('sendMessage', messagePayload)
 
@@ -538,7 +541,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         console.error('❌ [SOCKET] 메시지 전송 실패 - 조건 미충족:', {
           socket: !!socket,
           connected: socket?.connected,
-          chatRoomId
+          chatRoomId,
         })
       }
     },
