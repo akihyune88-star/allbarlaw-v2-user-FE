@@ -19,10 +19,12 @@ interface UseCreateBaroTalkOptions {
 export const useCreateBaroTalk = (options?: UseCreateBaroTalkOptions) => {
   const { getUserIdFromToken } = useAuth()
   const userId = getUserIdFromToken()
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: (request: CreateBaroTalkRequest) => baroTalkServices.createBaroTalk(userId!, request),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.BARO_TALK_CHAT_LIST] })
       options?.onSuccess?.()
     },
     onError: (error: Error) => {
@@ -40,8 +42,6 @@ export const useGetBaroTalkLawyerList = (request: BaroTalkLawyerListRequest) => 
         take: 6,
       }),
     select: data => data.lawyers,
-    staleTime: 0,
-    gcTime: 0,
   })
 }
 
@@ -64,6 +64,10 @@ export const useGetBaroTalkChatList = (request: BaroTalkChatListRequest) => {
       return undefined
     },
     initialPageParam: 1,
+    staleTime: 0, // 즉시 stale로 처리
+    gcTime: 0, // 가비지 컬렉션 즉시 실행
+    refetchOnMount: true, // 컴포넌트 마운트 시 항상 refetch
+    refetchOnWindowFocus: true, // 윈도우 포커스 시 refetch
   })
 }
 
