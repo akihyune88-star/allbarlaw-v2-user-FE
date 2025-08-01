@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 
 interface ChatRoomContainerProps {
   chatRoomId: number | null
-  userLeft: boolean
+  userLeft?: boolean
 }
 
 const ChatRoomContainer = ({ chatRoomId, userLeft }: ChatRoomContainerProps) => {
@@ -33,11 +33,11 @@ const ChatRoomContainer = ({ chatRoomId, userLeft }: ChatRoomContainerProps) => 
     onSuccess: data => {
       console.log('✅ leaveChatRoom 성공:', data)
       console.log('✅ isLawyer:', isLawyer)
-      
+
       // 서버가 WebSocket 이벤트를 보내지 않는 경우를 대비해 WebSocket leaveRoom도 호출
       leaveRoom()
       setChatRoomId(null)
-      
+
       // 변호사인 경우 변호사 채팅 목록으로 이동
       if (isLawyer) {
         console.log('✅ 변호사 채팅 목록으로 이동 시도')
@@ -102,7 +102,7 @@ const ChatRoomContainer = ({ chatRoomId, userLeft }: ChatRoomContainerProps) => 
         onSendMessage={handleSendMessage}
         isConnected={isConnected}
         type={isLawyer ? 'LAWYER' : 'USER'}
-        userLeft={userLeft}
+        userLeft={userLeft || false}
       />
     </section>
   )

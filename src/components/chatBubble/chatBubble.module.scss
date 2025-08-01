@@ -15,6 +15,7 @@
 
 .bubble {
   max-width: 80vw;
+  min-width: 100px;
   padding: 1rem;
   background-color: #22c55e;
   transition: background 0.2s;
@@ -72,24 +73,24 @@
   justify-content: center;
   margin-left: 0.25rem;
   opacity: 0.7;
-  
+
   &.delivered {
     opacity: 0.5;
   }
-  
+
   &.read {
     opacity: 1;
   }
-  
+
   &.failed {
     opacity: 1;
     cursor: pointer;
-    
+
     &:hover {
       opacity: 0.8;
     }
   }
-  
+
   svg {
     width: 12px;
     height: 12px;
