@@ -29,6 +29,7 @@
   margin: 0 auto;
 
   @media (max-width: $breakpoint-desktop) {
+    width: 100%;
     padding: 1.25rem;
   }
 }
