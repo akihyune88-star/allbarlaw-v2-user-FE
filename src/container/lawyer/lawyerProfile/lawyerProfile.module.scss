@@ -9,7 +9,7 @@
   gap: 2rem;
 }
 
-.discription {
+.description {
   font-size: 1.25rem;
   font-weight: $font-weight-regular;
   color: $color-07-black;
@@ -20,25 +20,30 @@
   word-break: keep-all;
 }
 
-.lawyer-lawfirm {
-  &-info {
+.lawyer-banner {
+  display: none;
+}
+
+.lawfirm {
+  &__info {
     position: relative;
-    &-name {
-      font-size: 1.25rem;
-      font-weight: $font-weight-extra-bold;
-      color: $color-text-black;
-
-      margin-bottom: 1.0625rem;
-    }
-
-    &-adress {
-      font-style: normal;
-      font-size: 0.875rem;
-      margin-bottom: 0;
-    }
   }
 
-  &-button {
+  &__name {
+    font-size: 1.25rem;
+    font-weight: $font-weight-extra-bold;
+    color: $color-text-black;
+
+    margin-bottom: 1.0625rem;
+  }
+
+  &__address {
+    font-style: normal;
+    font-size: 0.875rem;
+    margin-bottom: 0;
+  }
+
+  &__buttons {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -64,8 +69,61 @@
   flex-wrap: wrap;
   gap: 1rem;
 
-  .tag {
+  &__item {
     border: none;
     background-color: $color-bg-gray-01;
+  }
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .lawyer-profile {
+    padding: 0;
+    background-color: transparent;
+    gap: 1rem;
+  }
+
+  .description {
+    font-size: 0.9375rem;
+  }
+
+  .lawyer-banner {
+    display: block;
+    background-color: $color-white;
+
+    padding: 1rem 1.625rem;
+    border-radius: 0.5rem;
+
+    &-item {
+      --lawyer-horizon-gap: 1rem; /* 16px */
+    }
+  }
+
+  .lawfirm-container {
+    background-color: $color-white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+
+  .lawfirm {
+    &__buttons {
+      position: relative;
+      margin-top: 0.5rem;
+    }
+  }
+
+  .tags {
+    gap: 0.75rem;
+  }
+
+  .barotalk-button {
+    padding: 0.75rem 0;
+    text-align: center;
+    border-radius: 0.625rem;
+
+    background-color: $color-green-01;
+
+    color: $color-white;
+    font-size: 0.875rem;
+    font-weight: $font-weight-regular;
   }
 }
