@@ -64,32 +64,34 @@ const LawyerVertical = ({
             저장 <SvgIcon name='save' size={16} />
           </Button>
         </div>
-        <div className={styles['social-link']}>
-          {blogUrl && (
-            <img
-              src={blog}
-              alt='블로그'
-              className={styles['social-link-img']}
-              onClick={() => window.open(blogUrl, '_blank')}
-            />
-          )}
-          {youtubeUrl && (
-            <img
-              src={youtube}
-              alt='유튜브'
-              className={styles['social-link-img']}
-              onClick={() => window.open(youtubeUrl, '_blank')}
-            />
-          )}
-          {instagramUrl && (
-            <img
-              src={instagram}
-              alt='인스타그램'
-              className={styles['social-link-img']}
-              onClick={() => window.open(instagramUrl, '_blank')}
-            />
-          )}
-        </div>
+      </div>
+      {type === 2 && <button className={styles['baro-talk-button']}>바로 톡</button>}
+      <div className={styles['social-link']}>
+        {blogUrl && (
+          <img
+            src={blog}
+            alt='블로그'
+            className={styles['social-link-img']}
+            onClick={() => window.open(blogUrl, '_blank')}
+          />
+        )}
+        {youtubeUrl && (
+          <img
+            src={youtube}
+            alt='유튜브'
+            className={styles['social-link-img']}
+            onClick={() => window.open(youtubeUrl, '_blank')}
+          />
+        )}
+        {instagramUrl && (
+          <img
+            src={instagram}
+            alt='인스타그램'
+            className={styles['social-link-img']}
+            onClick={() => window.open(instagramUrl, '_blank')}
+          />
+        )}
+
         {tags && (
           <div className={styles['tag-list']}>
             {tags.map(tagItem => (

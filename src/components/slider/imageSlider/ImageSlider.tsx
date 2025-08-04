@@ -131,6 +131,18 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
   const renderSlideContent = (_item: ImageItem, _index: number) => {
     return (
       <div className={styles['slide-content']}>
+        <img 
+          src={_item.src} 
+          alt={_item.alt || `이미지 ${_index + 1}`}
+          className={styles['slide-image']}
+          style={{ 
+            width: '100%',
+            height: typeof height === 'number' ? `${height}px` : height,
+            objectFit: _imageObjectFit 
+          }}
+          loading={_loading}
+          onClick={_item.onClick}
+        />
         {showTitle && _item.title && <h3 className={styles.title}>{_item.title}</h3>}
         {showDescription && _item.description && <p className={styles.description}>{_item.description}</p>}
       </div>
