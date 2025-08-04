@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0; // 16px 0px
-  gap: 0.75rem; // 12px
+  gap: 1rem;
   background-color: $color-white;
   border-radius: 0.5rem; // 8px
 
@@ -44,6 +44,18 @@
     width: 100%;
     flex-wrap: wrap;
     gap: 0.5rem;
+  }
+
+  .name {
+    font-size: 1.125rem;
+    font-weight: $font-weight-semibold;
+    color: $color-text-black;
+  }
+
+  .lawfirm {
+    font-size: 0.875rem;
+    font-weight: $font-weight-regular;
+    color: $color-text-index;
   }
 
   &.type-1 {
@@ -98,6 +110,29 @@
     img {
       width: 7rem;
       height: 7rem;
+    }
+
+    .button-wrapper {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .social-link {
+      gap: 1.5rem;
+    }
+
+    .baro-talk-button {
+      width: 11.625rem;
+      padding: 0.5313rem 0;
+
+      border-radius: 0.5rem;
+      background-color: $color-green-01;
+
+      color: $color-white;
+      font-size: 0.75rem;
+      font-weight: $font-weight-semibold;
+
+      text-align: center;
     }
   }
 }
