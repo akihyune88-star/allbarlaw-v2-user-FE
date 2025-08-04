@@ -1,0 +1,66 @@
+.lawyer-profile {
+  background-color: $color-white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2rem;
+}
+
+.discription {
+  font-size: 1.25rem;
+  font-weight: $font-weight-regular;
+  color: $color-07-black;
+
+  margin: 0;
+
+  white-space: pre-line;
+  word-break: keep-all;
+}
+
+.lawyer-lawfirm {
+  &-info {
+    position: relative;
+    &-name {
+      font-size: 1.25rem;
+      font-weight: $font-weight-extra-bold;
+      color: $color-text-black;
+
+      margin-bottom: 1.0625rem;
+    }
+
+    &-adress {
+      font-style: normal;
+      font-size: 0.875rem;
+      margin-bottom: 0;
+    }
+  }
+
+  &-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    display: flex;
+    gap: 0.625rem;
+
+    button {
+      background-color: $color-white;
+      padding: 0.3438rem 0.5rem;
+
+      border-radius: 0.625rem;
+      border: 1px solid $color-green-01;
+
+      font-size: 0.75rem;
+      color: $color-green-01;
+    }
+  }
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
