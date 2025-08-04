@@ -62,5 +62,10 @@
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 1rem;
+
+  .tag {
+    border: none;
+    background-color: $color-bg-gray-01;
+  }
 }

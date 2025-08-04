@@ -31,7 +31,7 @@ const LawyerProfile = ({ discription, lawyerLawfirm, lawyerAdress, tags }: Lawye
         <Divider padding={14} />
         <nav className={styles['tags']} aria-label='전문 분야'>
           {tags.map(tag => (
-            <Tag key={tag.id} tag={tag.name} />
+            <Tag key={tag.id} tag={tag.name} className={styles['tag']} />
           ))}
         </nav>
       </div>
