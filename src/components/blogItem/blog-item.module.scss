@@ -86,6 +86,39 @@
   }
 }
 
+// Small type styles
+.small {
+  padding: 0;
+  align-items: flex-start;
+
+  .blog-content-body {
+    p {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  .blog-content-footer {
+    display: none;
+  }
+
+  .blog-item-img {
+    width: 75px !important;
+    height: 75px !important;
+    min-width: 75px !important;
+    min-height: 75px !important;
+    max-width: 75px !important;
+    max-height: 75px !important;
+  }
+
+  @media (max-width: $breakpoint-desktop) {
+    .blog-content-footer {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+}
+
 @media (max-width: $breakpoint-desktop) {
   .blog-item-wrapper {
     border-top: none;

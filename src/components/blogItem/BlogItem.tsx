@@ -8,6 +8,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useAuth } from '@/contexts/AuthContext'
 
 type BlogItemProps = {
+  type: 'small' | 'regular'
   item: BlogCase
   className?: string
   summaryButton?: boolean
@@ -15,14 +16,21 @@ type BlogItemProps = {
   onClick?: () => void
 }
 
-const BlogItem = ({ item, className, summaryButton = false, isShowKeep = true, onClick }: BlogItemProps) => {
+const BlogItem = ({
+  item,
+  type = 'regular',
+  className,
+  summaryButton = false,
+  isShowKeep = true,
+  onClick,
+}: BlogItemProps) => {
   const [like, setLike] = useState(false)
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { isLoggedIn } = useAuth()
   const summaryContents = getBlogSummaryText(item.summaryContent)
 
   return (
-    <article className={`${styles['blog-item-wrapper']} ${className}`} onClick={onClick}>
+    <article className={`${styles['blog-item-wrapper']} ${styles[type]} ${className || ''}`} onClick={onClick}>
       <div className={styles['blog-item']}>
         <div className={styles['blog-content-header']}>
           <h3>{item.title}</h3>

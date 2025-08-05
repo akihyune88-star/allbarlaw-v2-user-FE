@@ -23,7 +23,7 @@ const LawyerDetail = () => {
         <section className={styles['lawyer-detail__button-container']}>
           <button className={styles['lawyer-detail__button']}>이력사항 및 활동사항</button>
           <button className={styles['lawyer-detail__button']}>
-            <span>블로그</span>
+            <span>변호사의 글</span>
             <span>(10)</span>
           </button>
           <button className={styles['lawyer-detail__button']}>
