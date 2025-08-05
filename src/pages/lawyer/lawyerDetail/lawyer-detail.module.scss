@@ -1,5 +1,9 @@
 .lawyer-detail__button-container {
   display: flex;
+
+  @media (max-width: $breakpoint-desktop) {
+    margin: 0 -1.25rem;
+  }
 }
 
 .lawyer-detail__button {
@@ -21,6 +25,21 @@
 
   font-size: 0.875rem;
   font-weight: $font-weight-semibold;
+  word-break: keep-all;
 
   color: $color-text-index;
+  text-align: center;
+
+  @media (max-width: $breakpoint-desktop) {
+    background-color: transparent;
+    border-top: none;
+    border-bottom: none;
+
+    background-color: $color-white;
+
+    flex-direction: column;
+    align-items: center;
+
+    gap: 0.25rem;
+  }
 }
