@@ -33,7 +33,6 @@ const VideoHorizon = ({
 }: VideoHorizonProps) => {
   const [like, setLike] = useState(false)
   const { isLoggedIn } = useAuth()
-  console.log(summaryContents)
 
   const rootClassName = [styles['video-horizon'], styles[type], styles[size]].filter(Boolean).join(' ')
 

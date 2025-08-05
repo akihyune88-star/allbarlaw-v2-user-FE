@@ -29,8 +29,6 @@ const Article = ({
 }: ArticleProps) => {
   const articleClass = [styles['article'], styles[`article-${type}`], className].filter(Boolean).join(' ')
 
-  console.log('Article', thumbnailUrl)
-
   const renderArticle = () => {
     switch (type) {
       case 'image':

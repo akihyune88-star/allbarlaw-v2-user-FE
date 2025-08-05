@@ -26,7 +26,7 @@ const LawyerVideo = () => {
         {threeVideoList.map((video, index) => (
           <li key={video.videoCaseId}>
             <VideoHorizon
-              size='xsmall'
+              size='small'
               thumbnailUrl={video.thumbnail}
               title={video.title}
               summaryContents={video.summaryContent}
