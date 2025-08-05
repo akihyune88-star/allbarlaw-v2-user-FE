@@ -3,8 +3,9 @@ import styles from './lawyerBlog.module.scss'
 import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 import BlogItem from '@/components/blogItem/BlogItem'
 import SvgIcon from '@/components/SvgIcon'
+import { forwardRef } from 'react'
 
-const LawyerBlog = () => {
+const LawyerBlog = forwardRef<HTMLElement>((props, ref) => {
   const { blogList } = useGetBlogList({
     subcategoryId: 'all',
     take: 3,
@@ -13,7 +14,7 @@ const LawyerBlog = () => {
   const threeBlogList = blogList.slice(0, 3)
 
   return (
-    <section className={styles['lawyer-blog']} aria-label='변호사의 글'>
+    <section ref={ref} className={styles['lawyer-blog']} aria-label='변호사의 글'>
       <header className={styles['lawyer-blog__header']}>
         <h3 className={styles['lawyer-blog__title']}>변호사의 글</h3>
         <button type='button' className={styles['lawyer-blog__button']} aria-label='변호사의 글 더보기'>
@@ -32,6 +33,8 @@ const LawyerBlog = () => {
       </ul>
     </section>
   )
-}
+})
+
+LawyerBlog.displayName = 'LawyerBlog'
 
 export default LawyerBlog

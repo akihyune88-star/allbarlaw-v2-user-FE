@@ -7,8 +7,18 @@ import LawyerDetailSidebar from '@/container/lawyer/lawyerDetailSidebar/LawyerDe
 import LawyerLegalKnowledge from '@/container/lawyer/lawyerLegalKnowledge/LawyerLegalKnowledge'
 import LawyerProfile from '@/container/lawyer/lawyerProfile/LawyerProfile'
 import LawyerVideo from '@/container/lawyer/lawyerVideo/LawyerVideo'
+import React, { useRef } from 'react'
 
 const LawyerDetail = () => {
+  const careerRef = useRef<HTMLElement>(null)
+  const blogRef = useRef<HTMLElement>(null)
+  const videoRef = useRef<HTMLElement>(null)
+  const legalKnowledgeRef = useRef<HTMLElement>(null)
+
+  const scrollToSection = (ref: React.RefObject<HTMLElement | null>) => {
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
@@ -21,24 +31,26 @@ const LawyerDetail = () => {
         <LawyerActivity />
         <LawyerAchievements />
         <section className={styles['lawyer-detail__button-container']}>
-          <button className={styles['lawyer-detail__button']}>이력사항 및 활동사항</button>
-          <button className={styles['lawyer-detail__button']}>
+          <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(careerRef)}>
+            이력사항 및 활동사항
+          </button>
+          <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(blogRef)}>
             <span>변호사의 글</span>
             <span>(10)</span>
           </button>
-          <button className={styles['lawyer-detail__button']}>
+          <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(videoRef)}>
             <span>법률영상</span>
             <span>(10)</span>
           </button>
-          <button className={styles['lawyer-detail__button']}>
+          <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(legalKnowledgeRef)}>
             <span>법률지식인</span>
             <span>(10)</span>
           </button>
         </section>
-        <LawyerCareer />
-        <LawyerBlog />
-        <LawyerVideo />
-        <LawyerLegalKnowledge />
+        <LawyerCareer ref={careerRef} />
+        <LawyerBlog ref={blogRef} />
+        <LawyerVideo ref={videoRef} />
+        <LawyerLegalKnowledge ref={legalKnowledgeRef} />
       </section>
       <aside className='aside'>
         <LawyerDetailSidebar />

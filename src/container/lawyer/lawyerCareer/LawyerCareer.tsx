@@ -1,5 +1,6 @@
 import Divider from '@/components/divider/Divider'
 import styles from './lawyerCareer.module.scss'
+import { forwardRef } from 'react'
 
 interface CareerItem {
   title: string
@@ -11,7 +12,8 @@ interface LawyerCareerProps {
   activities?: CareerItem[]
 }
 
-const LawyerCareer = ({ careerHistory = mockCareerHistory, activities = mockActivities }: LawyerCareerProps) => {
+const LawyerCareer = forwardRef<HTMLElement, LawyerCareerProps>(
+  ({ careerHistory = mockCareerHistory, activities = mockActivities }, ref) => {
   const renderSection = (items: CareerItem[]) => {
     return items.map((item, index) => (
       <div className={styles['lawyer-career__item']} key={index}>
@@ -26,7 +28,7 @@ const LawyerCareer = ({ careerHistory = mockCareerHistory, activities = mockActi
   }
 
   return (
-    <section className={styles['lawyer-career']}>
+    <section ref={ref} className={styles['lawyer-career']}>
       <div className={styles['lawyer-career__group']}>
         <h3 className={styles['lawyer-career__title']}>이력 사항</h3>
         <Divider padding={14} />
@@ -40,7 +42,10 @@ const LawyerCareer = ({ careerHistory = mockCareerHistory, activities = mockActi
       </div>
     </section>
   )
-}
+  }
+)
+
+LawyerCareer.displayName = 'LawyerCareer'
 
 export default LawyerCareer
 

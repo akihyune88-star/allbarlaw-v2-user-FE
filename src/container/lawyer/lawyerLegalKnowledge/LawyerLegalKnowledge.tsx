@@ -3,8 +3,9 @@ import SvgIcon from '@/components/SvgIcon'
 import styles from './lawyerLegalKnowledge.module.scss'
 import { useGetKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
+import { forwardRef } from 'react'
 
-const LawyerLegalKnowledge = () => {
+const LawyerLegalKnowledge = forwardRef<HTMLElement>((props, ref) => {
   const {
     data: knowledgeList,
     isLoading: _isLoading,
@@ -20,7 +21,7 @@ const LawyerLegalKnowledge = () => {
   console.log(threeLegalKnowledgeList)
 
   return (
-    <section className={styles['lawyer-legal-knowledge']} aria-label='변호사의 법률 지식'>
+    <section ref={ref} className={styles['lawyer-legal-knowledge']} aria-label='변호사의 법률 지식'>
       <header className={styles['lawyer-legal-knowledge__header']}>
         <h3 className={styles['lawyer-legal-knowledge__title']}>변호사의 법률 지식</h3>
         <button
@@ -49,6 +50,8 @@ const LawyerLegalKnowledge = () => {
       </ul>
     </section>
   )
-}
+})
+
+LawyerLegalKnowledge.displayName = 'LawyerLegalKnowledge'
 
 export default LawyerLegalKnowledge
