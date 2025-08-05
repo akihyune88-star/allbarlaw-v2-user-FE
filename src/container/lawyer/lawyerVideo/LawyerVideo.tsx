@@ -5,7 +5,7 @@ import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
 import VideoHorizon from '@/components/video/VideoHorizon'
 import { forwardRef } from 'react'
 
-const LawyerVideo = forwardRef<HTMLElement>((props, ref) => {
+const LawyerVideo = forwardRef<HTMLElement>((_, ref) => {
   const { videoList } = useGetVideoList({
     subcategoryId: 'all',
     take: 3,

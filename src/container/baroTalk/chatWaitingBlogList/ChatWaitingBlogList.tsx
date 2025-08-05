@@ -126,6 +126,7 @@ const ChatWaitingBlogList = ({
           {blogList.map((blog, index) => (
             <React.Fragment key={blog.blogCaseId || index}>
               <BlogItem
+                type='regular'
                 item={blog}
                 onClick={() => handleBlogClick(blog.subcategoryId, blog.blogCaseId)}
                 // subcategory 정보가 item 객체에 포함되어 있다면 자동으로 전달됨

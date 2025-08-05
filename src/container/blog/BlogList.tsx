@@ -49,6 +49,7 @@ const BlogList = () => {
           <>
             <BlogItem
               key={blogItem.blogCaseId}
+              type='regular'
               item={blogItem}
               className={styles['blog-list-item']}
               onClick={() => handleBlogItemClick(blogItem.blogCaseId)}

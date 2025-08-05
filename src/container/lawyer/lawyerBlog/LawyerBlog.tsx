@@ -5,7 +5,7 @@ import BlogItem from '@/components/blogItem/BlogItem'
 import SvgIcon from '@/components/SvgIcon'
 import { forwardRef } from 'react'
 
-const LawyerBlog = forwardRef<HTMLElement>((props, ref) => {
+const LawyerBlog = forwardRef<HTMLElement>((_, ref) => {
   const { blogList } = useGetBlogList({
     subcategoryId: 'all',
     take: 3,

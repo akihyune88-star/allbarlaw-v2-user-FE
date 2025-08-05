@@ -20,7 +20,7 @@ const Article = ({
   type = 'regular',
   title,
   content,
-  imageUrl,
+  imageUrl: _imageUrl,
   thumbnailUrl,
   onClick,
   category,
