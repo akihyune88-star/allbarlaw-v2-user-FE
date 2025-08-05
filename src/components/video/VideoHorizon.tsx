@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext'
 
 type VideoHorizonProps = {
   type?: 'default' | 'search' | 'reverse'
-  size?: 'xsmall' | 'small' | 'large'
+  size?: 'xsmall' | 'small' | 'regular' | 'large'
   title?: string
   thumbnailUrl?: string
   lawyerName?: string
@@ -20,7 +20,7 @@ type VideoHorizonProps = {
 
 const VideoHorizon = ({
   type = 'default',
-  size = 'small',
+  size = 'regular',
   thumbnailUrl,
   title,
   lawyerName,
@@ -33,6 +33,7 @@ const VideoHorizon = ({
 }: VideoHorizonProps) => {
   const [like, setLike] = useState(false)
   const { isLoggedIn } = useAuth()
+  console.log(summaryContents)
 
   const rootClassName = [styles['video-horizon'], styles[type], styles[size]].filter(Boolean).join(' ')
 
@@ -51,15 +52,17 @@ const VideoHorizon = ({
           )}
         </header>
         <p>{summaryContents}</p>
-        <div className={styles['video-content-section-footer']}>
-          <span className={styles.lawyer}>
-            {lawyerName} 변호사 [{lawfirmName}]
-          </span>
-          <figure className={styles['video-content-section-footer-figure']}>
-            <img src={channelThumbnail} alt='유튜브 채널 이미지' />
-            <span className={styles.lawfirm}>{channelName}</span>
-          </figure>
-        </div>
+        {lawyerName && (
+          <div className={styles['video-content-section-footer']}>
+            <span className={styles.lawyer}>
+              {lawyerName} 변호사 [{lawfirmName}]
+            </span>
+            <figure className={styles['video-content-section-footer-figure']}>
+              <img src={channelThumbnail} alt='유튜브 채널 이미지' />
+              <span className={styles.lawfirm}>{channelName}</span>
+            </figure>
+          </div>
+        )}
       </section>
     </div>
   )

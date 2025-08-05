@@ -34,7 +34,7 @@ const LegalTermVideoList = () => {
             />
           ) : (
             <Fragment key={video}>
-              <VideoHorizon />
+              <VideoHorizon size='xsmall' thumbnailUrl='https://picsum.photos/200/300' title='test' />
               {index !== videoList.length - 1 && <Divider padding={24} />}
             </Fragment>
           )

@@ -8,7 +8,7 @@
     }
   }
 
-  &.small {
+  &.regular {
     .video-horizon-figure {
       width: 13rem;
       height: 7.1875rem;
@@ -43,10 +43,12 @@
 
   &.xsmall {
     gap: 0.3rem;
+
     .video-horizon-figure {
       width: 10rem;
       height: 5.625rem;
     }
+
     .video-content-section {
       h1 {
         font-size: 0.875rem;

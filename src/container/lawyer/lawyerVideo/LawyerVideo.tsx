@@ -1,8 +1,17 @@
 import Divider from '@/components/divider/Divider'
 import SvgIcon from '@/components/SvgIcon'
 import styles from './lawyerVideo.module.scss'
+import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
+import VideoHorizon from '@/components/video/VideoHorizon'
 
 const LawyerVideo = () => {
+  const { videoList } = useGetVideoList({
+    subcategoryId: 'all',
+    take: 3,
+  })
+
+  const threeVideoList = videoList.slice(0, 3)
+
   return (
     <section className={styles['lawyer-video']} aria-label='변호사의 영상'>
       <header className={styles['lawyer-video__header']}>
@@ -13,6 +22,19 @@ const LawyerVideo = () => {
         </button>
       </header>
       <Divider padding={14} />
+      <ul className={styles['lawyer-video__list']} role='list'>
+        {threeVideoList.map((video, index) => (
+          <li key={video.videoCaseId}>
+            <VideoHorizon
+              size='xsmall'
+              thumbnailUrl={video.thumbnail}
+              title={video.title}
+              summaryContents={video.summaryContent}
+            />
+            {index !== threeVideoList.length - 1 && <Divider padding={24} />}
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
