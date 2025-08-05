@@ -1,3 +1,4 @@
+import styles from './lawyer-detail.module.scss'
 import LawyerAchievements from '@/container/lawyer/lawyerAchievements/LawyerAchievements'
 import LawyerActivity from '@/container/lawyer/lawyerActivity/LawyerActivity'
 import LawyerBlog from '@/container/lawyer/lawyerBlog/LawyerBlog'
@@ -19,6 +20,21 @@ const LawyerDetail = () => {
         />
         <LawyerActivity />
         <LawyerAchievements />
+        <section className={styles['lawyer-detail__button-container']}>
+          <button className={styles['lawyer-detail__button']}>이력사항 및 활동사항</button>
+          <button className={styles['lawyer-detail__button']}>
+            <span>블로그</span>
+            <span>(10)</span>
+          </button>
+          <button className={styles['lawyer-detail__button']}>
+            <span>법률영상</span>
+            <span>(10)</span>
+          </button>
+          <button className={styles['lawyer-detail__button']}>
+            <span>법률지식인</span>
+            <span>(10)</span>
+          </button>
+        </section>
         <LawyerCareer />
         <LawyerBlog />
         <LawyerVideo />

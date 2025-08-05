@@ -1,0 +1,26 @@
+.lawyer-detail__button-container {
+  display: flex;
+}
+
+.lawyer-detail__button {
+  width: 100%;
+  background-color: $color-bg-gray-03;
+  padding: 0.9375rem 0;
+
+  display: flex;
+  justify-content: center;
+  gap: 0.625rem;
+
+  border-top: 1px solid $color-line-divider;
+  border-bottom: 1px solid $color-line-divider;
+  border-right: 1px solid $color-line-divider;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  font-size: 0.875rem;
+  font-weight: $font-weight-semibold;
+
+  color: $color-text-index;
+}
