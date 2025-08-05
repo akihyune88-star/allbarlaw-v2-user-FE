@@ -9,7 +9,7 @@ type ArticleProps = {
   imageUrl?: string
   category?: string
   onClick?: () => void
-  lawyerInfo: {
+  lawyerInfo?: {
     name: string
     profileImageUrl: string
   }
@@ -29,15 +29,15 @@ const Article = ({
 }: ArticleProps) => {
   const articleClass = [styles['article'], styles[`article-${type}`], className].filter(Boolean).join(' ')
 
-  console.log('Article', imageUrl)
-
   const renderArticle = () => {
     switch (type) {
       case 'image':
         return (
           <div className={styles['article-wrapper']} onClick={onClick}>
             <div className={articleClass}>
-              {imageUrl && <img src={thumbnailUrl} alt={title} className={styles.image} referrerPolicy='no-referrer' />}
+              {thumbnailUrl && (
+                <img src={thumbnailUrl} alt={title} className={styles.image} referrerPolicy='no-referrer' />
+              )}
               <h3 className={styles.title}>{title}</h3>
             </div>
           </div>
@@ -54,14 +54,16 @@ const Article = ({
               <section>
                 <p className={styles.content}>{content}</p>
               </section>
-              <footer>
-                <div className={styles.lawyer}>
-                  <figure>
-                    <img src={lawyerInfo.profileImageUrl} alt={lawyerInfo.name} referrerPolicy='no-referrer' />
-                  </figure>
-                  <span className={styles['lawyer-name']}>{lawyerInfo.name} 변호사</span>
-                </div>
-              </footer>
+              {lawyerInfo && (
+                <footer>
+                  <div className={styles.lawyer}>
+                    <figure>
+                      <img src={lawyerInfo.profileImageUrl} alt={lawyerInfo.name} referrerPolicy='no-referrer' />
+                    </figure>
+                    <span className={styles['lawyer-name']}>{lawyerInfo.name} 변호사</span>
+                  </div>
+                </footer>
+              )}
             </div>
             <figure className={styles['article-thumbnail']}>
               <img src={thumbnailUrl} alt='thumbnail' />

@@ -8,7 +8,7 @@
     }
   }
 
-  &.small {
+  &.regular {
     .video-horizon-figure {
       width: 13rem;
       height: 7.1875rem;
@@ -41,41 +41,40 @@
     }
   }
 
-  &.xsmall {
-    gap: 0.3rem;
+  &.small {
+    gap: 1.25rem;
+
     .video-horizon-figure {
-      width: 10rem;
-      height: 5.625rem;
+      width: 8.5rem;
+      height: 4.6875rem;
+      flex-shrink: 0;
+
+      img {
+        object-fit: cover;
+      }
     }
+
     .video-content-section {
-      h1 {
-        font-size: 0.875rem;
-        -webkit-line-clamp: 1;
+      flex: 1;
+      min-width: 0;
+
+      .video-content-section-header {
+        h1 {
+          font-size: 1rem;
+          @include ellipsis(1);
+        }
       }
+
       p {
-        font-size: 0.75rem;
-        -webkit-line-clamp: 2;
-        display: block !important;
+        font-size: 0.8125rem;
+        @include ellipsis(3);
       }
+
       .lawyer {
         font-size: 0.875rem;
       }
       .lawfirm {
         font-size: 0.75rem;
-      }
-    }
-    @media (max-width: $breakpoint-desktop) {
-      .video-horizon-figure {
-        height: 8rem;
-      }
-      .video-content-section {
-        h1 {
-          font-size: 0.875rem;
-          -webkit-line-clamp: 2;
-        }
-        p {
-          display: none !important;
-        }
       }
     }
   }
@@ -186,6 +185,33 @@
 @media (max-width: $breakpoint-desktop) {
   .video-horizon {
     flex-direction: column;
+
+    &.small {
+      flex-direction: row;
+
+      .video-horizon-figure {
+        width: 5.625rem;
+        height: 3.1875rem;
+      }
+
+      .video-content-section {
+        padding: 0;
+
+        .video-content-section-header h1 {
+          font-size: 1rem;
+          display: -webkit-box !important;
+          -webkit-line-clamp: 2 !important;
+          -webkit-box-orient: vertical !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
+          white-space: normal !important;
+        }
+
+        p {
+          display: none !important;
+        }
+      }
+    }
   }
 
   .video-horizon-figure {

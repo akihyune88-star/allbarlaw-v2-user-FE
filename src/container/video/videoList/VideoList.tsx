@@ -56,6 +56,7 @@ const VideoList = () => {
               lawfirmName={video.lawfirmName}
               channelName={video.channelName}
               channelThumbnail={video.channelThumbnail}
+              summaryContents={video.summaryContent}
               onClick={() => handleVideoClick(video.videoCaseId)}
             />
             {!isMobile && index !== videoList.length - 1 && <Divider padding={24} />}
