@@ -31,7 +31,9 @@ const LawyerVideo = () => {
               title={video.title}
               summaryContents={video.summaryContent}
             />
-            {index !== threeVideoList.length - 1 && <Divider padding={24} />}
+            {index !== threeVideoList.length - 1 && (
+              <Divider padding={12} className={styles['lawyer-video__divider']} />
+            )}
           </li>
         ))}
       </ul>

@@ -35,6 +35,21 @@
   }
 }
 
+.lawyer-video__list {
+  @media (max-width: $breakpoint-desktop) {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.75rem;
+    gap: 1.5rem;
+  }
+}
+
+.lawyer-video__divider {
+  @media (max-width: $breakpoint-desktop) {
+    display: none;
+  }
+}
+
 .lawyer-video__button-icon {
   display: none;
 

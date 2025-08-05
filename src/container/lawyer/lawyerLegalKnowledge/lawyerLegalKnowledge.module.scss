@@ -45,3 +45,18 @@
     margin-left: 0.25rem;
   }
 }
+
+.lawyer-legal-knowledge__divider {
+  @media (max-width: $breakpoint-desktop) {
+    display: none;
+  }
+}
+
+.lawyer-legal-knowledge__list {
+  margin-top: 0.75rem;
+  @media (max-width: $breakpoint-desktop) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}

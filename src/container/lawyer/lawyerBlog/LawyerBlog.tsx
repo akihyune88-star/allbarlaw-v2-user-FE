@@ -26,7 +26,7 @@ const LawyerBlog = () => {
         {threeBlogList.map((blog, index) => (
           <li key={blog.blogCaseId}>
             <BlogItem item={blog} type='small' />
-            {index !== threeBlogList.length - 1 && <Divider padding={24} />}
+            {index !== threeBlogList.length - 1 && <Divider padding={12} className={styles['lawyer-blog__divider']} />}
           </li>
         ))}
       </ul>

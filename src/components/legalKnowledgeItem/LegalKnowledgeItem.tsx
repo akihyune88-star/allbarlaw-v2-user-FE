@@ -8,8 +8,8 @@ import { useAuth } from '@/contexts/AuthContext'
 type LegalKnowledgeItemProps = {
   title: string
   description: string
-  time: Date
-  isLastAnswer: boolean
+  time?: Date
+  isLastAnswer?: boolean
   lawyerList?: {
     lawyerId: number
     lawyerProfileImage: string
@@ -36,27 +36,29 @@ const LegalKnowledgeItem = ({
     <article className={styles['legal-knowledge-item']} onClick={onClick}>
       <header className={styles['header']}>
         <h1>{title}</h1>
-        <div className={styles['header-right']}>
-          <span>
-            <span className={styles['time']}>{formattedTime}</span> {isLastAnswer && '마지막 답변'}
-          </span>
-          {isLoggedIn && isShowKeep && <SvgIcon name='bookMark' />}
-        </div>
+        {time && (
+          <div className={styles['header-right']}>
+            <span>
+              <span className={styles['time']}>{formattedTime}</span> {isLastAnswer && '마지막 답변'}
+            </span>
+            {isLoggedIn && isShowKeep && <SvgIcon name='bookMark' />}
+          </div>
+        )}
       </header>
       <div className={styles['description-wrapper']}>
         <p className={styles['description']}>{description}</p>
       </div>
-      <footer className={styles['footer']}>
-        <div className={styles['footer-title']}>
-          의뢰인이 선택한 변호사
-          <SvgIcon
-            name='checkRound'
-            stroke={isMobile ? COLOR.green_01 : COLOR.icon_darkgreen}
-            fill={COLOR.white}
-            style={{ transform: 'translateY(-1px)' }}
-          />
-        </div>
-        {lawyerList && (
+      {lawyerList && (
+        <footer className={styles['footer']}>
+          <div className={styles['footer-title']}>
+            의뢰인이 선택한 변호사
+            <SvgIcon
+              name='checkRound'
+              stroke={isMobile ? COLOR.green_01 : COLOR.icon_darkgreen}
+              fill={COLOR.white}
+              style={{ transform: 'translateY(-1px)' }}
+            />
+          </div>
           <div className={styles['lawyer-list']}>
             {lawyerList.map(lawyer => (
               <div className={styles['lawyer-item']} key={lawyer.lawyerId}>
@@ -65,8 +67,9 @@ const LegalKnowledgeItem = ({
               </div>
             ))}
           </div>
-        )}
-      </footer>
+        </footer>
+      )}
+
       {isMobile && (
         <div className={styles['header-right']}>
           <span>
