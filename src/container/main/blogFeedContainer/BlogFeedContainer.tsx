@@ -88,6 +88,7 @@ const BlogFeedContainer = () => {
           {subBlogList.map((blog, idx) => (
             <React.Fragment key={blog.blogCaseId}>
               <BlogItem
+                type="regular"
                 item={blog}
                 isShowKeep={false}
                 className={styles['sub-blog-list-item']}

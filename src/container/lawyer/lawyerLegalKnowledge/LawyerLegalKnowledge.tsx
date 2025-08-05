@@ -5,7 +5,7 @@ import { useGetKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
 import { forwardRef } from 'react'
 
-const LawyerLegalKnowledge = forwardRef<HTMLElement>((props, ref) => {
+const LawyerLegalKnowledge = forwardRef<HTMLElement>((_, ref) => {
   const {
     data: knowledgeList,
     isLoading: _isLoading,
