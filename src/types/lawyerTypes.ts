@@ -1,4 +1,4 @@
-import { OrderByType } from './sortTypes'
+import { OrderByType, SortType } from './sortTypes'
 
 export type SocialLink = {
   type: 'naver' | 'youtube' | 'instagram'
@@ -29,7 +29,7 @@ export type LawyerListRequest = {
   take?: number
   cursor?: number
   cursorId?: number
-  orderBy?: OrderByType
+  orderBy?: SortType
   gender?: number | 'all'
   achievementId: 'all'
 }

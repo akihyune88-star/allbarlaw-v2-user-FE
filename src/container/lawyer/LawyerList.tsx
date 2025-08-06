@@ -8,16 +8,17 @@ import Button from '@/components/button/Button'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInfiniteLawyerList } from '@/hooks/queries/useLawyer'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
+import { OrderByType, SortType } from '@/types/sortTypes'
 
 const LawyerList = () => {
-  const [sortCase, setSortCase] = useState<string>('all')
+  const [sortCase, setSortCase] = useState<SortType>('createdAt')
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
 
-  const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteLawyerList({
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteLawyerList({
     subcategoryId: Number(subcategoryId),
-    orderBy: 'createdAt',
+    orderBy: (sortCase as SortType) || 'createdAt',
     achievementId: 'all',
   })
 
@@ -27,8 +28,12 @@ const LawyerList = () => {
     fetchNextPage,
   })
 
-  const handleSortCase = (key: string) => {
-    setSortCase(key)
+  const handleSortCase = (key: SortType) => {
+    if (key === 'all') {
+      setSortCase('createdAt')
+    } else {
+      setSortCase(key)
+    }
   }
 
   const handleLawyerDetail = (lawyerId: string) => navigate(`/${subcategoryId}/lawyer/${lawyerId}`)

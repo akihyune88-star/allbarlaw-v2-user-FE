@@ -13,7 +13,7 @@ type SortItem = {
 type ViewType = 'section' | 'total'
 
 type ArticleHeaderProps = {
-  onClick?: (key: SortType) => void
+  onClick?: (_key: SortType) => void
   onClickTotalView?: () => void
   activeKey?: string
   totalBlogCount?: number
@@ -48,6 +48,13 @@ const ArticleHeader = ({
     }
   }, [titleType])
 
+  const handleSortCase = (key: SortType) => {
+    if (key === 'all') return
+    else {
+      onClick && onClick(key)
+    }
+  }
+
   const renderSortCase = () => {
     if (isMobile) {
       return (
@@ -80,7 +87,7 @@ const ArticleHeader = ({
             {SORT_CASE.map((item: SortItem) => (
               <li
                 key={item.key}
-                onClick={() => onClick && onClick(item.key)}
+                onClick={() => handleSortCase(item.key)}
                 className={activeKey === item.key ? styles.active : ''}
               >
                 {item.name === '전체' ? `${item.name} ${totalBlogCount?.toLocaleString()}개` : item.name}
