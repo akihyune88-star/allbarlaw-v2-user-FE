@@ -3,6 +3,7 @@ import LawyerVertical from '@/components/lawyer/LawyerVertical'
 import SvgIcon from '@/components/SvgIcon'
 import { SOCIAL_LINK_LIST } from '@/constants/lawyer'
 import styles from '@/container/subMain/total/total-lawyer.module.scss'
+import { useLawyerList } from '@/hooks/queries/useLawyer'
 import { useCategoryInfo } from '@/hooks/useCategoryInfo'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useParams } from 'react-router-dom'
@@ -10,6 +11,12 @@ import { useParams } from 'react-router-dom'
 const TotalLawyer = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const mapItem = [1, 2, 3, 4]
+  const { data } = useLawyerList({
+    take: 4,
+    subcategoryId: 'all',
+    achievementId: 'all',
+    orderBy: 'createdAt',
+  })
 
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const categoryInfo = useCategoryInfo(subcategoryId)

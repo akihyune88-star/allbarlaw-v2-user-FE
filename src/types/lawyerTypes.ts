@@ -31,7 +31,7 @@ export type LawyerListRequest = {
   cursorId?: number
   orderBy?: SortType
   gender?: number | 'all'
-  achievementId: 'all'
+  achievementId?: 'all'
 }
 
 export type LawyerListResponse = {

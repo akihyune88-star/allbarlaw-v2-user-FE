@@ -5,6 +5,7 @@ import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { SOCIAL_LINK_LIST } from '@/constants/lawyer'
 import LawyerVertical from '@/components/lawyer/LawyerVertical'
+// import { useLawyerList } from '@/hooks/queries/useLawyer'
 
 const LawyerAdvertisementListHeader = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
@@ -22,6 +23,11 @@ const LawyerAdvertisementListHeader = () => {
 const LawyerAdvertisementList = () => {
   const mapItem = [1, 2, 3, 4]
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  // const { data } = useLawyerList({
+  //   subcategoryId: 'all',
+  //   achievementId: 'all',
+  //   orderBy: 'createdAt',
+  // })
 
   return (
     <section className={styles['container']}>

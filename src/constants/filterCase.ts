@@ -32,3 +32,22 @@ export const LAWFIRM_PERIOD_FILTER_CASE = [
     sortType: '30',
   },
 ]
+
+export const LAWYER_SORT_ACHIEVEMENT_CASE: FilterCase[] = [
+  {
+    filterName: '전체',
+    sortType: 'all',
+  },
+  {
+    filterName: '스피드 답변왕',
+    sortType: '1',
+  },
+  {
+    filterName: '공감왕',
+    sortType: '2',
+  },
+  {
+    filterName: '최근 등록 로펌',
+    sortType: '3',
+  },
+]
