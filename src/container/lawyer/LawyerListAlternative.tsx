@@ -2,14 +2,13 @@ import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import styles from './lawyer-list.module.scss'
 import React, { useState } from 'react'
-import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Button from '@/components/button/Button'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInfiniteLawyerList } from '@/hooks/queries/useLawyer'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 
-const LawyerList = () => {
+const LawyerListAlternative = () => {
   const [sortCase, setSortCase] = useState<string>('all')
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
@@ -48,13 +47,12 @@ const LawyerList = () => {
       <section className={styles['lawyer-list-wrapper']}>
         {data?.lawyerList.map((lawyer, index) => {
           const isLastItem = index === data.lawyerList.length - 1 && !hasNextPage
-
+          
           return (
-            <React.Fragment key={lawyer.lawyerId}>
+            <div key={lawyer.lawyerId} style={{ display: 'contents' }}>
               <LawyerHorizon
                 onClick={() => handleLawyerDetail(lawyer.lawyerId.toString())}
                 tags={lawyer.tags}
-                isBaroTalk={true}
                 className={styles['lawyer-list-item']}
                 name={lawyer.lawyerName}
                 lawfirm={lawyer.lawfirmName}
@@ -71,8 +69,17 @@ const LawyerList = () => {
                 }
                 size='small'
               />
-              {!isLastItem && <Divider padding={16} />}
-            </React.Fragment>
+              {!isLastItem && (
+                <div 
+                  style={{ 
+                    width: '100%',
+                    height: '1px',
+                    backgroundColor: '#e5e5e5',
+                    margin: '16px 0'
+                  }} 
+                />
+              )}
+            </div>
           )
         })}
       </section>
@@ -80,4 +87,4 @@ const LawyerList = () => {
   )
 }
 
-export default LawyerList
+export default LawyerListAlternative

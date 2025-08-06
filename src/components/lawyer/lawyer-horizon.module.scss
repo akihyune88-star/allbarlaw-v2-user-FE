@@ -1,12 +1,14 @@
 .lawyer-horizon {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 
   .lawyer-horizon-image {
     position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 1.5rem;
 
     img {
       display: block;
@@ -29,6 +31,18 @@
         border: 1px solid $color-green-01;
       }
     }
+  }
+
+  .baro-talk {
+    width: 4.4375rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    background-color: $color-green-01;
+
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+    color: $color-white;
   }
 
   .description {
