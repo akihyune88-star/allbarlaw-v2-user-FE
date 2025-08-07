@@ -53,7 +53,7 @@ const LawyerDetail = () => {
             <span>(10)</span>
           </button>
         </section>
-        <LawyerCareer ref={careerRef} />
+        <LawyerCareer ref={careerRef} careers={lawyerDetail?.careers ?? []} />
         <LawyerBlog ref={blogRef} />
         <LawyerVideo ref={videoRef} />
         <LawyerLegalKnowledge ref={legalKnowledgeRef} />

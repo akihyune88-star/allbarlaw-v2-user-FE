@@ -28,11 +28,12 @@ const LawyerActivity = ({ statistics, createdAt }: LawyerActivityProps) => {
           <tr>
             <td>{dayjs(createdAt).format('YYYY-MM-DD')}</td>
             <td>
-              {statistics?.totalSiteVisitCount} / {statistics?.last30DaysSiteVisitCount}
+              {statistics?.totalSiteVisitCount.toLocaleString()} /{' '}
+              {statistics?.last30DaysSiteVisitCount.toLocaleString()}
             </td>
-            <td>{statistics?.blogPostCount}</td>
-            <td>{statistics?.videoCount}</td>
-            <td>{statistics?.knowledgeAnswerCount}</td>
+            <td>{statistics?.blogPostCount.toLocaleString()}</td>
+            <td>{statistics?.videoCount.toLocaleString()}</td>
+            <td>{statistics?.knowledgeAnswerCount.toLocaleString()}</td>
           </tr>
         </tbody>
       </table>
@@ -46,20 +47,21 @@ const LawyerActivity = ({ statistics, createdAt }: LawyerActivityProps) => {
           <tr>
             <th>방문횟수 전체/최근1달</th>
             <td>
-              {statistics?.totalSiteVisitCount} / {statistics?.last30DaysSiteVisitCount}
+              {statistics?.totalSiteVisitCount.toLocaleString()} /{' '}
+              {statistics?.last30DaysSiteVisitCount.toLocaleString()}
             </td>
           </tr>
           <tr>
             <th>블로그글</th>
-            <td>{statistics?.blogPostCount}</td>
+            <td>{statistics?.blogPostCount.toLocaleString()}</td>
           </tr>
           <tr>
             <th>법률 영상</th>
-            <td>{statistics?.videoCount}</td>
+            <td>{statistics?.videoCount.toLocaleString()}</td>
           </tr>
           <tr>
             <th>법률 지식인 답변</th>
-            <td>{statistics?.knowledgeAnswerCount}</td>
+            <td>{statistics?.knowledgeAnswerCount.toLocaleString()}</td>
           </tr>
         </tbody>
       </table>
