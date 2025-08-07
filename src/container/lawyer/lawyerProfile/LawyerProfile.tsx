@@ -4,6 +4,7 @@ import Tag from '@/components/tag/Tag'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import Modal from '@/components/modal'
 import { useState } from 'react'
+import { formatPhoneNumber } from '@/utils/numberFormatter'
 
 type LawyerProfileProps = {
   discription: string
@@ -31,8 +32,8 @@ const LawyerProfile = ({
     console.log('baroTalk', lawyerId)
   }
 
-  const handleOpenModal = (message: string) => {
-    setModalMessage(message)
+  const handleOpenContactModal = () => {
+    setModalMessage(formatPhoneNumber(lawfirmContact))
     setIsOpen(true)
   }
 
@@ -65,10 +66,10 @@ const LawyerProfile = ({
               <h3 className={styles['lawfirm__name']}>{lawyerLawfirm}</h3>
               <address className={styles['lawfirm__address']}>{lawyerAdress}</address>
               <nav className={styles['lawfirm__buttons']} aria-label='연락처 및 위치 정보'>
-                <button type='button' aria-label='변호사 연락처 보기' onClick={() => handleOpenModal(lawfirmContact)}>
+                <button type='button' aria-label='변호사 연락처 보기' onClick={handleOpenContactModal}>
                   연락처 보기
                 </button>
-                <button type='button' aria-label='사무소 위치 보기' onClick={() => handleOpenModal(lawyerAdress)}>
+                <button type='button' aria-label='사무소 위치 보기'>
                   위치 보기
                 </button>
               </nav>
@@ -82,9 +83,11 @@ const LawyerProfile = ({
           </nav>
         </div>
       </section>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} className={styles['modal']}>
         <p>{modalMessage}</p>
-        <button>닫기</button>
+        <button className={styles['close-button']} onClick={() => setIsOpen(false)}>
+          닫기
+        </button>
       </Modal>
     </>
   )

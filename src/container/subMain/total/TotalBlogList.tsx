@@ -36,7 +36,7 @@ const TotalBlogList = () => {
   return (
     <div className={styles['total-blog-list']}>
       <ArticleHeader
-        title='변호사의 글'
+        title='법률정보의 글'
         totalBlogCount={blogTotalCount}
         recentBlogCount={blogMonthCount}
         type='total'

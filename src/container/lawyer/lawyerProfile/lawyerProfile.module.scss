@@ -75,6 +75,33 @@
   }
 }
 
+.modal {
+  width: 18.375rem;
+  padding: 2rem 0;
+
+  text-align: center;
+  white-space: pre-line;
+  word-break: keep-all;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  .close-button {
+    width: 11.875rem;
+    height: 2rem;
+
+    background-color: transparent;
+    border-radius: 0.625rem;
+    border: 1px solid $color-green-01;
+
+    text-align: center;
+    font-size: 0.75rem;
+    color: $color-green-01;
+  }
+}
+
 @media (max-width: $breakpoint-desktop) {
   .lawyer-profile {
     padding: 0;

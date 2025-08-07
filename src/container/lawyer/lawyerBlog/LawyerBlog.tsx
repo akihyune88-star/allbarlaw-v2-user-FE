@@ -13,11 +13,11 @@ const LawyerBlog = forwardRef<HTMLElement, LawyerBlogProps>(({ blogList = [] }, 
   const hasBlogPosts = blogList && blogList.length > 0
 
   return (
-    <section ref={ref} className={styles['lawyer-blog']} aria-label='변호사의 글'>
+    <section ref={ref} className={styles['lawyer-blog']} aria-label='법률정보의 글'>
       <header className={styles['lawyer-blog__header']}>
-        <h3 className={styles['lawyer-blog__title']}>변호사의 글</h3>
+        <h3 className={styles['lawyer-blog__title']}>법률정보의 글</h3>
         {hasBlogPosts && (
-          <button type='button' className={styles['lawyer-blog__button']} aria-label='변호사의 글 더보기'>
+          <button type='button' className={styles['lawyer-blog__button']} aria-label='법률정보의 글 더보기'>
             더보기
             <SvgIcon name='arrowSmall' className={styles['lawyer-blog__button-icon']} size={14} />
           </button>

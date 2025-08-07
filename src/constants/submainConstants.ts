@@ -7,7 +7,7 @@ export const SUB_MENU_LIST = [
     path: '/',
   },
   {
-    name: '변호사의 글',
+    name: '법률정보의 글',
     itemWidth: 84,
     path: ROUTER.BLOG,
   },

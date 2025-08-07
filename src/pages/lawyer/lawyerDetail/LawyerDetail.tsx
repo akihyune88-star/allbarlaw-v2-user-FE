@@ -43,7 +43,7 @@ const LawyerDetail = () => {
             이력사항 및 활동사항
           </button>
           <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(blogRef)}>
-            <span>변호사의 글</span>
+            <span>법률정보의 글</span>
             <span>(10)</span>
           </button>
           <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(videoRef)}>
