@@ -1,7 +1,15 @@
 import Divider from '@/components/divider/Divider'
 import styles from './lawyerActivity.module.scss'
+import { LawyerDetailResponse } from '@/types/lawyerTypes'
+import dayjs from 'dayjs'
 
-const LawyerActivity = () => {
+type LawyerActivityProps = {
+  statistics: LawyerDetailResponse['statistics'] | null
+  createdAt: string
+}
+
+const LawyerActivity = ({ statistics, createdAt }: LawyerActivityProps) => {
+  console.log(statistics)
   return (
     <section className={styles['lawyer-activity']}>
       <h3 className={styles['activity-title']}>올바로 활동</h3>
@@ -18,11 +26,13 @@ const LawyerActivity = () => {
         </thead>
         <tbody>
           <tr>
-            <td>2025-01-01</td>
-            <td>100</td>
-            <td>100</td>
-            <td>100</td>
-            <td>100</td>
+            <td>{dayjs(createdAt).format('YYYY-MM-DD')}</td>
+            <td>
+              {statistics?.totalSiteVisitCount} / {statistics?.last30DaysSiteVisitCount}
+            </td>
+            <td>{statistics?.blogPostCount}</td>
+            <td>{statistics?.videoCount}</td>
+            <td>{statistics?.knowledgeAnswerCount}</td>
           </tr>
         </tbody>
       </table>
@@ -31,23 +41,25 @@ const LawyerActivity = () => {
         <tbody>
           <tr>
             <th>올바로 변호사</th>
-            <td>2024.12.01</td>
+            <td>{dayjs(createdAt).format('YYYY-MM-DD')}</td>
           </tr>
           <tr>
             <th>방문횟수 전체/최근1달</th>
-            <td>1,726 / 24</td>
+            <td>
+              {statistics?.totalSiteVisitCount} / {statistics?.last30DaysSiteVisitCount}
+            </td>
           </tr>
           <tr>
             <th>블로그글</th>
-            <td>521</td>
+            <td>{statistics?.blogPostCount}</td>
           </tr>
           <tr>
             <th>법률 영상</th>
-            <td>12</td>
+            <td>{statistics?.videoCount}</td>
           </tr>
           <tr>
             <th>법률 지식인 답변</th>
-            <td>614</td>
+            <td>{statistics?.knowledgeAnswerCount}</td>
           </tr>
         </tbody>
       </table>

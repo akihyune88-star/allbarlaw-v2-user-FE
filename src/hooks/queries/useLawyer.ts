@@ -36,3 +36,10 @@ export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' 
     }),
   })
 }
+
+export const useLawyerDetail = (lawyerId: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_DETAIL, lawyerId],
+    queryFn: () => lawyerService.getLawyerDetail(lawyerId),
+  })
+}

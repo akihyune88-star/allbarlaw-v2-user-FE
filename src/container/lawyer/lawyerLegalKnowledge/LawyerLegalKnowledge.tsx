@@ -18,8 +18,6 @@ const LawyerLegalKnowledge = forwardRef<HTMLElement>((_, ref) => {
 
   const threeLegalKnowledgeList = knowledgeList.slice(0, 3)
 
-  console.log(threeLegalKnowledgeList)
-
   return (
     <section ref={ref} className={styles['lawyer-legal-knowledge']} aria-label='변호사의 법률 지식'>
       <header className={styles['lawyer-legal-knowledge__header']}>

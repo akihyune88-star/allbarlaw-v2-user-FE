@@ -1,5 +1,5 @@
 import instance from '@/lib/axios'
-import { LawyerListRequest, LawyerListResponse } from '@/types/lawyerTypes'
+import { LawyerDetailResponse, LawyerListRequest, LawyerListResponse } from '@/types/lawyerTypes'
 
 export const lawyerService = {
   getLawyerList: async (request: LawyerListRequest) => {
@@ -17,6 +17,11 @@ export const lawyerService = {
     const queryString = params.toString()
     const url = `/lawyer/${subcategoryId}${queryString ? `?${queryString}` : ''}`
     const response = await instance.get<LawyerListResponse>(url)
+    return response.data
+  },
+
+  getLawyerDetail: async (lawyerId: number) => {
+    const response = await instance.get<LawyerDetailResponse>(`/lawyer/detail/${lawyerId}`)
     return response.data
   },
 }

@@ -7,7 +7,7 @@ type LawyerProfileProps = {
   discription: string
   lawyerLawfirm: string
   lawyerAdress: string
-  tags: { id: number; name: string }[]
+  tags: { id: number; name: string }[] | []
 }
 
 const LawyerProfile = ({ discription, lawyerLawfirm, lawyerAdress, tags }: LawyerProfileProps) => {
