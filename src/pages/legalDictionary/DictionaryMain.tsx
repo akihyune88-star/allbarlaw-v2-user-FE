@@ -7,7 +7,7 @@ import styles from './dictionary-main.module.scss'
 const DictionaryMain = () => {
   return (
     <section className={styles['body-container']}>
-      <RecentSearches searchHistory={SearchHistory} />
+      <RecentSearches />
       <div className={styles['contents-container']}>
         <div className='contents-section'>
           <LegalSearchList legalList={legalList} />
@@ -22,27 +22,6 @@ const DictionaryMain = () => {
 }
 
 export default DictionaryMain
-
-const SearchHistory = [
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-  '업무방해죄 [業務妨害罪]',
-]
 
 const legalList = [
   {
