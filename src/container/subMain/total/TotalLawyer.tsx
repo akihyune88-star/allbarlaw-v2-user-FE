@@ -3,6 +3,7 @@ import LawyerVertical from '@/components/lawyer/LawyerVertical'
 import SvgIcon from '@/components/SvgIcon'
 import { SOCIAL_LINK_LIST } from '@/constants/lawyer'
 import styles from '@/container/subMain/total/total-lawyer.module.scss'
+import { useRandomLawyerList } from '@/hooks/queries/useLawyer'
 // import { useLawyerList } from '@/hooks/queries/useLawyer'
 import { useCategoryInfo } from '@/hooks/useCategoryInfo'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -10,16 +11,14 @@ import { useParams } from 'react-router-dom'
 
 const TotalLawyer = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const mapItem = [1, 2, 3, 4]
-  // const { data } = useLawyerList({
-  //   take: 4,
-  //   subcategoryId: 'all',
-  //   achievementId: 'all',
-  //   orderBy: 'createdAt',
-  // })
 
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const categoryInfo = useCategoryInfo(subcategoryId)
+
+  const { lawyerList } = useRandomLawyerList({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : 'all',
+    take: 4,
+  })
 
   return (
     <div className={styles['container']}>
@@ -29,18 +28,18 @@ const TotalLawyer = () => {
           <span>전체 753명의 전문 변호사가 함께 합니다. </span>
           <button className='total-view-button'>
             <span>전체보기</span>
-            <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(-90deg)' }} />
+            <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(135deg)' }} />
           </button>
         </div>
       </header>
       <section className={styles['lawyer-list']}>
-        {mapItem.map(item =>
+        {lawyerList.map(lawyer =>
           isMobile ? (
             <LawyerHorizon
               className={styles['lawyer-horizon']}
-              key={item}
-              name='김철수'
-              lawfirm='법무법인 대한법률사무소'
+              key={lawyer.lawyerId}
+              name={lawyer.lawyerName}
+              lawfirm={lawyer.lawfirmName}
               socialLink={SOCIAL_LINK_LIST}
               profileImage='https://picsum.photos/200/300'
               // tags={['재산범죄', '사기', '지식재산권', '형사기타', '이면계약중지', '이면계약중지']}
@@ -53,12 +52,16 @@ const TotalLawyer = () => {
             />
           ) : (
             <LawyerVertical
-              key={item}
-              name='김철수'
-              profileImage='https://picsum.photos/200/300'
+              key={lawyer.lawyerId}
+              lawyerId={lawyer.lawyerId}
+              name={lawyer.lawyerName}
+              profileImage={lawyer.lawyerProfileImage}
               type={1}
+              blogUrl={lawyer.lawyerBlogUrl}
+              youtubeUrl={lawyer.lawyerYoutubeUrl}
+              instagramUrl={lawyer.lawyerInstagramUrl}
               socialLink={SOCIAL_LINK_LIST}
-              // tags={['재산범죄', '사기', '지식재산권', '형사기타', '이면계약중지', '이면계약중지']}
+              tags={lawyer.tags}
               footer={
                 <div className={styles['footer']}>
                   <button className={`${styles['footer-button']} ${styles['left']}`}>더보기</button>

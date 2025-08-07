@@ -112,7 +112,7 @@ const ArticleHeader = ({
             </p>
             <button className='total-view-button' onClick={onClickTotalView}>
               <span>전체보기</span>
-              <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(-90deg)' }} />
+              <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(135deg)' }} />
             </button>
           </div>
         )}

@@ -7,6 +7,8 @@ import { SOCIAL_LINK_LIST } from '@/constants/lawyer'
 import LawyerVertical from '@/components/lawyer/LawyerVertical'
 import { useRandomLawyerList } from '@/hooks/queries/useLawyer'
 import { useNavigationHistory } from '@/hooks'
+import { useNavigate } from 'react-router-dom'
+import { Lawyer } from '@/types/lawyerTypes'
 
 const LawyerAdvertisementListHeader = ({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
@@ -23,6 +25,7 @@ const LawyerAdvertisementListHeader = ({ onNext, onPrev }: { onNext?: () => void
 
 const LawyerAdvertisementList = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const navigate = useNavigate()
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 
@@ -35,9 +38,13 @@ const LawyerAdvertisementList = () => {
   const handleClickNext = () => {
     if (lawyerList && lawyerList.length > 0) {
       const currentIds = lawyerList.map(lawyer => lawyer.lawyerId)
-      console.log('Next button clicked, currentIds:', currentIds)
       handleNext(currentIds)
     }
+  }
+
+  const handleLawyerClick = (lawyer: Lawyer) => {
+    // 검색 페이지로 이동
+    console.log(lawyer)
   }
 
   return (
@@ -60,7 +67,12 @@ const LawyerAdvertisementList = () => {
               tags={lawyer.tags}
               buttonComponent={
                 <div className={styles['footer']}>
-                  <button className={`${styles['footer-button']} ${styles['left']}`}>더보기</button>
+                  <button
+                    className={`${styles['footer-button']} ${styles['left']}`}
+                    onClick={() => handleLawyerClick(lawyer)}
+                  >
+                    더보기
+                  </button>
                   <button className={`${styles['footer-button']} ${styles['left']}`}>바로톡</button>
                 </div>
               }
@@ -79,7 +91,12 @@ const LawyerAdvertisementList = () => {
               tags={lawyer.tags}
               footer={
                 <div className={styles['footer']}>
-                  <button className={`${styles['footer-button']} ${styles['left']}`}>더보기</button>
+                  <button
+                    className={`${styles['footer-button']} ${styles['left']}`}
+                    onClick={() => handleLawyerClick(lawyer)}
+                  >
+                    더보기
+                  </button>
                   <button className={`${styles['footer-button']} ${styles['right']}`}>바로톡</button>
                 </div>
               }

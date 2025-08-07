@@ -36,7 +36,7 @@ export const lawyerService = {
 
     const params = new URLSearchParams()
     if (take !== undefined) params.append('take', take.toString())
-    if (excludeIds !== undefined && excludeIds.length > 0) params.append('excludeIds', excludeIds.join(','))
+    if (excludeIds !== undefined && excludeIds.length > 0) params.append('excludeIds', `[${excludeIds}]`)
 
     const queryString = params.toString()
     const url = `/lawyer/${subcategoryId}/random${queryString ? `?${queryString}` : ''}`
