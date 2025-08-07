@@ -1,45 +1,9 @@
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import styles from './lawfirm-filter.module.scss'
-import Tag from '@/components/tag/Tag'
 import { LAWFIRM_PERIOD_FILTER_CASE, LAWFIRM_SORT_FILTER_CASE } from '@/constants/filterCase'
-import React, { useState } from 'react'
-import SvgIcon from '@/components/SvgIcon'
+import React from 'react'
 import { SortType } from '@/types/sortTypes'
-
-type FilterSectionProps = {
-  title: string
-  filterList: { filterName: string; sortType: string }[]
-  onClick: (_sortType: string) => void
-  activeValue?: string
-}
-
-const FilterSection = ({ title, filterList, onClick, activeValue }: FilterSectionProps) => {
-  const [menuOpen, setMenuOpen] = useState(true)
-
-  const handleToggleMenu = () => {
-    setMenuOpen(!menuOpen)
-  }
-  return (
-    <section>
-      <header className={styles['filter-header']}>
-        <h4>{title}</h4>
-        <SvgIcon name='arrowSmall' size={16} onClick={handleToggleMenu} />
-      </header>
-      {menuOpen && (
-        <div className={styles['main-filter-list']}>
-          {filterList.map(filter => (
-            <Tag
-              key={filter.filterName}
-              tag={filter.filterName}
-              onClick={() => onClick(filter.sortType)}
-              className={filter.sortType === activeValue ? styles['active-tag'] : ''}
-            />
-          ))}
-        </div>
-      )}
-    </section>
-  )
-}
+import FilterSection from '@/components/filterSection/FilterSection'
 
 type LawfirmFilterProps = {
   filter: {

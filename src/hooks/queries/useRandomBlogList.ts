@@ -10,7 +10,7 @@ type UseRandomBlogListProps = {
 }
 
 export const useRandomBlogList = ({ subcategoryId, take, excludeIds }: UseRandomBlogListProps) => {
-  const { data, isLoading, isPlaceholderData } = useQuery({
+  const { data, isLoading, isPlaceholderData, refetch } = useQuery({
     queryKey: [QUERY_KEY.RANDOM_BLOG_LIST, subcategoryId, take, excludeIds],
     queryFn: () => blogService.getRandomBlogList({ subcategoryId, take, excludeIds }),
     placeholderData: previousData => previousData, // 이전 데이터 유지로 깜빡임 방지
@@ -21,5 +21,6 @@ export const useRandomBlogList = ({ subcategoryId, take, excludeIds }: UseRandom
     isLoading,
     isPlaceholderData,
     hasNextPage: data?.hasNextPage ?? true,
+    refetch,
   }
 }

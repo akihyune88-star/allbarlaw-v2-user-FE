@@ -60,3 +60,16 @@
     margin-left: 0.25rem;
   }
 }
+
+.lawyer-blog__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.lawyer-blog__empty-text {
+  font-size: 0.875rem;
+  color: $color-text-caption;
+  text-align: center;
+}

@@ -19,6 +19,7 @@ type LawyerHorizonProps = {
   selected?: boolean
   buttonComponent?: React.ReactNode
   ad?: boolean
+  isBaroTalk?: boolean
 }
 
 const LawyerHorizon = ({
@@ -27,6 +28,7 @@ const LawyerHorizon = ({
   description,
   lawfirm,
   tags,
+  isBaroTalk = false,
   size = 'small',
   className,
   onClick,
@@ -43,6 +45,7 @@ const LawyerHorizon = ({
       <div className={styles['lawyer-horizon-image']}>
         <img src={profileImage} alt='변호사 프로필' />
         {selected && <SvgIcon name='checkRound' size={16} fill={COLOR.green_01} stroke={COLOR.white} />}
+        {isBaroTalk && <button className={styles['baro-talk']}>바로톡</button>}
       </div>
       <div className={styles['lawyer-horizon-content']}>
         <div>

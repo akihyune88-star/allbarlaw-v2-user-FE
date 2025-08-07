@@ -44,7 +44,7 @@ const TotalLegalKnowledge = () => {
               </span>
               <button className={'total-view-button'} onClick={handleTotalLegalKnowledgeClick}>
                 <span>전체보기</span>
-                <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(-90deg)' }} />
+                <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(135deg)' }} />
               </button>
             </div>
             <Button variant='normal' size='small' className={styles['question-button']} onClick={handleBaroTalk}>

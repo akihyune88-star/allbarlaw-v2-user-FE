@@ -31,7 +31,7 @@ const LegalKnowledgeItem = ({
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { isLoggedIn } = useAuth()
   const formattedTime = time ? formatTimeAgo(time) : ''
-  console.log(formattedTime)
+
   return (
     <article className={styles['legal-knowledge-item']} onClick={onClick}>
       <header className={styles['header']}>

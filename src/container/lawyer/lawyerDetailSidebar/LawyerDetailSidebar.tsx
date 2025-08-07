@@ -2,7 +2,14 @@ import LawyerVertical from '@/components/lawyer/LawyerVertical'
 import styles from './lawyer-detail-sidebar.module.scss'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 
-const LawyerDetailSidebar = () => {
+type LawyerDetailSidebarProps = {
+  lawyerId: number
+  lawyerName: string
+  lawyerLawfirm: string
+  lawyerProfileImage: string[]
+}
+
+const LawyerDetailSidebar = ({ lawyerId, lawyerName, lawyerLawfirm, lawyerProfileImage }: LawyerDetailSidebarProps) => {
   const saveHandler = () => {
     console.log('save')
   }
@@ -13,13 +20,14 @@ const LawyerDetailSidebar = () => {
   return (
     <div className={styles['lawyer-detail-sidebar']}>
       <LawyerVertical
+        lawyerId={lawyerId}
         type={2}
-        name='홍길동'
-        lawfirm='홍길동 변호사사무소'
+        name={lawyerName}
+        lawfirm={lawyerLawfirm}
         blogUrl='https://www.naver.com'
         youtubeUrl='https://www.youtube.com'
         instagramUrl='https://www.instagram.com'
-        profileImage={simpleImages}
+        profileImage={lawyerProfileImage}
         className={styles['lawyer-vertical-container']}
         profileImageWidth='100%'
         profileImageHeight='234px'

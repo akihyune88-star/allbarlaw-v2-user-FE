@@ -1,3 +1,8 @@
+import { BlogCase } from './blogTypes'
+import { KnowledgeItem } from './knowledgeType'
+import { OrderByType, SortType } from './sortTypes'
+import { VideoCase } from './videoTypes'
+
 export type SocialLink = {
   type: 'naver' | 'youtube' | 'instagram'
   link: string
@@ -15,9 +20,95 @@ export type Lawyer = {
   lawyerProfileImage: string
   tags?: Tag[]
   lawyerDescription?: string
+  lawyerBlogUrl?: string
+  lawyerYoutubeUrl?: string
+  lawyerInstagramUrl?: string
 }
 
 export type AIRecommenderLawyerItem = Pick<
   Lawyer,
   'lawyerId' | 'lawfirmName' | 'lawyerName' | 'lawyerProfileImage' | 'tags' | 'lawyerDescription'
 >
+
+export type LawyerListRequest = {
+  subcategoryId: number | 'all'
+  take?: number
+  cursor?: number
+  cursorId?: number
+  orderBy?: SortType
+  gender?: number | 'all'
+  achievementId?: 'all'
+}
+
+export type LawyerListResponse = {
+  data: Lawyer[]
+  nextCursor: number
+  nextCursorId: number
+  hasNextPage: boolean
+}
+
+export type LawyerAchievement = {
+  id: number
+  name: string
+  description: string
+}
+
+type LawyerStatistics = {
+  blogPostCount: number
+  videoCount: number
+  knowledgeAnswerCount: number
+  last30DaysSiteVisitCount: number
+  totalSiteVisitCount: number
+}
+
+type LawyerCareer = {
+  id: number
+  categoryName: string
+  content: string
+  displayOrder: number
+}
+
+type LawyerActivity = {
+  id: number
+  categoryName: string
+  content: string
+  displayOrder: number
+}
+
+export type LawyerDetailResponse = {
+  lawyerId: number
+  lawyerName: string
+  lawyerDescription: string
+  lawfirmName: string
+  lawyerProfileImage: string
+  lawyerProfileImages: {
+    createdAt: string
+    displayOrder: number
+    imageId: number
+    imageUrl: string
+    isDefault: true
+  }[]
+  tags: Tag[]
+  createdAt: string
+  lawfirmAddress: string
+  lawfirmContact: string
+  subcategories: { id: number; name: string }[]
+  statistics: LawyerStatistics
+  achievements: LawyerAchievement[]
+  careers: LawyerCareer[]
+  activities: LawyerActivity[]
+  blogCases: BlogCase[]
+  videoCases: VideoCase[]
+  consultationRequests: KnowledgeItem[]
+}
+
+export type RandomLawyerListRequest = {
+  subcategoryId: number | 'all'
+  take?: number
+  excludeIds?: number[]
+}
+
+export type RandomLawyerListResponse = {
+  data: Lawyer[]
+  hasNextPage: boolean
+}

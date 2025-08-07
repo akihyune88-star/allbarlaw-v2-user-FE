@@ -25,7 +25,7 @@ const PlayButton = ({ className, onNext, onPrev, onToggle, iconColor = '#fff' }:
           name='playButtonArrow'
           size={16}
           color={!onNext ? disabledColor : iconColor}
-          style={{ transform: 'rotate(180deg)' }}
+          style={{ transform: 'rotate(90deg)' }}
         />
       </button>
     </div>

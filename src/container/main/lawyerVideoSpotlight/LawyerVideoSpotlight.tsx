@@ -7,8 +7,17 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import PlayButton from '@/components/playButton/PlayButton'
 import { COLOR } from '@/styles/color'
 import { useNavigationHistory } from '@/hooks'
+import SvgIcon from '@/components/SvgIcon'
 
-const LawyerVideoSpotlightHeader = ({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) => {
+const LawyerVideoSpotlightHeader = ({
+  onNext,
+  onPrev,
+  refetch,
+}: {
+  onNext?: () => void
+  onPrev?: () => void
+  refetch?: () => void
+}) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const { data: totalVideoCount } = useGetVideoCount({
@@ -30,7 +39,11 @@ const LawyerVideoSpotlightHeader = ({ onNext, onPrev }: { onNext?: () => void; o
           <span className={styles['count-number']}>최근 한달 {recentMonthVideoCount?.toLocaleString()}개</span>
         </div>
       </div>
-      {!isMobile && <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} />}
+      {!isMobile ? (
+        <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} />
+      ) : (
+        <SvgIcon name='refresh' size={16} onClick={refetch} style={{ cursor: 'pointer' }} />
+      )}
     </header>
   )
 }
@@ -40,7 +53,7 @@ const LawyerVideoSpotlight = () => {
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 
-  const { videoList, hasNextPage } = useRandomVideoList({
+  const { videoList, hasNextPage, refetch } = useRandomVideoList({
     subcategoryId: 'all',
     take: 3,
     excludeIds: currentExcludeIds,
@@ -60,6 +73,7 @@ const LawyerVideoSpotlight = () => {
       <LawyerVideoSpotlightHeader
         onNext={hasNextPage ? handleNextClick : undefined}
         onPrev={canGoPrev ? handlePrev : undefined}
+        refetch={refetch}
       />
       <div className={styles['video-grid-container']}>
         {videoList.map(video => (

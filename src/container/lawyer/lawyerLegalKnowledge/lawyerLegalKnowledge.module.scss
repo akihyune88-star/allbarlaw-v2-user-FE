@@ -53,10 +53,22 @@
 }
 
 .lawyer-legal-knowledge__list {
-  margin-top: 0.75rem;
   @media (max-width: $breakpoint-desktop) {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
   }
+}
+
+.lawyer-legal-knowledge__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.lawyer-legal-knowledge__empty-text {
+  font-size: 0.875rem;
+  color: $color-text-caption;
+  text-align: center;
 }

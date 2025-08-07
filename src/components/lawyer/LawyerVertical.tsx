@@ -8,6 +8,7 @@ import SvgIcon from '../SvgIcon'
 import { SocialLink, Tag as TagType } from '@/types/lawyerTypes'
 
 type LawyerVerticalProps = {
+  lawyerId: number
   name: string
   lawfirm?: string
   profileImage: string | string[]
@@ -23,6 +24,7 @@ type LawyerVerticalProps = {
   profileImageHeight?: string | number
   className?: string
   socialLink?: SocialLink[]
+  isShare?: boolean
 }
 
 const LawyerVertical = ({
@@ -38,6 +40,7 @@ const LawyerVertical = ({
   className,
   profileImageWidth,
   profileImageHeight,
+  isShare = false,
 }: LawyerVerticalProps) => {
   return (
     <div className={`${styles['lawyer-vertical']} ${styles[`type-${type}`]} ${className}`}>
@@ -55,50 +58,55 @@ const LawyerVertical = ({
       <div className={styles['lawyer-info']}>
         <p className={styles.name}>{name} 변호사</p>
         {lawfirm && <p className={styles.lawfirm}>{lawfirm}</p>}
-        <div className={styles['button-wrapper']}>
-          <Button variant='share'>
-            공유
-            <SvgIcon name='share' size={16} />
-          </Button>
-          <Button variant='save'>
-            저장 <SvgIcon name='save' size={16} />
-          </Button>
-        </div>
-      </div>
-      {type === 2 && <button className={styles['baro-talk-button']}>바로 톡</button>}
-      <div className={styles['social-link']}>
-        {blogUrl && (
-          <img
-            src={blog}
-            alt='블로그'
-            className={styles['social-link-img']}
-            onClick={() => window.open(blogUrl, '_blank')}
-          />
-        )}
-        {youtubeUrl && (
-          <img
-            src={youtube}
-            alt='유튜브'
-            className={styles['social-link-img']}
-            onClick={() => window.open(youtubeUrl, '_blank')}
-          />
-        )}
-        {instagramUrl && (
-          <img
-            src={instagram}
-            alt='인스타그램'
-            className={styles['social-link-img']}
-            onClick={() => window.open(instagramUrl, '_blank')}
-          />
-        )}
-
-        {tags && (
-          <div className={styles['tag-list']}>
-            {tags.map(tagItem => (
-              <Tag tag={tagItem.name} key={tagItem.id} />
-            ))}
+        {isShare && (
+          <div className={styles['button-wrapper']}>
+            <Button variant='share'>
+              공유
+              <SvgIcon name='share' size={16} />
+            </Button>
+            <Button variant='save'>
+              저장 <SvgIcon name='save' size={16} />
+            </Button>
           </div>
         )}
+
+        {type === 2 && <button className={styles['baro-talk-button']}>바로 톡</button>}
+
+        <div className={styles['social-link-wrapper']}>
+          <div className={styles['social-link']}>
+            {blogUrl && (
+              <img
+                src={blog}
+                alt='블로그'
+                className={styles['social-link-img']}
+                onClick={() => window.open(blogUrl, '_blank')}
+              />
+            )}
+            {youtubeUrl && (
+              <img
+                src={youtube}
+                alt='유튜브'
+                className={styles['social-link-img']}
+                onClick={() => window.open(youtubeUrl, '_blank')}
+              />
+            )}
+            {instagramUrl && (
+              <img
+                src={instagram}
+                alt='인스타그램'
+                className={styles['social-link-img']}
+                onClick={() => window.open(instagramUrl, '_blank')}
+              />
+            )}
+          </div>
+          {tags && (
+            <div className={styles['tag-list']}>
+              {tags.map(tagItem => (
+                <Tag tag={tagItem.name} key={tagItem.id} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
       <footer>{footer}</footer>
     </div>
