@@ -58,3 +58,16 @@
     margin-bottom: 2rem;
   }
 }
+
+.lawyer-career__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.lawyer-career__empty-text {
+  font-size: 0.875rem;
+  color: $color-text-caption;
+  text-align: center;
+}
