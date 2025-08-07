@@ -14,16 +14,6 @@ const LegalSearchList = () => {
     search: searchValue || selectedConsonant || undefined,
   })
 
-  // 디버그 로그
-  console.log('🔍 LegalSearchList Debug:', {
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    dataLength: data?.legalTermList?.length || 0,
-    searchValue,
-    selectedConsonant,
-  })
-
   const handleScroll = useCallback(() => {
     // window 스크롤 사용
     const scrollTop = window.scrollY || document.documentElement.scrollTop
@@ -32,48 +22,19 @@ const LegalSearchList = () => {
     
     const isNearBottom = scrollTop + clientHeight >= scrollHeight - 200
 
-    console.log('📜 Window Scroll Debug:', {
-      scrollTop,
-      scrollHeight,
-      clientHeight,
-      isNearBottom,
-      hasNextPage,
-      isFetchingNextPage,
-      calculation: `${scrollTop} + ${clientHeight} = ${scrollTop + clientHeight}, need >= ${scrollHeight - 200}`,
-    })
-
     if (isNearBottom && hasNextPage && !isFetchingNextPage) {
-      console.log('✅ Fetching next page!')
       fetchNextPage()
-    } else {
-      console.log('⏸️ Not fetching:', {
-        isNearBottom,
-        hasNextPage,
-        isFetchingNextPage,
-      })
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   useEffect(() => {
-    console.log('🎯 useEffect - Adding window scroll listener')
-    
     // window에 스크롤 이벤트 추가
     window.addEventListener('scroll', handleScroll)
-    
-    // 초기 스크롤 상태 체크
-    const scrollHeight = document.documentElement.scrollHeight
-    const clientHeight = window.innerHeight
-    console.log('📏 Initial window size:', {
-      scrollHeight,
-      clientHeight,
-      hasScroll: scrollHeight > clientHeight,
-    })
     
     // 컴포넌트 마운트 시 스크롤 체크
     handleScroll()
     
     return () => {
-      console.log('🔄 Removing window scroll listener')
       window.removeEventListener('scroll', handleScroll)
     }
   }, [handleScroll])

@@ -30,35 +30,20 @@ export const useRecentRegisteredLegalTermList = () => {
 export const useInfiniteLegalTermList = (request: Omit<LegalTermListRequest, 'legalTermPage'>) => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.LEGAL_TERM_LIST, 'infinite', request.orderBy, request.sort, request.search],
-    queryFn: ({ pageParam = 1 }) => {
-      console.log('🔍 Fetching legal terms - page:', pageParam, 'request:', request)
-      return legalTermService.getLegalTermList({
+    queryFn: ({ pageParam = 1 }) =>
+      legalTermService.getLegalTermList({
         ...request,
         legalTermPage: pageParam,
-      })
-    },
+      }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
-      console.log('📄 getNextPageParam:', {
-        hasNextPage: lastPage.hasNextPage,
-        currentPages: allPages.length,
-        lastPageData: lastPage.data?.length,
-        nextPage: lastPage.hasNextPage ? allPages.length + 1 : undefined,
-      })
       if (!lastPage.hasNextPage) return undefined
       return allPages.length + 1
     },
-    select: data => {
-      const result = {
-        pages: data.pages,
-        pageParams: data.pageParams,
-        legalTermList: data.pages.flatMap(page => page.data),
-      }
-      console.log('📊 Selected data:', {
-        totalItems: result.legalTermList.length,
-        pageCount: data.pages.length,
-      })
-      return result
-    },
+    select: data => ({
+      pages: data.pages,
+      pageParams: data.pageParams,
+      legalTermList: data.pages.flatMap(page => page.data),
+    }),
   })
 }

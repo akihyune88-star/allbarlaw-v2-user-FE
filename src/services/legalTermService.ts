@@ -35,20 +35,7 @@ export const legalTermService = {
       params.append('search', request.search)
     }
 
-    const url = `/legal-terms?${params.toString()}`
-    console.log('🌐 API Request:', { url, request })
-    
-    try {
-      const response = await instance.get<LegalTermListResponse>(url)
-      console.log('✅ API Response:', {
-        dataLength: response.data.data?.length,
-        hasNextPage: response.data.hasNextPage,
-        response: response.data,
-      })
-      return response.data
-    } catch (error) {
-      console.error('❌ API Error:', error)
-      throw error
-    }
+    const response = await instance.get<LegalTermListResponse>(`/legal-terms?${params.toString()}`)
+    return response.data
   },
 }
