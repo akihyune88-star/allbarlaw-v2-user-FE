@@ -10,8 +10,17 @@ import PlayButton from '@/components/playButton/PlayButton'
 import { COLOR } from '@/styles/color'
 import { useRandomBlogList } from '@/hooks/queries/useRandomBlogList'
 import { useNavigationHistory } from '@/hooks'
+import SvgIcon from '@/components/SvgIcon'
 
-const BlogFeedHeader = ({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) => {
+const BlogFeedHeader = ({
+  onNext,
+  onPrev,
+  refetch,
+}: {
+  onNext?: () => void
+  onPrev?: () => void
+  refetch?: () => void
+}) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { data: totalBlogCount } = useBlogCount({
     subcategoryId: 'all',
@@ -32,7 +41,11 @@ const BlogFeedHeader = ({ onNext, onPrev }: { onNext?: () => void; onPrev?: () =
           <span className={styles['count-number']}>최근 한달 {recentMonthCount?.toLocaleString()}개</span>
         </div>
       </div>
-      {!isMobile && <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} />}
+      {!isMobile ? (
+        <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} />
+      ) : (
+        <SvgIcon name='refresh' size={16} onClick={refetch} style={{ cursor: 'pointer' }} />
+      )}
     </header>
   )
 }
@@ -43,9 +56,9 @@ const BlogFeedContainer = () => {
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 
-  const { blogList, hasNextPage } = useRandomBlogList({
+  const { blogList, hasNextPage, refetch } = useRandomBlogList({
     subcategoryId: 'all',
-    take: 4,
+    take: isMobile ? 3 : 4,
     excludeIds: currentExcludeIds,
   })
 
@@ -58,6 +71,7 @@ const BlogFeedContainer = () => {
   return (
     <section className={styles.container}>
       <BlogFeedHeader
+        refetch={refetch}
         onNext={
           hasNextPage
             ? () => {

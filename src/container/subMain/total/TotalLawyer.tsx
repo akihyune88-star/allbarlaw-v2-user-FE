@@ -41,8 +41,8 @@ const TotalLawyer = () => {
               name={lawyer.lawyerName}
               lawfirm={lawyer.lawfirmName}
               socialLink={SOCIAL_LINK_LIST}
-              profileImage='https://picsum.photos/200/300'
-              // tags={['재산범죄', '사기', '지식재산권', '형사기타', '이면계약중지', '이면계약중지']}
+              profileImage={lawyer.lawyerProfileImage}
+              tags={lawyer.tags}
               buttonComponent={
                 <div className={styles['footer']}>
                   <button className={`${styles['footer-button']} ${styles['left']}`}>더보기</button>

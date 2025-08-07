@@ -9,8 +9,17 @@ import { useRandomLawyerList } from '@/hooks/queries/useLawyer'
 import { useNavigationHistory } from '@/hooks'
 import { useNavigate } from 'react-router-dom'
 import { Lawyer } from '@/types/lawyerTypes'
+import SvgIcon from '@/components/SvgIcon'
 
-const LawyerAdvertisementListHeader = ({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) => {
+const LawyerAdvertisementListHeader = ({
+  onNext,
+  onPrev,
+  refetch,
+}: {
+  onNext?: () => void
+  onPrev?: () => void
+  refetch?: () => void
+}) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   return (
     <header className={styles['lawyer-advertisement-list-header']}>
@@ -18,7 +27,11 @@ const LawyerAdvertisementListHeader = ({ onNext, onPrev }: { onNext?: () => void
         <h4 className={styles['title']}>함께 시작하는 전문 변호사</h4>
         <span className={styles['sub-title']}>전체 753명의 전문 변호사가 함께 합니다.</span>
       </div>
-      {!isMobile && <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} />}
+      {!isMobile ? (
+        <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} />
+      ) : (
+        <SvgIcon name='refresh' size={16} onClick={refetch} style={{ cursor: 'pointer' }} />
+      )}
     </header>
   )
 }
@@ -29,9 +42,9 @@ const LawyerAdvertisementList = () => {
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 
-  const { lawyerList, hasNextPage } = useRandomLawyerList({
+  const { lawyerList, hasNextPage, refetch } = useRandomLawyerList({
     subcategoryId: 'all',
-    take: 4,
+    take: isMobile ? 3 : 4,
     excludeIds: currentExcludeIds,
   })
 
@@ -52,6 +65,7 @@ const LawyerAdvertisementList = () => {
       <LawyerAdvertisementListHeader
         onNext={hasNextPage ? handleClickNext : undefined}
         onPrev={canGoPrev ? handlePrev : undefined}
+        refetch={refetch}
       />
 
       <div className={styles['lawyer-list']}>
