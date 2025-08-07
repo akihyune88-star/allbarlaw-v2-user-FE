@@ -1,18 +1,24 @@
 export type LegalTermItem = {
+  chineseName: string
+  englishName: string
+  koreanName: string
   legalTermId: number
-  legalTermName: string
-  legalTermDescription: string
-  legalTermImage: string
-  legalTermUrl: string
+  searchCount?: number
+  viewCount?: number
+  searchedAt?: string
+  createdAt?: string
+  content?: string
+  source?: string
 }
 
 export type PopularLegalTermListResponse = {
-  data: {
-    chineseName: string
-    englishName: string
-    koreanName: string
-    legalTermId: number
-    searchCount: 0
-    viewCount: 2100
-  }[]
+  data: LegalTermItem[]
+}
+
+export type RecentSearchesResponse = {
+  data: LegalTermItem[]
+}
+
+export type RecentRegisteredLegalTermListResponse = {
+  data: LegalTermItem[]
 }

@@ -3,8 +3,11 @@ import LegalSearchList from '@/container/legalDictionary/LegalSearchList'
 import RecentSearches from '@/container/legalDictionary/RecentSearches'
 
 import styles from './dictionary-main.module.scss'
+import { usePopularLegalTermList, useRecentRegisteredLegalTermList } from '@/hooks/queries/useLegalTerm'
 
 const DictionaryMain = () => {
+  const { data: popularLegalTermList } = usePopularLegalTermList()
+  const { data: recentRegisteredLegalTermList } = useRecentRegisteredLegalTermList()
   return (
     <section className={styles['body-container']}>
       <RecentSearches />
@@ -13,8 +16,8 @@ const DictionaryMain = () => {
           <LegalSearchList legalList={legalList} />
         </div>
         <div className='aside' style={{ width: 250, flexShrink: 0 }}>
-          <LegalItemWidget title='많이 찾는 용어' />
-          <LegalItemWidget title='최근 등록된 용어' />
+          <LegalItemWidget title='많이 찾는 용어' legalTermList={popularLegalTermList || []} />
+          <LegalItemWidget title='최근 등록된 용어' legalTermList={recentRegisteredLegalTermList || []} />
         </div>
       </div>
     </section>

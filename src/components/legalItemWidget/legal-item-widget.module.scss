@@ -45,3 +45,16 @@
     color: $color-text-index;
   }
 }
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.empty-text {
+  font-size: 0.875rem;
+  color: $color-text-caption;
+  text-align: center;
+}

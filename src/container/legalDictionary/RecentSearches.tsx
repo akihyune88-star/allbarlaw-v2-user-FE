@@ -1,10 +1,8 @@
-import { usePopularLegalTermList } from '@/hooks/queries/useLegalTerm'
+import { useRecentSearches } from '@/hooks/queries/useLegalTerm'
 import styles from './recent-searches.module.scss'
 
 const RecentSearches = () => {
-  const { data: popularLegalTermList } = usePopularLegalTermList()
-  console.log('popularLegalTermList', popularLegalTermList)
-  if (!popularLegalTermList) return null
+  const { data: recentSearches } = useRecentSearches()
 
   return (
     <div className={styles.container}>
@@ -13,11 +11,17 @@ const RecentSearches = () => {
       </div>
       <div className={styles['divider']} />
       <div className={styles['search-history-wrapper']}>
-        {popularLegalTermList.map(item => (
-          <span key={item.legalTermId}>
-            {item.koreanName} [{item.chineseName}]
-          </span>
-        ))}
+        {!recentSearches || recentSearches.length === 0 ? (
+          <div className={styles['empty-state']}>
+            <p className={styles['empty-text']}>최근 검색한 용어가 없습니다</p>
+          </div>
+        ) : (
+          recentSearches.map(item => (
+            <span key={item.legalTermId}>
+              {item.koreanName} [{item.chineseName}]
+            </span>
+          ))
+        )}
       </div>
     </div>
   )
