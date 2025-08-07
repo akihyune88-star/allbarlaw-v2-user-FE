@@ -1,36 +1,43 @@
 import Divider from '@/components/divider/Divider'
 import styles from './lawyerBlog.module.scss'
-import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
-import BlogItem from '@/components/blogItem/BlogItem'
+// import BlogItem from '@/components/blogItem/BlogItem'
 import SvgIcon from '@/components/SvgIcon'
 import { forwardRef } from 'react'
+import { LawyerDetailResponse } from '@/types/lawyerTypes'
 
-const LawyerBlog = forwardRef<HTMLElement>((_, ref) => {
-  const { blogList } = useGetBlogList({
-    subcategoryId: 'all',
-    take: 3,
-  })
+type LawyerBlogProps = {
+  blogList: LawyerDetailResponse['blogPosts'] | []
+}
 
-  const threeBlogList = blogList.slice(0, 3)
+const LawyerBlog = forwardRef<HTMLElement, LawyerBlogProps>(({ blogList = [] }, ref) => {
+  const hasBlogPosts = blogList && blogList.length > 0
 
   return (
     <section ref={ref} className={styles['lawyer-blog']} aria-label='변호사의 글'>
       <header className={styles['lawyer-blog__header']}>
         <h3 className={styles['lawyer-blog__title']}>변호사의 글</h3>
-        <button type='button' className={styles['lawyer-blog__button']} aria-label='변호사의 글 더보기'>
-          더보기
-          <SvgIcon name='arrowSmall' className={styles['lawyer-blog__button-icon']} size={14} />
-        </button>
+        {hasBlogPosts && (
+          <button type='button' className={styles['lawyer-blog__button']} aria-label='변호사의 글 더보기'>
+            더보기
+            <SvgIcon name='arrowSmall' className={styles['lawyer-blog__button-icon']} size={14} />
+          </button>
+        )}
       </header>
       <Divider padding={14} />
-      <ul className={styles['lawyer-blog__list']} role='list'>
-        {threeBlogList.map((blog, index) => (
-          <li key={blog.blogCaseId}>
-            <BlogItem item={blog} type='small' />
-            {index !== threeBlogList.length - 1 && <Divider padding={12} className={styles['lawyer-blog__divider']} />}
-          </li>
-        ))}
-      </ul>
+      {hasBlogPosts ? (
+        <ul className={styles['lawyer-blog__list']} role='list'>
+          {blogList.map((blog, index) => (
+            <li key={blog.id}>
+              {/* <BlogItem item={blog} type='small' />
+              {index !== blogList.length - 1 && <Divider padding={12} className={styles['lawyer-blog__divider']} />} */}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className={styles['lawyer-blog__empty']}>
+          <p className={styles['lawyer-blog__empty-text']}>등록된 블로그 글이 없습니다</p>
+        </div>
+      )}
     </section>
   )
 })
