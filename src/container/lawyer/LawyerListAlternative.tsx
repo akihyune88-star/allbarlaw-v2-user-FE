@@ -1,7 +1,7 @@
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import styles from './lawyer-list.module.scss'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Button from '@/components/button/Button'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -14,7 +14,7 @@ const LawyerListAlternative = () => {
   const navigate = useNavigate()
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
 
-  const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteLawyerList({
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteLawyerList({
     subcategoryId: Number(subcategoryId),
     orderBy: 'createdAt',
     achievementId: 'all',

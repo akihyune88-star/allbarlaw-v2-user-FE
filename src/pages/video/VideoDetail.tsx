@@ -22,7 +22,7 @@ const VideoDetail = () => {
   const { data } = useGetVideoDetail({ videoCaseId: Number(videoId) })
 
   const lawyer = {
-    id: data?.lawyerId || '',
+    lawyerId: data?.lawyerId || 0,
     name: data?.lawyerName || '',
     lawfirm: data?.lawfirmName || '',
     profileImage: data?.lawyerProfileImage || '',

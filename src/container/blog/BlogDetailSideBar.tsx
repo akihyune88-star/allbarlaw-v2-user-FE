@@ -25,6 +25,7 @@ const BlogDetailSideBar = ({ showLoading, lawyer, recommendLawyerList }: BlogDet
       <div className={styles['sidebar-desktop-wrapper']}>
         <section className={styles['lawyer-section']}>
           <LawyerVertical
+            lawyerId={lawyer.lawyerId}
             name={lawyer.name}
             lawfirm={lawyer.lawfirm}
             profileImage={lawyer.profileImage}

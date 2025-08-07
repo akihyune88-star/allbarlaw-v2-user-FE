@@ -8,7 +8,7 @@ import Button from '@/components/button/Button'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInfiniteLawyerList } from '@/hooks/queries/useLawyer'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
-import { OrderByType, SortType } from '@/types/sortTypes'
+import { SortType } from '@/types/sortTypes'
 
 const LawyerList = () => {
   const [sortCase, setSortCase] = useState<SortType>('createdAt')

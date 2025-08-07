@@ -7,7 +7,6 @@ import { SOCIAL_LINK_LIST } from '@/constants/lawyer'
 import LawyerVertical from '@/components/lawyer/LawyerVertical'
 import { useRandomLawyerList } from '@/hooks/queries/useLawyer'
 import { useNavigationHistory } from '@/hooks'
-import { useNavigate } from 'react-router-dom'
 import { Lawyer } from '@/types/lawyerTypes'
 import SvgIcon from '@/components/SvgIcon'
 
@@ -38,7 +37,6 @@ const LawyerAdvertisementListHeader = ({
 
 const LawyerAdvertisementList = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const navigate = useNavigate()
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 

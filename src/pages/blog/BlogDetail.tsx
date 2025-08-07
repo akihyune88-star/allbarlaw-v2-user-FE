@@ -38,7 +38,7 @@ const BlogDetail = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const lawyer = {
-    id: data?.lawyerId || '',
+    lawyerId: data?.lawyerId || 0,
     name: data?.lawyerName || '',
     lawfirm: data?.lawfirmName || '',
     profileImage: data?.lawyerProfileImage || '',

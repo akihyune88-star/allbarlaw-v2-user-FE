@@ -1,6 +1,6 @@
 import { BlogCase } from './blogTypes'
 import { KnowledgeItem } from './knowledgeType'
-import { OrderByType, SortType } from './sortTypes'
+import { SortType } from './sortTypes'
 import { VideoCase } from './videoTypes'
 
 export type SocialLink = {
