@@ -7,18 +7,22 @@ import { useRandomLawyerList } from '@/hooks/queries/useLawyer'
 // import { useLawyerList } from '@/hooks/queries/useLawyer'
 import { useCategoryInfo } from '@/hooks/useCategoryInfo'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useParams } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const TotalLawyer = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const navigate = useNavigate()
 
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const categoryInfo = useCategoryInfo(subcategoryId)
 
   const { lawyerList } = useRandomLawyerList({
     subcategoryId: subcategoryId ? Number(subcategoryId) : 'all',
-    take: 4,
+    take: isMobile ? 3 : 4,
   })
+
+  const handleTotalLawyerClick = () => navigate(`/${subcategoryId}${ROUTER.LAWYER}`)
 
   return (
     <div className={styles['container']}>
@@ -26,7 +30,7 @@ const TotalLawyer = () => {
         <h2 className={styles['header-title']}>{categoryInfo?.subcategory.subcategoryName} 분야 전문 변호사</h2>
         <div className={styles['header-description']}>
           <span>전체 753명의 전문 변호사가 함께 합니다. </span>
-          <button className='total-view-button'>
+          <button className='total-view-button' onClick={handleTotalLawyerClick}>
             <span>전체보기</span>
             <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(135deg)' }} />
           </button>

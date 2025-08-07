@@ -72,8 +72,10 @@
 
     &-description {
       font-size: 0.875rem;
+      width: 100%;
+      
       button {
-        display: none;
+        margin-left: auto;
       }
     }
   }

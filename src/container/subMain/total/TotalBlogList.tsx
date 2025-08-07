@@ -4,12 +4,14 @@ import styles from '@/container/subMain/total/total-blog-list.module.scss'
 import { useBlogCount } from '@/hooks/queries/useBlogCount'
 import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 import { useCategoryInfo } from '@/hooks/useCategoryInfo'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { ROUTER } from '@/routes/routerConstant'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const TotalBlogList = () => {
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const navigate = useNavigate()
+  const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const categoryInfo = useCategoryInfo(subcategoryId)
 
@@ -24,8 +26,8 @@ const TotalBlogList = () => {
   })
 
   const { blogList } = useGetBlogList({
-    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
-    take: 4,
+    subcategoryId: subcategoryId ? Number(subcategoryId) : 'all',
+    take: isMobile ? 3 : 4,
   })
 
   const handleTotalBlogClick = () => navigate(`/${subcategoryId}${ROUTER.BLOG}`)
