@@ -1,4 +1,3 @@
-import { usePopularLegalTermList } from '@/hooks/queries/useLegalTerm'
 import Divider from '../divider/Divider'
 import SvgIcon from '../SvgIcon'
 import styles from './legal-item-widget.module.scss'

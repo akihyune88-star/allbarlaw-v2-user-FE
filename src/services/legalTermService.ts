@@ -3,6 +3,7 @@ import {
   PopularLegalTermListResponse,
   RecentRegisteredLegalTermListResponse,
   RecentSearchesResponse,
+  SearchLegalTermResponse,
 } from '@/types/legalTermTypes'
 
 export const legalTermService = {

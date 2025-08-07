@@ -24,7 +24,7 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
     handleSearch()
   }
 
-  const handleDeleteRecentSearch = (e: React.MouseEvent, termId: number) => {
+  const handleDeleteRecentSearch = (e: React.MouseEvent, _termId: number) => {
     e.stopPropagation()
     // TODO: 최근 검색어 삭제 API 호출
   }
