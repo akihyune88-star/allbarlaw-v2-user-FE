@@ -43,4 +43,9 @@ export const legalTermService = {
     const response = await instance.get<LegalTermListResponse>(`/legal-terms/search?q=${searchTerm}`)
     return response.data
   },
+
+  deleteRecentSearch: async (searchQuery: string) => {
+    const response = await instance.delete(`/legal-terms/recent-searches`, { data: { searchQuery } })
+    return response.data
+  },
 }

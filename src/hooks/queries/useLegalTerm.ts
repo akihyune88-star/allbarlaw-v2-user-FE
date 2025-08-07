@@ -1,4 +1,4 @@
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { legalTermService } from '@/services/legalTermService'
 import { QUERY_KEY } from '@/constants/queryKey'
 import { LegalTermListRequest } from '@/types/legalTermTypes'
@@ -74,5 +74,19 @@ export const useInfiniteSearchLegalTermList = (search: string, options?: { enabl
       legalTermList: data.pages.flatMap(page => page.data),
     }),
     enabled: options?.enabled !== undefined ? options.enabled : true,
+  })
+}
+
+export const useDeleteRecentSearch = (options?: { onSuccess?: () => void; onError?: () => void }) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (searchQuery: string) => legalTermService.deleteRecentSearch(searchQuery),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.RECENT_SEARCHES] })
+      options?.onSuccess?.()
+    },
+    onError: () => {
+      options?.onError?.()
+    },
   })
 }

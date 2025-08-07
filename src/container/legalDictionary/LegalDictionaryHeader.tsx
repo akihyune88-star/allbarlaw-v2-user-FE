@@ -4,7 +4,9 @@ import React, { useState, useRef, useEffect } from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import LegalTermReportModal from './LegalTermReportModal'
 import { useLegalDictionaryStore } from '@/stores/useLegalDictionaryStore'
-import { useRecentSearches } from '@/hooks/queries/useLegalTerm'
+import { useDeleteRecentSearch, useRecentSearches } from '@/hooks/queries/useLegalTerm'
+import { LegalTermItem } from '@/types/legalTermTypes'
+import { QUERY_KEY } from '@/constants/queryKey'
 
 const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
   const { setSearchValue, setSelectedConsonant } = useLegalDictionaryStore()
@@ -13,6 +15,13 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  const { mutate: deleteRecentSearch } = useDeleteRecentSearch({
+    onSuccess: () => {},
+    onError: () => {
+      console.log('error')
+    },
+  })
 
   const handleSearch = () => {
     setSearchValue(localSearchValue)
@@ -26,9 +35,9 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
     setIsDropdownOpen(false)
   }
 
-  const handleDeleteRecentSearch = (e: React.MouseEvent, _termId: number) => {
+  const handleDeleteRecentSearch = (e: React.MouseEvent, term: LegalTermItem) => {
     e.stopPropagation()
-    // TODO: 최근 검색어 삭제 API 호출
+    deleteRecentSearch(term.koreanName)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -98,7 +107,7 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
                 onClick={() => handleSelectItem(item.koreanName)}
               >
                 <span className={styles['term-text']}>{item.koreanName}</span>
-                <button className={styles['delete-btn']} onClick={e => handleDeleteRecentSearch(e, item.legalTermId)}>
+                <button className={styles['delete-btn']} onClick={e => handleDeleteRecentSearch(e, item)}>
                   ✕
                 </button>
               </div>
