@@ -14,7 +14,7 @@ const DictionaryMain = () => {
       <RecentSearches />
       <div className={styles['contents-container']}>
         <div className='contents-section'>
-          <LegalSearchList legalList={legalList} />
+          <LegalSearchList />
         </div>
         <div className='aside' style={{ width: 250, flexShrink: 0 }}>
           <LegalItemWidget title='많이 찾는 용어' legalTermList={popularLegalTermList || []} />

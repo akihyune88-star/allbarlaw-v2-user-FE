@@ -24,23 +24,31 @@ export const legalTermService = {
     return response.data
   },
 
-  getSearchLegalTermItem: async (searchTerm: string) => {
-    const response = await instance.get<SearchLegalTermResponse>(`/legal-terms/search?searchTerm=${searchTerm}`)
-    return response.data
-  },
-
   getLegalTermList: async (request: LegalTermListRequest) => {
     const params = new URLSearchParams({
       legalTermPage: request.legalTermPage.toString(),
       orderBy: request.orderBy,
       sort: request.sort,
     })
-    
+
     if (request.search) {
       params.append('search', request.search)
     }
 
-    const response = await instance.get<LegalTermListResponse>(`/legal-term?${params.toString()}`)
-    return response.data
+    const url = `/legal-terms?${params.toString()}`
+    console.log('🌐 API Request:', { url, request })
+    
+    try {
+      const response = await instance.get<LegalTermListResponse>(url)
+      console.log('✅ API Response:', {
+        dataLength: response.data.data?.length,
+        hasNextPage: response.data.hasNextPage,
+        response: response.data,
+      })
+      return response.data
+    } catch (error) {
+      console.error('❌ API Error:', error)
+      throw error
+    }
   },
 }
