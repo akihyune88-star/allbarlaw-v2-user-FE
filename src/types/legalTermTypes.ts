@@ -1,3 +1,5 @@
+import { SortType } from './sortTypes'
+
 export type LegalTermItem = {
   chineseName: string
   englishName: string
@@ -21,4 +23,15 @@ export type RecentSearchesResponse = {
 
 export type RecentRegisteredLegalTermListResponse = {
   data: LegalTermItem[]
+}
+
+export type SearchLegalTermRequest = {
+  legalTermPage: number
+  orderBy: SortType
+  sort: 'asc' | 'desc'
+  search: string
+}
+
+export type SearchLegalTermResponse = {
+  data: LegalTermItem
 }

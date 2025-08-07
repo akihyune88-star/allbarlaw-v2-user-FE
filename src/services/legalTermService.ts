@@ -20,4 +20,9 @@ export const legalTermService = {
     const response = await instance.get<RecentRegisteredLegalTermListResponse>('/legal-terms/recent')
     return response.data
   },
+
+  getSearchLegalTermItem: async (searchTerm: string) => {
+    const response = await instance.get<SearchLegalTermResponse>(`/legal-terms/search?searchTerm=${searchTerm}`)
+    return response.data
+  },
 }

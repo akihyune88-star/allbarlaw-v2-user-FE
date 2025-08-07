@@ -1,29 +1,109 @@
 import InputBox from '@/components/inputBox/InputBox'
 import styles from './legal-dictionary-header.module.scss'
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import LegalTermReportModal from './LegalTermReportModal'
+import { useLegalDictionaryStore } from '@/stores/useLegalDictionaryStore'
+import { useRecentSearches } from '@/hooks/queries/useLegalTerm'
 
 const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
-  const [searchValue, setSearchValue] = useState('')
+  const { searchValue, setSearchValue } = useLegalDictionaryStore()
+  const { data: recentSearches } = useRecentSearches()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [selectedIndex, setSelectedIndex] = useState(-1)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const handleSearch = () => {}
+  const handleSearch = () => {
+    // TODO: 검색 API 호출
+    setIsDropdownOpen(false)
+  }
+
+  const handleSelectItem = (term: string) => {
+    setSearchValue(term)
+    setIsDropdownOpen(false)
+    handleSearch()
+  }
+
+  const handleDeleteRecentSearch = (e: React.MouseEvent, termId: number) => {
+    e.stopPropagation()
+    // TODO: 최근 검색어 삭제 API 호출
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      handleSearch()
+    if (!recentSearches || recentSearches.length === 0) {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        handleSearch()
+      }
+      return
+    }
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault()
+        setSelectedIndex(prev => (prev < recentSearches.length - 1 ? prev + 1 : prev))
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        setSelectedIndex(prev => (prev > 0 ? prev - 1 : -1))
+        break
+      case 'Enter':
+        e.preventDefault()
+        if (selectedIndex >= 0 && selectedIndex < recentSearches.length) {
+          handleSelectItem(recentSearches[selectedIndex].koreanName)
+        } else {
+          handleSearch()
+        }
+        break
+      case 'Escape':
+        setIsDropdownOpen(false)
+        setSelectedIndex(-1)
+        break
     }
   }
+
+  // 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   return (
-    <div className={styles['search-box-wrapper']}>
-      <InputBox
-        placeholder='검색은 여기에 해주세요'
-        value={searchValue}
-        className={styles['search-box']}
-        onChange={e => setSearchValue(e.target.value)}
-        onKeyDown={handleKeyDown}
-        icon={<SvgIcon name='search' style={{ marginRight: 13 }} onClick={handleSearch} />}
-      />
+    <div className={styles['search-box-wrapper']} ref={dropdownRef}>
+      <div className={styles['input-container']}>
+        <InputBox
+          placeholder='검색은 여기에 해주세요'
+          value={searchValue}
+          className={styles['search-box']}
+          onChange={e => setSearchValue(e.target.value)}
+          onFocus={() => setIsDropdownOpen(true)}
+          onKeyDown={handleKeyDown}
+          icon={<SvgIcon name='search' style={{ marginRight: 13 }} onClick={handleSearch} />}
+        />
+
+        {isDropdownOpen && recentSearches && recentSearches.length > 0 && (
+          <div className={styles['dropdown']}>
+            {recentSearches.map((item, index) => (
+              <div
+                key={item.legalTermId}
+                className={`${styles['dropdown-item']} ${index === selectedIndex ? styles['selected'] : ''}`}
+                onClick={() => handleSelectItem(item.koreanName)}
+              >
+                <span className={styles['term-text']}>{item.koreanName}</span>
+                <button className={styles['delete-btn']} onClick={e => handleDeleteRecentSearch(e, item.legalTermId)}>
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       <button className={styles.button} style={{ alignItems: 'flex-end' }} onClick={modalOpen}>
         <SvgIcon name='error' />
@@ -35,10 +115,10 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
 
 const ConsonantFilter = () => {
   const consonants = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
-  const [selectedConsonant, setSelectedConsonant] = useState<string | null>(null)
+  const { selectedConsonant, setSelectedConsonant } = useLegalDictionaryStore()
 
   const handleConsonantClick = (consonant: string) => {
-    setSelectedConsonant(consonant)
+    setSelectedConsonant(consonant === selectedConsonant ? null : consonant)
     // 필터 로직 추가
   }
 
@@ -59,10 +139,8 @@ const ConsonantFilter = () => {
 
 const LegalDictionaryHeader = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  console.log('isModalOpen', isModalOpen)
 
   const handleModalOpen = () => {
-    console.log('handleModalOpen')
     setIsModalOpen(true)
   }
 

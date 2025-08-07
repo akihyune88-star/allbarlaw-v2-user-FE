@@ -8,6 +8,7 @@ import { usePopularLegalTermList, useRecentRegisteredLegalTermList } from '@/hoo
 const DictionaryMain = () => {
   const { data: popularLegalTermList } = usePopularLegalTermList()
   const { data: recentRegisteredLegalTermList } = useRecentRegisteredLegalTermList()
+
   return (
     <section className={styles['body-container']}>
       <RecentSearches />

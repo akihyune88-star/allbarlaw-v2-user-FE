@@ -1,4 +1,5 @@
 //* external
+import { LOCAL } from '@/constants/local'
 import axios from 'axios'
 
 //* internal
@@ -10,8 +11,8 @@ const instance = axios.create({
 
 //* request∂
 instance.interceptors.request.use(function (config) {
-  // const token = sessionStorage.getItem(LOCAL.TOKEN)
-  // if (token) config.headers['authorization'] = 'Bearer ' + token
+  const token = localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN)
+  if (token) config.headers['authorization'] = 'Bearer ' + token
   return config
 })
 
