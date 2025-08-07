@@ -18,6 +18,7 @@ const SvgIcon = ({
   strokeWidth,
   color,
   onClick,
+  style,
   ...props
 }: SvgIconProps): JSX.Element => {
   const IconComponent = Icons[name as keyof typeof Icons]
@@ -28,9 +29,9 @@ const SvgIcon = ({
     ...(height !== undefined ? { height } : {}),
   }
 
-  const svgStyle: React.CSSProperties = {}
-  if (strokeWidth) {
-    svgStyle.strokeWidth = strokeWidth
+  const svgStyle: React.CSSProperties = {
+    ...style,
+    ...(strokeWidth ? { strokeWidth } : {}),
   }
 
   return (
@@ -40,6 +41,7 @@ const SvgIcon = ({
         display: 'inline-block',
         cursor: onClick ? 'pointer' : 'default',
         color: color,
+        ...style,
       }}
     >
       <IconComponent {...props} {...sizeProps} style={svgStyle} />

@@ -1,7 +1,7 @@
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
 import { lawyerService } from '@/services/lawyerService'
-import { LawyerListRequest } from '@/types/lawyerTypes'
+import { LawyerListRequest, RandomLawyerListRequest } from '@/types/lawyerTypes'
 
 export const useLawyerList = (request: LawyerListRequest) => {
   return useQuery({
@@ -35,6 +35,21 @@ export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' 
       lawyerList: data.pages.flatMap(page => page.data),
     }),
   })
+}
+
+export const useRandomLawyerList = (request: RandomLawyerListRequest) => {
+  const { data, isLoading, isPlaceholderData } = useQuery({
+    queryKey: [QUERY_KEY.LAWYER_LIST, 'random', request.subcategoryId, request.take, request.excludeIds],
+    queryFn: () => lawyerService.getRandomLawyerList(request),
+    placeholderData: previousData => previousData, // 이전 데이터 유지로 깜빡임 방지
+  })
+
+  return {
+    lawyerList: data?.data || [],
+    isLoading,
+    isPlaceholderData,
+    hasNextPage: data?.hasNextPage ?? true,
+  }
 }
 
 export const useLawyerDetail = (lawyerId: number) => {

@@ -11,6 +11,7 @@ export const queryClient = new QueryClient({
       retry: 1,
       // 창이 포커스될 때 자동으로 refetch 하지 않음
       refetchOnWindowFocus: false,
+      placeholderData: (previousData: unknown) => previousData, // 이전 데이터 유지로 깜빡임 방지
     },
     mutations: {
       // 뮤테이션 에러 발생 시 재시도 하지 않음

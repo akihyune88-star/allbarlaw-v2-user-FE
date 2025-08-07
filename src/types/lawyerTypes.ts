@@ -20,6 +20,9 @@ export type Lawyer = {
   lawyerProfileImage: string
   tags?: Tag[]
   lawyerDescription?: string
+  lawyerBlogUrl?: string
+  lawyerYoutubeUrl?: string
+  lawyerInstagramUrl?: string
 }
 
 export type AIRecommenderLawyerItem = Pick<
@@ -78,6 +81,13 @@ export type LawyerDetailResponse = {
   lawyerDescription: string
   lawfirmName: string
   lawyerProfileImage: string
+  lawyerProfileImages: {
+    createdAt: string
+    displayOrder: number
+    imageId: number
+    imageUrl: string
+    isDefault: true
+  }[]
   tags: Tag[]
   createdAt: string
   lawfirmAddress: string
@@ -90,4 +100,15 @@ export type LawyerDetailResponse = {
   blogCases: BlogCase[]
   videoCases: VideoCase[]
   consultationRequests: KnowledgeItem[]
+}
+
+export type RandomLawyerListRequest = {
+  subcategoryId: number | 'all'
+  take?: number
+  excludeIds?: number[]
+}
+
+export type RandomLawyerListResponse = {
+  data: Lawyer[]
+  hasNextPage: boolean
 }

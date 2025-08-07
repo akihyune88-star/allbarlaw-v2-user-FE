@@ -1,5 +1,11 @@
 import instance from '@/lib/axios'
-import { LawyerDetailResponse, LawyerListRequest, LawyerListResponse } from '@/types/lawyerTypes'
+import {
+  LawyerDetailResponse,
+  LawyerListRequest,
+  LawyerListResponse,
+  RandomLawyerListRequest,
+  RandomLawyerListResponse,
+} from '@/types/lawyerTypes'
 
 export const lawyerService = {
   getLawyerList: async (request: LawyerListRequest) => {
@@ -22,6 +28,19 @@ export const lawyerService = {
 
   getLawyerDetail: async (lawyerId: number) => {
     const response = await instance.get<LawyerDetailResponse>(`/lawyer/detail/${lawyerId}`)
+    return response.data
+  },
+
+  getRandomLawyerList: async (request: RandomLawyerListRequest) => {
+    const { subcategoryId, take, excludeIds } = request
+
+    const params = new URLSearchParams()
+    if (take !== undefined) params.append('take', take.toString())
+    if (excludeIds !== undefined && excludeIds.length > 0) params.append('excludeIds', excludeIds.join(','))
+
+    const queryString = params.toString()
+    const url = `/lawyer/${subcategoryId}/random${queryString ? `?${queryString}` : ''}`
+    const response = await instance.get<RandomLawyerListResponse>(url)
     return response.data
   },
 }
