@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Divider from '../divider/Divider'
 import SvgIcon from '../SvgIcon'
 import styles from './legal-item-widget.module.scss'
@@ -11,16 +11,38 @@ interface LegalItemWidgetProps {
 }
 
 const LegalItemWidget = ({ title, legalTermList, onRefresh }: LegalItemWidgetProps) => {
-  const [showAll, setShowAll] = useState(false)
+  const [currentChunkIndex, setCurrentChunkIndex] = useState(0)
 
-  const displayItems = showAll ? legalTermList : legalTermList.slice(0, 5)
-  const hasMore = legalTermList.length > 5
+  // 5개씩 청크로 나누기
+  const chunks = useMemo(() => {
+    const chunkSize = 5
+    const result: LegalTermItem[][] = []
+    for (let i = 0; i < legalTermList.length; i += chunkSize) {
+      result.push(legalTermList.slice(i, i + chunkSize))
+    }
+    return result
+  }, [legalTermList])
+
+  // 현재 표시할 아이템들
+  const displayItems = chunks[currentChunkIndex] || []
+
+  // refresh 버튼 클릭 핸들러
+  const handleRefresh = () => {
+    // 다음 청크로 이동, 마지막이면 처음으로
+    const nextIndex = (currentChunkIndex + 1) % chunks.length
+    setCurrentChunkIndex(nextIndex)
+
+    // 원래 onRefresh 콜백이 있으면 실행
+    if (onRefresh) {
+      onRefresh()
+    }
+  }
 
   return (
     <section className={styles.container}>
       <div className={styles['header']}>
         <h3 className={styles['title']}>{title}</h3>
-        <SvgIcon name='refresh' onClick={onRefresh} />
+        <SvgIcon name='refresh' onClick={handleRefresh} />
       </div>
       <Divider padding={16} />
       <div className={styles['content']}>
@@ -37,14 +59,6 @@ const LegalItemWidget = ({ title, legalTermList, onRefresh }: LegalItemWidgetPro
                 </h4>
               </div>
             ))}
-            {/* {hasMore && (
-              <button 
-                className={styles['show-more-button']} 
-                onClick={() => setShowAll(!showAll)}
-              >
-                {showAll ? '접기' : `더보기 (${legalTermList.length - 5}개 더)`}
-              </button>
-            )} */}
           </>
         )}
       </div>
