@@ -1,43 +1,26 @@
 import { useNavigate } from 'react-router-dom'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import styles from './legal-search-list.module.scss'
 import { useInfiniteLegalTermList } from '@/hooks/queries/useLegalTerm'
 import { useLegalDictionaryStore } from '@/stores/useLegalDictionaryStore'
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 
 const LegalSearchList = () => {
   const navigate = useNavigate()
   const { searchValue, selectedConsonant } = useLegalDictionaryStore()
+  const prevSearchRef = useRef<string | undefined>(undefined)
 
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = useInfiniteLegalTermList({
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading, refetch } = useInfiniteLegalTermList({
     orderBy: 'koreanName',
     sort: 'asc',
     search: searchValue || selectedConsonant || undefined,
   })
 
-  const handleScroll = useCallback(() => {
-    // window 스크롤 사용
-    const scrollTop = window.scrollY || document.documentElement.scrollTop
-    const scrollHeight = document.documentElement.scrollHeight
-    const clientHeight = window.innerHeight
-    
-    const isNearBottom = scrollTop + clientHeight >= scrollHeight - 200
-
-    if (isNearBottom && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage()
-    }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
-
-  useEffect(() => {
-    // window에 스크롤 이벤트 추가
-    window.addEventListener('scroll', handleScroll)
-    
-    // 컴포넌트 마운트 시 스크롤 체크
-    handleScroll()
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [handleScroll])
+  useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    fetchNextPage,
+  })
 
   const handleClick = (id: number) => {
     navigate(`/legal-dictionary/${id}`, {

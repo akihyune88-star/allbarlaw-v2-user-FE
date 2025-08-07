@@ -149,7 +149,7 @@ const LegalDictionaryHeader = () => {
     <>
       <div className={styles.container}>
         <div className={styles['title-wrapper']}>
-          <h1 className={styles.title}>법률 용어 백사전</h1>
+          <h1 className={styles.title}>법률 용어 백과사전</h1>
           <div className={styles['button-wrapper']}>
             <button className={styles.button}>히스토리</button>
             <button className={styles.button} onClick={handleModalOpen}>

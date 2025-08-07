@@ -29,7 +29,7 @@ export const useRecentRegisteredLegalTermList = () => {
 
 export const useInfiniteLegalTermList = (request: Omit<LegalTermListRequest, 'legalTermPage'>) => {
   return useInfiniteQuery({
-    queryKey: [QUERY_KEY.LEGAL_TERM_LIST, 'infinite', request.orderBy, request.sort, request.search],
+    queryKey: [QUERY_KEY.LEGAL_TERM_LIST, 'infinite', request.orderBy, request.sort, request.search || 'all'],
     queryFn: ({ pageParam = 1 }) =>
       legalTermService.getLegalTermList({
         ...request,
