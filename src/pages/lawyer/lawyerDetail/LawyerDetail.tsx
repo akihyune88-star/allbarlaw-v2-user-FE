@@ -19,7 +19,6 @@ const LawyerDetail = () => {
   const { lawyerId } = useParams()
 
   const { data: lawyerDetail } = useLawyerDetail(Number(lawyerId))
-  console.log(111, lawyerDetail?.blogPosts)
 
   const scrollToSection = (ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -29,10 +28,13 @@ const LawyerDetail = () => {
     <main className='sub-main-container'>
       <section className='contents-section'>
         <LawyerProfile
+          lawyerId={lawyerDetail?.lawyerId ?? 0}
+          lawyerName={lawyerDetail?.lawyerName ?? ''}
           discription={lawyerDetail?.lawyerDescription ?? ''}
           lawyerLawfirm={lawyerDetail?.lawfirmName ?? ''}
           lawyerAdress={lawyerDetail?.lawfirmAddress ?? ''}
-          tags={lawyerDetail?.tags?.map(tag => ({ id: Math.random(), name: tag })) ?? []}
+          lawfirmContact={lawyerDetail?.lawfirmContact ?? ''}
+          tags={lawyerDetail?.tags ?? []}
         />
         <LawyerActivity statistics={lawyerDetail?.statistics ?? null} createdAt={lawyerDetail?.createdAt ?? ''} />
         <LawyerAchievements achievements={lawyerDetail?.achievements ?? []} />
@@ -58,12 +60,17 @@ const LawyerDetail = () => {
           careerHistory={lawyerDetail?.careers ?? []}
           activities={lawyerDetail?.activities ?? []}
         />
-        <LawyerBlog ref={blogRef} blogList={lawyerDetail?.blogPosts ?? []} />
-        <LawyerVideo ref={videoRef} videoList={lawyerDetail?.videos ?? []} />
-        <LawyerLegalKnowledge ref={legalKnowledgeRef} knowledgeList={lawyerDetail?.knowledgeAnswers ?? []} />
+        <LawyerBlog ref={blogRef} blogList={lawyerDetail?.blogCases ?? []} />
+        <LawyerVideo ref={videoRef} videoList={lawyerDetail?.videoCases ?? []} />
+        <LawyerLegalKnowledge ref={legalKnowledgeRef} knowledgeList={lawyerDetail?.consultationRequests ?? []} />
       </section>
       <aside className='aside'>
-        <LawyerDetailSidebar />
+        <LawyerDetailSidebar
+          lawyerId={lawyerDetail?.lawyerId ?? 0}
+          lawyerName={lawyerDetail?.lawyerName ?? ''}
+          lawyerLawfirm={lawyerDetail?.lawfirmName ?? ''}
+          lawyerProfileImage={[lawyerDetail?.lawyerProfileImage ?? '']}
+        />
       </aside>
     </main>
   )

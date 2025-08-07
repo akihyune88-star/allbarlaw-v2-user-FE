@@ -78,21 +78,16 @@ export type LawyerDetailResponse = {
   lawyerDescription: string
   lawfirmName: string
   lawyerProfileImage: string
-  tags: string[]
+  tags: Tag[]
   createdAt: string
   lawfirmAddress: string
   lawfirmContact: string
-  categories: [
-    {
-      id: 1
-      name: '민사'
-    }
-  ]
+  subcategories: { id: number; name: string }[]
   statistics: LawyerStatistics
   achievements: LawyerAchievement[]
   careers: LawyerCareer[]
   activities: LawyerActivity[]
-  blogPosts: BlogCase[]
-  videos: VideoCase[]
-  knowledgeAnswers: KnowledgeItem[]
+  blogCases: BlogCase[]
+  videoCases: VideoCase[]
+  consultationRequests: KnowledgeItem[]
 }

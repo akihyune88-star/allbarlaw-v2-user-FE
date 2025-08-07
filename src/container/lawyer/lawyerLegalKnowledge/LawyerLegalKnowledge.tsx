@@ -1,13 +1,12 @@
 import Divider from '@/components/divider/Divider'
 import SvgIcon from '@/components/SvgIcon'
 import styles from './lawyerLegalKnowledge.module.scss'
-import { useGetKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
 import { forwardRef } from 'react'
 import { LawyerDetailResponse } from '@/types/lawyerTypes'
 
 type LawyerLegalKnowledgeProps = {
-  knowledgeList: LawyerDetailResponse['knowledgeAnswers'] | []
+  knowledgeList: LawyerDetailResponse['consultationRequests'] | []
 }
 
 const LawyerLegalKnowledge = forwardRef<HTMLElement, LawyerLegalKnowledgeProps>(({ knowledgeList = [] }, ref) => {

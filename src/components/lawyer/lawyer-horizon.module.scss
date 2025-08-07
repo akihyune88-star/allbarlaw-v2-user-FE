@@ -48,6 +48,8 @@
   .description {
     white-space: pre-line;
     word-break: keep-all;
+
+    @include ellipsis(3);
   }
 
   .tags {

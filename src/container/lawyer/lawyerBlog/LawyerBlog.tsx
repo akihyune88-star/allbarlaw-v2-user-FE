@@ -1,12 +1,12 @@
 import Divider from '@/components/divider/Divider'
 import styles from './lawyerBlog.module.scss'
-// import BlogItem from '@/components/blogItem/BlogItem'
+import BlogItem from '@/components/blogItem/BlogItem'
 import SvgIcon from '@/components/SvgIcon'
 import { forwardRef } from 'react'
 import { LawyerDetailResponse } from '@/types/lawyerTypes'
 
 type LawyerBlogProps = {
-  blogList: LawyerDetailResponse['blogPosts'] | []
+  blogList: LawyerDetailResponse['blogCases'] | []
 }
 
 const LawyerBlog = forwardRef<HTMLElement, LawyerBlogProps>(({ blogList = [] }, ref) => {
@@ -28,8 +28,8 @@ const LawyerBlog = forwardRef<HTMLElement, LawyerBlogProps>(({ blogList = [] }, 
         <ul className={styles['lawyer-blog__list']} role='list'>
           {blogList.map((blog, index) => (
             <li key={blog.blogCaseId + index}>
-              {/* <BlogItem item={blog} type='small' />
-              {index !== blogList.length - 1 && <Divider padding={12} className={styles['lawyer-blog__divider']} />} */}
+              <BlogItem item={blog} type='small' />
+              {index !== blogList.length - 1 && <Divider padding={12} className={styles['lawyer-blog__divider']} />}
             </li>
           ))}
         </ul>

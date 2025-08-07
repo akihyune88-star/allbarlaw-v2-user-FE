@@ -8,6 +8,7 @@ import SvgIcon from '../SvgIcon'
 import { SocialLink, Tag as TagType } from '@/types/lawyerTypes'
 
 type LawyerVerticalProps = {
+  lawyerId: number
   name: string
   lawfirm?: string
   profileImage: string | string[]

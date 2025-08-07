@@ -6,7 +6,7 @@ import { forwardRef } from 'react'
 import { LawyerDetailResponse } from '@/types/lawyerTypes'
 
 type LawyerVideoProps = {
-  videoList: LawyerDetailResponse['videos'] | []
+  videoList: LawyerDetailResponse['videoCases'] | []
 }
 
 const LawyerVideo = forwardRef<HTMLElement, LawyerVideoProps>(({ videoList = [] }, ref) => {
