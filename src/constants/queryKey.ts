@@ -31,4 +31,5 @@ export const QUERY_KEY = {
   POPULAR_LEGAL_TERM_LIST: 'popularLegalTermList',
   RECENT_SEARCHES: 'recentSearches',
   RECENT_REGISTERED_LEGAL_TERM_LIST: 'recentRegisteredLegalTermList',
+  LEGAL_TERM_LIST: 'legalTermList',
 } as const

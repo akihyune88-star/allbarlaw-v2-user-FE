@@ -4,6 +4,8 @@ import {
   RecentRegisteredLegalTermListResponse,
   RecentSearchesResponse,
   SearchLegalTermResponse,
+  LegalTermListRequest,
+  LegalTermListResponse,
 } from '@/types/legalTermTypes'
 
 export const legalTermService = {
@@ -24,6 +26,21 @@ export const legalTermService = {
 
   getSearchLegalTermItem: async (searchTerm: string) => {
     const response = await instance.get<SearchLegalTermResponse>(`/legal-terms/search?searchTerm=${searchTerm}`)
+    return response.data
+  },
+
+  getLegalTermList: async (request: LegalTermListRequest) => {
+    const params = new URLSearchParams({
+      legalTermPage: request.legalTermPage.toString(),
+      orderBy: request.orderBy,
+      sort: request.sort,
+    })
+    
+    if (request.search) {
+      params.append('search', request.search)
+    }
+
+    const response = await instance.get<LegalTermListResponse>(`/legal-term?${params.toString()}`)
     return response.data
   },
 }

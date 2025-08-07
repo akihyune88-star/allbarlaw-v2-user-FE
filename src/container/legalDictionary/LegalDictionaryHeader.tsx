@@ -7,21 +7,22 @@ import { useLegalDictionaryStore } from '@/stores/useLegalDictionaryStore'
 import { useRecentSearches } from '@/hooks/queries/useLegalTerm'
 
 const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
-  const { searchValue, setSearchValue } = useLegalDictionaryStore()
+  const { setSearchValue } = useLegalDictionaryStore()
   const { data: recentSearches } = useRecentSearches()
+  const [localSearchValue, setLocalSearchValue] = useState('')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const handleSearch = () => {
-    // TODO: 검색 API 호출
+    setSearchValue(localSearchValue)
     setIsDropdownOpen(false)
   }
 
   const handleSelectItem = (term: string) => {
+    setLocalSearchValue(term)
     setSearchValue(term)
     setIsDropdownOpen(false)
-    handleSearch()
   }
 
   const handleDeleteRecentSearch = (e: React.MouseEvent, _termId: number) => {
@@ -79,9 +80,9 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
       <div className={styles['input-container']}>
         <InputBox
           placeholder='검색은 여기에 해주세요'
-          value={searchValue}
+          value={localSearchValue}
           className={styles['search-box']}
-          onChange={e => setSearchValue(e.target.value)}
+          onChange={e => setLocalSearchValue(e.target.value)}
           onFocus={() => setIsDropdownOpen(true)}
           onKeyDown={handleKeyDown}
           icon={<SvgIcon name='search' style={{ marginRight: 13 }} onClick={handleSearch} />}

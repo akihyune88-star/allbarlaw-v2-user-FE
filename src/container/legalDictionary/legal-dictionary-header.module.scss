@@ -106,8 +106,11 @@
 
 .consonant-filter {
   display: flex;
+  justify-content: space-between;
+  width: 100%;
   gap: 0.5rem;
-  
+  margin-top: -1.3125rem; // 원래 gap을 줄이기 위해 음수 마진 사용
+
   .consonant-button {
     width: 2rem;
     height: 2rem;
@@ -118,20 +121,19 @@
     border: none;
     font-size: 0.875rem;
     color: $color-text-index;
-    padding: 4px 6px;
+    padding: 0;
     cursor: pointer;
     outline: none;
     transition: all 0.2s;
+    border-radius: 50%;
 
     &:hover {
       background-color: $color-bg-gray-01;
-      border-radius: 50%;
     }
 
     &.active {
       background-color: $color-green-01;
       color: $color-white;
-      border-radius: 50%;
       font-weight: $font-weight-semibold;
     }
   }
