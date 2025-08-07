@@ -6,6 +6,7 @@ import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 type BlogDetailSideBarProps = {
   showLoading: boolean
   lawyer: {
+    lawyerId: number
     name: string
     lawfirm: string
     profileImage: string
