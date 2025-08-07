@@ -32,20 +32,18 @@ export type SearchLegalTermRequest = {
   search: string
 }
 
-export type SearchLegalTermResponse = {
-  data: LegalTermItem
-}
-
 export type LegalTermListRequest = {
   legalTermPage: number
   orderBy: SortType
   sort: 'asc' | 'desc'
   search?: string
+  content?: string
 }
 
 export type LegalTermListResponse = {
   data: LegalTermItem[]
   hasNextPage: boolean
-  nextCursor?: number
-  nextCursorId?: number
+  total?: number
+  legalTermPage?: number
+  totalPages?: number
 }

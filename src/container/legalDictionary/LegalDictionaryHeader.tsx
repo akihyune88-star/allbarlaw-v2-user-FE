@@ -7,7 +7,7 @@ import { useLegalDictionaryStore } from '@/stores/useLegalDictionaryStore'
 import { useRecentSearches } from '@/hooks/queries/useLegalTerm'
 
 const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
-  const { setSearchValue } = useLegalDictionaryStore()
+  const { setSearchValue, setSelectedConsonant } = useLegalDictionaryStore()
   const { data: recentSearches } = useRecentSearches()
   const [localSearchValue, setLocalSearchValue] = useState('')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -16,6 +16,7 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
 
   const handleSearch = () => {
     setSearchValue(localSearchValue)
+    setSelectedConsonant(null)
     setIsDropdownOpen(false)
   }
 

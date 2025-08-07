@@ -1,20 +1,49 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useCallback, useEffect, useRef } from 'react'
 import styles from './legal-search-list.module.scss'
-import { useInfiniteLegalTermList } from '@/hooks/queries/useLegalTerm'
+import { useInfiniteLegalTermList, useInfiniteSearchLegalTermList } from '@/hooks/queries/useLegalTerm'
 import { useLegalDictionaryStore } from '@/stores/useLegalDictionaryStore'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
+import { useQueryClient } from '@tanstack/react-query'
+import { QUERY_KEY } from '@/constants/queryKey'
 
 const LegalSearchList = () => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { searchValue, selectedConsonant } = useLegalDictionaryStore()
-  const prevSearchRef = useRef<string | undefined>(undefined)
 
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading, refetch } = useInfiniteLegalTermList({
-    orderBy: 'koreanName',
-    sort: 'asc',
-    search: searchValue || selectedConsonant || undefined,
-  })
+  const isSearchMode = !!searchValue
+
+  const termListQuery = useInfiniteLegalTermList(
+    {
+      orderBy: 'koreanName',
+      sort: 'asc',
+      content: selectedConsonant || '',
+    },
+    { enabled: !isSearchMode }
+  )
+
+  const searchListQuery = useInfiniteSearchLegalTermList(searchValue || '', { enabled: isSearchMode })
+
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading, refetch } = isSearchMode
+    ? searchListQuery
+    : termListQuery
+
+  useEffect(() => {
+    if (!isSearchMode && selectedConsonant) {
+      queryClient.resetQueries({
+        queryKey: [
+          QUERY_KEY.LEGAL_TERM_LIST,
+          'infinite',
+          'koreanName',
+          'asc',
+          'all',
+          selectedConsonant || 'all',
+        ],
+      })
+      refetch()
+    }
+  }, [selectedConsonant, isSearchMode, queryClient, refetch])
 
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,

@@ -27,9 +27,19 @@ export const useRecentRegisteredLegalTermList = () => {
   })
 }
 
-export const useInfiniteLegalTermList = (request: Omit<LegalTermListRequest, 'legalTermPage'>) => {
+export const useInfiniteLegalTermList = (
+  request: Omit<LegalTermListRequest, 'legalTermPage'>,
+  options?: { enabled?: boolean }
+) => {
   return useInfiniteQuery({
-    queryKey: [QUERY_KEY.LEGAL_TERM_LIST, 'infinite', request.orderBy, request.sort, request.search || 'all'],
+    queryKey: [
+      QUERY_KEY.LEGAL_TERM_LIST,
+      'infinite',
+      request.orderBy,
+      request.sort,
+      request.search || 'all',
+      request.content || 'all',
+    ],
     queryFn: ({ pageParam = 1 }) =>
       legalTermService.getLegalTermList({
         ...request,
@@ -45,5 +55,24 @@ export const useInfiniteLegalTermList = (request: Omit<LegalTermListRequest, 'le
       pageParams: data.pageParams,
       legalTermList: data.pages.flatMap(page => page.data),
     }),
+    enabled: options?.enabled !== undefined ? options.enabled : true,
+  })
+}
+
+export const useInfiniteSearchLegalTermList = (search: string, options?: { enabled?: boolean }) => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEY.LEGAL_TERM_LIST, 'infinite', 'search', search],
+    queryFn: ({ pageParam = 1 }) => legalTermService.getSearchLegalTermItem(search),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      if (!lastPage.hasNextPage) return undefined
+      return allPages.length + 1
+    },
+    select: data => ({
+      pages: data.pages,
+      pageParams: data.pageParams,
+      legalTermList: data.pages.flatMap(page => page.data),
+    }),
+    enabled: options?.enabled !== undefined ? options.enabled : true,
   })
 }

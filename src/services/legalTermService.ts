@@ -3,7 +3,6 @@ import {
   PopularLegalTermListResponse,
   RecentRegisteredLegalTermListResponse,
   RecentSearchesResponse,
-  SearchLegalTermResponse,
   LegalTermListRequest,
   LegalTermListResponse,
 } from '@/types/legalTermTypes'
@@ -29,6 +28,7 @@ export const legalTermService = {
       legalTermPage: request.legalTermPage.toString(),
       orderBy: request.orderBy,
       sort: request.sort,
+      content: request.content || '',
     })
 
     if (request.search) {
@@ -36,6 +36,11 @@ export const legalTermService = {
     }
 
     const response = await instance.get<LegalTermListResponse>(`/legal-terms?${params.toString()}`)
+    return response.data
+  },
+
+  getSearchLegalTermItem: async (searchTerm: string) => {
+    const response = await instance.get<LegalTermListResponse>(`/legal-terms/search?q=${searchTerm}`)
     return response.data
   },
 }
