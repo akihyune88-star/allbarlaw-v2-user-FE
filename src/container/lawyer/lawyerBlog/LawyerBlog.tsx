@@ -27,7 +27,7 @@ const LawyerBlog = forwardRef<HTMLElement, LawyerBlogProps>(({ blogList = [] }, 
       {hasBlogPosts ? (
         <ul className={styles['lawyer-blog__list']} role='list'>
           {blogList.map((blog, index) => (
-            <li key={blog.id}>
+            <li key={blog.blogCaseId + index}>
               {/* <BlogItem item={blog} type='small' />
               {index !== blogList.length - 1 && <Divider padding={12} className={styles['lawyer-blog__divider']} />} */}
             </li>

@@ -58,9 +58,9 @@ const LawyerDetail = () => {
           careerHistory={lawyerDetail?.careers ?? []}
           activities={lawyerDetail?.activities ?? []}
         />
-        <LawyerBlog ref={blogRef} blogList={[]} />
-        <LawyerVideo ref={videoRef} />
-        <LawyerLegalKnowledge ref={legalKnowledgeRef} />
+        <LawyerBlog ref={blogRef} blogList={lawyerDetail?.blogPosts ?? []} />
+        <LawyerVideo ref={videoRef} videoList={lawyerDetail?.videos ?? []} />
+        <LawyerLegalKnowledge ref={legalKnowledgeRef} knowledgeList={lawyerDetail?.knowledgeAnswers ?? []} />
       </section>
       <aside className='aside'>
         <LawyerDetailSidebar />

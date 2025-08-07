@@ -9,7 +9,10 @@ type LawyerActivityProps = {
 }
 
 const LawyerActivity = ({ statistics, createdAt }: LawyerActivityProps) => {
-  console.log(statistics)
+  const formatNumber = (value: number | undefined): string => {
+    return value?.toLocaleString() ?? '0'
+  }
+
   return (
     <section className={styles['lawyer-activity']}>
       <h3 className={styles['activity-title']}>올바로 활동</h3>
@@ -26,14 +29,13 @@ const LawyerActivity = ({ statistics, createdAt }: LawyerActivityProps) => {
         </thead>
         <tbody>
           <tr>
-            <td>{dayjs(createdAt).format('YYYY-MM-DD')}</td>
+            <td>{createdAt ? dayjs(createdAt).format('YYYY-MM-DD') : '-'}</td>
             <td>
-              {statistics?.totalSiteVisitCount.toLocaleString()} /{' '}
-              {statistics?.last30DaysSiteVisitCount.toLocaleString()}
+              {formatNumber(statistics?.totalSiteVisitCount)} / {formatNumber(statistics?.last30DaysSiteVisitCount)}
             </td>
-            <td>{statistics?.blogPostCount.toLocaleString()}</td>
-            <td>{statistics?.videoCount.toLocaleString()}</td>
-            <td>{statistics?.knowledgeAnswerCount.toLocaleString()}</td>
+            <td>{formatNumber(statistics?.blogPostCount)}</td>
+            <td>{formatNumber(statistics?.videoCount)}</td>
+            <td>{formatNumber(statistics?.knowledgeAnswerCount)}</td>
           </tr>
         </tbody>
       </table>
@@ -42,26 +44,25 @@ const LawyerActivity = ({ statistics, createdAt }: LawyerActivityProps) => {
         <tbody>
           <tr>
             <th>올바로 변호사</th>
-            <td>{dayjs(createdAt).format('YYYY-MM-DD')}</td>
+            <td>{createdAt ? dayjs(createdAt).format('YYYY-MM-DD') : '-'}</td>
           </tr>
           <tr>
             <th>방문횟수 전체/최근1달</th>
             <td>
-              {statistics?.totalSiteVisitCount.toLocaleString()} /{' '}
-              {statistics?.last30DaysSiteVisitCount.toLocaleString()}
+              {formatNumber(statistics?.totalSiteVisitCount)} / {formatNumber(statistics?.last30DaysSiteVisitCount)}
             </td>
           </tr>
           <tr>
             <th>블로그글</th>
-            <td>{statistics?.blogPostCount.toLocaleString()}</td>
+            <td>{formatNumber(statistics?.blogPostCount)}</td>
           </tr>
           <tr>
             <th>법률 영상</th>
-            <td>{statistics?.videoCount.toLocaleString()}</td>
+            <td>{formatNumber(statistics?.videoCount)}</td>
           </tr>
           <tr>
             <th>법률 지식인 답변</th>
-            <td>{statistics?.knowledgeAnswerCount.toLocaleString()}</td>
+            <td>{formatNumber(statistics?.knowledgeAnswerCount)}</td>
           </tr>
         </tbody>
       </table>
