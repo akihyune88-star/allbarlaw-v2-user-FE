@@ -12,18 +12,28 @@ import { useDelayedLoading } from '@/hooks'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
+import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
+import { useState } from 'react'
+import { COLOR } from '@/styles/color'
+import { copyUrlToClipboard } from '@/utils/clipboard'
 
-const BlogNavigationBar = () => {
+type BlogNavigationBarProps = {
+  isKeep: boolean
+  onSave: () => void
+  onShare: () => void
+}
+
+const BlogNavigationBar = ({ isKeep, onSave, onShare }: BlogNavigationBarProps) => {
   return (
     <div className={styles['blog-navigation-bar']}>
       <button className={styles['blog-link-btn']}>블로그 바로가기</button>
       <div className={styles['button-wrapper']}>
-        <Button variant='share'>
+        <Button variant='share' onClick={onShare}>
           공유
           <SvgIcon name='share' size={16} />
         </Button>
-        <Button variant='save'>
-          저장 <SvgIcon name='save' size={16} />
+        <Button variant='save' onClick={onSave}>
+          저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.icon_darkgreen : 'none'} />
         </Button>
       </div>
     </div>
@@ -34,7 +44,16 @@ const BlogDetail = () => {
   const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { blogCaseId } = useParams<{ blogCaseId: string }>()
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
+  const [isKeep, setIsKeep] = useState(data?.isKeep ?? false)
 
+  const { mutate: changeBlogKeep } = useBlogKeep({
+    onSuccess: data => {
+      setIsKeep(data.isKeep)
+    },
+    onError: () => {
+      setIsKeep(prevState => !prevState)
+    },
+  })
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const lawyer = {
@@ -45,16 +64,19 @@ const BlogDetail = () => {
   }
 
   const handleShare = () => {
-    console.log('공유하기')
+    copyUrlToClipboard()
   }
 
   const handleSave = () => {
-    console.log('저장하기')
+    if (data?.blogCaseId) {
+      setIsKeep(prevState => !prevState)
+      changeBlogKeep(data.blogCaseId)
+    }
   }
 
   return (
     <div className={'detail-container'}>
-      <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} />
+      <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
       <div className={'detail-body'}>
         <div>
           {showLoading ? (
@@ -62,7 +84,7 @@ const BlogDetail = () => {
           ) : (
             <>
               <BlogDetailContents summaryContents={data?.summaryContent || ''} tagList={data?.tags || []} />
-              <BlogNavigationBar />
+              <BlogNavigationBar isKeep={isKeep} onSave={handleSave} onShare={handleShare} />
               {!isMobile ? (
                 <AIBlogCarousel />
               ) : (

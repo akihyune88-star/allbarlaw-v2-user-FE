@@ -48,7 +48,7 @@ export type RandomBlogListResponse = {
   hasNextPage: boolean
 }
 
-export type BlogDetailResponse = Omit<BlogCase, 'isKeep'> & {
+export type BlogDetailResponse = BlogCase & {
   source: string
   tags: string[]
 }
