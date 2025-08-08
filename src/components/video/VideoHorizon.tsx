@@ -1,6 +1,6 @@
 import styles from '@/components/video/video-horizon.module.scss'
 import SvgIcon from '../SvgIcon'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { COLOR } from '@/styles/color'
 import { useAuth } from '@/contexts/AuthContext'
 import { useVideoKeep } from '@/hooks/queries/useGetVideoList'
@@ -41,15 +41,21 @@ const VideoHorizon = ({
 
   const { mutate: changeVideoKeep } = useVideoKeep({
     onSuccess: data => {
+      // 서버 응답으로 최종 상태 확인
       setLike(data.isKeep)
     },
     onError: () => {
+      console.error('Failed to change video keep')
+      // 에러 발생 시 원래 상태로 롤백
       setLike(prevState => !prevState)
     },
   })
 
-  const handleVideoKeep = () => {
+  const handleVideoKeep = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
     if (isLoggedIn && videoCaseId) {
+      // 낙관적 업데이트: 즉시 UI 변경
+      setLike(prevState => !prevState)
       changeVideoKeep(videoCaseId)
     }
   }
@@ -66,7 +72,7 @@ const VideoHorizon = ({
           <h1>{title}</h1>
           {isLoggedIn && (
             <button className={styles['bookmark-icon']} onClick={handleVideoKeep}>
-              <SvgIcon name='bookMark' size={16} onClick={() => setLike(!like)} fill={like ? COLOR.green_01 : 'none'} />
+              <SvgIcon name='bookMark' size={16} fill={like ? COLOR.green_01 : 'none'} />
             </button>
           )}
         </header>
