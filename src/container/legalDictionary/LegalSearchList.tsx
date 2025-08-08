@@ -45,11 +45,7 @@ const LegalSearchList = () => {
   })
 
   const handleClick = (id: number) => {
-    navigate(`/legal-dictionary/${id}`, {
-      state: {
-        id,
-      },
-    })
+    navigate(`/legal-dictionary/${id}`)
   }
 
   if (isLoading) {

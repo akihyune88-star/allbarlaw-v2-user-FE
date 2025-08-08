@@ -63,6 +63,11 @@
 .sortButtonWrapper {
   display: flex;
   gap: 0.6875rem;
+
+  .active {
+    color: $color-text-black;
+    font-weight: $font-weight-extra-bold;
+  }
 }
 
 .sortButton {

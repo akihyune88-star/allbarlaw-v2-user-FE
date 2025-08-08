@@ -1,19 +1,20 @@
-import { useInfiniteKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import styles from './myLegalKnowledgeList.module.scss'
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Divider from '@/components/divider/Divider'
+import { useInfiniteMyLegalKnowledgeList } from '@/hooks/queries/useMypage'
+import { useNavigate } from 'react-router-dom'
+// import { KnowledgeItem } from '@/types/knowledgeType'
 
-const MyLegalKnowledgeList = () => {
-  const { knowledgeList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteKnowledgeList({
-    subcategoryId: 4,
-    take: 4,
-  })
-
+const MyLegalKnowledgeList = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const navigate = useNavigate()
 
-  console.log(knowledgeList)
+  const { knowledgeList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteMyLegalKnowledgeList({
+    take: 10,
+    sort: sort,
+  })
 
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
@@ -21,7 +22,11 @@ const MyLegalKnowledgeList = () => {
     fetchNextPage,
   })
 
-  const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000)
+  console.log(knowledgeList)
+
+  // const handleKnowledgeDetail = (knowledge: KnowledgeItem) => {
+  //   navigate(`/${knowledge.subcategoryId}/knowledge/${knowledge.knowledgeId}`)
+  // }
 
   return (
     <div className={styles.myLegalKnowledgeList}>
@@ -33,7 +38,7 @@ const MyLegalKnowledgeList = () => {
             key={knowledge.knowledgeId}
             title={knowledge.knowledgeTitle}
             description={knowledge.summaryContent}
-            time={threeHoursAgo}
+            time={new Date(knowledge.lastMessageAt)}
             lawyerList={knowledge.lawyers || []}
             isLastAnswer={true}
           />

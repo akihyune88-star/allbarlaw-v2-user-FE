@@ -5,7 +5,7 @@ import { COLOR } from '@/styles/color'
 import { formatTimeAgo } from '@/utils/date'
 import { useAuth } from '@/contexts/AuthContext'
 import { useKnowledgeKeep } from '@/hooks/queries/useGetKnowledgeList'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 type LegalKnowledgeItemProps = {
   knowledgeId: number
@@ -39,6 +39,10 @@ const LegalKnowledgeItem = ({
   const formattedTime = time ? formatTimeAgo(time) : ''
 
   const [isKeep, setIsKeep] = useState(knowledgeKeep)
+
+  useEffect(() => {
+    setIsKeep(knowledgeKeep)
+  }, [knowledgeKeep])
 
   const { mutate: changeKnowledgeKeep } = useKnowledgeKeep({
     onSuccess: data => {

@@ -36,11 +36,14 @@ export type SearchLegalTermRequest = {
 }
 
 export type LegalTermListRequest = {
-  legalTermPage: number
-  orderBy: SortType
-  sort: 'asc' | 'desc'
+  legalTermPage?: number
+  orderBy?: SortType
+  sort?: 'asc' | 'desc'
   search?: string
   consonant?: string
+  take?: number
+  cursor?: number
+  cursorId?: number
 }
 
 export type LegalTermListResponse = {
@@ -61,6 +64,7 @@ export type LegalTermDetailResponse = {
   viewCount: number
   createdAt: string
   updatedAt: string
+  isKeep: boolean
   relatedContent: {
     blogCases: BlogCase[]
     videoCases: VideoCase[]

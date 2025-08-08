@@ -1,6 +1,10 @@
 import Button from '@/components/button/Button'
 import styles from './legal-term-definition.module.scss'
 import SvgIcon from '@/components/SvgIcon'
+import { copyUrlToClipboard } from '@/utils/clipboard'
+import { useChangeLegalTermKeep } from '@/hooks/queries/useLegalTerm'
+import { useEffect, useState } from 'react'
+import { COLOR } from '@/styles/color'
 
 interface LegalTermDefinitionProps {
   legalTermId: number
@@ -9,6 +13,7 @@ interface LegalTermDefinitionProps {
   chineseName: string
   content: string
   source: string
+  legalTermKeep: boolean
 }
 
 const LegalTermDefinition = ({
@@ -18,15 +23,33 @@ const LegalTermDefinition = ({
   chineseName,
   content,
   source,
+  legalTermKeep,
 }: LegalTermDefinitionProps) => {
-  console.log('legal term id', koreanName, englishName, chineseName, content)
+  const [isKeep, setIsKeep] = useState(legalTermKeep)
+
+  useEffect(() => {
+    setIsKeep(legalTermKeep)
+  }, [legalTermKeep])
+
+  const { mutate: changeLegalTermKeep } = useChangeLegalTermKeep({
+    onSuccess: data => {
+      setIsKeep(data.isKeep)
+    },
+    onError: () => {
+      console.error('Failed to change legal term keep')
+      setIsKeep(prevState => !prevState)
+    },
+  })
 
   const handleShare = () => {
-    console.log('legal term id', legalTermId)
+    copyUrlToClipboard(window.location.href)
   }
 
   const handleKeep = () => {
-    console.log('legal term id', legalTermId)
+    if (legalTermId) {
+      setIsKeep(prev => !prev)
+      changeLegalTermKeep(legalTermId)
+    }
   }
 
   return (
@@ -46,7 +69,7 @@ const LegalTermDefinition = ({
             <SvgIcon name='share' size={16} />
           </Button>
           <Button variant='save' onClick={handleKeep}>
-            저장 <SvgIcon name='save' size={16} />
+            저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.green_01 : 'none'} />
           </Button>
         </div>
       </footer>

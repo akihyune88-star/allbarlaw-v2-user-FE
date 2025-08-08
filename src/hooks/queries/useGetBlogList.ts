@@ -34,7 +34,7 @@ export const useInfiniteBlogList = (request: Omit<BlogListRequest, 'cursor' | 'c
         cursorId: pageParam?.cursorId,
       }),
     enabled: request.subcategoryId !== undefined,
-    initialPageParam: undefined as { cursor?: number; cursorId?: number } | undefined,
+    initialPageParam: undefined as undefined | { cursor: number; cursorId: number },
     getNextPageParam: lastPage => {
       if (!lastPage.hasNextPage) return undefined
       return {
@@ -70,37 +70,33 @@ export const useBlogKeep = ({
   return useMutation({
     mutationFn: (blogCaseId: number) => blogService.changeBlogKeep(blogCaseId),
     onSuccess: (data: BlogKeepResponse, blogCaseId: number) => {
-      // 무한 스크롤 쿼리 캐시 업데이트
-      queryClient.setQueriesData(
-        { queryKey: [QUERY_KEY.BLOG_LIST, 'infinite'] },
-        (oldData: any) => {
-          if (!oldData || !oldData.pages) return oldData
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page: any) => ({
-              ...page,
-              data: page.data?.map((blog: any) =>
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_BLOG_LIST] })
+
+      queryClient.setQueriesData({ queryKey: [QUERY_KEY.BLOG_LIST, 'infinite'] }, (oldData: any) => {
+        if (!oldData || !oldData.pages) return oldData
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page: any) => ({
+            ...page,
+            data:
+              page.data?.map((blog: any) =>
                 blog.blogCaseId === blogCaseId ? { ...blog, isKeep: data.isKeep } : blog
               ) || [],
-            })),
-          }
+          })),
         }
-      )
-      
+      })
+
       // 일반 리스트 쿼리 캐시 업데이트
-      queryClient.setQueriesData(
-        { queryKey: [QUERY_KEY.BLOG_LIST] },
-        (oldData: any) => {
-          if (!oldData || !oldData.data) return oldData
-          return {
-            ...oldData,
-            data: oldData.data.map((blog: any) =>
-              blog.blogCaseId === blogCaseId ? { ...blog, isKeep: data.isKeep } : blog
-            ),
-          }
+      queryClient.setQueriesData({ queryKey: [QUERY_KEY.BLOG_LIST] }, (oldData: any) => {
+        if (!oldData || !oldData.data) return oldData
+        return {
+          ...oldData,
+          data: oldData.data.map((blog: any) =>
+            blog.blogCaseId === blogCaseId ? { ...blog, isKeep: data.isKeep } : blog
+          ),
         }
-      )
-      
+      })
+
       onSuccess(data)
     },
     onError: error => {

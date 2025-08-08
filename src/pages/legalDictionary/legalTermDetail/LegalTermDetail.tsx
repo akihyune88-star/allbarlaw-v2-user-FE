@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import LegalItemWidget from '@/components/legalItemWidget/LegalItemWidget'
 import styles from './legal-term-detail.module.scss'
 import LegalTermDefinition from '@/container/legalTermDetail/LegalTermDefinition'
@@ -14,7 +14,6 @@ import {
 } from '@/hooks/queries/useLegalTerm'
 
 const PcTotalContentsHeader = ({ amount }: { amount: number }) => {
-  console.log('amount', amount)
   return (
     <div className={styles['total-contents-header']}>
       <h3
@@ -26,9 +25,9 @@ const PcTotalContentsHeader = ({ amount }: { amount: number }) => {
 }
 
 const LegalTermDetail = () => {
-  const { state } = useLocation()
+  const { termId } = useParams()
   const isMobile = useMediaQuery('(min-width: 80rem)')
-  const { data: legalTermDetail } = useLegalTermDetail(state.id)
+  const { data: legalTermDetail } = useLegalTermDetail(Number(termId))
   const { data: popularLegalTermList } = usePopularLegalTermList()
   const { data: recentRegisteredLegalTermList } = useRecentRegisteredLegalTermList()
 
@@ -41,7 +40,8 @@ const LegalTermDetail = () => {
           chineseName={legalTermDetail?.chineseName || ''}
           content={legalTermDetail?.content || ''}
           source={legalTermDetail?.source || ''}
-          legalTermId={state.id}
+          legalTermKeep={legalTermDetail?.isKeep || false}
+          legalTermId={Number(termId)}
         />
         <div className={styles['related-content-section']}>
           {isMobile && <PcTotalContentsHeader amount={legalTermDetail?.viewCount || 0} />}

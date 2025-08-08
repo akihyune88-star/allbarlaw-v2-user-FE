@@ -14,7 +14,7 @@ export const useInfiniteLawfirmList = (request: Omit<LawfirmListRequest, 'cursor
         cursorId: pageParam?.cursorId,
       }),
     enabled: request.subcategoryId !== undefined,
-    initialPageParam: undefined as { cursor?: number; cursorId?: number } | undefined,
+    initialPageParam: undefined as undefined | { cursor: number; cursorId: number },
     getNextPageParam: lastPage => {
       if (!lastPage.hasNextPage) return undefined
       return {

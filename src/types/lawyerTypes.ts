@@ -31,13 +31,14 @@ export type AIRecommenderLawyerItem = Pick<
 >
 
 export type LawyerListRequest = {
-  subcategoryId: number | 'all'
+  subcategoryId?: number | 'all'
   take?: number
   cursor?: number
   cursorId?: number
   orderBy?: SortType
   gender?: number | 'all'
   achievementId?: 'all'
+  sort?: 'asc' | 'desc'
 }
 
 export type LawyerListResponse = {

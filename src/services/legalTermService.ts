@@ -27,9 +27,9 @@ export const legalTermService = {
 
   getLegalTermList: async (request: LegalTermListRequest) => {
     const params = new URLSearchParams({
-      legalTermPage: request.legalTermPage.toString(),
-      orderBy: request.orderBy,
-      sort: request.sort,
+      legalTermPage: request.legalTermPage ? request.legalTermPage.toString() : '',
+      orderBy: request.orderBy || '',
+      sort: request.sort || '',
       consonant: request.consonant || '',
     })
 
@@ -58,6 +58,11 @@ export const legalTermService = {
 
   reportLegalTerm: async (legalTermId: number, request: LegalTermReportRequest) => {
     const response = await instance.post(`/legal-terms/${legalTermId}/report`, request)
+    return response.data
+  },
+
+  changeLegalTermKeep: async (legalTermId: number) => {
+    const response = await instance.put(`/legal-terms/${legalTermId}/keep`)
     return response.data
   },
 }

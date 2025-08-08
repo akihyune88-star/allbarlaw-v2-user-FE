@@ -1,5 +1,6 @@
 .myLawyer {
-  padding: 1.5rem;
+  background-color: $color-white;
+  border-radius: 0.5rem;
 }
 
 .emptyMessage {
@@ -12,10 +13,14 @@
   min-height: 200px;
 }
 
+.lawyerItem {
+  padding: 1.5rem 0 1.5rem 3.5rem;
+}
+
 @media (max-width: $breakpoint-desktop) {
   .myLawyer {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.5rem 0 1.5rem 3.5rem;
   }
 }
