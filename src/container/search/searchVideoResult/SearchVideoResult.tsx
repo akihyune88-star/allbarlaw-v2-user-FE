@@ -1,6 +1,7 @@
 import VideoHorizon from '@/components/video/VideoHorizon'
 import styles from './searchVideoResult.module.scss'
 import { VideoCase } from '@/types/videoTypes'
+import Divider from '@/components/divider/Divider'
 
 type SearchVideoResultProps = {
   searchResults: VideoCase[]
@@ -26,14 +27,17 @@ const SearchVideoResult = ({ searchResults, isLoading }: SearchVideoResultProps)
 
   return (
     <div className={styles['search-video-result']}>
-      {searchResults.map(video => (
-        <VideoHorizon
-          key={video.videoCaseId}
-          title={video.title}
-          thumbnailUrl={video.thumbnail}
-          summaryContents={video.summaryContent}
-          isKeep={video.isKeep}
-        />
+      {searchResults.map((video, index) => (
+        <>
+          <VideoHorizon
+            key={video.videoCaseId}
+            title={video.title}
+            thumbnailUrl={video.thumbnail}
+            summaryContents={video.summaryContent}
+            isKeep={video.isKeep}
+          />
+          {index !== searchResults.length - 1 && <Divider padding={24} />}
+        </>
       ))}
     </div>
   )

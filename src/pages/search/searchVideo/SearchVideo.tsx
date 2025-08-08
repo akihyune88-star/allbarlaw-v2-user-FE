@@ -4,11 +4,11 @@ import { useInfiniteSearchList } from '@/hooks/queries/useSearch'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import SearchContentHeader from '@/container/search/searchContentHeader/SearchContentHeader'
 import SearchVideoResult from '@/container/search/searchVideoResult/SearchVideoResult'
-// import SearchSideWidget from '@/container/search/searchSideWidget/SearchSideWidget'
 import { SortType } from '@/types/sortTypes'
 import styles from './search-video.module.scss'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
+import Divider from '@/components/divider/Divider'
 
 const SearchVideo = () => {
   const searchQuery = useSearchQuery()
@@ -36,6 +36,7 @@ const SearchVideo = () => {
     <main className='sub-main-container'>
       <section className={`contents-section ${styles.contentBox}`}>
         <SearchContentHeader amount={videoCount} searchTab={sort} handleSearchTab={setSort} />
+        <Divider padding={24} />
         <SearchVideoResult searchResults={searchResults?.searchVideoResults || []} isLoading={isLoading} />
       </section>
       <aside className='aside'>
