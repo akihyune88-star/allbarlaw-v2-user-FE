@@ -14,17 +14,17 @@ import SubcategoryLawfirmLayout from '@/pages/lawfirm/SubCategoryLawfirm'
 import TotalSubMain from '@/pages/subMain/TotalSubMain'
 import LegalDictionary from '@/pages/legalDictionary/LegalDictionary'
 import AboutAllbarlaw from '@/pages/aboutAllbarlaw/AboutAllbarlaw'
-import SearchMain from '@/pages/search/SearchMain'
+import SearchMain from '@/pages/search/main/SearchMain'
 //법률백과사전
 import DictionaryMain from '@/pages/legalDictionary/DictionaryMain'
 import MobileMenuList from '@/pages/mobile/MobileMenuList'
 import LegalKnowledgeDetail from '@/pages/legalKnowledge/LegalKnowledgeDetail'
 import TotalSearch from '@/pages/search/totalSearch/TotalSearch'
-import SearchBlog from '@/pages/blog/searchBlog/SearchBlog'
+import SearchBlog from '@/pages/search/searchBlog/SearchBlog'
 import SearchVideo from '@/pages/video/searchVideo/SearchVideo'
 import NoticeLayout from '@/pages/support/notice/NoticeLayout'
-import SearchLegalKnowledge from '@/pages/legalKnowledge/searchLegalKnowledge/SearchLegalKnowledge'
-import SearchLawyer from '@/pages/lawyer/searchLawyer/SearchLawyer'
+import SearchLegalKnowledge from '@/pages/search/searchLegalKnowledge/SearchLegalKnowledge'
+import SearchLawyer from '@/pages/search/searchLawyer/SearchLawyer'
 import NoticeListByCategory from '@/pages/support/notice/noticeListByCategory/NoticeListByCategory'
 import NoticeDetail from '@/pages/support/notice/noticeDetail/NoticeDetail'
 import AuthLayout from '@/pages/auth/authLayout/AuthLayout'
@@ -194,7 +194,7 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: `${ROUTER.SEARCH_MAIN}/:query`,
+            path: ROUTER.SEARCH_MAIN,
             element: <SearchMain />,
             children: [
               {
@@ -216,6 +216,12 @@ const router = createBrowserRouter([
               {
                 path: 'lawyer',
                 element: <SearchLawyer />,
+                children: [
+                  {
+                    path: ':lawyerId',
+                    element: <LawyerDetail />,
+                  },
+                ],
               },
             ],
           },
