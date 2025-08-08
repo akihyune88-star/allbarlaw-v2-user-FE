@@ -1,6 +1,9 @@
 import Button from '@/components/button/Button'
 import styles from './legal-term-definition.module.scss'
 import SvgIcon from '@/components/SvgIcon'
+import { copyUrlToClipboard } from '@/utils/clipboard'
+import { useChangeLegalTermKeep } from '@/hooks/queries/useLegalTerm'
+import { useEffect, useState } from 'react'
 
 interface LegalTermDefinitionProps {
   legalTermId: number
@@ -19,14 +22,21 @@ const LegalTermDefinition = ({
   content,
   source,
 }: LegalTermDefinitionProps) => {
-  console.log('legal term id', koreanName, englishName, chineseName, content)
+  const [isKeep, setIsKeep] = useState()
+  useEffect(() => {
+    setIsKeep(isKeep)
+  }, [isKeep])
+
+  const { mutate: changeLegalTermKeep } = useChangeLegalTermKeep()
 
   const handleShare = () => {
-    console.log('legal term id', legalTermId)
+    copyUrlToClipboard(window.location.href)
   }
 
   const handleKeep = () => {
-    console.log('legal term id', legalTermId)
+    if (legalTermId) {
+      changeLegalTermKeep(legalTermId)
+    }
   }
 
   return (

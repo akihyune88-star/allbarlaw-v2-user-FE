@@ -32,6 +32,8 @@ const LegalTermDetail = () => {
   const { data: popularLegalTermList } = usePopularLegalTermList()
   const { data: recentRegisteredLegalTermList } = useRecentRegisteredLegalTermList()
 
+  console.log(legalTermDetail)
+
   return (
     <main className={`sub-main-container ${styles.container}`}>
       <div className='contents-section'>

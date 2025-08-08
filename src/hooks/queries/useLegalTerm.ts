@@ -111,3 +111,15 @@ export const useReportLegalTerm = (options?: { onSuccess?: () => void; onError?:
     },
   })
 }
+
+export const useChangeLegalTermKeep = (options?: { onSuccess?: () => void; onError?: () => void }) => {
+  return useMutation({
+    mutationFn: (legalTermId: number) => legalTermService.changeLegalTermKeep(legalTermId),
+    onSuccess: () => {
+      options?.onSuccess?.()
+    },
+    onError: () => {
+      options?.onError?.()
+    },
+  })
+}

@@ -60,4 +60,9 @@ export const legalTermService = {
     const response = await instance.post(`/legal-terms/${legalTermId}/report`, request)
     return response.data
   },
+
+  changeLegalTermKeep: async (legalTermId: number) => {
+    const response = await instance.put(`/legal-terms/${legalTermId}/keep`)
+    return response.data
+  },
 }

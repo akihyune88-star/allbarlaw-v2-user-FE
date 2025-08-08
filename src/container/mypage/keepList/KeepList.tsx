@@ -23,7 +23,7 @@ const KeepList = ({ sortOrder }: { sortOrder: 'asc' | 'desc' }) => {
       case buttonList[3]:
         return <MyLawyer sort={sortOrder} />
       case buttonList[4]:
-        return <MyLegalDictionary />
+        return <MyLegalDictionary sort={sortOrder} />
       default:
         return <MyBlogList sort={sortOrder} />
     }

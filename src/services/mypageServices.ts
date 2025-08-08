@@ -2,6 +2,7 @@ import instance from '@/lib/axios'
 import { BlogListRequest } from '@/types/blogTypes'
 import { KnowledgeListRequest } from '@/types/knowledgeType'
 import { LawyerListRequest } from '@/types/lawyerTypes'
+import { LegalTermListRequest } from '@/types/legalTermTypes'
 import { VideoListRequest } from '@/types/videoTypes'
 
 export const mypageService = {
@@ -66,6 +67,22 @@ export const mypageService = {
 
     const queryString = params.toString()
     const url = `/mypage/lawyers${queryString ? `?${queryString}` : ''}`
+
+    const response = await instance.get(url)
+    return response.data
+  },
+
+  getMyLegalDictionaryList: async (request: LegalTermListRequest) => {
+    const { take, cursor, cursorId, sort } = request
+
+    const params = new URLSearchParams()
+    if (take !== undefined) params.append('take', take.toString())
+    if (cursor !== undefined) params.append('cursor', cursor.toString())
+    if (cursorId !== undefined) params.append('cursorId', cursorId.toString())
+    if (sort !== undefined) params.append('sort', sort)
+
+    const queryString = params.toString()
+    const url = `/mypage/legal-terms${queryString ? `?${queryString}` : ''}`
 
     const response = await instance.get(url)
     return response.data

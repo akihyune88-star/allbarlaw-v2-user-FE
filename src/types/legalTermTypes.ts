@@ -36,11 +36,14 @@ export type SearchLegalTermRequest = {
 }
 
 export type LegalTermListRequest = {
-  legalTermPage: number
-  orderBy: SortType
-  sort: 'asc' | 'desc'
+  legalTermPage?: number
+  orderBy?: SortType
+  sort?: 'asc' | 'desc'
   search?: string
   consonant?: string
+  take?: number
+  cursor?: number
+  cursorId?: number
 }
 
 export type LegalTermListResponse = {

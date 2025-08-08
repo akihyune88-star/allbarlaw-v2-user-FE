@@ -37,7 +37,7 @@ const LegalKnowledgeItem = ({
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { isLoggedIn } = useAuth()
   const formattedTime = time ? formatTimeAgo(time) : ''
-  console.log(knowledgeKeep, 'knowledgeKeep')
+
   const [isKeep, setIsKeep] = useState(knowledgeKeep)
 
   useEffect(() => {

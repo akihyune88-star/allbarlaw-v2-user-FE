@@ -39,4 +39,5 @@ export const QUERY_KEY = {
   MY_VIDEO_LIST: 'myVideoList',
   MY_LEGAL_KNOWLEDGE_LIST: 'myLegalKnowledgeList',
   MY_LAWYER_LIST: 'myLawyerList',
+  MY_LEGAL_DICTIONARY_LIST: 'myLegalDictionaryList',
 } as const
