@@ -6,6 +6,7 @@ import {
   LegalTermListRequest,
   LegalTermListResponse,
   LegalTermDetailResponse,
+  LegalTermReportRequest,
 } from '@/types/legalTermTypes'
 
 export const legalTermService = {
@@ -52,6 +53,11 @@ export const legalTermService = {
 
   getLegalTermDetail: async (legalTermId: number) => {
     const response = await instance.get<LegalTermDetailResponse>(`/legal-terms/detail/${legalTermId}`)
+    return response.data
+  },
+
+  reportLegalTerm: async (legalTermId: number, request: LegalTermReportRequest) => {
+    const response = await instance.post(`/legal-terms/${legalTermId}/report`, request)
     return response.data
   },
 }

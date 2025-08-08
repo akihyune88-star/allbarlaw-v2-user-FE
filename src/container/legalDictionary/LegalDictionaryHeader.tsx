@@ -29,7 +29,7 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
     setSearchValue(localSearchValue)
     setSelectedConsonant(null)
     setIsDropdownOpen(false)
-    
+
     // 메인 페이지가 아니면 메인으로 이동
     if (!location.pathname.startsWith('/legal-dictionary') || location.pathname !== '/legal-dictionary') {
       navigate('/legal-dictionary')
@@ -41,7 +41,7 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
     setSearchValue(term)
     setSelectedConsonant(null)
     setIsDropdownOpen(false)
-    
+
     // 메인 페이지가 아니면 메인으로 이동
     if (!location.pathname.startsWith('/legal-dictionary') || location.pathname !== '/legal-dictionary') {
       navigate('/legal-dictionary')
@@ -146,7 +146,7 @@ const ConsonantFilter = () => {
   const handleConsonantClick = (consonant: string) => {
     setSelectedConsonant(consonant === selectedConsonant ? null : consonant)
     setSearchValue('') // 자음 선택 시 검색어 초기화
-    
+
     // 메인 페이지가 아니면 메인으로 이동
     if (location.pathname !== '/legal-dictionary') {
       navigate('/legal-dictionary')

@@ -68,3 +68,8 @@ export type LegalTermDetailResponse = {
   }
   similarTerms: LegalTermItem[]
 }
+
+export type LegalTermReportRequest = {
+  reportType: 'CONTENT_ERROR' | 'CONTENT_INACCURACY' | 'CONTENT_INCOMPLETE' | 'CONTENT_OTHER'
+  description: string
+}

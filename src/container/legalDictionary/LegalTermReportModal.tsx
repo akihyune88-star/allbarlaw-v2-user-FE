@@ -1,5 +1,6 @@
 import Modal from '@/components/modal'
 import styles from './legal-term-report-modal.module.scss'
+import { useReportLegalTerm } from '@/hooks/queries/useLegalTerm'
 
 interface LegalTermReportModalProps {
   isOpen: boolean
@@ -7,6 +8,16 @@ interface LegalTermReportModalProps {
 }
 
 const LegalTermReportModal = ({ isOpen, onClose }: LegalTermReportModalProps) => {
+  const { mutate: reportLegalTerm } = useReportLegalTerm({
+    onSuccess: () => {
+      onClose()
+    },
+  })
+
+  const handleReportLegalTerm = () => {
+    reportLegalTerm({ legalTermId: 1, request: { reportType: 'CONTENT_ERROR', description: 'test' } })
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} className={styles.modal}>
       <Modal.Header className={styles.header}>
