@@ -7,8 +7,8 @@ interface MypageHeaderProps {
   tabs: string[]
   onTabClick: (_tab: string) => void
   currentTab: string
-  sortOrder?: 'recent' | 'oldest'
-  onSortChange?: (_sortOrder: 'recent' | 'oldest') => void
+  sortOrder?: 'asc' | 'desc'
+  onSortChange?: (_sortOrder: 'asc' | 'desc') => void
 }
 
 const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange }: MypageHeaderProps) => {
@@ -60,14 +60,14 @@ const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange }:
             <span>전체 2,147개</span>
             <div className={styles.sortButtonWrapper}>
               <button
-                onClick={() => onSortChange('recent')}
-                className={`${styles.sortButton} ${sortOrder === 'recent' ? styles.active : ''}`}
+                onClick={() => onSortChange('desc')}
+                className={`${styles.sortButton} ${sortOrder === 'desc' ? styles.active : ''}`}
               >
                 최근 등록순
               </button>
               <button
-                onClick={() => onSortChange('oldest')}
-                className={`${styles.sortButton} ${sortOrder === 'oldest' ? styles.active : ''}`}
+                onClick={() => onSortChange('asc')}
+                className={`${styles.sortButton} ${sortOrder === 'asc' ? styles.active : ''}`}
               >
                 과거 등록순
               </button>

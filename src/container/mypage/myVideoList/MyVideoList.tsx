@@ -1,16 +1,17 @@
-import { useInfiniteVideoList } from '@/hooks/queries/useGetVideoList'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import styles from './myVideoList.module.scss'
 import VideoHorizon from '@/components/video/VideoHorizon'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
+import { useInfiniteMyVideoList } from '@/hooks/queries/useMypage'
 
-const MyVideoList = () => {
+const MyVideoList = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const { videoList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteVideoList({
-    subcategoryId: 'all',
+
+  const { videoList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteMyVideoList({
     take: 10,
+    sort: sort,
   })
 
   useInfiniteScroll({

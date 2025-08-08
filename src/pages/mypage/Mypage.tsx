@@ -7,13 +7,13 @@ const TABS = ['keepList', 'chatList']
 
 const Mypage = () => {
   const [tab, setTab] = useState(TABS[0])
-  const [sortOrder, setSortOrder] = useState<'recent' | 'oldest'>('recent')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
 
   const handleTabClick = (tab: string) => {
     setTab(tab)
   }
 
-  const handleSortChange = (sortOrder: 'recent' | 'oldest') => {
+  const handleSortChange = (sortOrder: 'asc' | 'desc') => {
     setSortOrder(sortOrder)
   }
 
@@ -26,7 +26,7 @@ const Mypage = () => {
         sortOrder={sortOrder}
         onSortChange={handleSortChange}
       />
-      <section>{tab === TABS[0] ? <KeepList /> : <ChatList />}</section>
+      <section>{tab === TABS[0] ? <KeepList sortOrder={sortOrder} /> : <ChatList />}</section>
     </div>
   )
 }

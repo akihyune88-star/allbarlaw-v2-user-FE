@@ -33,4 +33,8 @@ export const QUERY_KEY = {
   RECENT_REGISTERED_LEGAL_TERM_LIST: 'recentRegisteredLegalTermList',
   LEGAL_TERM_LIST: 'legalTermList',
   LEGAL_TERM_DETAIL: 'legalTermDetail',
+
+  //마이페이지
+  MY_BLOG_LIST: 'myBlogList',
+  MY_VIDEO_LIST: 'myVideoList',
 } as const
