@@ -13,9 +13,9 @@ const DesktopHeader = () => {
   const handleSearch = () => {
     if (searchValue.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchValue.trim())}`)
-      setTimeout(() => {
-        setSearchValue('')
-      }, 100)
+      // setTimeout(() => {
+      //   setSearchValue('')
+      // }, 100)
     }
   }
 
