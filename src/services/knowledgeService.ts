@@ -37,4 +37,9 @@ export const knowledgeService = {
       throw error
     }
   },
+
+  changeKnowledgeKeep: async (knowledgeId: number) => {
+    const response = await instance.put(`/knowledge/${knowledgeId}/keep`)
+    return response.data
+  },
 }

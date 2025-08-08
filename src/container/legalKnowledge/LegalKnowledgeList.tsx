@@ -64,6 +64,8 @@ const LegalKnowledgeList = () => {
           knowledgeList.map((knowledge, index) => (
             <Fragment key={knowledge.knowledgeId}>
               <LegalKnowledgeItem
+                knowledgeKeep={knowledge.isKeep}
+                knowledgeId={knowledge.knowledgeId}
                 title={knowledge.knowledgeTitle}
                 description={knowledge.summaryContent}
                 time={new Date(knowledge.lastMessageAt)}

@@ -1,6 +1,6 @@
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
-import { KnowledgeListRequest } from '@/types/knowledgeType'
+import { KnowledgeKeepResponse, KnowledgeListRequest } from '@/types/knowledgeType'
 import { knowledgeService } from '@/services/knowledgeService'
 
 export const useGetKnowledgeList = (request: KnowledgeListRequest) => {
@@ -54,4 +54,21 @@ export const useInfiniteKnowledgeList = (request: Omit<KnowledgeListRequest, 'cu
     fetchNextPage,
     isFetchingNextPage,
   }
+}
+
+export const useKnowledgeKeep = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: KnowledgeKeepResponse) => void
+  onError: () => void
+}) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (knowledgeId: number) => knowledgeService.changeKnowledgeKeep(knowledgeId),
+    onSuccess: (data: KnowledgeKeepResponse) => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.KNOWLEDGE_LIST] })
+      onSuccess(data)
+    },
+  })
 }
