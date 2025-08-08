@@ -4,9 +4,12 @@ import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeIt
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Divider from '@/components/divider/Divider'
 import { useInfiniteMyLegalKnowledgeList } from '@/hooks/queries/useMypage'
+import { useNavigate } from 'react-router-dom'
+// import { KnowledgeItem } from '@/types/knowledgeType'
 
 const MyLegalKnowledgeList = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const navigate = useNavigate()
 
   const { knowledgeList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteMyLegalKnowledgeList({
     take: 10,
@@ -19,7 +22,11 @@ const MyLegalKnowledgeList = ({ sort }: { sort: 'asc' | 'desc' }) => {
     fetchNextPage,
   })
 
-  const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000)
+  console.log(knowledgeList)
+
+  // const handleKnowledgeDetail = (knowledge: KnowledgeItem) => {
+  //   navigate(`/${knowledge.subcategoryId}/knowledge/${knowledge.knowledgeId}`)
+  // }
 
   return (
     <div className={styles.myLegalKnowledgeList}>
@@ -31,7 +38,7 @@ const MyLegalKnowledgeList = ({ sort }: { sort: 'asc' | 'desc' }) => {
             key={knowledge.knowledgeId}
             title={knowledge.knowledgeTitle}
             description={knowledge.summaryContent}
-            time={threeHoursAgo}
+            time={new Date(knowledge.lastMessageAt)}
             lawyerList={knowledge.lawyers || []}
             isLastAnswer={true}
           />

@@ -1,6 +1,6 @@
 import instance from '@/lib/axios'
 import { BlogListRequest } from '@/types/blogTypes'
-import { KnowledgeListRequest } from '@/types/knowledgeType'
+import { KnowledgeListRequest, KnowledgeListResponse } from '@/types/knowledgeType'
 import { LawyerListRequest } from '@/types/lawyerTypes'
 import { LegalTermListRequest } from '@/types/legalTermTypes'
 import { VideoListRequest } from '@/types/videoTypes'
@@ -52,7 +52,7 @@ export const mypageService = {
     const queryString = params.toString()
     const url = `/mypage/knowledge${queryString ? `?${queryString}` : ''}`
 
-    const response = await instance.get(url)
+    const response = await instance.get<KnowledgeListResponse>(url)
     return response.data
   },
 
