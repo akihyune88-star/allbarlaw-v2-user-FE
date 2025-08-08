@@ -37,4 +37,6 @@ export const QUERY_KEY = {
   //마이페이지
   MY_BLOG_LIST: 'myBlogList',
   MY_VIDEO_LIST: 'myVideoList',
+  MY_LEGAL_KNOWLEDGE_LIST: 'myLegalKnowledgeList',
+  MY_LAWYER_LIST: 'myLawyerList',
 } as const

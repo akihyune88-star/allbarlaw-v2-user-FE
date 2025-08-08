@@ -1,19 +1,17 @@
-import { useInfiniteKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import styles from './myLegalKnowledgeList.module.scss'
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Divider from '@/components/divider/Divider'
+import { useInfiniteMyLegalKnowledgeList } from '@/hooks/queries/useMypage'
 
-const MyLegalKnowledgeList = () => {
-  const { knowledgeList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteKnowledgeList({
-    subcategoryId: 4,
-    take: 4,
-  })
-
+const MyLegalKnowledgeList = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
-  console.log(knowledgeList)
+  const { knowledgeList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteMyLegalKnowledgeList({
+    take: 10,
+    sort: sort,
+  })
 
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,

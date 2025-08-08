@@ -1,5 +1,7 @@
 import instance from '@/lib/axios'
 import { BlogListRequest } from '@/types/blogTypes'
+import { KnowledgeListRequest } from '@/types/knowledgeType'
+import { LawyerListRequest } from '@/types/lawyerTypes'
 import { VideoListRequest } from '@/types/videoTypes'
 
 export const mypageService = {
@@ -32,6 +34,38 @@ export const mypageService = {
 
     const queryString = params.toString()
     const url = `/mypage/video-cases${queryString ? `?${queryString}` : ''}`
+
+    const response = await instance.get(url)
+    return response.data
+  },
+
+  getMyLegalKnowledgeList: async (request: KnowledgeListRequest) => {
+    const { take, cursor, cursorId, sort } = request
+
+    const params = new URLSearchParams()
+    if (take !== undefined) params.append('take', take.toString())
+    if (cursor !== undefined) params.append('cursor', cursor.toString())
+    if (cursorId !== undefined) params.append('cursorId', cursorId.toString())
+    if (sort !== undefined) params.append('sort', sort)
+
+    const queryString = params.toString()
+    const url = `/mypage/knowledge${queryString ? `?${queryString}` : ''}`
+
+    const response = await instance.get(url)
+    return response.data
+  },
+
+  getMyLawyerList: async (request: LawyerListRequest) => {
+    const { take, cursor, cursorId, sort } = request
+
+    const params = new URLSearchParams()
+    if (take !== undefined) params.append('take', take.toString())
+    if (cursor !== undefined) params.append('cursor', cursor.toString())
+    if (cursorId !== undefined) params.append('cursorId', cursorId.toString())
+    if (sort !== undefined) params.append('sort', sort)
+
+    const queryString = params.toString()
+    const url = `/mypage/lawyers${queryString ? `?${queryString}` : ''}`
 
     const response = await instance.get(url)
     return response.data

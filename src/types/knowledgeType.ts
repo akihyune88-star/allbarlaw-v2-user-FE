@@ -7,6 +7,7 @@ export type KnowledgeListRequest = {
   cursor?: number
   cursorId?: number
   orderBy?: SortType
+  sort?: 'asc' | 'desc'
 }
 
 export type KnowledgeDetailRequest = {
