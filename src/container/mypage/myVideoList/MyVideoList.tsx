@@ -44,6 +44,7 @@ const MyVideoList = ({ sort }: { sort: 'asc' | 'desc' }) => {
         <div className={styles.myVideoListMobile}>
           {videoList.map(video => (
             <RecommenderVideo
+              isVideoKeep={video.isKeep}
               key={video.videoCaseId}
               videoUrl={video.thumbnail}
               isShowTitle={false}
