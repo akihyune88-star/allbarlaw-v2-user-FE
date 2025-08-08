@@ -15,7 +15,6 @@ import { generateRandomLawyers } from '@/utils/mockDataGenerator'
 import { useState } from 'react'
 import { useKnowledgeKeep } from '@/hooks/queries/useGetKnowledgeList'
 import { copyUrlToClipboard } from '@/utils/clipboard'
-import Tag from '@/components/tag/Tag'
 
 const LegalKnowledgeDetail = () => {
   const { knowledgeId } = useParams<{ knowledgeId: string }>()
@@ -48,8 +47,6 @@ const LegalKnowledgeDetail = () => {
   }
 
   const mockLawyerList = generateRandomLawyers(3)
-
-  console.log(111, data?.tags)
 
   return (
     <div className={'detail-container'}>
