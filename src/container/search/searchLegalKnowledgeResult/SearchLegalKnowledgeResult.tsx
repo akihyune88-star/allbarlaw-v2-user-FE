@@ -1,6 +1,7 @@
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
 import styles from './searchLegalKnowledgeResult.module.scss'
 import { KnowledgeItem as KnowledgeItemType } from '@/types/knowledgeType'
+import Divider from '@/components/divider/Divider'
 
 type SearchLegalKnowledgeResultProps = {
   searchResults: KnowledgeItemType[]
@@ -26,17 +27,21 @@ const SearchLegalKnowledgeResult = ({ searchResults, isLoading }: SearchLegalKno
 
   return (
     <div className={styles['search-legal-knowledge-result']}>
-      {searchResults.map(item => (
-        <LegalKnowledgeItem
-          key={item.knowledgeId}
-          knowledgeId={item.knowledgeId}
-          title={item.knowledgeTitle}
-          description={item.summaryContent}
-          time={new Date(item.lastMessageAt)}
-          lawyerList={item.lawyers}
-          knowledgeKeep={item.isKeep}
-          isShowKeep={true}
-        />
+      {searchResults.map((item, index) => (
+        <>
+          <LegalKnowledgeItem
+            key={item.knowledgeId}
+            knowledgeId={item.knowledgeId}
+            title={item.title}
+            description={item.summaryContent}
+            time={new Date(item.lastMessageAt)}
+            lawyerList={item.lawyers}
+            isLastAnswer={true}
+            knowledgeKeep={item.isKeep}
+            isShowKeep={true}
+          />
+          {index !== searchResults.length - 1 && <Divider padding={24} />}
+        </>
       ))}
     </div>
   )

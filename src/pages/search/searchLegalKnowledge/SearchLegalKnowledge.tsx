@@ -9,6 +9,7 @@ import { SortType } from '@/types/sortTypes'
 import styles from './search-legal-knowledge.module.scss'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
+import Divider from '@/components/divider/Divider'
 
 const SearchLegalKnowledge = () => {
   const searchQuery = useSearchQuery()
@@ -36,6 +37,7 @@ const SearchLegalKnowledge = () => {
     <main className='sub-main-container'>
       <section className={`contents-section ${styles.contentBox}`}>
         <SearchContentHeader amount={knowledgeCount} searchTab={sort} handleSearchTab={setSort} />
+        <Divider padding={24} />
         <SearchLegalKnowledgeResult
           searchResults={searchResults?.searchConsultationResults || []}
           isLoading={isLoading}
