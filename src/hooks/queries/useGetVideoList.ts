@@ -1,6 +1,6 @@
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
-import { VideoListRequest } from '@/types/videoTypes'
+import { VideoKeepResponse, VideoListRequest } from '@/types/videoTypes'
 import { videoService } from '@/services/videoService'
 
 export const useGetVideoList = (request: VideoListRequest) => {
@@ -56,4 +56,21 @@ export const useInfiniteVideoList = (request: Omit<VideoListRequest, 'cursor' | 
     fetchNextPage,
     isFetchingNextPage,
   }
+}
+
+export const useVideoKeep = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: VideoKeepResponse) => void
+  onError: () => void
+}) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (videoCaseId: number) => videoService.changeVideoKeep(videoCaseId),
+    onSuccess: (data: VideoKeepResponse) => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.VIDEO_LIST] })
+      onSuccess(data)
+    },
+  })
 }

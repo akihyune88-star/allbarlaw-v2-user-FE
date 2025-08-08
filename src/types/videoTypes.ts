@@ -53,3 +53,7 @@ export type VideoDetailResponse = Omit<VideoCase, 'isKeep'> & {
   lawyerProfileImage: string
   tags: string[]
 }
+
+export type VideoKeepResponse = {
+  isKeep: boolean
+}

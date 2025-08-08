@@ -57,4 +57,9 @@ export const videoService = {
     const response = await instance.get<VideoListResponse>(url)
     return response.data
   },
+
+  changeVideoKeep: async (videoCaseId: number) => {
+    const response = await instance.put(`/video-case/${videoCaseId}/keep`)
+    return response.data
+  },
 }

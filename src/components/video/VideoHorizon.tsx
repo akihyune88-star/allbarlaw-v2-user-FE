@@ -3,12 +3,14 @@ import SvgIcon from '../SvgIcon'
 import { useState } from 'react'
 import { COLOR } from '@/styles/color'
 import { useAuth } from '@/contexts/AuthContext'
+import { useVideoKeep } from '@/hooks/queries/useGetVideoList'
 
 type VideoHorizonProps = {
   type?: 'default' | 'search' | 'reverse'
   size?: 'xsmall' | 'small' | 'regular' | 'large'
   title?: string
   thumbnailUrl?: string
+  isKeep?: boolean
   lawyerName?: string
   lawfirmName?: string
   channelName?: string
@@ -16,6 +18,7 @@ type VideoHorizonProps = {
   className?: string
   summaryContents?: string
   onClick?: () => void
+  videoCaseId?: number
 }
 
 const VideoHorizon = ({
@@ -29,10 +32,27 @@ const VideoHorizon = ({
   channelThumbnail,
   className,
   summaryContents,
+  isKeep,
   onClick,
+  videoCaseId,
 }: VideoHorizonProps) => {
-  const [like, setLike] = useState(false)
+  const [like, setLike] = useState(isKeep)
   const { isLoggedIn } = useAuth()
+
+  const { mutate: changeVideoKeep } = useVideoKeep({
+    onSuccess: data => {
+      setLike(data.isKeep)
+    },
+    onError: () => {
+      setLike(prevState => !prevState)
+    },
+  })
+
+  const handleVideoKeep = () => {
+    if (isLoggedIn && videoCaseId) {
+      changeVideoKeep(videoCaseId)
+    }
+  }
 
   const rootClassName = [styles['video-horizon'], styles[type], styles[size]].filter(Boolean).join(' ')
 
@@ -45,9 +65,9 @@ const VideoHorizon = ({
         <header className={styles['video-content-section-header']}>
           <h1>{title}</h1>
           {isLoggedIn && (
-            <div className={styles['bookmark-icon']}>
+            <button className={styles['bookmark-icon']} onClick={handleVideoKeep}>
               <SvgIcon name='bookMark' size={16} onClick={() => setLike(!like)} fill={like ? COLOR.green_01 : 'none'} />
-            </div>
+            </button>
           )}
         </header>
         <p>{summaryContents}</p>

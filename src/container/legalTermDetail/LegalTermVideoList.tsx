@@ -37,6 +37,8 @@ const LegalTermVideoList = ({ videoList }: { videoList: VideoCase[] }) => {
             ) : (
               <Fragment key={video.videoCaseId}>
                 <VideoHorizon
+                  videoCaseId={video.videoCaseId}
+                  isKeep={video.isKeep}
                   size='small'
                   thumbnailUrl={video.thumbnail}
                   title={video.title}

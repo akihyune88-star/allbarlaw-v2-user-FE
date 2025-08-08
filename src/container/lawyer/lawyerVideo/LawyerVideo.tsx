@@ -29,6 +29,8 @@ const LawyerVideo = forwardRef<HTMLElement, LawyerVideoProps>(({ videoList = [] 
           {videoList.map((video, index) => (
             <li key={video.videoCaseId}>
               <VideoHorizon
+                videoCaseId={video.videoCaseId}
+                isKeep={video.isKeep}
                 size='small'
                 thumbnailUrl={video.thumbnail}
                 title={video.title}
