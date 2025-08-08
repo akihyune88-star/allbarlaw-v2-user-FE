@@ -10,6 +10,7 @@ import { SortType } from '@/types/sortTypes'
 import styles from './search-lawyer.module.scss'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
+import Divider from '@/components/divider/Divider'
 
 const SearchLawyer = () => {
   const { lawyerId } = useParams()
@@ -42,6 +43,7 @@ const SearchLawyer = () => {
     <main className='sub-main-container'>
       <section className={`contents-section ${styles.contentBox}`}>
         <SearchContentHeader amount={lawyerCount} searchTab={sort} handleSearchTab={setSort} />
+        <Divider padding={24} />
         <SearchLawyerResult searchResults={searchResults?.searchLawyerResults || []} isLoading={isLoading} />
       </section>
       <aside className='aside'>

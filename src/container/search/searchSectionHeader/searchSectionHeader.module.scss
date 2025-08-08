@@ -1,0 +1,27 @@
+.search-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 1.5rem 0;
+
+  border-bottom: 1px solid $color-line-divider;
+}
+
+.title {
+  font-size: 1rem;
+  color: $color-text-black;
+  font-weight: $font-weight-extra-bold;
+}
+
+.more-button {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  font-size: 1rem;
+  color: $color-icon-darkgreen;
+  font-weight: $font-weight-semibold;
+
+  background-color: transparent;
+}

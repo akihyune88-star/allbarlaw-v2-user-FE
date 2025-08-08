@@ -57,10 +57,14 @@ const Article = ({
               {lawyerInfo && (
                 <footer>
                   <div className={styles.lawyer}>
-                    <figure>
-                      <img src={lawyerInfo.profileImageUrl} alt={lawyerInfo.name} referrerPolicy='no-referrer' />
-                    </figure>
-                    <span className={styles['lawyer-name']}>{lawyerInfo.name} 변호사</span>
+                    {lawyerInfo.profileImageUrl && (
+                      <figure>
+                        <img src={lawyerInfo.profileImageUrl} alt={lawyerInfo.name} referrerPolicy='no-referrer' />
+                      </figure>
+                    )}
+                    <span className={styles['lawyer-name']}>
+                      {lawyerInfo.name} 변호사 [{lawyerInfo.name}]
+                    </span>
                   </div>
                 </footer>
               )}

@@ -32,7 +32,7 @@ const SearchLegalKnowledgeResult = ({ searchResults, isLoading }: SearchLegalKno
           <LegalKnowledgeItem
             key={item.knowledgeId}
             knowledgeId={item.knowledgeId}
-            title={item.title}
+            title={item.knowledgeTitle}
             description={item.summaryContent}
             time={new Date(item.lastMessageAt)}
             lawyerList={item.lawyers}

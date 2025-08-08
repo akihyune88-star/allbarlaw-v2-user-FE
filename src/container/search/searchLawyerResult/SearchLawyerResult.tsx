@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import styles from './searchLawyerResult.module.scss'
-import LawyerCard from '@/components/lawyerCard/LawyerCard'
 import { Lawyer } from '@/types/lawyerTypes'
+import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
+import Divider from '@/components/divider/Divider'
+import Tag from '@/components/tag/Tag'
 
 type SearchLawyerResultProps = {
   searchResults: Lawyer[]
@@ -32,12 +34,30 @@ const SearchLawyerResult = ({ searchResults, isLoading }: SearchLawyerResultProp
   }
 
   return (
-    <div className={styles['search-lawyer-result']}>
-      <div className={styles['lawyer-grid']}>
-        {searchResults.map(lawyer => (
-          <LawyerCard key={lawyer.lawyerId} lawyer={lawyer} onClick={() => handleLawyerClick(lawyer.lawyerId)} />
-        ))}
-      </div>
+    <div>
+      {searchResults.map((lawyer, index) => (
+        <>
+          <LawyerHorizon
+            // onClick={() => handleLawyerDetail(lawyer.lawyerId.toString())}
+            tags={lawyer.tags}
+            isBaroTalk={true}
+            name={lawyer.lawyerName}
+            lawfirm={lawyer.lawfirmName}
+            profileImage={lawyer.lawyerProfileImage}
+            description={lawyer.lawyerDescription}
+            className={styles['lawyer-list-item']}
+            ad={true}
+            buttonComponent={
+              <div className={styles['button-wrapper']}>
+                {lawyer.tags?.map(tag => (
+                  <Tag key={tag.id} tag={tag.name} />
+                ))}
+              </div>
+            }
+          />
+          {index !== searchResults.length - 1 && <Divider padding={16} />}
+        </>
+      ))}
     </div>
   )
 }
