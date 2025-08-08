@@ -33,6 +33,8 @@ const LawyerLegalKnowledge = forwardRef<HTMLElement, LawyerLegalKnowledgeProps>(
           {knowledgeList.map((knowledge, index) => (
             <li key={knowledge.knowledgeId}>
               <LegalKnowledgeItem
+                knowledgeId={knowledge.knowledgeId}
+                knowledgeKeep={knowledge.isKeep}
                 title={knowledge.knowledgeTitle}
                 description={knowledge.summaryContent}
                 isLastAnswer={false}

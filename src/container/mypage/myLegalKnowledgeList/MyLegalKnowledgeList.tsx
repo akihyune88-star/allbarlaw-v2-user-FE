@@ -28,6 +28,8 @@ const MyLegalKnowledgeList = () => {
       {knowledgeList.map((knowledge, idx) => (
         <>
           <LegalKnowledgeItem
+            knowledgeId={knowledge.knowledgeId}
+            knowledgeKeep={knowledge.isKeep}
             key={knowledge.knowledgeId}
             title={knowledge.knowledgeTitle}
             description={knowledge.summaryContent}
