@@ -9,6 +9,7 @@ import { useRandomLawyerList } from '@/hooks/queries/useLawyer'
 import { useNavigationHistory } from '@/hooks'
 import { Lawyer } from '@/types/lawyerTypes'
 import SvgIcon from '@/components/SvgIcon'
+import { useNavigate } from 'react-router-dom'
 
 const LawyerAdvertisementListHeader = ({
   onNext,
@@ -37,6 +38,7 @@ const LawyerAdvertisementListHeader = ({
 
 const LawyerAdvertisementList = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const navigate = useNavigate()
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 
@@ -54,8 +56,7 @@ const LawyerAdvertisementList = () => {
   }
 
   const handleLawyerClick = (lawyer: Lawyer) => {
-    // 검색 페이지로 이동
-    console.log(lawyer)
+    navigate(`/search/lawyer/${lawyer.lawyerId}?q=${lawyer.lawyerName}`)
   }
 
   return (
