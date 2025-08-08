@@ -12,6 +12,7 @@ type RecommenderVideoProps = {
   description?: string
   isVideoKeep?: boolean
   videoCaseId?: number
+  onClick?: () => void
 }
 
 const RecommenderVideo = ({
@@ -21,6 +22,7 @@ const RecommenderVideo = ({
   description,
   isVideoKeep,
   videoCaseId,
+  onClick,
 }: RecommenderVideoProps) => {
   const { isLoggedIn } = useAuth()
 
@@ -53,7 +55,7 @@ const RecommenderVideo = ({
     }
   }
   return (
-    <section className={styles.container}>
+    <section className={styles.container} onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
       {isShowTitle && (
         <header>
           <span>{title}</span>
@@ -65,7 +67,7 @@ const RecommenderVideo = ({
         </figure>
         <div className={styles.description}>{description}</div>
         {isLoggedIn && (
-          <button onClick={handleVideoKeep}>
+          <button onClick={handleVideoKeep} style={{ backgroundColor: 'transparent', border: 'none' }}>
             <SvgIcon name='bookMark' style={{ flexShrink: 0, fill: isVideoKeep ? COLOR.green_01 : '#fff' }} size={16} />
           </button>
         )}

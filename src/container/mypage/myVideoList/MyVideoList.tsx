@@ -5,20 +5,29 @@ import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
 import { useInfiniteMyVideoList } from '@/hooks/queries/useMypage'
+import { useNavigate } from 'react-router-dom'
+import { VideoCase } from '@/types/videoTypes'
 
 const MyVideoList = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const navigate = useNavigate()
 
   const { videoList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteMyVideoList({
     take: 10,
     sort: sort,
   })
 
+  console.log(videoList)
+
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
     isFetchingNextPage,
     fetchNextPage,
   })
+
+  const handleVidoeDetail = (video: VideoCase) => {
+    navigate(`/${video.subcategoryId}/video/${video.videoCaseId}`)
+  }
 
   return (
     <div className={styles.myVideoList}>
@@ -36,6 +45,7 @@ const MyVideoList = ({ sort }: { sort: 'asc' | 'desc' }) => {
               channelName={video.channelName}
               summaryContents={video.summaryContent}
               className={styles.myVideoItem}
+              onClick={() => handleVidoeDetail(video)}
             />
             {!isMobile && idx !== videoList.length - 1 && <Divider padding={24} />}
           </>
@@ -49,6 +59,7 @@ const MyVideoList = ({ sort }: { sort: 'asc' | 'desc' }) => {
               videoUrl={video.thumbnail}
               isShowTitle={false}
               description={video.title}
+              onClick={() => handleVidoeDetail(video)}
             />
           ))}
         </div>
