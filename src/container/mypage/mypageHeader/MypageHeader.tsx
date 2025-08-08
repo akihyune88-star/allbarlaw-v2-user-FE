@@ -12,6 +12,7 @@ interface MypageHeaderProps {
 }
 
 const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange }: MypageHeaderProps) => {
+  console.log(sortOrder, 'sortOrder')
   const getTabInfo = (tab: string): { name: string; icon: KeyOfIcon } => {
     switch (tab) {
       case 'keepList':

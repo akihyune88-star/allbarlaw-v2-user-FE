@@ -25,7 +25,7 @@ const KeepList = ({ sortOrder }: { sortOrder: 'asc' | 'desc' }) => {
       case buttonList[4]:
         return <MyLegalDictionary />
       default:
-        return <MyBlogList />
+        return <MyBlogList sort={sortOrder} />
     }
   }
 
