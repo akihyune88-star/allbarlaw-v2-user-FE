@@ -40,6 +40,7 @@ const LegalTermDetail = () => {
           chineseName={legalTermDetail?.chineseName || ''}
           content={legalTermDetail?.content || ''}
           source={legalTermDetail?.source || ''}
+          legalTermKeep={legalTermDetail?.isKeep || false}
           legalTermId={Number(termId)}
         />
         <div className={styles['related-content-section']}>

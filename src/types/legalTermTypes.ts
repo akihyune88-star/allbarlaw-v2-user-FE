@@ -64,6 +64,7 @@ export type LegalTermDetailResponse = {
   viewCount: number
   createdAt: string
   updatedAt: string
+  isKeep: boolean
   relatedContent: {
     blogCases: BlogCase[]
     videoCases: VideoCase[]

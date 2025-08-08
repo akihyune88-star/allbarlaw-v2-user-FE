@@ -1,5 +1,7 @@
 .myLegalKnowledgeList {
   padding: 1.5rem;
+  background-color: $color-white;
+  border-radius: 0.5rem;
 }
 
 @media (max-width: $breakpoint-desktop) {

@@ -1,7 +1,8 @@
 import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { legalTermService } from '@/services/legalTermService'
 import { QUERY_KEY } from '@/constants/queryKey'
-import { LegalTermListRequest, LegalTermReportRequest } from '@/types/legalTermTypes'
+import { LegalTermDetailResponse, LegalTermListRequest, LegalTermReportRequest } from '@/types/legalTermTypes'
+import { queryClient } from '@/lib/queryClient'
 
 export const usePopularLegalTermList = () => {
   return useQuery({
@@ -112,11 +113,15 @@ export const useReportLegalTerm = (options?: { onSuccess?: () => void; onError?:
   })
 }
 
-export const useChangeLegalTermKeep = (options?: { onSuccess?: () => void; onError?: () => void }) => {
+export const useChangeLegalTermKeep = (options?: {
+  onSuccess?: (_data: LegalTermDetailResponse) => void
+  onError?: () => void
+}) => {
   return useMutation({
     mutationFn: (legalTermId: number) => legalTermService.changeLegalTermKeep(legalTermId),
-    onSuccess: () => {
-      options?.onSuccess?.()
+    onSuccess: (data: LegalTermDetailResponse) => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_LEGAL_DICTIONARY_LIST] })
+      options?.onSuccess?.(data)
     },
     onError: () => {
       options?.onError?.()

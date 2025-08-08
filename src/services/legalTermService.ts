@@ -27,9 +27,9 @@ export const legalTermService = {
 
   getLegalTermList: async (request: LegalTermListRequest) => {
     const params = new URLSearchParams({
-      legalTermPage: request.legalTermPage.toString(),
-      orderBy: request.orderBy,
-      sort: request.sort,
+      legalTermPage: request.legalTermPage ? request.legalTermPage.toString() : '',
+      orderBy: request.orderBy || '',
+      sort: request.sort || '',
       consonant: request.consonant || '',
     })
 
