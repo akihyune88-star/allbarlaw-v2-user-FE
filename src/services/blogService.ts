@@ -67,4 +67,9 @@ export const blogService = {
       throw error
     }
   },
+
+  changeBlogKeep: async (blogCaseId: number) => {
+    const response = await instance.put(`/blog-case/${blogCaseId}/keep`)
+    return response.data
+  },
 }

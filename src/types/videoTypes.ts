@@ -45,11 +45,15 @@ export type VideoListResponse = {
   hasNextPage: boolean
 }
 
-export type VideoDetailResponse = Omit<VideoCase, 'isKeep'> & {
+export type VideoDetailResponse = VideoCase & {
   source: string
   handleName: string
   channelDescription: string
   subscriberCount: number
   lawyerProfileImage: string
   tags: string[]
+}
+
+export type VideoKeepResponse = {
+  isKeep: boolean
 }

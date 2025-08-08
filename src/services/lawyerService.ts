@@ -1,6 +1,7 @@
 import instance from '@/lib/axios'
 import {
   LawyerDetailResponse,
+  LawyerKeepResponse,
   LawyerListRequest,
   LawyerListResponse,
   RandomLawyerListRequest,
@@ -41,6 +42,11 @@ export const lawyerService = {
     const queryString = params.toString()
     const url = `/lawyer/${subcategoryId}/random${queryString ? `?${queryString}` : ''}`
     const response = await instance.get<RandomLawyerListResponse>(url)
+    return response.data
+  },
+
+  changeLawyerKeep: async (lawyerId: number) => {
+    const response = await instance.put<LawyerKeepResponse>(`/lawyer/${lawyerId}/keep`)
     return response.data
   },
 }

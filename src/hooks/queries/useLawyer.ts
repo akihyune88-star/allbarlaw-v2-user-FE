@@ -1,7 +1,7 @@
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
 import { lawyerService } from '@/services/lawyerService'
-import { LawyerListRequest, RandomLawyerListRequest } from '@/types/lawyerTypes'
+import { LawyerKeepResponse, LawyerListRequest, RandomLawyerListRequest } from '@/types/lawyerTypes'
 
 export const useLawyerList = (request: LawyerListRequest) => {
   return useQuery({
@@ -57,5 +57,23 @@ export const useLawyerDetail = (lawyerId: number) => {
   return useQuery({
     queryKey: [QUERY_KEY.LAWYER_DETAIL, lawyerId],
     queryFn: () => lawyerService.getLawyerDetail(lawyerId),
+  })
+}
+
+export const useLawyerKeep = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: LawyerKeepResponse) => void
+  onError: () => void
+}) => {
+  return useMutation({
+    mutationFn: (lawyerId: number) => lawyerService.changeLawyerKeep(lawyerId),
+    onSuccess: (data: LawyerKeepResponse, _lawyerId: number) => {
+      onSuccess(data)
+    },
+    onError: () => {
+      onError()
+    },
   })
 }

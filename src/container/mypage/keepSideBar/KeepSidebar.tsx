@@ -3,7 +3,7 @@ import styles from './keepSidebar.module.scss'
 interface KeepSidebarProps {
   buttonList: string[]
   activeButton: string
-  setActiveButton: (button: string) => void
+  setActiveButton: (_button: string) => void
 }
 
 const KeepSidebar = ({ buttonList, activeButton, setActiveButton }: KeepSidebarProps) => {

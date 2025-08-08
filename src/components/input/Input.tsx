@@ -10,7 +10,7 @@ interface ConsultationInputProps {
   textAreaStyle?: React.CSSProperties
   className?: string
   value?: string
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+  onChange?: (_e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 const Input = ({

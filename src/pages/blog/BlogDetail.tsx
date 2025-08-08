@@ -12,18 +12,28 @@ import { useDelayedLoading } from '@/hooks'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
+import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
+import { useState, useEffect } from 'react'
+import { COLOR } from '@/styles/color'
+import { copyUrlToClipboard } from '@/utils/clipboard'
 
-const BlogNavigationBar = () => {
+type BlogNavigationBarProps = {
+  isKeep: boolean
+  onSave: () => void
+  onShare: () => void
+}
+
+const BlogNavigationBar = ({ isKeep, onSave, onShare }: BlogNavigationBarProps) => {
   return (
     <div className={styles['blog-navigation-bar']}>
       <button className={styles['blog-link-btn']}>블로그 바로가기</button>
       <div className={styles['button-wrapper']}>
-        <Button variant='share'>
+        <Button variant='share' onClick={onShare}>
           공유
           <SvgIcon name='share' size={16} />
         </Button>
-        <Button variant='save'>
-          저장 <SvgIcon name='save' size={16} />
+        <Button variant='save' onClick={onSave}>
+          저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.icon_darkgreen : 'none'} />
         </Button>
       </div>
     </div>
@@ -34,7 +44,26 @@ const BlogDetail = () => {
   const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { blogCaseId } = useParams<{ blogCaseId: string }>()
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
+  const [isKeep, setIsKeep] = useState(false)
 
+  // data가 로드되면 isKeep 상태 업데이트
+  useEffect(() => {
+    if (data?.isKeep !== undefined) {
+      setIsKeep(data.isKeep)
+    }
+  }, [data?.isKeep])
+
+  const { mutate: changeBlogKeep } = useBlogKeep({
+    onSuccess: data => {
+      // 서버 응답으로 최종 상태 확인
+      setIsKeep(data.isKeep)
+    },
+    onError: () => {
+      console.error('Failed to change blog keep')
+      // 에러 발생 시 원래 상태로 롤백
+      setIsKeep(prevState => !prevState)
+    },
+  })
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const lawyer = {
@@ -45,16 +74,20 @@ const BlogDetail = () => {
   }
 
   const handleShare = () => {
-    console.log('공유하기')
+    copyUrlToClipboard()
   }
 
   const handleSave = () => {
-    console.log('저장하기')
+    if (data?.blogCaseId) {
+      // 낙관적 업데이트: 즉시 UI 변경
+      setIsKeep(prevState => !prevState)
+      changeBlogKeep(data.blogCaseId)
+    }
   }
 
   return (
     <div className={'detail-container'}>
-      <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} />
+      <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
       <div className={'detail-body'}>
         <div>
           {showLoading ? (
@@ -62,7 +95,7 @@ const BlogDetail = () => {
           ) : (
             <>
               <BlogDetailContents summaryContents={data?.summaryContent || ''} tagList={data?.tags || []} />
-              <BlogNavigationBar />
+              <BlogNavigationBar isKeep={isKeep} onSave={handleSave} onShare={handleShare} />
               {!isMobile ? (
                 <AIBlogCarousel />
               ) : (

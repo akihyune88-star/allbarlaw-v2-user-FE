@@ -1,6 +1,6 @@
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
-import { KnowledgeListRequest } from '@/types/knowledgeType'
+import { KnowledgeKeepResponse, KnowledgeListRequest } from '@/types/knowledgeType'
 import { knowledgeService } from '@/services/knowledgeService'
 
 export const useGetKnowledgeList = (request: KnowledgeListRequest) => {
@@ -54,4 +54,55 @@ export const useInfiniteKnowledgeList = (request: Omit<KnowledgeListRequest, 'cu
     fetchNextPage,
     isFetchingNextPage,
   }
+}
+
+export const useKnowledgeKeep = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: KnowledgeKeepResponse) => void
+  onError: () => void
+}) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (knowledgeId: number) => knowledgeService.changeKnowledgeKeep(knowledgeId),
+    onSuccess: (data: KnowledgeKeepResponse, knowledgeId: number) => {
+      // 무한 스크롤 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.KNOWLEDGE_LIST, 'infinite'] },
+        (oldData: any) => {
+          if (!oldData || !oldData.pages) return oldData
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: any) => ({
+              ...page,
+              data: page.data?.map((knowledge: any) =>
+                knowledge.knowledgeId === knowledgeId ? { ...knowledge, isKeep: data.isKeep } : knowledge
+              ) || [],
+            })),
+          }
+        }
+      )
+      
+      // 일반 리스트 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.KNOWLEDGE_LIST] },
+        (oldData: any) => {
+          if (!oldData || !oldData.data) return oldData
+          return {
+            ...oldData,
+            data: oldData.data.map((knowledge: any) =>
+              knowledge.knowledgeId === knowledgeId ? { ...knowledge, isKeep: data.isKeep } : knowledge
+            ),
+          }
+        }
+      )
+      
+      onSuccess(data)
+    },
+    onError: () => {
+      console.error('Failed to change knowledge keep')
+      onError?.()
+    },
+  })
 }

@@ -18,6 +18,7 @@ export type KnowledgeItem = {
   knowledgeTitle: string
   summaryContent: string
   lastMessageAt: string
+  isKeep: boolean
   lawyers: {
     lawyerId: number
     lawyerName: string
@@ -37,6 +38,7 @@ export type KnowledgeDetailResponse = {
   knowledgeTitle: string
   knowledgeDescription: string
   lastMessageAt: string
+  isKeep: boolean
   tags: string[]
   lawyers: {
     lawyerId: number
@@ -46,4 +48,8 @@ export type KnowledgeDetailResponse = {
     lawyerProfileImage: string
     content: string
   }[]
+}
+
+export type KnowledgeKeepResponse = {
+  isKeep: boolean
 }

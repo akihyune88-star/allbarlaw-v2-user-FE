@@ -5,38 +5,48 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { Fragment } from 'react/jsx-runtime'
 import Divider from '@/components/divider/Divider'
 import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
+import { VideoCase } from '@/types/videoTypes'
+import EmptyState from '@/components/EmptyState/EmptyState'
 
-const LegalTermVideoList = () => {
-  const videoList = [1, 2, 3]
+const LegalTermVideoList = ({ videoList }: { videoList: VideoCase[] }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   return (
     <div className={styles.container}>
       <header className={`${styles['list-header']} ${styles['video']}`}>
         <h3>법률영상</h3>
-        <button>
-          <span>더보기</span>
-          <SvgIcon name='arrowSmall' style={{ transform: 'rotate(-90deg)' }} />
-        </button>
+        {videoList.length > 0 && (
+          <button>
+            <span>더보기</span>
+            <SvgIcon name='arrowSmall' style={{ transform: 'rotate(-90deg)' }} />
+          </button>
+        )}
       </header>
-      {!isMobile && <Divider padding={24} />}
+      {!isMobile && videoList.length > 0 && <Divider padding={24} />}
       <section className={styles['list-section']}>
-        {videoList.map((video, index) =>
-          isMobile ? (
-            <RecommenderVideo
-              key={video}
-              videoUrl='https://picsum.photos/200/300'
-              isShowTitle={false}
-              description='음주후 주차장등에서 잠깐 운전하다가 적발될 경우, 처벌받을 수 있습니다. 
-              혈중알코올 농도가 0.03% 이상이면 음주운전으로 간주되어 처벌대상이 됩니다. 
-              음주후 주차장등에서 잠깐 운전하다가 적발될 경우, 처벌받을 수 있습니다. 
-              혈중알코올 농도가 0.03% 이상음주후 주차장등에서 잠깐 운전하다가 적발될 경우, 처벌받을 수 있습니다. 
-              '
-            />
-          ) : (
-            <Fragment key={video}>
-              <VideoHorizon size='xsmall' thumbnailUrl='https://picsum.photos/200/300' title='test' />
-              {index !== videoList.length - 1 && <Divider padding={24} />}
-            </Fragment>
+        {videoList.length === 0 ? (
+          <EmptyState message='등록된 법률 영상이 없습니다.' />
+        ) : (
+          videoList.map((video, index) =>
+            isMobile ? (
+              <RecommenderVideo
+                key={video.videoCaseId}
+                videoUrl={video.thumbnail}
+                isShowTitle={false}
+                description={video.summaryContent}
+              />
+            ) : (
+              <Fragment key={video.videoCaseId}>
+                <VideoHorizon
+                  videoCaseId={video.videoCaseId}
+                  isKeep={video.isKeep}
+                  size='small'
+                  thumbnailUrl={video.thumbnail}
+                  title={video.title}
+                  summaryContents={video.summaryContent}
+                />
+                {index !== videoList.length - 1 && <Divider padding={24} />}
+              </Fragment>
+            )
           )
         )}
       </section>

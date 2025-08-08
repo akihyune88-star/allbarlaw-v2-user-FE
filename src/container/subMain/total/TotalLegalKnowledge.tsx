@@ -57,6 +57,8 @@ const TotalLegalKnowledge = () => {
         {knowledgeList.map(item => (
           <LegalKnowledgeItem
             key={item.knowledgeId}
+            knowledgeId={item.knowledgeId}
+            knowledgeKeep={item.isKeep}
             title={item.knowledgeTitle}
             description={item.summaryContent}
             time={new Date(item.lastMessageAt)}

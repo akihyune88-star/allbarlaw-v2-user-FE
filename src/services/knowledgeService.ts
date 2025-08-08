@@ -29,12 +29,15 @@ export const knowledgeService = {
   getKnowledgeDetail: async (request: KnowledgeDetailRequest) => {
     try {
       const response = await instance.get<KnowledgeDetailResponse>(`/knowledge/detail/${request.knowledgeId}`)
-      console.log(response.data)
-
       return response.data
     } catch (error) {
       console.error('Failed to fetch blog detail:', error)
       throw error
     }
+  },
+
+  changeKnowledgeKeep: async (knowledgeId: number) => {
+    const response = await instance.put(`/knowledge/${knowledgeId}/keep`)
+    return response.data
   },
 }

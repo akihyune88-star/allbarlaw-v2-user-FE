@@ -1,6 +1,6 @@
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
-import { VideoListRequest } from '@/types/videoTypes'
+import { VideoKeepResponse, VideoListRequest } from '@/types/videoTypes'
 import { videoService } from '@/services/videoService'
 
 export const useGetVideoList = (request: VideoListRequest) => {
@@ -56,4 +56,55 @@ export const useInfiniteVideoList = (request: Omit<VideoListRequest, 'cursor' | 
     fetchNextPage,
     isFetchingNextPage,
   }
+}
+
+export const useVideoKeep = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: VideoKeepResponse) => void
+  onError: () => void
+}) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (videoCaseId: number) => videoService.changeVideoKeep(videoCaseId),
+    onSuccess: (data: VideoKeepResponse, videoCaseId: number) => {
+      // 무한 스크롤 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.VIDEO_LIST, 'infinite'] },
+        (oldData: any) => {
+          if (!oldData || !oldData.pages) return oldData
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: any) => ({
+              ...page,
+              data: page.data?.map((video: any) =>
+                video.videoCaseId === videoCaseId ? { ...video, isKeep: data.isKeep } : video
+              ) || [],
+            })),
+          }
+        }
+      )
+      
+      // 일반 리스트 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.VIDEO_LIST] },
+        (oldData: any) => {
+          if (!oldData || !oldData.data) return oldData
+          return {
+            ...oldData,
+            data: oldData.data.map((video: any) =>
+              video.videoCaseId === videoCaseId ? { ...video, isKeep: data.isKeep } : video
+            ),
+          }
+        }
+      )
+      
+      onSuccess(data)
+    },
+    onError: () => {
+      console.error('Failed to change video keep')
+      onError?.()
+    },
+  })
 }

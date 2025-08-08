@@ -52,6 +52,8 @@ const VideoList = () => {
             <VideoHorizon
               thumbnailUrl={video.thumbnail}
               title={video.title}
+              videoCaseId={video.videoCaseId}
+              isKeep={video.isKeep}
               lawyerName={video.lawyerName}
               lawfirmName={video.lawfirmName}
               channelName={video.channelName}

@@ -81,6 +81,7 @@ export type LawyerDetailResponse = {
   lawyerDescription: string
   lawfirmName: string
   lawyerProfileImage: string
+  isKeep: boolean
   lawyerProfileImages: {
     createdAt: string
     displayOrder: number
@@ -111,4 +112,8 @@ export type RandomLawyerListRequest = {
 export type RandomLawyerListResponse = {
   data: Lawyer[]
   hasNextPage: boolean
+}
+
+export type LawyerKeepResponse = {
+  isKeep: boolean
 }

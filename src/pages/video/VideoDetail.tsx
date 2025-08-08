@@ -13,6 +13,9 @@ import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import BlogDetailSideBar from '@/container/blog/BlogDetailSideBar'
 import AiVideoRecommender from '@/container/video/aiVideoRecommender/AiVideoRecommender'
 import AiRecommenderVideoSlider from '@/container/video/AiRecommenderVideoSlider'
+import { useState, useEffect } from 'react'
+import { useVideoKeep } from '@/hooks/queries/useGetVideoList'
+import { copyUrlToClipboard } from '@/utils/clipboard'
 
 const VideoDetail = () => {
   const { videoId } = useParams<{ videoId: string }>()
@@ -20,6 +23,26 @@ const VideoDetail = () => {
 
   const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { data } = useGetVideoDetail({ videoCaseId: Number(videoId) })
+  const [isKeep, setIsKeep] = useState(false)
+  
+  // data가 로드되면 isKeep 상태 업데이트
+  useEffect(() => {
+    if (data?.isKeep !== undefined) {
+      setIsKeep(data.isKeep)
+    }
+  }, [data?.isKeep])
+
+  const { mutate: changeVideoKeep } = useVideoKeep({
+    onSuccess: data => {
+      // 서버 응답으로 최종 상태 확인
+      setIsKeep(data.isKeep)
+    },
+    onError: () => {
+      console.error('Failed to change video keep')
+      // 에러 발생 시 원래 상태로 롤백
+      setIsKeep(prevState => !prevState)
+    },
+  })
 
   const lawyer = {
     lawyerId: data?.lawyerId || 0,
@@ -29,16 +52,20 @@ const VideoDetail = () => {
   }
 
   const handleShare = () => {
-    console.log('공유하기')
+    copyUrlToClipboard()
   }
 
   const handleSave = () => {
-    console.log('저장하기')
+    if (data?.videoCaseId) {
+      // 낙관적 업데이트: 즉시 UI 변경
+      setIsKeep(prevState => !prevState)
+      changeVideoKeep(data.videoCaseId)
+    }
   }
 
   return (
     <div className={'detail-container'}>
-      <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} />
+      <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
       <div className={'detail-body'}>
         <div>
           {showLoading ? (

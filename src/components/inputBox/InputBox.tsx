@@ -6,8 +6,10 @@ type InputBoxProps = {
   type?: string
   placeholder?: string
   value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+  onChange: (_e: React.ChangeEvent<HTMLInputElement>) => void
+  onKeyDown?: (_e: React.KeyboardEvent<HTMLInputElement>) => void
+  onFocus?: (_e: React.FocusEvent<HTMLInputElement>) => void
+  onBlur?: (_e: React.FocusEvent<HTMLInputElement>) => void
   icon?: React.ReactNode
   disabled?: boolean
   className?: string
@@ -21,6 +23,8 @@ const InputBox = ({
   value = '',
   onChange = () => {},
   onKeyDown,
+  onFocus,
+  onBlur,
   icon,
   disabled = false,
   className = '',
@@ -36,6 +40,8 @@ const InputBox = ({
         value={value}
         onChange={onChange}
         onKeyDown={onKeyDown}
+        onFocus={onFocus}
+        onBlur={onBlur}
         disabled={disabled}
         style={style}
       />

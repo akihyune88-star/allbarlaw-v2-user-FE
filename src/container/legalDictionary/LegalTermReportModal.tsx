@@ -1,5 +1,6 @@
 import Modal from '@/components/modal'
 import styles from './legal-term-report-modal.module.scss'
+import { useReportLegalTerm } from '@/hooks/queries/useLegalTerm'
 
 interface LegalTermReportModalProps {
   isOpen: boolean
@@ -7,6 +8,16 @@ interface LegalTermReportModalProps {
 }
 
 const LegalTermReportModal = ({ isOpen, onClose }: LegalTermReportModalProps) => {
+  const { mutate: reportLegalTerm } = useReportLegalTerm({
+    onSuccess: () => {
+      onClose()
+    },
+  })
+
+  const handleReportLegalTerm = () => {
+    reportLegalTerm({ legalTermId: 1, request: { reportType: 'CONTENT_ERROR', description: 'test' } })
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} className={styles.modal}>
       <Modal.Header className={styles.header}>
@@ -17,8 +28,12 @@ const LegalTermReportModal = ({ isOpen, onClose }: LegalTermReportModalProps) =>
         <input placeholder='용어를 작성해주세요'></input>
       </Modal.Body>
       <Modal.Footer className={styles.footer}>
-        <button className={`${styles.btn} ${styles.cancel}`}>취소</button>
-        <button className={`${styles.btn} ${styles.report}`}>신고하기</button>
+        <button className={`${styles.btn} ${styles.cancel}`} onClick={onClose}>
+          취소
+        </button>
+        <button className={`${styles.btn} ${styles.report}`} onClick={handleReportLegalTerm}>
+          신고하기
+        </button>
       </Modal.Footer>
     </Modal>
   )

@@ -171,7 +171,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   )
 }
 
-export const useAuth = () => {
+const useAuth = () => {
   const context = useContext(AuthContext)
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider')
@@ -179,5 +179,7 @@ export const useAuth = () => {
   return context
 }
 
-// 토큰 디코드 유틸리티 함수들 export
-export { decodeToken, getUserIdFromToken, getLawyerIdFromToken }
+// 토큰 디코드 유틸리티 함수들을 별도 파일로 이동해야 함
+// export { decodeToken, getUserIdFromToken, getLawyerIdFromToken }
+
+export { useAuth }

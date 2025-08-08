@@ -4,8 +4,11 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { COLOR } from '@/styles/color'
 import { formatTimeAgo } from '@/utils/date'
 import { useAuth } from '@/contexts/AuthContext'
+import { useKnowledgeKeep } from '@/hooks/queries/useGetKnowledgeList'
+import React, { useState } from 'react'
 
 type LegalKnowledgeItemProps = {
+  knowledgeId: number
   title: string
   description: string
   time?: Date
@@ -16,21 +19,44 @@ type LegalKnowledgeItemProps = {
     lawyerName: string
   }[]
   onClick?: () => void
+  knowledgeKeep?: boolean
   isShowKeep?: boolean
 }
 
 const LegalKnowledgeItem = ({
+  knowledgeId,
   title,
   description,
   time,
   isLastAnswer,
   lawyerList,
   onClick,
+  knowledgeKeep,
   isShowKeep = true,
 }: LegalKnowledgeItemProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { isLoggedIn } = useAuth()
   const formattedTime = time ? formatTimeAgo(time) : ''
+
+  const [isKeep, setIsKeep] = useState(knowledgeKeep)
+
+  const { mutate: changeKnowledgeKeep } = useKnowledgeKeep({
+    onSuccess: data => {
+      setIsKeep(data.isKeep)
+    },
+    onError: () => {
+      console.error('Failed to change knowledge keep')
+      setIsKeep(prevState => !prevState)
+    },
+  })
+
+  const handleKnowledgeKeep = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (isLoggedIn && knowledgeId) {
+      setIsKeep(prevState => !prevState)
+      changeKnowledgeKeep(knowledgeId)
+    }
+  }
 
   return (
     <article className={styles['legal-knowledge-item']} onClick={onClick}>
@@ -41,7 +67,11 @@ const LegalKnowledgeItem = ({
             <span>
               <span className={styles['time']}>{formattedTime}</span> {isLastAnswer && '마지막 답변'}
             </span>
-            {isLoggedIn && isShowKeep && <SvgIcon name='bookMark' />}
+            {isLoggedIn && isShowKeep && (
+              <button className={styles['bookmark-icon']} onClick={handleKnowledgeKeep}>
+                <SvgIcon name='bookMark' fill={isKeep ? COLOR.green_01 : 'none'} />
+              </button>
+            )}
           </div>
         )}
       </header>
@@ -75,7 +105,11 @@ const LegalKnowledgeItem = ({
           <span>
             <span className={styles['time']}>{formattedTime}</span> {isLastAnswer && '마지막 답변'}
           </span>
-          {isLoggedIn && isShowKeep && <SvgIcon name='bookMark' />}
+          {isLoggedIn && isShowKeep && (
+            <button className={styles['bookmark-icon']} onClick={handleKnowledgeKeep}>
+              <SvgIcon name='bookMark' fill={isKeep ? COLOR.green_01 : 'none'} />
+            </button>
+          )}
         </div>
       )}
     </article>

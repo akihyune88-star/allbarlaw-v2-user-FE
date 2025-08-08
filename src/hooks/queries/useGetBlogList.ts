@@ -1,6 +1,6 @@
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
-import { BlogListRequest } from '@/types/blogTypes'
+import { BlogKeepResponse, BlogListRequest } from '@/types/blogTypes'
 import { blogService } from '@/services/blogService'
 
 export const useGetBlogList = (request: BlogListRequest) => {
@@ -57,4 +57,55 @@ export const useInfiniteBlogList = (request: Omit<BlogListRequest, 'cursor' | 'c
     fetchNextPage,
     isFetchingNextPage,
   }
+}
+
+export const useBlogKeep = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: BlogKeepResponse) => void
+  onError: () => void
+}) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (blogCaseId: number) => blogService.changeBlogKeep(blogCaseId),
+    onSuccess: (data: BlogKeepResponse, blogCaseId: number) => {
+      // 무한 스크롤 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.BLOG_LIST, 'infinite'] },
+        (oldData: any) => {
+          if (!oldData || !oldData.pages) return oldData
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: any) => ({
+              ...page,
+              data: page.data?.map((blog: any) =>
+                blog.blogCaseId === blogCaseId ? { ...blog, isKeep: data.isKeep } : blog
+              ) || [],
+            })),
+          }
+        }
+      )
+      
+      // 일반 리스트 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.BLOG_LIST] },
+        (oldData: any) => {
+          if (!oldData || !oldData.data) return oldData
+          return {
+            ...oldData,
+            data: oldData.data.map((blog: any) =>
+              blog.blogCaseId === blogCaseId ? { ...blog, isKeep: data.isKeep } : blog
+            ),
+          }
+        }
+      )
+      
+      onSuccess(data)
+    },
+    onError: error => {
+      console.error('Failed to change blog keep:', error)
+      onError?.()
+    },
+  })
 }

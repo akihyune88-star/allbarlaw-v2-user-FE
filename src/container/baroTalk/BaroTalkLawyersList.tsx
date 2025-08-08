@@ -10,7 +10,7 @@ type ListType = 'selected' | 'recommended'
 interface LawyersListProps {
   type: ListType
   lawyers: Lawyer[]
-  onLawyerClick: (lawyer: Lawyer) => void
+  onLawyerClick: (_lawyer: Lawyer) => void
   onRefresh?: () => void
   title?: string
 }

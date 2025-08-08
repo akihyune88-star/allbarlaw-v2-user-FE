@@ -24,16 +24,16 @@ export interface ImageSliderProps {
   imageObjectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down'
   loading?: 'lazy' | 'eager'
   // 추가 확장성을 위한 props
-  renderCustomContent?: (item: ImageItem, index: number) => React.ReactNode
-  onSlideChange?: (currentSlide: number) => void
-  onImageClick?: (src: string, index: number) => void // 간단한 클릭 핸들러
+  renderCustomContent?: (_item: ImageItem, _index: number) => React.ReactNode
+  onSlideChange?: (_currentSlide: number) => void
+  onImageClick?: (_src: string, _index: number) => void // 간단한 클릭 핸들러
   customArrows?: {
     prevArrow?: React.ComponentType<any>
     nextArrow?: React.ComponentType<any>
   }
   // 커스텀 닷 관련
   customDots?: boolean
-  renderCustomDot?: (index: number, isActive: boolean, onClick: () => void) => React.ReactNode
+  renderCustomDot?: (_index: number, _isActive: boolean, _onClick: () => void) => React.ReactNode
 }
 
 const defaultSettings: Settings = {

@@ -3,6 +3,7 @@
   grid-template-columns: repeat(3, 1fr);
   row-gap: 1.3125rem;
   column-gap: 1.3125rem;
+  padding-right: 0.5rem;
 }
 
 .legal-item {
@@ -35,6 +36,22 @@
   &:hover {
     border-color: rgba(32, 191, 98, 1);
   }
+}
+
+.loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: $color-text-index;
+  font-size: 0.875rem;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: $color-text-index;
+  font-size: 0.875rem;
 }
 
 @media (max-width: $breakpoint-desktop) {

@@ -24,7 +24,7 @@ const LawyerDetail = () => {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  console.log(lawyerDetail?.lawyerProfileImages.map(image => image.imageUrl))
+  const lawyerProfileImages = lawyerDetail?.lawyerProfileImages.map(image => image.imageUrl)
 
   return (
     <main className='sub-main-container'>
@@ -71,7 +71,8 @@ const LawyerDetail = () => {
           lawyerId={lawyerDetail?.lawyerId ?? 0}
           lawyerName={lawyerDetail?.lawyerName ?? ''}
           lawyerLawfirm={lawyerDetail?.lawfirmName ?? ''}
-          lawyerProfileImage={lawyerDetail?.lawyerProfileImages.map(image => image.imageUrl) ?? []}
+          lawyerProfileImage={lawyerProfileImages ?? []}
+          lawyerIsKeep={lawyerDetail?.isKeep!}
         />
       </aside>
     </main>
