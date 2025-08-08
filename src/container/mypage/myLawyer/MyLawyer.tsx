@@ -37,6 +37,7 @@ const MyLawyer = ({ sort }: { sort: 'asc' | 'desc' }) => {
                 isBaroTalk={true}
                 className={styles.lawyerItem}
                 ad={true}
+                onClick={() => handleLawyerDetail(lawyer.lawyerId)}
               />
               {index !== lawyerList.length - 1 && <Divider padding={16} />}
             </>

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 const MyLegalDictionary = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const navigate = useNavigate()
-  const { legalDictionaryList, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
+  const { legalDictionaryList, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useInfiniteMyLegalDictionaryList({
       take: 10,
       sort: sort,
@@ -28,7 +28,7 @@ const MyLegalDictionary = ({ sort }: { sort: 'asc' | 'desc' }) => {
       ) : (
         // 법률 사전 목록 렌더링
         <>
-          {legalDictionaryList.map((legalDictionary, index) => (
+          {legalDictionaryList.map((legalDictionary) => (
             <div
               key={legalDictionary.legalTermId}
               className={styles.legalDictionaryItem}

@@ -26,7 +26,7 @@ const RecommenderVideo = ({
 }: RecommenderVideoProps) => {
   const { isLoggedIn } = useAuth()
 
-  const [like, setLike] = useState<boolean>(isVideoKeep ?? false)
+  const [_like, setLike] = useState<boolean>(isVideoKeep ?? false)
 
   useEffect(() => {
     if (isVideoKeep !== undefined) {

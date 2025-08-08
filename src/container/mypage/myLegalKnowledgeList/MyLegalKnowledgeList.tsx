@@ -4,12 +4,11 @@ import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeIt
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Divider from '@/components/divider/Divider'
 import { useInfiniteMyLegalKnowledgeList } from '@/hooks/queries/useMypage'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 // import { KnowledgeItem } from '@/types/knowledgeType'
 
 const MyLegalKnowledgeList = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const navigate = useNavigate()
 
   const { knowledgeList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteMyLegalKnowledgeList({
     take: 10,
