@@ -11,6 +11,7 @@ type ArticleProps = {
   onClick?: () => void
   lawyerInfo?: {
     name: string
+    lawfirmName?: string
     profileImageUrl: string
   }
   className?: string
@@ -63,7 +64,7 @@ const Article = ({
                       </figure>
                     )}
                     <span className={styles['lawyer-name']}>
-                      {lawyerInfo.name} 변호사 [{lawyerInfo.name}]
+                      {lawyerInfo.name} 변호사 [{lawyerInfo.lawfirmName || ''}]
                     </span>
                   </div>
                 </footer>

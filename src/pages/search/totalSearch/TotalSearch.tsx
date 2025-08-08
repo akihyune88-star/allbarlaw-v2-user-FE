@@ -28,7 +28,7 @@ const TotalSearch = () => {
     <>
       <SearchCount count={1000} />
       <div className={styles['total-search']}>
-        <TotalSearchBlogList searchResults={data?.searchResults.searchBlogResults || []} />
+        <TotalSearchBlogList searchResults={data?.searchResults.searchBlogResults || []} query={searchQuery} />
         <TotalSearchKnowledgeList />
         <TotalSearchVideoList />
         <TotalSearchLawyerList />

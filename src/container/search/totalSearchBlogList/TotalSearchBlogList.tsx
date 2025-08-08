@@ -2,21 +2,23 @@ import { BlogCase } from '@/types/blogTypes'
 import SearchSectionHeader from '../searchSectionHeader/SearchSectionHeader'
 import styles from './totalSearchBlogList.module.scss'
 import Article from '@/components/article/Article'
+import { useNavigate } from 'react-router-dom'
 
 interface TotalSearchBlogListProps {
   searchResults: BlogCase[]
+  query: string
 }
 
-const TotalSearchBlogList = ({ searchResults }: TotalSearchBlogListProps) => {
-  console.log('searchResults', searchResults)
+const TotalSearchBlogList = ({ searchResults, query }: TotalSearchBlogListProps) => {
+  const navigate = useNavigate()
 
   const handleClickMore = () => {
-    console.log('더보기')
+    navigate(`/search/blog?q=${query}`)
   }
 
   return (
     <div className={styles['total-search-blog-list']}>
-      <SearchSectionHeader title='블로그' onClickMore={handleClickMore} />
+      <SearchSectionHeader title='법률정보의 글' onClickMore={handleClickMore} />
       <div className={styles['blog-list']}>
         {searchResults.map(blog => (
           <Article
@@ -27,8 +29,10 @@ const TotalSearchBlogList = ({ searchResults }: TotalSearchBlogListProps) => {
             content={blog.summaryContent}
             lawyerInfo={{
               name: blog.lawyerName,
+              lawfirmName: blog.lawfirmName,
               profileImageUrl: blog.lawyerProfileImage,
             }}
+            // category={blog.subcategoryName}
           />
         ))}
       </div>

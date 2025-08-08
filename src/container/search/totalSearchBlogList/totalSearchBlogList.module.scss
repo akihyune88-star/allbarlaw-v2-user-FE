@@ -1,6 +1,23 @@
 .total-search-blog-list {
   display: flex;
   flex-direction: column;
+  background-color: $color-white;
+
+  padding: 0 1.5rem 1.5rem 1.5rem;
+
+  @media (max-width: $breakpoint-desktop) {
+    background-color: transparent;
+    padding-top: 1.875rem;
+  }
+}
+
+.divider {
+  height: 1px;
+  background-color: $color-line-divider;
+
+  @media (max-width: $breakpoint-desktop) {
+    padding: 0 1.5rem;
+  }
 }
 
 .blog-list {
@@ -9,6 +26,12 @@
   gap: 1.5rem;
 
   padding: 1.5rem 0;
-
   border-bottom: 1px solid $color-line-divider;
+
+  @media (max-width: $breakpoint-desktop) {
+    grid-template-columns: repeat(1, 1fr);
+    background-color: $color-white;
+
+    padding: 1.5rem;
+  }
 }
