@@ -10,7 +10,7 @@ type MenuItem = {
 
 type TabsContextType = {
   selectedPath: string
-  onSelect: (path: string) => void
+  onSelect: (_path: string) => void
 }
 
 const TabsContext = createContext<TabsContextType | null>(null)

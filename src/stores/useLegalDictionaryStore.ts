@@ -3,8 +3,8 @@ import { create } from 'zustand'
 interface LegalDictionaryState {
   searchValue: string
   selectedConsonant: string | null
-  setSearchValue: (value: string) => void
-  setSelectedConsonant: (consonant: string | null) => void
+  setSearchValue: (_value: string) => void
+  setSelectedConsonant: (_consonant: string | null) => void
   clearSearch: () => void
 }
 

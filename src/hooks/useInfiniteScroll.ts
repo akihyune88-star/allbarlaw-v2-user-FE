@@ -103,6 +103,7 @@ export const useInfiniteScroll = ({
       }, 500)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [hasNextPage, enabled])
 
   // 데이터가 변경될 때마다 체크를 위한 별도 트리거
@@ -115,6 +116,7 @@ export const useInfiniteScroll = ({
       }, 200)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [isFetchingNextPage, enabled, hasNextPage])
 
   return { handleScroll }

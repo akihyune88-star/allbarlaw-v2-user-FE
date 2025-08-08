@@ -44,7 +44,6 @@ const LawyerDetailSidebar = ({
     copyUrlToClipboard()
   }
 
-  console.log(isKeep, 'isKeep')
   return (
     <div className={styles['lawyer-detail-sidebar']}>
       <LawyerVertical

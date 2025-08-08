@@ -62,7 +62,7 @@ export const useInfiniteLegalTermList = (
 export const useInfiniteSearchLegalTermList = (search: string, options?: { enabled?: boolean }) => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.LEGAL_TERM_LIST, 'infinite', 'search', search],
-    queryFn: ({ pageParam = 1 }) => legalTermService.getSearchLegalTermItem(search),
+    queryFn: ({ pageParam: _pageParam = 1 }) => legalTermService.getSearchLegalTermItem(search),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       if (!lastPage.hasNextPage) return undefined

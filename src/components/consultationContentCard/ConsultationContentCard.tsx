@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown'
 import { markdownComponents } from '@/utils/markdownComponents'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { COLOR } from '@/styles/color'
+import { Tag } from '@/types/lawyerTypes'
 
 interface ConsultationContentCardProps {
   title?: string
@@ -16,7 +17,7 @@ interface ConsultationContentCardProps {
   onSave?: () => void
   isSaved?: boolean
   className?: string
-  tags?: string[]
+  tags?: Tag[]
   isKeep?: boolean
 }
 
@@ -59,8 +60,8 @@ const ConsultationContentCard = ({
       </Card>
       <div className={styles['tag-list']}>
         {tags?.map(tag => (
-          <div className={styles['tag-item']}>
-            <span className={styles['tag-item-text']}>#{tag}</span>
+          <div className={styles['tag-item']} key={tag.id}>
+            <span className={styles['tag-item-text']}>#{tag.name}</span>
           </div>
         ))}
       </div>

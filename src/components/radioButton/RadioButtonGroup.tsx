@@ -6,7 +6,7 @@ interface RadioButtonGroupProps {
   options: Array<{ value: string; label: string }>
   name: string
   defaultValue?: string
-  onChange?: (value: string) => void
+  onChange?: (_value: string) => void
   className?: string
   direction?: 'horizontal' | 'vertical'
   gap?: string | number

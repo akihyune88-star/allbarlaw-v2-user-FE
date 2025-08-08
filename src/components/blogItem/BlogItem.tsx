@@ -31,9 +31,9 @@ const BlogItem = ({
   const summaryContents = getBlogSummaryText(item.summaryContent)
 
   const { mutate: changeBlogKeep } = useBlogKeep({
-    onSuccess: data => {
+    onSuccess: _data => {
       // 서버 응답을 무시하고 클라이언트 상태 유지
-      // setIsKeep(data.isKeep)
+      // setIsKeep(_data.isKeep)
     },
     onError: () => {
       // 에러 시에만 롤백

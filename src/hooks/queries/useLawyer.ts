@@ -69,7 +69,7 @@ export const useLawyerKeep = ({
 }) => {
   return useMutation({
     mutationFn: (lawyerId: number) => lawyerService.changeLawyerKeep(lawyerId),
-    onSuccess: (data: LawyerKeepResponse, lawyerId: number) => {
+    onSuccess: (data: LawyerKeepResponse, _lawyerId: number) => {
       onSuccess(data)
     },
     onError: () => {

@@ -4,11 +4,21 @@ import { getBlogDetailText } from '@/utils/blogTextFormatter'
 
 type BlogDetailContentsProps = {
   summaryContents: string
-  tagList: string[]
+  tagList: string[] | { id: number; name: string }[]
 }
 
 const BlogDetailContents = ({ summaryContents, tagList }: BlogDetailContentsProps) => {
   const { summary, lawyerPart } = getBlogDetailText(summaryContents)
+
+  // tagList가 객체 배열인지 문자열 배열인지 확인하고 처리
+  const normalizedTags = tagList.map((tag, index) => {
+    if (typeof tag === 'string') {
+      return <span key={index}>#{tag}</span>
+    } else if (tag && typeof tag === 'object' && 'name' in tag) {
+      return <span key={tag.id || index}>#{tag.name}</span>
+    }
+    return null
+  })
 
   return (
     <div className={styles['blog-detail-content']}>
@@ -32,9 +42,7 @@ const BlogDetailContents = ({ summaryContents, tagList }: BlogDetailContentsProp
         <section>
           <hr className={styles['line-driver']} style={{ margin: 0 }} />
           <div className={styles['tag-list']}>
-            {tagList.map(tag => (
-              <span>#{tag}</span>
-            ))}
+            {normalizedTags}
           </div>
         </section>
       </div>

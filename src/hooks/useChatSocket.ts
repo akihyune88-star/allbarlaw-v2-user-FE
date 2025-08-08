@@ -469,8 +469,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         clearTimeout(timeoutId)
       })
       timeoutRefs.current.clear()
-
-      return undefined
     }
   }, [
     socket,

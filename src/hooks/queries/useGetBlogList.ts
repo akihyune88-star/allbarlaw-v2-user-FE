@@ -103,7 +103,7 @@ export const useBlogKeep = ({
       
       onSuccess(data)
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Failed to change blog keep:', error)
       onError?.()
     },

@@ -6,10 +6,10 @@ type InputBoxProps = {
   type?: string
   placeholder?: string
   value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
-  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
+  onChange: (_e: React.ChangeEvent<HTMLInputElement>) => void
+  onKeyDown?: (_e: React.KeyboardEvent<HTMLInputElement>) => void
+  onFocus?: (_e: React.FocusEvent<HTMLInputElement>) => void
+  onBlur?: (_e: React.FocusEvent<HTMLInputElement>) => void
   icon?: React.ReactNode
   disabled?: boolean
   className?: string
