@@ -90,3 +90,11 @@ export const useDeleteRecentSearch = (options?: { onSuccess?: () => void; onErro
     },
   })
 }
+
+export const useLegalTermDetail = (legalTermId: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LEGAL_TERM_DETAIL, legalTermId],
+    queryFn: () => legalTermService.getLegalTermDetail(legalTermId),
+    select: data => data,
+  })
+}

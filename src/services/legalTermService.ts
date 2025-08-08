@@ -5,6 +5,7 @@ import {
   RecentSearchesResponse,
   LegalTermListRequest,
   LegalTermListResponse,
+  LegalTermDetailResponse,
 } from '@/types/legalTermTypes'
 
 export const legalTermService = {
@@ -46,6 +47,11 @@ export const legalTermService = {
 
   deleteRecentSearch: async (searchQuery: string) => {
     const response = await instance.delete(`/legal-terms/recent-searches`, { data: { searchQuery } })
+    return response.data
+  },
+
+  getLegalTermDetail: async (legalTermId: number) => {
+    const response = await instance.get<LegalTermDetailResponse>(`/legal-terms/detail/${legalTermId}`)
     return response.data
   },
 }

@@ -8,7 +8,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useAuth } from '@/contexts/AuthContext'
 
 type BlogItemProps = {
-  type: 'small' | 'regular'
+  type?: 'small' | 'regular'
   item: BlogCase
   className?: string
   summaryButton?: boolean

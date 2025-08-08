@@ -1,24 +1,27 @@
 import SvgIcon from '@/components/SvgIcon'
 import styles from './legal-term-list.module.scss'
-// import { exampleBlogData } from '@/constants/exampleData'
-// import BlogItem from '@/components/blogItem/BlogItem'
+import { BlogCase } from '@/types/blogTypes'
+import BlogItem from '@/components/blogItem/BlogItem'
+import EmptyState from '@/components/EmptyState/EmptyState'
 
-const LegalTermBlogList = () => {
-  // const first3Items = exampleBlogData.blogCases.slice(0, 3)
-
+const LegalTermBlogList = ({ blogList }: { blogList: BlogCase[] }) => {
   return (
     <div className={styles.container}>
       <header className={`${styles['list-header']} ${styles['blog']}`}>
         <h3>법률정보의 글</h3>
-        <button>
-          <span>더보기</span>
-          <SvgIcon name='arrowSmall' style={{ transform: 'rotate(-90deg)' }} />
-        </button>
+        {blogList.length > 0 && (
+          <button>
+            <span>더보기</span>
+            <SvgIcon name='arrowSmall' style={{ transform: 'rotate(-90deg)' }} />
+          </button>
+        )}
       </header>
       <section className={styles['list-section']} style={{ paddingTop: 16 }}>
-        {/* {first3Items.map(blog => (
-          <BlogItem key={blog.blogCaseId} item={blog} />
-        ))} */}
+        {blogList.length === 0 ? (
+          <EmptyState message='등록된 블로그 글이 없습니다.' />
+        ) : (
+          blogList.map(blog => <BlogItem key={blog.blogCaseId} item={blog} />)
+        )}
       </section>
     </div>
   )

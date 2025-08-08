@@ -15,14 +15,13 @@ import TotalSubMain from '@/pages/subMain/TotalSubMain'
 import LegalDictionary from '@/pages/legalDictionary/LegalDictionary'
 import AboutAllbarlaw from '@/pages/aboutAllbarlaw/AboutAllbarlaw'
 import SearchMain from '@/pages/search/SearchMain'
+//법률백과사전
 import DictionaryMain from '@/pages/legalDictionary/DictionaryMain'
-import LegalTermDetail from '@/pages/legalTermDetail/LegalTermDetail'
 import MobileMenuList from '@/pages/mobile/MobileMenuList'
 import LegalKnowledgeDetail from '@/pages/legalKnowledge/LegalKnowledgeDetail'
 import TotalSearch from '@/pages/search/totalSearch/TotalSearch'
 import SearchBlog from '@/pages/blog/searchBlog/SearchBlog'
 import SearchVideo from '@/pages/video/searchVideo/SearchVideo'
-import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
 import NoticeLayout from '@/pages/support/notice/NoticeLayout'
 import SearchLegalKnowledge from '@/pages/legalKnowledge/searchLegalKnowledge/SearchLegalKnowledge'
 import SearchLawyer from '@/pages/lawyer/searchLawyer/SearchLawyer'
@@ -44,10 +43,12 @@ import {
   LawyerAdminLayout,
   LawyerChatList,
   LawyerSignupForm,
+  LegalTermDetail,
   Mypage,
   RequestBaroTalk,
 } from '@/pages'
 import LawyerChat from '@/pages/lawyerAdmin/chat/lawyerChat/LawyerChat'
+import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
 
 const router = createBrowserRouter([
   {

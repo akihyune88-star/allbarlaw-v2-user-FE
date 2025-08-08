@@ -32,4 +32,5 @@ export const QUERY_KEY = {
   RECENT_SEARCHES: 'recentSearches',
   RECENT_REGISTERED_LEGAL_TERM_LIST: 'recentRegisteredLegalTermList',
   LEGAL_TERM_LIST: 'legalTermList',
+  LEGAL_TERM_DETAIL: 'legalTermDetail',
 } as const

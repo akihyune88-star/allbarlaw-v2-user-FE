@@ -16,6 +16,10 @@ import LawyerAdminLayout from './lawyerAdmin/LawyerAdminLayout'
 import LawyerChat from './lawyerAdmin/chat/lawyerChat/LawyerChat'
 import LawyerChatList from './lawyerAdmin/chat/lawyerChatList/LawyerChatList'
 
+// 법률 사전
+import LegalDictionary from './legalDictionary/LegalDictionary'
+import LegalTermDetail from './legalDictionary/legalTermDetail/LegalTermDetail'
+
 export {
   Mypage,
   LawyerSignupForm,
@@ -26,4 +30,6 @@ export {
   LawyerAdminLayout,
   LawyerChat,
   LawyerChatList,
+  LegalDictionary,
+  LegalTermDetail,
 }

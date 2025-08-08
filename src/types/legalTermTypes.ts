@@ -1,4 +1,7 @@
+import { BlogCase } from './blogTypes'
+import { KnowledgeItem } from './knowledgeType'
 import { SortType } from './sortTypes'
+import { VideoCase } from './videoTypes'
 
 export type LegalTermItem = {
   chineseName: string
@@ -46,4 +49,22 @@ export type LegalTermListResponse = {
   total?: number
   legalTermPage?: number
   totalPages?: number
+}
+
+export type LegalTermDetailResponse = {
+  legalTermId: number
+  koreanName: string
+  chineseName: string
+  englishName: string
+  content: string
+  source: string
+  viewCount: number
+  createdAt: string
+  updatedAt: string
+  relatedContent: {
+    blogCases: BlogCase[]
+    videoCases: VideoCase[]
+    knowledgeAnswers: KnowledgeItem[]
+  }
+  similarTerms: LegalTermItem[]
 }

@@ -7,8 +7,14 @@ import LegalTermBlogList from '@/container/legalTermDetail/LegalTermBlogList'
 import LegalTermKnowledgeList from '@/container/legalTermDetail/LegalTermKnowledgeList'
 import LegalTermVideoList from '@/container/legalTermDetail/LegalTermVideoList'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
+import {
+  useLegalTermDetail,
+  usePopularLegalTermList,
+  useRecentRegisteredLegalTermList,
+} from '@/hooks/queries/useLegalTerm'
 
 const PcTotalContentsHeader = ({ amount }: { amount: number }) => {
+  console.log('amount', amount)
   return (
     <div className={styles['total-contents-header']}>
       <h3
@@ -22,19 +28,28 @@ const PcTotalContentsHeader = ({ amount }: { amount: number }) => {
 const LegalTermDetail = () => {
   const { state } = useLocation()
   const isMobile = useMediaQuery('(min-width: 80rem)')
-  console.log(state.id)
+  const { data: legalTermDetail } = useLegalTermDetail(state.id)
+  const { data: popularLegalTermList } = usePopularLegalTermList()
+  const { data: recentRegisteredLegalTermList } = useRecentRegisteredLegalTermList()
 
   const tagList = ['#파산', '#선고', '#개인회생', '#개인회생파산', '#법인파산', '#파산선', '#희망파산']
 
   return (
     <main className={`sub-main-container ${styles.container}`}>
       <div className='contents-section'>
-        <LegalTermDefinition termId={state.id} />
+        <LegalTermDefinition
+          koreanName={legalTermDetail?.koreanName || ''}
+          englishName={legalTermDetail?.englishName || ''}
+          chineseName={legalTermDetail?.chineseName || ''}
+          content={legalTermDetail?.content || ''}
+          source={legalTermDetail?.source || ''}
+          legalTermId={state.id}
+        />
         <div className={styles['related-content-section']}>
-          {isMobile && <PcTotalContentsHeader amount={2147} />}
-          <LegalTermBlogList />
-          <LegalTermKnowledgeList />
-          <LegalTermVideoList />
+          {isMobile && <PcTotalContentsHeader amount={legalTermDetail?.viewCount || 0} />}
+          <LegalTermBlogList blogList={legalTermDetail?.relatedContent?.blogCases || []} />
+          <LegalTermKnowledgeList knowledgeList={legalTermDetail?.relatedContent?.knowledgeAnswers || []} />
+          <LegalTermVideoList videoList={legalTermDetail?.relatedContent?.videoCases || []} />
         </div>
       </div>
       <div className='aside' style={{ width: 250, flexShrink: 0 }}>
@@ -42,14 +57,14 @@ const LegalTermDetail = () => {
           title='유사한 법률 용어'
           contents={
             <div className={styles['tag-list']}>
-              {tagList.map(tag => (
-                <span key={tag}>{tag}</span>
+              {legalTermDetail?.similarTerms?.map(term => (
+                <span key={term.legalTermId}>#{term.koreanName}</span>
               ))}
             </div>
           }
         />
-        <LegalItemWidget title='많이 찾는 용어' />
-        <LegalItemWidget title='최근 등록된 용어' />
+        <LegalItemWidget title='많이 찾는 용어' legalTermList={popularLegalTermList || []} />
+        <LegalItemWidget title='최근 등록된 용어' legalTermList={recentRegisteredLegalTermList || []} />
       </div>
     </main>
   )
