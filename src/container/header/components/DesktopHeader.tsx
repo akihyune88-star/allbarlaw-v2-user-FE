@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import styles from '@/container/header/header.module.scss'
 import SvgIcon from '../../../components/SvgIcon'
 import InputBox from '../../../components/inputBox/InputBox'
@@ -8,14 +8,26 @@ import HeaderNavigation from './HeaderNavigation'
 
 const DesktopHeader = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [searchValue, setSearchValue] = useState('')
 
   const handleSearch = () => {
     if (searchValue.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchValue.trim())}`)
-      // setTimeout(() => {
-      //   setSearchValue('')
-      // }, 100)
+      const currentPath = location.pathname
+      let searchPath = '/search' // 기본값
+
+      // 현재 검색 페이지에 있는 경우 현재 탭 유지
+      if (currentPath.includes('/search/blog')) {
+        searchPath = '/search/blog'
+      } else if (currentPath.includes('/search/video')) {
+        searchPath = '/search/video'
+      } else if (currentPath.includes('/search/legal-knowledge')) {
+        searchPath = '/search/legal-knowledge'
+      } else if (currentPath.includes('/search/lawyer')) {
+        searchPath = '/search/lawyer'
+      }
+
+      navigate(`${searchPath}?q=${encodeURIComponent(searchValue.trim())}`)
     }
   }
 

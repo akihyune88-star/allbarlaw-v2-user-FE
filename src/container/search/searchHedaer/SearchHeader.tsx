@@ -14,8 +14,12 @@ const SearchHeader = ({ searchQuery }: SearchHeaderProps) => {
   const query = searchParams.get('q') || ''
 
   const handleMenuClick = (path: string) => {
+    // 검색창의 현재 값을 가져오기 (input 요소에 id 필요)
+    const searchInput = document.querySelector('input[placeholder="검색은 여기에 해주세요"]') as HTMLInputElement
+    const currentSearchValue = searchInput?.value?.trim() || query
+    
     const basePath = path === '/' ? '' : path
-    navigate(`/search${basePath}?q=${encodeURIComponent(query)}`)
+    navigate(`/search${basePath}?q=${encodeURIComponent(currentSearchValue)}`)
   }
 
   return (

@@ -29,12 +29,11 @@ const SearchLawyer = () => {
     fetchNextPage,
     isFetchingNextPage,
     threshold: 500,
-    enabled: !lawyerId, // lawyerId가 없을 때만 활성화
+    enabled: !lawyerId,
   })
 
-  // lawyerId가 있으면 상세 페이지 렌더링
   if (lawyerId) {
-    return <Outlet />
+    return <Outlet /> // lawyerId가 있으면 상세 페이지 렌더링
   }
 
   const lawyerCount = searchTotalCounts?.searchTotalLawyerCount || 0

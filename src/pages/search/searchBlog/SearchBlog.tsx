@@ -9,6 +9,7 @@ import type { SortType } from '@/types/sortTypes'
 import { useInfiniteSearchList } from '@/hooks/queries/useSearch'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { useSearchQuery } from '@/utils/urlUtils'
+import Divider from '@/components/divider/Divider'
 
 const SearchBlog = () => {
   const [sort, setSort] = useState<SortType>('viewCount')
@@ -39,6 +40,7 @@ const SearchBlog = () => {
           searchTab={sort}
           handleSearchTab={handleSearchTab}
         />
+        <Divider padding={0} />
         <SearchBlogResult searchResults={searchResults?.searchBlogResults || []} />
       </section>
       <aside className='aside'>

@@ -30,9 +30,9 @@ const SearchVideoResult = ({ searchResults, isLoading }: SearchVideoResultProps)
         <VideoHorizon
           key={video.videoCaseId}
           title={video.title}
+          thumbnailUrl={video.thumbnail}
           summaryContents={video.summaryContent}
-          // lawyerList={video.lawyers}
-          isKeep
+          isKeep={video.isKeep}
         />
       ))}
     </div>
