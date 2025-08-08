@@ -1,3 +1,4 @@
+import { Tag } from './lawyerTypes'
 import { SortType } from './sortTypes'
 
 export type KnowledgeListRequest = {
@@ -39,7 +40,7 @@ export type KnowledgeDetailResponse = {
   knowledgeDescription: string
   lastMessageAt: string
   isKeep: boolean
-  tags: string[]
+  tags: Tag[]
   lawyers: {
     lawyerId: number
     lawyerName: string

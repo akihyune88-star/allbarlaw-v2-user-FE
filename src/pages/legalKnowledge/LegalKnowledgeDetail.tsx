@@ -64,7 +64,7 @@ const LegalKnowledgeDetail = () => {
             <div className={styles['detail-content-container-inner']}>
               <ConsultationContentCard
                 content={data?.knowledgeDescription}
-                tags={data?.tags?.map((tag, index) => ({ id: index, name: tag }))}
+                tags={data?.tags}
                 lastAnswerTime={data?.lastMessageAt ? getRelativeTimeString(data.lastMessageAt) : ''}
                 onShare={handleShare}
                 onSave={handleSave}
