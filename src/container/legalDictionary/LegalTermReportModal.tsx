@@ -28,8 +28,12 @@ const LegalTermReportModal = ({ isOpen, onClose }: LegalTermReportModalProps) =>
         <input placeholder='용어를 작성해주세요'></input>
       </Modal.Body>
       <Modal.Footer className={styles.footer}>
-        <button className={`${styles.btn} ${styles.cancel}`}>취소</button>
-        <button className={`${styles.btn} ${styles.report}`}>신고하기</button>
+        <button className={`${styles.btn} ${styles.cancel}`} onClick={onClose}>
+          취소
+        </button>
+        <button className={`${styles.btn} ${styles.report}`} onClick={handleReportLegalTerm}>
+          신고하기
+        </button>
       </Modal.Footer>
     </Modal>
   )
