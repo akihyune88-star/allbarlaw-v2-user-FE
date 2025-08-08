@@ -1,3 +1,4 @@
+import React from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import styles from './empty-state.module.scss'
 

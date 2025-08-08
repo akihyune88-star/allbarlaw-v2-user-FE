@@ -6,7 +6,6 @@ import LegalTermReportModal from './LegalTermReportModal'
 import { useLegalDictionaryStore } from '@/stores/useLegalDictionaryStore'
 import { useDeleteRecentSearch, useRecentSearches } from '@/hooks/queries/useLegalTerm'
 import { LegalTermItem } from '@/types/legalTermTypes'
-import { QUERY_KEY } from '@/constants/queryKey'
 
 const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
   const { setSearchValue, setSelectedConsonant } = useLegalDictionaryStore()
