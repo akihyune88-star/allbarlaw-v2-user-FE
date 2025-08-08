@@ -1,22 +1,50 @@
 import LawyerVertical from '@/components/lawyer/LawyerVertical'
 import styles from './lawyer-detail-sidebar.module.scss'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
+import { useLawyerKeep } from '@/hooks/queries/useLawyer'
+import { useEffect, useState } from 'react'
+import { copyUrlToClipboard } from '@/utils/clipboard'
 
 type LawyerDetailSidebarProps = {
   lawyerId: number
   lawyerName: string
   lawyerLawfirm: string
   lawyerProfileImage: string[]
+  lawyerIsKeep: boolean
 }
 
-const LawyerDetailSidebar = ({ lawyerId, lawyerName, lawyerLawfirm, lawyerProfileImage }: LawyerDetailSidebarProps) => {
+const LawyerDetailSidebar = ({
+  lawyerId,
+  lawyerName,
+  lawyerLawfirm,
+  lawyerProfileImage,
+  lawyerIsKeep,
+}: LawyerDetailSidebarProps) => {
+  const [isKeep, setIsKeep] = useState(lawyerIsKeep)
+
+  useEffect(() => {
+    setIsKeep(lawyerIsKeep)
+  }, [lawyerIsKeep])
+
+  const { mutate: changeLawyerKeep } = useLawyerKeep({
+    onSuccess: data => {
+      setIsKeep(data.isKeep)
+    },
+    onError: () => {
+      setIsKeep(prevState => !prevState)
+    },
+  })
+
   const saveHandler = () => {
-    console.log('save')
+    setIsKeep(prevState => !prevState)
+    changeLawyerKeep(lawyerId)
   }
 
   const shareHandler = () => {
-    console.log('share')
+    copyUrlToClipboard()
   }
+
+  console.log(isKeep, 'isKeep')
   return (
     <div className={styles['lawyer-detail-sidebar']}>
       <LawyerVertical
@@ -33,6 +61,8 @@ const LawyerDetailSidebar = ({ lawyerId, lawyerName, lawyerLawfirm, lawyerProfil
         profileImageHeight='234px'
         saveHandler={saveHandler}
         shareHandler={shareHandler}
+        isKeep={isKeep}
+        isShare={true}
       />
       <LegalTermWidget
         lagalTermList={[

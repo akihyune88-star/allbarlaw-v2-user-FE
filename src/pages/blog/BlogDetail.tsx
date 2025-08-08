@@ -13,7 +13,7 @@ import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
 import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { COLOR } from '@/styles/color'
 import { copyUrlToClipboard } from '@/utils/clipboard'
 
@@ -44,13 +44,23 @@ const BlogDetail = () => {
   const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { blogCaseId } = useParams<{ blogCaseId: string }>()
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
-  const [isKeep, setIsKeep] = useState(data?.isKeep ?? false)
+  const [isKeep, setIsKeep] = useState(false)
+
+  // data가 로드되면 isKeep 상태 업데이트
+  useEffect(() => {
+    if (data?.isKeep !== undefined) {
+      setIsKeep(data.isKeep)
+    }
+  }, [data?.isKeep])
 
   const { mutate: changeBlogKeep } = useBlogKeep({
     onSuccess: data => {
+      // 서버 응답으로 최종 상태 확인
       setIsKeep(data.isKeep)
     },
     onError: () => {
+      console.error('Failed to change blog keep')
+      // 에러 발생 시 원래 상태로 롤백
       setIsKeep(prevState => !prevState)
     },
   })
@@ -69,6 +79,7 @@ const BlogDetail = () => {
 
   const handleSave = () => {
     if (data?.blogCaseId) {
+      // 낙관적 업데이트: 즉시 UI 변경
       setIsKeep(prevState => !prevState)
       changeBlogKeep(data.blogCaseId)
     }

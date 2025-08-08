@@ -38,6 +38,7 @@ export type KnowledgeDetailResponse = {
   knowledgeTitle: string
   knowledgeDescription: string
   lastMessageAt: string
+  isKeep: boolean
   tags: string[]
   lawyers: {
     lawyerId: number

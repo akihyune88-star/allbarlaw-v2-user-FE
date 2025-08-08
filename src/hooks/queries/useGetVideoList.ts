@@ -68,9 +68,43 @@ export const useVideoKeep = ({
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (videoCaseId: number) => videoService.changeVideoKeep(videoCaseId),
-    onSuccess: (data: VideoKeepResponse) => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.VIDEO_LIST] })
+    onSuccess: (data: VideoKeepResponse, videoCaseId: number) => {
+      // 무한 스크롤 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.VIDEO_LIST, 'infinite'] },
+        (oldData: any) => {
+          if (!oldData || !oldData.pages) return oldData
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: any) => ({
+              ...page,
+              data: page.data?.map((video: any) =>
+                video.videoCaseId === videoCaseId ? { ...video, isKeep: data.isKeep } : video
+              ) || [],
+            })),
+          }
+        }
+      )
+      
+      // 일반 리스트 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.VIDEO_LIST] },
+        (oldData: any) => {
+          if (!oldData || !oldData.data) return oldData
+          return {
+            ...oldData,
+            data: oldData.data.map((video: any) =>
+              video.videoCaseId === videoCaseId ? { ...video, isKeep: data.isKeep } : video
+            ),
+          }
+        }
+      )
+      
       onSuccess(data)
+    },
+    onError: () => {
+      console.error('Failed to change video keep')
+      onError?.()
     },
   })
 }

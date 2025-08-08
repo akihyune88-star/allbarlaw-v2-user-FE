@@ -11,7 +11,6 @@ type DetailHeaderProps = {
 }
 
 const DetailHeader = ({ title, onShare, onSave, isKeep }: DetailHeaderProps) => {
-  console.log('isKeep', isKeep)
   return (
     <div className={styles['detail-header']}>
       <h1>{title}</h1>
@@ -24,7 +23,7 @@ const DetailHeader = ({ title, onShare, onSave, isKeep }: DetailHeaderProps) => 
         )}
         {onSave && (
           <Button variant='save' onClick={onSave}>
-            저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.icon_darkgreen : 'none'} />
+            저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.green_01 : 'none'} />
           </Button>
         )}
       </div>

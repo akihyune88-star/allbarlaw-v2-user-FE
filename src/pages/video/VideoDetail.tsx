@@ -13,7 +13,7 @@ import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import BlogDetailSideBar from '@/container/blog/BlogDetailSideBar'
 import AiVideoRecommender from '@/container/video/aiVideoRecommender/AiVideoRecommender'
 import AiRecommenderVideoSlider from '@/container/video/AiRecommenderVideoSlider'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useVideoKeep } from '@/hooks/queries/useGetVideoList'
 import { copyUrlToClipboard } from '@/utils/clipboard'
 
@@ -23,7 +23,14 @@ const VideoDetail = () => {
 
   const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { data } = useGetVideoDetail({ videoCaseId: Number(videoId) })
-  const [isKeep, setIsKeep] = useState(data?.isKeep ?? false)
+  const [isKeep, setIsKeep] = useState(false)
+  
+  // data가 로드되면 isKeep 상태 업데이트
+  useEffect(() => {
+    if (data?.isKeep !== undefined) {
+      setIsKeep(data.isKeep)
+    }
+  }, [data?.isKeep])
 
   const { mutate: changeVideoKeep } = useVideoKeep({
     onSuccess: data => {

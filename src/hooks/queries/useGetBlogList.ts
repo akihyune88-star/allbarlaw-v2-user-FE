@@ -69,13 +69,43 @@ export const useBlogKeep = ({
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (blogCaseId: number) => blogService.changeBlogKeep(blogCaseId),
-    onSuccess: (data: BlogKeepResponse) => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.BLOG_LIST] })
+    onSuccess: (data: BlogKeepResponse, blogCaseId: number) => {
+      // 무한 스크롤 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.BLOG_LIST, 'infinite'] },
+        (oldData: any) => {
+          if (!oldData || !oldData.pages) return oldData
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: any) => ({
+              ...page,
+              data: page.data?.map((blog: any) =>
+                blog.blogCaseId === blogCaseId ? { ...blog, isKeep: data.isKeep } : blog
+              ) || [],
+            })),
+          }
+        }
+      )
+      
+      // 일반 리스트 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.BLOG_LIST] },
+        (oldData: any) => {
+          if (!oldData || !oldData.data) return oldData
+          return {
+            ...oldData,
+            data: oldData.data.map((blog: any) =>
+              blog.blogCaseId === blogCaseId ? { ...blog, isKeep: data.isKeep } : blog
+            ),
+          }
+        }
+      )
+      
       onSuccess(data)
     },
-    onError: () => {
-      console.error('Failed to change blog keep')
-      onError()
+    onError: (error) => {
+      console.error('Failed to change blog keep:', error)
+      onError?.()
     },
   })
 }

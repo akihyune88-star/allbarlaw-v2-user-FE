@@ -6,6 +6,7 @@ import styles from './consultation-content-card.module.scss'
 import ReactMarkdown from 'react-markdown'
 import { markdownComponents } from '@/utils/markdownComponents'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { COLOR } from '@/styles/color'
 
 interface ConsultationContentCardProps {
   title?: string
@@ -16,6 +17,7 @@ interface ConsultationContentCardProps {
   isSaved?: boolean
   className?: string
   tags?: string[]
+  isKeep?: boolean
 }
 
 const ConsultationContentCard = ({
@@ -27,24 +29,9 @@ const ConsultationContentCard = ({
   onSave,
   isSaved = false,
   className,
+  isKeep,
 }: ConsultationContentCardProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-
-  const handleShare = () => {
-    if (onShare) {
-      onShare()
-    } else {
-      console.log('공유하기')
-    }
-  }
-
-  const handleSave = () => {
-    if (onSave) {
-      onSave()
-    } else {
-      console.log('저장하기')
-    }
-  }
 
   return (
     <div className={styles['consultation-content-card']}>
@@ -55,12 +42,13 @@ const ConsultationContentCard = ({
             <span className={styles['last-answer-time']}>
               <strong>{lastAnswerTime}</strong> 마지막 답변
             </span>
-            <Button variant='share' onClick={handleShare}>
+            <Button variant='share' onClick={onShare}>
               공유
               <SvgIcon name='share' size={16} />
             </Button>
-            <Button variant='save' onClick={handleSave}>
-              저장 <SvgIcon name={isSaved ? 'bookMarkStrong' : 'save'} size={16} />
+            <Button variant='save' onClick={onSave}>
+              저장
+              <SvgIcon name={isSaved ? 'bookMarkStrong' : 'save'} size={16} fill={isKeep ? COLOR.green_01 : 'none'} />
             </Button>
           </div>
         </Card.Header>

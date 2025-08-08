@@ -66,9 +66,43 @@ export const useKnowledgeKeep = ({
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (knowledgeId: number) => knowledgeService.changeKnowledgeKeep(knowledgeId),
-    onSuccess: (data: KnowledgeKeepResponse) => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.KNOWLEDGE_LIST] })
+    onSuccess: (data: KnowledgeKeepResponse, knowledgeId: number) => {
+      // 무한 스크롤 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.KNOWLEDGE_LIST, 'infinite'] },
+        (oldData: any) => {
+          if (!oldData || !oldData.pages) return oldData
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: any) => ({
+              ...page,
+              data: page.data?.map((knowledge: any) =>
+                knowledge.knowledgeId === knowledgeId ? { ...knowledge, isKeep: data.isKeep } : knowledge
+              ) || [],
+            })),
+          }
+        }
+      )
+      
+      // 일반 리스트 쿼리 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.KNOWLEDGE_LIST] },
+        (oldData: any) => {
+          if (!oldData || !oldData.data) return oldData
+          return {
+            ...oldData,
+            data: oldData.data.map((knowledge: any) =>
+              knowledge.knowledgeId === knowledgeId ? { ...knowledge, isKeep: data.isKeep } : knowledge
+            ),
+          }
+        }
+      )
+      
       onSuccess(data)
+    },
+    onError: () => {
+      console.error('Failed to change knowledge keep')
+      onError?.()
     },
   })
 }

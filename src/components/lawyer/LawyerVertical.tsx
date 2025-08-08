@@ -6,6 +6,7 @@ import ImageSlider from '../slider/imageSlider'
 import Button from '../button/Button'
 import SvgIcon from '../SvgIcon'
 import { SocialLink, Tag as TagType } from '@/types/lawyerTypes'
+import { COLOR } from '@/styles/color'
 
 type LawyerVerticalProps = {
   lawyerId: number
@@ -25,6 +26,7 @@ type LawyerVerticalProps = {
   className?: string
   socialLink?: SocialLink[]
   isShare?: boolean
+  isKeep?: boolean
 }
 
 const LawyerVertical = ({
@@ -41,6 +43,9 @@ const LawyerVertical = ({
   profileImageWidth,
   profileImageHeight,
   isShare = false,
+  isKeep = false,
+  saveHandler,
+  shareHandler,
 }: LawyerVerticalProps) => {
   return (
     <div className={`${styles['lawyer-vertical']} ${styles[`type-${type}`]} ${className}`}>
@@ -60,12 +65,12 @@ const LawyerVertical = ({
         {lawfirm && <p className={styles.lawfirm}>{lawfirm}</p>}
         {isShare && (
           <div className={styles['button-wrapper']}>
-            <Button variant='share'>
+            <Button variant='share' onClick={shareHandler}>
               공유
               <SvgIcon name='share' size={16} />
             </Button>
-            <Button variant='save'>
-              저장 <SvgIcon name='save' size={16} />
+            <Button variant='save' onClick={saveHandler}>
+              저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.green_01 : 'none'} />
             </Button>
           </div>
         )}

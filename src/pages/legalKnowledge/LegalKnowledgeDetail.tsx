@@ -12,22 +12,38 @@ import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import { getRelativeTimeString } from '@/utils/date'
 import { generateRandomLawyers } from '@/utils/mockDataGenerator'
+import { useState } from 'react'
+import { useKnowledgeKeep } from '@/hooks/queries/useGetKnowledgeList'
+import { copyUrlToClipboard } from '@/utils/clipboard'
 
 const LegalKnowledgeDetail = () => {
   const { knowledgeId } = useParams<{ knowledgeId: string }>()
   const { showLoading } = useDelayedLoading({ delay: 3000 })
+
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const { data } = useGetKnowledgeDetail({ knowledgeId: Number(knowledgeId) })
 
+  const [isKeep, setIsKeep] = useState(data?.isKeep ?? false)
+
+  const { mutate: changeKnowledgeKeep } = useKnowledgeKeep({
+    onSuccess: data => {
+      setIsKeep(data.isKeep)
+    },
+    onError: () => {
+      setIsKeep(prevState => !prevState)
+    },
+  })
+
   const handleShare = () => {
-    console.log('공유하기 - 법률 지식:', knowledgeId)
-    // 실제 공유 로직 구현
+    copyUrlToClipboard()
   }
 
   const handleSave = () => {
-    console.log('저장하기 - 법률 지식:', knowledgeId)
-    // 실제 저장 로직 구현
+    if (knowledgeId) {
+      setIsKeep(prevState => !prevState)
+      changeKnowledgeKeep(Number(knowledgeId))
+    }
   }
 
   const mockLawyerList = generateRandomLawyers(3)
@@ -38,6 +54,7 @@ const LegalKnowledgeDetail = () => {
         title={data?.knowledgeTitle || ''}
         onSave={isMobile ? handleSave : undefined}
         onShare={isMobile ? handleShare : undefined}
+        isKeep={isKeep}
       />
       <div className={`detail-body ${styles['detail-body-gap']}`}>
         <div className={styles['detail-content-container']}>
@@ -51,6 +68,7 @@ const LegalKnowledgeDetail = () => {
                 lastAnswerTime={data?.lastMessageAt ? getRelativeTimeString(data.lastMessageAt) : ''}
                 onShare={handleShare}
                 onSave={handleSave}
+                isKeep={isKeep}
               />
               {data?.lawyers && <LawyerResponse lawyers={data?.lawyers} />}
               {isMobile && (

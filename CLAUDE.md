@@ -3,6 +3,150 @@
 ## 🎯 프로젝트 개요
 올바로우 변호사 매칭 플랫폼의 프론트엔드 시스템 - 실시간 채팅 상담 기능 구현
 
+## 📌 Keep 기능 캐시 관리 전략
+
+### 개요
+Keep(북마크) 기능은 Blog, Video, Knowledge 엔티티에서 사용되며, 낙관적 업데이트와 React Query 캐시 동기화를 통해 구현됩니다.
+
+### 구현 패턴
+
+#### 1. 낙관적 업데이트 (Optimistic Update)
+```typescript
+// 컴포넌트에서의 사용 예시
+const handleKeep = () => {
+  // 즉시 UI 업데이트
+  setIsKeep(prevState => !prevState)
+  // 서버 요청
+  changeKeep(itemId)
+}
+```
+
+#### 2. 캐시 업데이트 전략
+Keep mutation 성공 시 다음 캐시들을 업데이트:
+- **무한 스크롤 리스트 캐시**: `[QUERY_KEY.ENTITY_LIST, 'infinite']`
+- **일반 리스트 캐시**: `[QUERY_KEY.ENTITY_LIST]`
+- **상세 페이지 캐시**: `[QUERY_KEY.ENTITY_DETAIL, id]`
+
+#### 3. Hook 구현 패턴
+```typescript
+export const useEntityKeep = ({ onSuccess, onError }) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: number) => service.changeKeep(id),
+    onSuccess: (data, id) => {
+      // 무한 스크롤 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.LIST, 'infinite'] },
+        (oldData: any) => {
+          if (!oldData?.pages) return oldData
+          return {
+            ...oldData,
+            pages: oldData.pages.map(page => ({
+              ...page,
+              data: page.data?.map(item =>
+                item.id === id ? { ...item, isKeep: data.isKeep } : item
+              ) || [],
+            })),
+          }
+        }
+      )
+      
+      // 일반 리스트 캐시 업데이트
+      queryClient.setQueriesData(
+        { queryKey: [QUERY_KEY.LIST] },
+        (oldData: any) => {
+          if (!oldData?.data) return oldData
+          return {
+            ...oldData,
+            data: oldData.data.map(item =>
+              item.id === id ? { ...item, isKeep: data.isKeep } : item
+            ),
+          }
+        }
+      )
+      
+      onSuccess(data)
+    },
+    onError: (error) => {
+      console.error('Failed to change keep:', error)
+      onError?.()
+    },
+  })
+}
+```
+
+### 주요 구현 파일
+- `src/hooks/queries/useGetBlogList.ts` - Blog Keep hook
+- `src/hooks/queries/useGetVideoList.ts` - Video Keep hook  
+- `src/hooks/queries/useGetKnowledgeList.ts` - Knowledge Keep hook
+
+### 컴포넌트 구현 패턴
+
+#### 리스트 아이템 컴포넌트
+```typescript
+const [isKeep, setIsKeep] = useState(item.isKeep)
+
+const { mutate: changeKeep } = useKeep({
+  onSuccess: (data) => {
+    // 서버 응답으로 최종 상태 확인
+    setIsKeep(data.isKeep)
+  },
+  onError: () => {
+    // 에러 시 롤백
+    setIsKeep(prevState => !prevState)
+  },
+})
+
+const handleKeep = (e: React.MouseEvent) => {
+  e.stopPropagation() // 이벤트 버블링 방지
+  // 낙관적 업데이트
+  setIsKeep(prevState => !prevState)
+  changeKeep(item.id)
+}
+```
+
+#### 상세 페이지 컴포넌트
+```typescript
+const [isKeep, setIsKeep] = useState(false)
+
+// 데이터 로드 시 상태 동기화
+useEffect(() => {
+  if (data?.isKeep !== undefined) {
+    setIsKeep(data.isKeep)
+  }
+}, [data?.isKeep])
+```
+
+### 주의사항
+
+1. **null/undefined 체크 필수**
+   - 캐시 업데이트 시 `oldData?.pages`, `oldData?.data` 체크
+   - 빈 배열 대비: `page.data?.map() || []`
+
+2. **이벤트 버블링 방지**
+   - Keep 버튼 클릭 시 `e.stopPropagation()` 필수
+   - 상위 컴포넌트의 onClick 이벤트와 충돌 방지
+
+3. **서버 응답 검증**
+   - 서버가 토글된 값을 반환하는지 확인
+   - 응답 구조: `{ isKeep: boolean }`
+
+4. **에러 처리**
+   - 네트워크 에러 시 UI 롤백
+   - 사용자에게 에러 피드백 제공
+
+### 디버깅 팁
+
+1. **로그 추가 위치**
+   - Service 레이어: API 요청/응답 로깅
+   - Hook 레이어: 캐시 업데이트 전후 상태
+   - Component 레이어: 상태 변경 시점
+
+2. **일반적인 문제 해결**
+   - Keep 상태가 원복되는 경우: 서버 응답 값 확인
+   - 캐시 업데이트 에러: null/undefined 체크 추가
+   - 이벤트 중복 발생: stopPropagation 확인
+
 ## 📋 API 검토 문서 구조
 
 ### Phase 1: 인증 및 REST API 검토
