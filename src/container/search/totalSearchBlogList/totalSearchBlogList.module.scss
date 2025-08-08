@@ -32,6 +32,10 @@
     grid-template-columns: repeat(1, 1fr);
     background-color: $color-white;
 
+    border-bottom: none;
     padding: 1.5rem;
+
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
   }
 }
