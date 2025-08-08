@@ -2,10 +2,11 @@ import { BlogCase } from '@/types/blogTypes'
 import { getBlogSummaryText } from '@/utils/blogTextFormatter'
 import styles from '@/components/blogItem/blog-item.module.scss'
 import SvgIcon from '../SvgIcon'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { COLOR } from '@/styles/color'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useAuth } from '@/contexts/AuthContext'
+import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
 
 type BlogItemProps = {
   type?: 'small' | 'regular'
@@ -24,10 +25,26 @@ const BlogItem = ({
   isShowKeep = true,
   onClick,
 }: BlogItemProps) => {
-  const [like, setLike] = useState(false)
+  const [isKeep, setIsKeep] = useState(item.isKeep)
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { isLoggedIn } = useAuth()
   const summaryContents = getBlogSummaryText(item.summaryContent)
+
+  const { mutate: changeBlogKeep } = useBlogKeep({
+    onSuccess: data => {
+      setIsKeep(data.isKeep)
+    },
+    onError: () => {
+      setIsKeep(prevState => !prevState)
+    },
+  })
+
+  const handleBlogKeep = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    // 낙관적 업데이트: 즉시 UI 변경
+    setIsKeep(prevState => !prevState)
+    changeBlogKeep(item.blogCaseId)
+  }
 
   return (
     <article className={`${styles['blog-item-wrapper']} ${styles[type]} ${className || ''}`} onClick={onClick}>
@@ -35,7 +52,9 @@ const BlogItem = ({
         <div className={styles['blog-content-header']}>
           <h3>{item.title}</h3>
           {isLoggedIn && !isMobile && isShowKeep && (
-            <SvgIcon name='bookMark' onClick={() => setLike(!like)} fill={like ? COLOR.green_01 : 'none'} />
+            <button onClick={e => handleBlogKeep(e)} className={styles['blog-item-keep-btn']}>
+              <SvgIcon name='bookMark' fill={isKeep ? COLOR.green_01 : 'none'} />
+            </button>
           )}
         </div>
         <div className={styles['blog-content-body']}>
@@ -44,12 +63,9 @@ const BlogItem = ({
             <span className={styles.lawyer}>{item.lawyerName} 변호사</span>
             <span className={styles.lawfirm}>[{item.lawfirmName}]</span>
             {isLoggedIn && isMobile && isShowKeep && (
-              <SvgIcon
-                name='bookMark'
-                onClick={() => setLike(!like)}
-                fill={like ? COLOR.green_01 : 'none'}
-                style={{ marginLeft: 'auto' }}
-              />
+              <button onClick={e => handleBlogKeep(e)} className={styles['blog-item-keep-btn']}>
+                <SvgIcon name='bookMark' fill={isKeep ? COLOR.green_01 : 'none'} style={{ marginLeft: 'auto' }} />
+              </button>
             )}
           </div>
         </div>

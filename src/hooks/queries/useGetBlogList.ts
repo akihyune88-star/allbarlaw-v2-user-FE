@@ -1,6 +1,6 @@
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
-import { BlogListRequest } from '@/types/blogTypes'
+import { BlogKeepResponse, BlogListRequest } from '@/types/blogTypes'
 import { blogService } from '@/services/blogService'
 
 export const useGetBlogList = (request: BlogListRequest) => {
@@ -57,4 +57,25 @@ export const useInfiniteBlogList = (request: Omit<BlogListRequest, 'cursor' | 'c
     fetchNextPage,
     isFetchingNextPage,
   }
+}
+
+export const useBlogKeep = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: BlogKeepResponse) => void
+  onError: () => void
+}) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (blogCaseId: number) => blogService.changeBlogKeep(blogCaseId),
+    onSuccess: (data: BlogKeepResponse) => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.BLOG_LIST] })
+      onSuccess(data)
+    },
+    onError: () => {
+      console.error('Failed to change blog keep')
+      onError()
+    },
+  })
 }

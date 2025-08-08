@@ -20,6 +20,8 @@ const BlogList = () => {
     orderBy: sortCase === 'all' ? 'createdAt' : (sortCase as 'createdAt' | 'viewCount' | 'likesCount'),
   })
 
+  console.log('blogList', blogList)
+
   // 무한스크롤 적용
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,

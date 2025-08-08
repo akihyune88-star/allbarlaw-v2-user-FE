@@ -52,3 +52,7 @@ export type BlogDetailResponse = Omit<BlogCase, 'isKeep'> & {
   source: string
   tags: string[]
 }
+
+export type BlogKeepResponse = {
+  isKeep: boolean
+}
