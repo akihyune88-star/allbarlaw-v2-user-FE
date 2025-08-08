@@ -38,7 +38,7 @@ export const useInfiniteLegalTermList = (
       request.orderBy,
       request.sort,
       request.search || 'all',
-      request.content || 'all',
+      request.consonant || 'all',
     ],
     queryFn: ({ pageParam = 1 }) =>
       legalTermService.getLegalTermList({

@@ -18,7 +18,7 @@ const LegalSearchList = () => {
     {
       orderBy: 'koreanName',
       sort: 'asc',
-      content: selectedConsonant || '',
+      consonant: selectedConsonant || '',
     },
     { enabled: !isSearchMode }
   )
@@ -32,14 +32,7 @@ const LegalSearchList = () => {
   useEffect(() => {
     if (!isSearchMode && selectedConsonant) {
       queryClient.resetQueries({
-        queryKey: [
-          QUERY_KEY.LEGAL_TERM_LIST,
-          'infinite',
-          'koreanName',
-          'asc',
-          'all',
-          selectedConsonant || 'all',
-        ],
+        queryKey: [QUERY_KEY.LEGAL_TERM_LIST, 'infinite', 'koreanName', 'asc', 'all', selectedConsonant || 'all'],
       })
       refetch()
     }

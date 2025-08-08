@@ -30,7 +30,7 @@ export const legalTermService = {
       legalTermPage: request.legalTermPage.toString(),
       orderBy: request.orderBy,
       sort: request.sort,
-      content: request.content || '',
+      consonant: request.consonant || '',
     })
 
     if (request.search) {

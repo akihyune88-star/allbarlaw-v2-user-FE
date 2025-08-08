@@ -40,7 +40,7 @@ export type LegalTermListRequest = {
   orderBy: SortType
   sort: 'asc' | 'desc'
   search?: string
-  content?: string
+  consonant?: string
 }
 
 export type LegalTermListResponse = {
