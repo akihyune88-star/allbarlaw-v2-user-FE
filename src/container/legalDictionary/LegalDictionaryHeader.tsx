@@ -6,6 +6,7 @@ import LegalTermReportModal from './LegalTermReportModal'
 import { useLegalDictionaryStore } from '@/stores/useLegalDictionaryStore'
 import { useDeleteRecentSearch, useRecentSearches } from '@/hooks/queries/useLegalTerm'
 import { LegalTermItem } from '@/types/legalTermTypes'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
   const { setSearchValue, setSelectedConsonant } = useLegalDictionaryStore()
@@ -14,6 +15,8 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const { mutate: deleteRecentSearch } = useDeleteRecentSearch({
     onSuccess: () => {},
@@ -26,12 +29,23 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
     setSearchValue(localSearchValue)
     setSelectedConsonant(null)
     setIsDropdownOpen(false)
+    
+    // 메인 페이지가 아니면 메인으로 이동
+    if (!location.pathname.startsWith('/legal-dictionary') || location.pathname !== '/legal-dictionary') {
+      navigate('/legal-dictionary')
+    }
   }
 
   const handleSelectItem = (term: string) => {
     setLocalSearchValue(term)
     setSearchValue(term)
+    setSelectedConsonant(null)
     setIsDropdownOpen(false)
+    
+    // 메인 페이지가 아니면 메인으로 이동
+    if (!location.pathname.startsWith('/legal-dictionary') || location.pathname !== '/legal-dictionary') {
+      navigate('/legal-dictionary')
+    }
   }
 
   const handleDeleteRecentSearch = (e: React.MouseEvent, term: LegalTermItem) => {
@@ -125,11 +139,18 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
 
 const ConsonantFilter = () => {
   const consonants = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
-  const { selectedConsonant, setSelectedConsonant } = useLegalDictionaryStore()
+  const { selectedConsonant, setSelectedConsonant, setSearchValue } = useLegalDictionaryStore()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const handleConsonantClick = (consonant: string) => {
     setSelectedConsonant(consonant === selectedConsonant ? null : consonant)
-    // 필터 로직 추가
+    setSearchValue('') // 자음 선택 시 검색어 초기화
+    
+    // 메인 페이지가 아니면 메인으로 이동
+    if (location.pathname !== '/legal-dictionary') {
+      navigate('/legal-dictionary')
+    }
   }
 
   return (

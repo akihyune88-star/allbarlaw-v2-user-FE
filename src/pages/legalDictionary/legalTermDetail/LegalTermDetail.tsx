@@ -32,8 +32,6 @@ const LegalTermDetail = () => {
   const { data: popularLegalTermList } = usePopularLegalTermList()
   const { data: recentRegisteredLegalTermList } = useRecentRegisteredLegalTermList()
 
-  const tagList = ['#파산', '#선고', '#개인회생', '#개인회생파산', '#법인파산', '#파산선', '#희망파산']
-
   return (
     <main className={`sub-main-container ${styles.container}`}>
       <div className='contents-section'>
