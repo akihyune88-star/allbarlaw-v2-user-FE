@@ -1,10 +1,11 @@
 import React from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import styles from './empty-state.module.scss'
+import { KeyOfIcon } from '@/types/svg'
 
 interface EmptyStateProps {
   message: string
-  iconName?: string
+  iconName?: KeyOfIcon
   iconStyle?: React.CSSProperties
 }
 
