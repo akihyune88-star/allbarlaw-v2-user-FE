@@ -32,7 +32,6 @@ const TotalSearchBlogList = ({ searchResults, query }: TotalSearchBlogListProps)
               lawfirmName: blog.lawfirmName,
               profileImageUrl: blog.lawyerProfileImage,
             }}
-            // category={blog.subcategoryName}
           />
         ))}
       </div>
