@@ -29,6 +29,7 @@ const LegalTermKnowledgeList = ({ knowledgeList }: { knowledgeList: KnowledgeIte
           knowledgeList.map((knowledge, index) => (
             <Fragment key={knowledge.knowledgeId}>
               <LegalKnowledgeItem
+                knowledgeId={knowledge.knowledgeId}
                 title={knowledge.knowledgeTitle}
                 description={knowledge.summaryContent}
                 time={new Date(knowledge.lastMessageAt)}
