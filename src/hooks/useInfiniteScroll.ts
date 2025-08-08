@@ -81,7 +81,7 @@ export const useInfiniteScroll = ({
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, threshold, enabled])
 
   useEffect(() => {
-    if (!enabled) return
+    if (!enabled) return undefined
 
     window.addEventListener('scroll', handleScroll)
 

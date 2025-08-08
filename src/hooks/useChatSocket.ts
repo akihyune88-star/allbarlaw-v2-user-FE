@@ -70,7 +70,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   // 소켓 연결
   useEffect(() => {
     if (!userId || !chatRoomId) {
-      return undefined
+      return
     }
 
     // 기존 소켓이 있으면 먼저 정리

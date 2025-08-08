@@ -28,7 +28,7 @@ const MyLegalDictionary = ({ sort }: { sort: 'asc' | 'desc' }) => {
       ) : (
         // 법률 사전 목록 렌더링
         <>
-          {legalDictionaryList.map((legalDictionary) => (
+          {legalDictionaryList.map(legalDictionary => (
             <div
               key={legalDictionary.legalTermId}
               className={styles.legalDictionaryItem}
