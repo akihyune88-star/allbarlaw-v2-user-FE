@@ -15,6 +15,7 @@ import { generateRandomLawyers } from '@/utils/mockDataGenerator'
 import { useState } from 'react'
 import { useKnowledgeKeep } from '@/hooks/queries/useGetKnowledgeList'
 import { copyUrlToClipboard } from '@/utils/clipboard'
+import Tag from '@/components/tag/Tag'
 
 const LegalKnowledgeDetail = () => {
   const { knowledgeId } = useParams<{ knowledgeId: string }>()
@@ -48,6 +49,8 @@ const LegalKnowledgeDetail = () => {
 
   const mockLawyerList = generateRandomLawyers(3)
 
+  console.log(111, data?.tags)
+
   return (
     <div className={'detail-container'}>
       <DetailHeader
@@ -64,7 +67,7 @@ const LegalKnowledgeDetail = () => {
             <div className={styles['detail-content-container-inner']}>
               <ConsultationContentCard
                 content={data?.knowledgeDescription}
-                tags={data?.tags?.map((tag, index) => ({ id: index, name: tag }))}
+                tags={data?.tags}
                 lastAnswerTime={data?.lastMessageAt ? getRelativeTimeString(data.lastMessageAt) : ''}
                 onShare={handleShare}
                 onSave={handleSave}
