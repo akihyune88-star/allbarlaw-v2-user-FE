@@ -9,7 +9,7 @@ interface TotalSearchBlogListProps {
   query: string
 }
 
-const TotalSearchBlogList = ({ searchResults, query }: TotalSearchBlogListProps) => {
+const TotalSearchBlogList = ({ searchResults, query: _query }: TotalSearchBlogListProps) => {
   const navigate = useNavigate()
 
   const handleClickMore = () => {

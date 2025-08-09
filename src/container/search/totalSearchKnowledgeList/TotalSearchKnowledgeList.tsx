@@ -9,7 +9,7 @@ interface TotalSearchKnowledgeListProps {
   query: string
 }
 
-const TotalSearchKnowledgeList = ({ searchResults, query }: TotalSearchKnowledgeListProps) => {
+const TotalSearchKnowledgeList = ({ searchResults, query: _query }: TotalSearchKnowledgeListProps) => {
   const navigate = useNavigate()
 
   const handleClickMore = () => {

@@ -3,13 +3,13 @@ import { persist } from 'zustand/middleware'
 
 interface SearchState {
   searchQuery: string
-  setSearchQuery: (query: string) => void
+  setSearchQuery: (_query: string) => void
   clearSearchQuery: () => void
 }
 
 export const useSearchStore = create<SearchState>()(
   persist(
-    (set) => ({
+    set => ({
       searchQuery: '',
       
       setSearchQuery: (query: string) => {
@@ -26,7 +26,7 @@ export const useSearchStore = create<SearchState>()(
     {
       name: 'search-storage', // localStorage key
       storage: {
-        getItem: (name) => {
+        getItem: name => {
           // sessionStorage 우선, 없으면 localStorage
           const sessionValue = sessionStorage.getItem(name)
           if (sessionValue) return JSON.parse(sessionValue)
@@ -40,7 +40,7 @@ export const useSearchStore = create<SearchState>()(
           sessionStorage.setItem(name, stringValue)
           localStorage.setItem(name, stringValue)
         },
-        removeItem: (name) => {
+        removeItem: name => {
           sessionStorage.removeItem(name)
           localStorage.removeItem(name)
         },

@@ -13,7 +13,7 @@ type SearchLawyerResultProps = {
 const SearchLawyerResult = ({ searchResults, isLoading }: SearchLawyerResultProps) => {
   const navigate = useNavigate()
 
-  const handleLawyerClick = (lawyerId: number) => {
+  const _handleLawyerClick = (lawyerId: number) => {
     navigate(`/search/lawyer/${lawyerId}${window.location.search}`)
   }
 

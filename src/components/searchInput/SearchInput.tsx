@@ -6,8 +6,8 @@ import { useSearchStore } from '@/stores/searchStore'
 
 interface SearchInputProps {
   placeholder?: string
-  onSearch?: (value: string) => void
-  onChange?: (value: string) => void
+  onSearch?: (_value: string) => void
+  onChange?: (_value: string) => void
   className?: string
 }
 

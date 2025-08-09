@@ -9,7 +9,7 @@ interface TotalSearchLawyerListProps {
   query: string
 }
 
-const TotalSearchLawyerList = ({ searchResults, query }: TotalSearchLawyerListProps) => {
+const TotalSearchLawyerList = ({ searchResults, query: _query }: TotalSearchLawyerListProps) => {
   const navigate = useNavigate()
 
   const handleClickMore = () => {
