@@ -235,7 +235,11 @@ const router = createBrowserRouter([
                 children: [
                   {
                     path: ':knowledgeId',
-                    element: <LegalKnowledgeDetail />,
+                    element: (
+                      <div style={{ margin: '-24px' }}>
+                        <LegalKnowledgeDetail />
+                      </div>
+                    ),
                   },
                 ],
               },
