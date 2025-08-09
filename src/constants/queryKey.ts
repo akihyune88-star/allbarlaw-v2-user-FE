@@ -40,4 +40,11 @@ export const QUERY_KEY = {
   MY_LEGAL_KNOWLEDGE_LIST: 'myLegalKnowledgeList',
   MY_LAWYER_LIST: 'myLawyerList',
   MY_LEGAL_DICTIONARY_LIST: 'myLegalDictionaryList',
+
+  //검색
+  SEARCH: 'search',
+  SEARCH_BLOG: 'searchBlog',
+  SEARCH_VIDEO: 'searchVideo',
+  SEARCH_CONSULTATION: 'searchConsultation',
+  SEARCH_LAWYER: 'searchLawyer',
 } as const

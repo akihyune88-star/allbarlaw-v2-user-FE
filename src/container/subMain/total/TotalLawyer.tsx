@@ -8,6 +8,7 @@ import { useRandomLawyerList } from '@/hooks/queries/useLawyer'
 import { useCategoryInfo } from '@/hooks/useCategoryInfo'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { ROUTER } from '@/routes/routerConstant'
+import { Lawyer } from '@/types/lawyerTypes'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const TotalLawyer = () => {
@@ -23,6 +24,10 @@ const TotalLawyer = () => {
   })
 
   const handleTotalLawyerClick = () => navigate(`/${subcategoryId}${ROUTER.LAWYER}`)
+
+  const handleLawyerClick = (lawyer: Lawyer) => {
+    navigate(`/search/lawyer/${lawyer.lawyerId}?q=${lawyer.lawyerName}`)
+  }
 
   return (
     <div className={styles['container']}>
@@ -49,7 +54,12 @@ const TotalLawyer = () => {
               tags={lawyer.tags}
               buttonComponent={
                 <div className={styles['footer']}>
-                  <button className={`${styles['footer-button']} ${styles['left']}`}>더보기</button>
+                  <button
+                    className={`${styles['footer-button']} ${styles['left']}`}
+                    onClick={() => handleLawyerClick(lawyer)}
+                  >
+                    더보기
+                  </button>
                   <button className={`${styles['footer-button']} ${styles['left']}`}>바로톡</button>
                 </div>
               }
@@ -68,7 +78,12 @@ const TotalLawyer = () => {
               tags={lawyer.tags}
               footer={
                 <div className={styles['footer']}>
-                  <button className={`${styles['footer-button']} ${styles['left']}`}>더보기</button>
+                  <button
+                    className={`${styles['footer-button']} ${styles['left']}`}
+                    onClick={() => handleLawyerClick(lawyer)}
+                  >
+                    더보기
+                  </button>
                   <button className={`${styles['footer-button']} ${styles['right']}`}>바로톡</button>
                 </div>
               }

@@ -1,0 +1,7 @@
+.button-wrapper {
+  display: none;
+
+  @media (max-width: $breakpoint-desktop) {
+    display: flex;
+  }
+}
