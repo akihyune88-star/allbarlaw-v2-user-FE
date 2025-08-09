@@ -25,6 +25,12 @@
       margin-right: 0.5rem; // 8px
       font-size: 0.8125rem; // 13px
       color: $color-text-index;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: $color-icon-darkgreen;
+        text-decoration: underline;
+      }
     }
   }
 

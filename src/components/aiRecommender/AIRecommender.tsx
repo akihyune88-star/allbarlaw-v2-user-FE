@@ -7,10 +7,13 @@ import { useEffect, useState } from 'react'
 import { useRecommendationLawyer, useRecommendationTag } from '@/hooks/queries/useRecommendation'
 import { RecommendationTag } from '@/types/recommendationTypes'
 import { useNavigate } from 'react-router-dom'
+import { useSearchStore } from '@/stores/searchStore'
 
 const TagSection = ({ tagList }: { tagList: RecommendationTag[] }) => {
   const [visibleCount, setVisibleCount] = useState<number>(10)
   const [isArrowUp, setIsArrowUp] = useState<boolean>(false)
+  const navigate = useNavigate()
+  const { setSearchQuery } = useSearchStore()
 
   useEffect(() => {
     setVisibleCount(Math.min(10, tagList.length))
@@ -27,6 +30,13 @@ const TagSection = ({ tagList }: { tagList: RecommendationTag[] }) => {
     setIsArrowUp(prev => !prev)
   }
 
+  const handleTagClick = (tagName: string) => {
+    // 검색어 설정
+    setSearchQuery(tagName)
+    // 검색 페이지로 이동
+    navigate('/search')
+  }
+
   const visibleTags = tagList.slice(0, visibleCount)
   const isExpanded = visibleCount >= tagList.length
 
@@ -41,7 +51,12 @@ const TagSection = ({ tagList }: { tagList: RecommendationTag[] }) => {
         <>
           <div className={styles['tag-list']}>
             {visibleTags.map(tag => (
-              <span key={tag.tagId} className={styles['tag-item']}>
+              <span 
+                key={tag.tagId} 
+                className={styles['tag-item']}
+                onClick={() => handleTagClick(tag.tagName)}
+                style={{ cursor: 'pointer' }}
+              >
                 #{tag.tagName}
               </span>
             ))}
