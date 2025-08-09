@@ -58,16 +58,32 @@ const Tabs = ({ children, items, initialPath, onChange }: TabsProps) => {
   // URL이 변경될 때마다 selectedPath 업데이트
   useEffect(() => {
     const pathSegments = location.pathname.split('/')
-    const currentPath = pathSegments[pathSegments.length - 1] || '/'
+    
+    // /search 경로인 경우 특별 처리
+    if (location.pathname.startsWith('/search')) {
+      // /search -> '/'
+      // /search/blog -> '/blog'
+      // /search/video -> '/video'
+      // /search/legal-knowledge -> '/legal-knowledge'
+      // /search/lawyer -> '/lawyer'
+      const searchSubPath = pathSegments.slice(2).join('/') // /search 이후의 경로
+      const currentPath = searchSubPath ? `/${searchSubPath}` : '/'
+      
+      const matchingItem = items?.find(item => item.path === currentPath)
+      if (matchingItem) {
+        setSelectedPath(matchingItem.path)
+      }
+    } else {
+      // 일반 경로 처리
+      const currentPath = pathSegments[pathSegments.length - 1] || '/'
+      const matchingItem = items?.find(item => {
+        const itemPath = item.path.replace(/^\//, '') // 앞의 슬래시 제거
+        return itemPath === currentPath || (itemPath === '' && currentPath === '')
+      })
 
-    // 현재 경로가 items의 path와 일치하는지 확인
-    const matchingItem = items?.find(item => {
-      const itemPath = item.path.replace(/^\//, '') // 앞의 슬래시 제거
-      return itemPath === currentPath || (itemPath === '' && currentPath === '')
-    })
-
-    if (matchingItem) {
-      setSelectedPath(matchingItem.path)
+      if (matchingItem) {
+        setSelectedPath(matchingItem.path)
+      }
     }
   }, [location.pathname, items])
 

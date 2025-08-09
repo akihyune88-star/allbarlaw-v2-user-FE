@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import { useSearchQuery } from '@/utils/urlUtils'
+import { useSearchStore } from '@/stores/searchStore'
 import { useInfiniteSearchList } from '@/hooks/queries/useSearch'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import SearchContentHeader from '@/container/search/searchContentHeader/SearchContentHeader'
@@ -14,7 +14,7 @@ import Divider from '@/components/divider/Divider'
 
 const SearchLawyer = () => {
   const { lawyerId } = useParams()
-  const searchQuery = useSearchQuery()
+  const { searchQuery } = useSearchStore()
   const [sort, setSort] = useState<SortType>('viewCount')
 
   const { searchResults, searchTotalCounts, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =

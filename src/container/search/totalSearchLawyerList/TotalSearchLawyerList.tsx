@@ -13,7 +13,7 @@ const TotalSearchLawyerList = ({ searchResults, query }: TotalSearchLawyerListPr
   const navigate = useNavigate()
 
   const handleClickMore = () => {
-    navigate(`/search/lawyer?q=${encodeURIComponent(query)}`)
+    navigate('/search/lawyer')
   }
 
   const handleClickLawyerPage = (lawyerId: number) => {

@@ -8,12 +8,12 @@ import { useState } from 'react'
 import type { SortType } from '@/types/sortTypes'
 import { useInfiniteSearchList } from '@/hooks/queries/useSearch'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
-import { useSearchQuery } from '@/utils/urlUtils'
+import { useSearchStore } from '@/stores/searchStore'
 import Divider from '@/components/divider/Divider'
 
 const SearchBlog = () => {
   const [sort, setSort] = useState<SortType>('viewCount')
-  const searchQuery = useSearchQuery()
+  const { searchQuery } = useSearchStore()
 
   const handleSearchTab = (tab: SortType) => {
     setSort(tab)

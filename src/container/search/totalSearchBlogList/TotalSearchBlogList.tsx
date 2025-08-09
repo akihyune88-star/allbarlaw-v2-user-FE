@@ -13,7 +13,7 @@ const TotalSearchBlogList = ({ searchResults, query }: TotalSearchBlogListProps)
   const navigate = useNavigate()
 
   const handleClickMore = () => {
-    navigate(`/search/blog?q=${encodeURIComponent(query)}`)
+    navigate('/search/blog')
   }
 
   return (

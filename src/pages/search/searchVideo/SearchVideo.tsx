@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useSearchQuery } from '@/utils/urlUtils'
+import { useSearchStore } from '@/stores/searchStore'
 import { useInfiniteSearchList } from '@/hooks/queries/useSearch'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import SearchContentHeader from '@/container/search/searchContentHeader/SearchContentHeader'
@@ -11,7 +11,7 @@ import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import Divider from '@/components/divider/Divider'
 
 const SearchVideo = () => {
-  const searchQuery = useSearchQuery()
+  const { searchQuery } = useSearchStore()
   const [sort, setSort] = useState<SortType>('viewCount')
 
   const { searchResults, searchTotalCounts, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =

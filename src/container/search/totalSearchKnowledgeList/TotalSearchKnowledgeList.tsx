@@ -13,7 +13,7 @@ const TotalSearchKnowledgeList = ({ searchResults, query }: TotalSearchKnowledge
   const navigate = useNavigate()
 
   const handleClickMore = () => {
-    navigate(`/search/legal-knowledge?q=${encodeURIComponent(query)}`)
+    navigate('/search/legal-knowledge')
   }
 
   return (
