@@ -204,14 +204,44 @@ const router = createBrowserRouter([
               {
                 path: 'blog',
                 element: <SearchBlog />,
+                children: [
+                  {
+                    path: ':blogCaseId',
+                    element: (
+                      <div style={{ margin: '-24px' }}>
+                        <BlogDetail />
+                      </div>
+                    ),
+                  },
+                ],
               },
               {
                 path: 'video',
                 element: <SearchVideo />,
+                children: [
+                  {
+                    path: ':videoId',
+                    element: (
+                      <div style={{ margin: '-24px' }}>
+                        <VideoDetail />
+                      </div>
+                    ),
+                  },
+                ],
               },
               {
                 path: 'legal-knowledge',
                 element: <SearchLegalKnowledge />,
+                children: [
+                  {
+                    path: ':knowledgeId',
+                    element: (
+                      <div style={{ margin: '-24px' }}>
+                        <LegalKnowledgeDetail />
+                      </div>
+                    ),
+                  },
+                ],
               },
               {
                 path: 'lawyer',

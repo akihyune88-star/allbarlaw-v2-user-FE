@@ -63,7 +63,11 @@ const VideoHorizon = ({
   const rootClassName = [styles['video-horizon'], styles[type], styles[size]].filter(Boolean).join(' ')
 
   return (
-    <div className={`${rootClassName} ${className}`} onClick={onClick}>
+    <div
+      className={`${rootClassName} ${className}`}
+      onClick={onClick}
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
+    >
       <figure className={styles['video-horizon-figure']}>
         <img className={styles.img} src={thumbnailUrl} alt='동영상 썸네일' />
       </figure>

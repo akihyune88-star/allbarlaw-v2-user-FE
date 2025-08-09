@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Outlet, useParams } from 'react-router-dom'
 import { useSearchStore } from '@/stores/searchStore'
 import { useInfiniteSearchList } from '@/hooks/queries/useSearch'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
@@ -11,6 +12,7 @@ import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import Divider from '@/components/divider/Divider'
 
 const SearchVideo = () => {
+  const { videoId } = useParams()
   const { searchQuery } = useSearchStore()
   const [sort, setSort] = useState<SortType>('viewCount')
 
@@ -27,10 +29,12 @@ const SearchVideo = () => {
     fetchNextPage,
     isFetchingNextPage,
     threshold: 500,
-    enabled: true,
+    enabled: !videoId,
   })
 
   const videoCount = searchTotalCounts?.searchTotalVideoCount || 0
+
+  if (videoId) return <Outlet />
 
   return (
     <main className='sub-main-container'>
@@ -45,19 +49,7 @@ const SearchVideo = () => {
             isRefresh={true}
             title='AI 추천 변호사'
             onRefresh={() => {}}
-            contents={
-              <div className={styles['ai-recommender-lawyer']}>
-                {/* {mockLawyerList.map(lawyer => (
-                  <LawyerHorizon
-                    key={lawyer.lawyerId}
-                    name={lawyer.lawyerName}
-                    profileImage={lawyer.lawyerProfileImage}
-                    description={lawyer.lawfirmName}
-                    size='x-small'
-                  />
-                ))} */}
-              </div>
-            }
+            contents={<div className={styles['ai-recommender-lawyer']} />}
           />
         </section>
         <section>

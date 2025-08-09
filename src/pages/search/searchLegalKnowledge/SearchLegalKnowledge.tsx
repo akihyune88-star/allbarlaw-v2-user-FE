@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Outlet, useParams } from 'react-router-dom'
 import { useSearchStore } from '@/stores/searchStore'
 import { useInfiniteSearchList } from '@/hooks/queries/useSearch'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
@@ -12,6 +13,7 @@ import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import Divider from '@/components/divider/Divider'
 
 const SearchLegalKnowledge = () => {
+  const { knowledgeId } = useParams()
   const { searchQuery } = useSearchStore()
   const [sort, setSort] = useState<SortType>('viewCount')
 
@@ -28,10 +30,12 @@ const SearchLegalKnowledge = () => {
     fetchNextPage,
     isFetchingNextPage,
     threshold: 500,
-    enabled: true,
+    enabled: !knowledgeId,
   })
 
   const knowledgeCount = searchTotalCounts?.searchTotalConsultationCount || 0
+
+  if (knowledgeId) return <Outlet />
 
   return (
     <main className='sub-main-container'>
@@ -49,19 +53,7 @@ const SearchLegalKnowledge = () => {
             isRefresh={true}
             title='AI 추천 변호사'
             onRefresh={() => {}}
-            contents={
-              <div className={styles['ai-recommender-lawyer']}>
-                {/* {mockLawyerList.map(lawyer => (
-                  <LawyerHorizon
-                    key={lawyer.lawyerId}
-                    name={lawyer.lawyerName}
-                    profileImage={lawyer.lawyerProfileImage}
-                    description={lawyer.lawfirmName}
-                    size='x-small'
-                  />
-                ))} */}
-              </div>
-            }
+            contents={<div className={styles['ai-recommender-lawyer']} />}
           />
         </section>
         <section>
@@ -71,7 +63,7 @@ const SearchLegalKnowledge = () => {
               '업무방해죄 [業務妨害罪]',
               '절도죄 [窃盜罪]',
               '법정대리인 [法定代理人]',
-              '위법성 조각사유 [違法性 阻却事由]',
+              '위법성 조각사유 [違법性 阻却事由]',
             ]}
           />
         </section>

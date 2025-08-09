@@ -1,4 +1,4 @@
-dnjs.container {
+.container {
   display: flex;
   gap: 4.25rem;
   padding: 0 1.5rem;
@@ -41,10 +41,9 @@ dnjs.container {
 }
 
 .content-area {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
-  width: 100%;
 }
 
 .loading-container {
@@ -71,7 +70,6 @@ dnjs.container {
   }
 
   .content-area {
-    grid-template-columns: 1fr;
     background-color: $color-white;
     padding: 1.5rem 1.25rem;
     border-radius: 0.5rem;

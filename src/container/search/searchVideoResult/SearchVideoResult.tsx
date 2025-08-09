@@ -2,6 +2,7 @@ import VideoHorizon from '@/components/video/VideoHorizon'
 import styles from './searchVideoResult.module.scss'
 import { VideoCase } from '@/types/videoTypes'
 import Divider from '@/components/divider/Divider'
+import { useNavigate } from 'react-router-dom'
 
 type SearchVideoResultProps = {
   searchResults: VideoCase[]
@@ -9,6 +10,8 @@ type SearchVideoResultProps = {
 }
 
 const SearchVideoResult = ({ searchResults, isLoading }: SearchVideoResultProps) => {
+  const navigate = useNavigate()
+
   if (isLoading) {
     return (
       <div className={styles['search-video-result']}>
@@ -25,11 +28,16 @@ const SearchVideoResult = ({ searchResults, isLoading }: SearchVideoResultProps)
     )
   }
 
+  const handleClickVideoDetail = (videoCaseId: number) => {
+    navigate(`/search/video/${videoCaseId}`)
+  }
+
   return (
     <div className={styles['search-video-result']}>
       {searchResults.map((video, index) => (
         <>
           <VideoHorizon
+            onClick={() => handleClickVideoDetail(video.videoCaseId)}
             key={video.videoCaseId}
             title={video.title}
             thumbnailUrl={video.thumbnail}

@@ -10,6 +10,9 @@ import EmptyState from '@/components/EmptyState/EmptyState'
 
 const LegalTermVideoList = ({ videoList }: { videoList: VideoCase[] }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  console.log('videoList', videoList)
+  console.log(isMobile)
+
   return (
     <div className={styles.container}>
       <header className={`${styles['list-header']} ${styles['video']}`}>
@@ -39,10 +42,14 @@ const LegalTermVideoList = ({ videoList }: { videoList: VideoCase[] }) => {
                 <VideoHorizon
                   videoCaseId={video.videoCaseId}
                   isKeep={video.isKeep}
-                  size='small'
+                  // size='small'
                   thumbnailUrl={video.thumbnail}
                   title={video.title}
                   summaryContents={video.summaryContent}
+                  lawyerName={video.lawyerName}
+                  lawfirmName={video.lawfirmName}
+                  channelName={video.channelName}
+                  channelThumbnail={video.channelThumbnail}
                 />
                 {index !== videoList.length - 1 && <Divider padding={24} />}
               </Fragment>

@@ -2,6 +2,7 @@ import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeIt
 import styles from './searchLegalKnowledgeResult.module.scss'
 import { KnowledgeItem as KnowledgeItemType } from '@/types/knowledgeType'
 import Divider from '@/components/divider/Divider'
+import { useNavigate } from 'react-router-dom'
 
 type SearchLegalKnowledgeResultProps = {
   searchResults: KnowledgeItemType[]
@@ -9,6 +10,8 @@ type SearchLegalKnowledgeResultProps = {
 }
 
 const SearchLegalKnowledgeResult = ({ searchResults, isLoading }: SearchLegalKnowledgeResultProps) => {
+  const navigate = useNavigate()
+
   if (isLoading) {
     return (
       <div className={styles['search-legal-knowledge-result']}>
@@ -25,11 +28,16 @@ const SearchLegalKnowledgeResult = ({ searchResults, isLoading }: SearchLegalKno
     )
   }
 
+  const handleClickLegalKnowledgeDetail = (knowledgeId: number) => {
+    navigate(`/search/legal-knowledge/${knowledgeId}`)
+  }
+
   return (
     <div className={styles['search-legal-knowledge-result']}>
       {searchResults.map((item, index) => (
         <>
           <LegalKnowledgeItem
+            onClick={() => handleClickLegalKnowledgeDetail(item.knowledgeId)}
             key={item.knowledgeId}
             knowledgeId={item.knowledgeId}
             title={item.knowledgeTitle}

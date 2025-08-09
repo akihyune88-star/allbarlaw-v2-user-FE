@@ -4,6 +4,7 @@ import { Lawyer } from '@/types/lawyerTypes'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import Divider from '@/components/divider/Divider'
 import Tag from '@/components/tag/Tag'
+import { useNavigate } from 'react-router-dom'
 
 type SearchLawyerResultProps = {
   searchResults: Lawyer[]
@@ -11,11 +12,7 @@ type SearchLawyerResultProps = {
 }
 
 const SearchLawyerResult = ({ searchResults, isLoading }: SearchLawyerResultProps) => {
-  // const navigate = useNavigate()
-
-  // const _handleLawyerClick = (lawyerId: number) => {
-  //   navigate(`/search/lawyer/${lawyerId}${window.location.search}`)
-  // }
+  const navigate = useNavigate()
 
   if (isLoading) {
     return (
@@ -33,12 +30,16 @@ const SearchLawyerResult = ({ searchResults, isLoading }: SearchLawyerResultProp
     )
   }
 
+  const handleClickLawyerDetail = (lawyerId: number) => {
+    navigate(`/search/lawyer/${lawyerId}`)
+  }
+
   return (
     <div>
       {searchResults.map((lawyer, index) => (
         <>
           <LawyerHorizon
-            // onClick={() => handleLawyerDetail(lawyer.lawyerId.toString())}
+            onClick={() => handleClickLawyerDetail(lawyer.lawyerId)}
             tags={lawyer.tags}
             isBaroTalk={true}
             name={lawyer.lawyerName}
