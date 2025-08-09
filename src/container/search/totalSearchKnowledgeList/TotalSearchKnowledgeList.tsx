@@ -16,6 +16,10 @@ const TotalSearchKnowledgeList = ({ searchResults, query: _query }: TotalSearchK
     navigate('/search/legal-knowledge')
   }
 
+  const handleClickKnowledgeDetail = (knowledgeId: number) => {
+    navigate(`/search/legal-knowledge/${knowledgeId}`)
+  }
+
   return (
     <div className={styles['total-search-knowledge-list']}>
       <SearchSectionHeader title='법률 지식인' onClickMore={handleClickMore} />
@@ -31,7 +35,7 @@ const TotalSearchKnowledgeList = ({ searchResults, query: _query }: TotalSearchK
             isLastAnswer={true}
             isShowKeep={false}
             lawyerList={knowledge.lawyers || []}
-            // onClick={() => handleDetailLegalKnowledgeClick(knowledge.knowledgeId)}
+            onClick={() => handleClickKnowledgeDetail(knowledge.knowledgeId)}
           />
         ))}
       </div>

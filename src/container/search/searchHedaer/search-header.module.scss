@@ -9,6 +9,8 @@
 
   text-align: center;
 
+  border-bottom: 1px solid $color-line-divider;
+
   @media (max-width: $breakpoint-desktop) {
     padding-top: 1.5rem;
     gap: 1.0625rem;

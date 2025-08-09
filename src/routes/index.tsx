@@ -204,14 +204,32 @@ const router = createBrowserRouter([
               {
                 path: 'blog',
                 element: <SearchBlog />,
+                children: [
+                  {
+                    path: ':blogCaseId',
+                    element: <BlogDetail />,
+                  },
+                ],
               },
               {
                 path: 'video',
                 element: <SearchVideo />,
+                children: [
+                  {
+                    path: ':videoId',
+                    element: <VideoDetail />,
+                  },
+                ],
               },
               {
                 path: 'legal-knowledge',
                 element: <SearchLegalKnowledge />,
+                children: [
+                  {
+                    path: ':knowledgeId',
+                    element: <LegalKnowledgeDetail />,
+                  },
+                ],
               },
               {
                 path: 'lawyer',

@@ -16,20 +16,24 @@ const TotalSearchVideoList = ({ searchResults, query: _query }: TotalSearchVideo
     navigate('/search/video')
   }
 
+  const handleClickVideoDetail = (videoCaseId: number) => {
+    navigate(`/search/video/${videoCaseId}`)
+  }
+
   return (
     <div className={styles['total-search-video-list']}>
       <SearchSectionHeader title='법률 영상' onClickMore={handleClickMore} />
       <div className={styles['video-list']}>
         {searchResults.map(video => (
-          <div>
+          <div key={video.videoCaseId}>
             <VideoHorizon
-              key={video.videoCaseId}
               videoCaseId={video.videoCaseId}
               isKeep={video.isKeep}
               size='small'
               thumbnailUrl={video.thumbnail}
               title={video.title}
               summaryContents={video.summaryContent}
+              onClick={() => handleClickVideoDetail(video.videoCaseId)}
             />
             <footer className={styles['video-item-footer']}>
               <span className={styles['lawyer-info']}>

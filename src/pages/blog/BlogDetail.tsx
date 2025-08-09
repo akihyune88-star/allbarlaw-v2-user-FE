@@ -13,7 +13,7 @@ import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
 import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { COLOR } from '@/styles/color'
 import { copyUrlToClipboard } from '@/utils/clipboard'
 
@@ -40,7 +40,7 @@ const BlogNavigationBar = ({ isKeep, onSave, onShare }: BlogNavigationBarProps) 
   )
 }
 
-const BlogDetail = () => {
+const BlogDetail = ({ style }: { style?: React.CSSProperties }) => {
   const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { blogCaseId } = useParams<{ blogCaseId: string }>()
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })

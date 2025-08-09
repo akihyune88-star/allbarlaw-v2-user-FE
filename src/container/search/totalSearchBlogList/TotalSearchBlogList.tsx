@@ -16,6 +16,10 @@ const TotalSearchBlogList = ({ searchResults, query: _query }: TotalSearchBlogLi
     navigate('/search/blog')
   }
 
+  const handleClickBlogDetail = (blogCaseId: number) => {
+    navigate(`/search/blog/${blogCaseId}`)
+  }
+
   return (
     <div className={styles['total-search-blog-list']}>
       <SearchSectionHeader title='법률정보의 글' onClickMore={handleClickMore} />
@@ -32,6 +36,7 @@ const TotalSearchBlogList = ({ searchResults, query: _query }: TotalSearchBlogLi
               lawfirmName: blog.lawfirmName,
               profileImageUrl: blog.lawyerProfileImage,
             }}
+            onClick={() => handleClickBlogDetail(blog.blogCaseId)}
           />
         ))}
       </div>
