@@ -54,4 +54,5 @@ export const QUERY_KEY = {
   RECOMMENDATION_LAWYER: 'recommendationLawyer',
   RECOMMENDATION_LEGAL_TERM: 'recommendationLegalTerm',
   RECOMMENDATION_VIDEO: 'recommendationVideo',
+  RECOMMENDATION_BLOG: 'recommendationBlog',
 } as const

@@ -15,6 +15,9 @@ import { generateRandomLawyers } from '@/utils/mockDataGenerator'
 import { useState } from 'react'
 import { useKnowledgeKeep } from '@/hooks/queries/useGetKnowledgeList'
 import { copyUrlToClipboard } from '@/utils/clipboard'
+import AIRecommender from '@/components/aiRecommender/AIRecommender'
+import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
+import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 
 const LegalKnowledgeDetail = () => {
   const { knowledgeId } = useParams<{ knowledgeId: string }>()
@@ -47,6 +50,10 @@ const LegalKnowledgeDetail = () => {
   }
 
   const mockLawyerList = generateRandomLawyers(3)
+
+  const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
+    knowledgeIds: [Number(knowledgeId)],
+  })
 
   return (
     <div className={'detail-container'}>
@@ -93,7 +100,14 @@ const LegalKnowledgeDetail = () => {
             </div>
           )}
         </div>
-        {!isMobile && <LegalKnowledgeDetailSideBar recommendLawyerList={mockLawyerList} />}
+        {!isMobile && (
+          <section style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div>
+              <AIRecommender />
+            </div>
+            <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
+          </section>
+        )}
       </div>
     </div>
   )

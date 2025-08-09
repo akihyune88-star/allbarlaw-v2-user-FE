@@ -39,7 +39,7 @@ export type RecommendationLegalTermRequest = {
   lawfirmIds?: number[]
 }
 
-export type RecommendationVideoRequest = {
+export type RecommendationContentRequest = {
   subcategoryId: number | 'all'
   take?: number
   excludeIds?: number[]
@@ -60,4 +60,21 @@ export type RecommendationVideoResponse = {
   }[]
 
   isPersonalized: true
+}
+
+export type RecommendationBlogResponse = {
+  data: {
+    blogCaseId: number
+    title: string
+    summaryContent: string
+    thumbnail: string
+    lawyerName: string
+    lawfirmName: string
+    lawyerId: number
+    lawyerProfileImage: string
+    subcategoryId: number
+    isKeep: boolean
+  }[]
+
+  isPersonalized: boolean
 }

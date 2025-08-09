@@ -1,10 +1,11 @@
 import instance from '@/lib/axios'
 import {
+  RecommendationBlogResponse,
+  RecommendationContentRequest,
   RecommendationLawyerResponse,
   RecommendationLegalTermRequest,
   RecommendationLegalTermResponse,
   RecommendationTagResponse,
-  RecommendationVideoRequest,
   RecommendationVideoResponse,
 } from '@/types/recommendationTypes'
 
@@ -35,7 +36,7 @@ export const recommendationService = {
     const response = await instance.get<RecommendationLegalTermResponse>(url)
     return response.data
   },
-  getRecommendationVideo: async (request: RecommendationVideoRequest): Promise<RecommendationVideoResponse> => {
+  getRecommendationVideo: async (request: RecommendationContentRequest): Promise<RecommendationVideoResponse> => {
     const { subcategoryId, take, excludeIds } = request
 
     const params = new URLSearchParams()
@@ -47,6 +48,20 @@ export const recommendationService = {
     const url = `/api/recommendations/video-cases/${subcategoryId}${queryString ? `?${queryString}` : ''}`
 
     const response = await instance.get<RecommendationVideoResponse>(url)
+    return response.data
+  },
+  getRecommendationBlog: async (request: RecommendationContentRequest): Promise<RecommendationBlogResponse> => {
+    const { subcategoryId, take, excludeIds } = request
+
+    const params = new URLSearchParams()
+    if (subcategoryId !== undefined) params.append('subcategoryId', subcategoryId.toString())
+    if (take !== undefined) params.append('take', take.toString())
+    if (excludeIds !== undefined) params.append('excludeIds', `[${excludeIds}]`)
+
+    const queryString = params.toString()
+    const url = `/api/recommendations/blog-cases/${subcategoryId}${queryString ? `?${queryString}` : ''}`
+
+    const response = await instance.get<RecommendationBlogResponse>(url)
     return response.data
   },
 }

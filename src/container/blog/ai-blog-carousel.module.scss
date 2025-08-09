@@ -7,3 +7,33 @@
   border-radius: 0.5rem;
   padding: 1.5rem;
 }
+
+.blog-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.blog-title {
+  font-size: 1rem;
+  font-weight: $font-weight-semibold;
+
+  @include ellipsis(1);
+
+  @media (max-width: $breakpoint-desktop) {
+    @include ellipsis(2);
+    height: 2.5rem;
+  }
+}
+
+.blog-summary {
+  font-size: 0.8125rem;
+  font-weight: $font-weight-regular;
+  color: $color-text-index;
+
+  @include ellipsis(3);
+
+  @media (max-width: $breakpoint-desktop) {
+    display: none;
+  }
+}

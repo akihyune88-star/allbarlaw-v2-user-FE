@@ -31,7 +31,7 @@ const BlogLayout = () => {
   return (
     <main className={styles['blog-container']}>
       <section className={styles['blog-section']}>
-        <AIBlogCarousel />
+        <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={4} />
         <BlogList
           blogList={blogList}
           isLoading={isLoading}

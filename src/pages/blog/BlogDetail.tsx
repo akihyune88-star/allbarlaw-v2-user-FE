@@ -18,6 +18,7 @@ import { COLOR } from '@/styles/color'
 import { copyUrlToClipboard } from '@/utils/clipboard'
 import { useRecommendationLawyer, useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import { useChunkedRotate } from '@/hooks/useChunkedRotate'
+import RecommendationLawyer from '@/container/recommendation/RecommendationLawyer'
 
 type BlogNavigationBarProps = {
   isKeep: boolean
@@ -45,6 +46,7 @@ const BlogNavigationBar = ({ isKeep, onSave, onShare }: BlogNavigationBarProps) 
 const BlogDetail = ({ className }: { className?: string }) => {
   const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { blogCaseId } = useParams<{ blogCaseId: string }>()
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
   const [isKeep, setIsKeep] = useState(false)
   const navigate = useNavigate()
@@ -113,7 +115,9 @@ const BlogDetail = ({ className }: { className?: string }) => {
               <BlogDetailContents summaryContents={data?.summaryContent || ''} tagList={data?.tags || []} />
               <BlogNavigationBar isKeep={isKeep} onSave={handleSave} onShare={handleShare} />
               {!isMobile ? (
-                <AIBlogCarousel />
+                <div style={{ width: 798 }}>
+                  <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={4} />
+                </div>
               ) : (
                 <div className={styles['blog-moblie-side']}>
                   <LawyerHorizon
@@ -128,24 +132,8 @@ const BlogDetail = ({ className }: { className?: string }) => {
                       </div>
                     }
                   />
-                  <ContentsRecommender
-                    isRefresh={true}
-                    title='AI 추천 변호사'
-                    onRefresh={handleRefreshRecommendLawyer}
-                    contents={
-                      <div className={styles['ai-recommender-lawyer']}>
-                        {displayLawyers.map(lawyer => (
-                          <LawyerHorizon
-                            key={lawyer.lawyerId}
-                            name={lawyer.lawyerName}
-                            profileImage={lawyer.lawyerProfileImage}
-                            description={lawyer.lawfirmName}
-                            size='x-small'
-                          />
-                        ))}
-                      </div>
-                    }
-                  />
+                  <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={4} />
+                  <RecommendationLawyer />
                 </div>
               )}
             </>
