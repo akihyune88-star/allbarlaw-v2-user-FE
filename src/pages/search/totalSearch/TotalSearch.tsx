@@ -26,7 +26,7 @@ const TotalSearch = () => {
 
   return (
     <>
-      <SearchCount count={1000} />
+      <SearchCount count={data?.totalItems || 0} />
       <div className={styles['total-search']}>
         <TotalSearchBlogList searchResults={data?.searchResults.searchBlogResults || []} query={searchQuery} />
         <TotalSearchKnowledgeList
