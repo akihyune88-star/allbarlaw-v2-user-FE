@@ -10,7 +10,7 @@ interface LawfirmListProps {
   lawfirmList: Lawfirm[]
   isLoading: boolean
   isFetchingNextPage: boolean
-  onClickItem?: (lawfirmId: number) => void
+  onClickItem?: (_lawfirmId: number) => void
 }
 
 const LawfirmList = ({ lawfirmList, isLoading, isFetchingNextPage, onClickItem }: LawfirmListProps) => {

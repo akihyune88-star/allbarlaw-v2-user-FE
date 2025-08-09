@@ -3,6 +3,7 @@ import SearchSectionHeader from '../searchSectionHeader/SearchSectionHeader'
 import { useNavigate } from 'react-router-dom'
 import styles from './totalSearchLawyerList.module.scss'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
+import EmptyState from '@/components/EmptyState/EmptyState'
 
 interface TotalSearchLawyerListProps {
   searchResults: Lawyer[]
@@ -27,25 +28,29 @@ const TotalSearchLawyerList = ({ searchResults, query: _query }: TotalSearchLawy
   return (
     <div className={styles['total-search-lawyer-list']}>
       <SearchSectionHeader title='변호사' onClickMore={handleClickMore} />
-      <div className={styles['lawyer-list']}>
-        {searchResults.map(lawyer => (
-          <LawyerHorizon
-            key={lawyer.lawyerId}
-            name={lawyer.lawyerName}
-            profileImage={lawyer.lawyerProfileImage}
-            lawfirm={lawyer.lawfirmName}
-            description={lawyer.lawyerDescription}
-            className={styles['lawyer-list-item']}
-            onClick={() => handleClickLawyerPage(lawyer.lawyerId)}
-            buttonComponent={
-              <div className={styles['button-container']}>
-                <button onClick={() => handleClickLawyerPage(lawyer.lawyerId)}>변호사페이지</button>
-                <button onClick={() => handleClickConsultation(lawyer.lawyerId)}>상담신청</button>
-              </div>
-            }
-          />
-        ))}
-      </div>
+      {searchResults.length === 0 ? (
+        <EmptyState message='검색 결과가 없습니다.' />
+      ) : (
+        <div className={styles['lawyer-list']}>
+          {searchResults.map(lawyer => (
+            <LawyerHorizon
+              key={lawyer.lawyerId}
+              name={lawyer.lawyerName}
+              profileImage={lawyer.lawyerProfileImage}
+              lawfirm={lawyer.lawfirmName}
+              description={lawyer.lawyerDescription}
+              className={styles['lawyer-list-item']}
+              onClick={() => handleClickLawyerPage(lawyer.lawyerId)}
+              buttonComponent={
+                <div className={styles['button-container']}>
+                  <button onClick={() => handleClickLawyerPage(lawyer.lawyerId)}>변호사페이지</button>
+                  <button onClick={() => handleClickConsultation(lawyer.lawyerId)}>상담신청</button>
+                </div>
+              }
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

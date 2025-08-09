@@ -3,6 +3,7 @@ import SearchSectionHeader from '../searchSectionHeader/SearchSectionHeader'
 import styles from './totalSearchVideoList.module.scss'
 import VideoHorizon from '@/components/video/VideoHorizon'
 import { useNavigate } from 'react-router-dom'
+import EmptyState from '@/components/EmptyState/EmptyState'
 
 interface TotalSearchVideoListProps {
   searchResults: VideoCase[]
@@ -23,32 +24,36 @@ const TotalSearchVideoList = ({ searchResults, query: _query }: TotalSearchVideo
   return (
     <div className={styles['total-search-video-list']}>
       <SearchSectionHeader title='법률 영상' onClickMore={handleClickMore} />
-      <div className={styles['video-list']}>
-        {searchResults.map(video => (
-          <div key={video.videoCaseId}>
-            <VideoHorizon
-              videoCaseId={video.videoCaseId}
-              isKeep={video.isKeep}
-              size='small'
-              thumbnailUrl={video.thumbnail}
-              title={video.title}
-              summaryContents={video.summaryContent}
-              onClick={() => handleClickVideoDetail(video.videoCaseId)}
-            />
-            <footer className={styles['video-item-footer']}>
-              <span className={styles['lawyer-info']}>
-                {video.lawyerName} 변호사 [{video.lawfirmName}]
-              </span>
-              <div className={styles['channel-info']}>
-                <figure>
-                  <img src={video.thumbnail} alt={video.channelName} />
-                </figure>
-                <span className={styles['channel-name']}>{video.channelName}</span>
-              </div>
-            </footer>
-          </div>
-        ))}
-      </div>
+      {searchResults.length === 0 ? (
+        <EmptyState message='검색 결과가 없습니다.' />
+      ) : (
+        <div className={styles['video-list']}>
+          {searchResults.map(video => (
+            <div key={video.videoCaseId}>
+              <VideoHorizon
+                videoCaseId={video.videoCaseId}
+                isKeep={video.isKeep}
+                size='small'
+                thumbnailUrl={video.thumbnail}
+                title={video.title}
+                summaryContents={video.summaryContent}
+                onClick={() => handleClickVideoDetail(video.videoCaseId)}
+              />
+              <footer className={styles['video-item-footer']}>
+                <span className={styles['lawyer-info']}>
+                  {video.lawyerName} 변호사 [{video.lawfirmName}]
+                </span>
+                <div className={styles['channel-info']}>
+                  <figure>
+                    <img src={video.thumbnail} alt={video.channelName} />
+                  </figure>
+                  <span className={styles['channel-name']}>{video.channelName}</span>
+                </div>
+              </footer>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

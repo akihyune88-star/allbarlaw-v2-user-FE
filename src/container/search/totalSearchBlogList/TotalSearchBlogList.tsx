@@ -3,6 +3,7 @@ import SearchSectionHeader from '../searchSectionHeader/SearchSectionHeader'
 import styles from './totalSearchBlogList.module.scss'
 import Article from '@/components/article/Article'
 import { useNavigate } from 'react-router-dom'
+import EmptyState from '@/components/EmptyState/EmptyState'
 
 interface TotalSearchBlogListProps {
   searchResults: BlogCase[]
@@ -23,23 +24,27 @@ const TotalSearchBlogList = ({ searchResults, query: _query }: TotalSearchBlogLi
   return (
     <div className={styles['total-search-blog-list']}>
       <SearchSectionHeader title='법률정보의 글' onClickMore={handleClickMore} />
-      <div className={styles['blog-list']}>
-        {searchResults.map(blog => (
-          <Article
-            key={blog.blogCaseId}
-            type='xsmall'
-            thumbnailUrl={blog.thumbnail}
-            title={blog.title}
-            content={blog.summaryContent}
-            lawyerInfo={{
-              name: blog.lawyerName,
-              lawfirmName: blog.lawfirmName,
-              profileImageUrl: blog.lawyerProfileImage,
-            }}
-            onClick={() => handleClickBlogDetail(blog.blogCaseId)}
-          />
-        ))}
-      </div>
+      {searchResults.length === 0 ? (
+        <EmptyState message='검색 결과가 없습니다.' />
+      ) : (
+        <div className={styles['blog-list']}>
+          {searchResults.map(blog => (
+            <Article
+              key={blog.blogCaseId}
+              type='xsmall'
+              thumbnailUrl={blog.thumbnail}
+              title={blog.title}
+              content={blog.summaryContent}
+              lawyerInfo={{
+                name: blog.lawyerName,
+                lawfirmName: blog.lawfirmName,
+                profileImageUrl: blog.lawyerProfileImage,
+              }}
+              onClick={() => handleClickBlogDetail(blog.blogCaseId)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

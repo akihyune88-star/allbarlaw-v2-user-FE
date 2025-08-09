@@ -17,8 +17,8 @@ interface LegalKnowledgeListProps {
   isFetchingNextPage: boolean
   fetchNextPage: () => void
   sortCase: string
-  onChangeSort: (key: string) => void
-  onClickItem: (knowledgeId: number) => void
+  onChangeSort: (_key: string) => void
+  onClickItem: (_knowledgeId: number) => void
 }
 
 const LegalKnowledgeList = ({

@@ -16,13 +16,13 @@ interface LawyerListProps {
   isFetchingNextPage: boolean
   fetchNextPage: () => void
   sortCase: SortType
-  onChangeSort: (key: SortType) => void
-  onClickItem: (lawyerId: number) => void
+  onChangeSort: (_key: SortType) => void
+  onClickItem: (_lawyerId: number) => void
 }
 
 const LawyerList = ({
   lawyerList,
-  isLoading,
+  isLoading: _isLoading,
   hasNextPage,
   isFetchingNextPage,
   fetchNextPage,

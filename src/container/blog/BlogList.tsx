@@ -14,8 +14,8 @@ interface BlogListProps {
   isFetchingNextPage: boolean
   fetchNextPage: () => void
   sortCase: string
-  onChangeSort: (key: string) => void
-  onClickItem: (blogId: number) => void
+  onChangeSort: (_key: string) => void
+  onClickItem: (_blogId: number) => void
 }
 
 const BlogList = ({

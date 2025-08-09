@@ -14,8 +14,8 @@ interface VideoListProps {
   isFetchingNextPage: boolean
   fetchNextPage: () => void
   sortCase: string
-  onChangeSort: (key: string) => void
-  onClickItem: (videoId: number) => void
+  onChangeSort: (_key: string) => void
+  onClickItem: (_videoId: number) => void
 }
 
 const VideoList = ({
