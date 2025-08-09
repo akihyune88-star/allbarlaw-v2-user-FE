@@ -15,7 +15,8 @@
 
 .knowledge-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 32.6875rem));
+  justify-content: center;
   gap: 1.5rem;
 
   padding: 1.5rem 0;

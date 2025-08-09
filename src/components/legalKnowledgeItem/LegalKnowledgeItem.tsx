@@ -5,7 +5,7 @@ import { COLOR } from '@/styles/color'
 import { formatTimeAgo } from '@/utils/date'
 import { useAuth } from '@/contexts/AuthContext'
 import { useKnowledgeKeep } from '@/hooks/queries/useGetKnowledgeList'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 type LegalKnowledgeItemProps = {
   knowledgeId: number
@@ -21,6 +21,7 @@ type LegalKnowledgeItemProps = {
   onClick?: () => void
   knowledgeKeep?: boolean
   isShowKeep?: boolean
+  className?: string
 }
 
 const LegalKnowledgeItem = ({
@@ -33,6 +34,7 @@ const LegalKnowledgeItem = ({
   onClick,
   knowledgeKeep,
   isShowKeep = true,
+  className,
 }: LegalKnowledgeItemProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { isLoggedIn } = useAuth()
@@ -40,6 +42,10 @@ const LegalKnowledgeItem = ({
   console.log(time)
 
   const [isKeep, setIsKeep] = useState(knowledgeKeep)
+  const lawyerListRef = useRef<HTMLDivElement>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
 
   useEffect(() => {
     setIsKeep(knowledgeKeep)
@@ -63,8 +69,31 @@ const LegalKnowledgeItem = ({
     }
   }
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!lawyerListRef.current) return
+    setIsDragging(true)
+    setStartX(e.pageX - lawyerListRef.current.offsetLeft)
+    setScrollLeft(lawyerListRef.current.scrollLeft)
+  }
+
+  const handleMouseLeave = () => {
+    setIsDragging(false)
+  }
+
+  const handleMouseUp = () => {
+    setIsDragging(false)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !lawyerListRef.current) return
+    e.preventDefault()
+    const x = e.pageX - lawyerListRef.current.offsetLeft
+    const walk = (x - startX) * 2
+    lawyerListRef.current.scrollLeft = scrollLeft - walk
+  }
+
   return (
-    <article className={styles['legal-knowledge-item']} onClick={onClick}>
+    <article className={`${styles['legal-knowledge-item']} ${className}`} onClick={onClick}>
       <header className={styles['header']}>
         <h1>{title}</h1>
         {time && (
@@ -94,7 +123,14 @@ const LegalKnowledgeItem = ({
               style={{ transform: 'translateY(-1px)' }}
             />
           </div>
-          <div className={styles['lawyer-list']}>
+          <div 
+            ref={lawyerListRef}
+            className={`${styles['lawyer-list']} ${isDragging ? styles['dragging'] : ''}`}
+            onMouseDown={handleMouseDown}
+            onMouseLeave={handleMouseLeave}
+            onMouseUp={handleMouseUp}
+            onMouseMove={handleMouseMove}
+          >
             {lawyerList.map(lawyer => (
               <div className={styles['lawyer-item']} key={lawyer.lawyerId}>
                 <img src={lawyer.lawyerProfileImage} alt={lawyer.lawyerName} />
