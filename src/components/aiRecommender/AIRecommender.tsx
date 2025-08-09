@@ -8,6 +8,7 @@ import { useRecommendationLawyer, useRecommendationTag } from '@/hooks/queries/u
 import { RecommendationTag } from '@/types/recommendationTypes'
 import { useNavigate } from 'react-router-dom'
 import { useSearchStore } from '@/stores/searchStore'
+import { useChunkedRotate } from '@/hooks/useChunkedRotate'
 
 const TagSection = ({ tagList }: { tagList: RecommendationTag[] }) => {
   const [visibleCount, setVisibleCount] = useState<number>(10)
@@ -51,8 +52,8 @@ const TagSection = ({ tagList }: { tagList: RecommendationTag[] }) => {
         <>
           <div className={styles['tag-list']}>
             {visibleTags.map(tag => (
-              <span 
-                key={tag.tagId} 
+              <span
+                key={tag.tagId}
                 className={styles['tag-item']}
                 onClick={() => handleTagClick(tag.tagName)}
                 style={{ cursor: 'pointer' }}
@@ -81,25 +82,8 @@ export const LawyerItem = ({
   divider?: boolean
 }) => {
   const CHUNK_SIZE = 3
-  const [startIndex, setStartIndex] = useState<number>(0)
   const navigate = useNavigate()
-  useEffect(() => {
-    setStartIndex(0)
-  }, [lawyerList])
-
-  const handleRefresh = () => {
-    if (!lawyerList?.length) return
-    setStartIndex(prev => (prev + CHUNK_SIZE) % lawyerList.length)
-  }
-
-  const visibleLawyers = (() => {
-    const total = lawyerList.length
-    if (total <= CHUNK_SIZE) return lawyerList
-    const endIndex = startIndex + CHUNK_SIZE
-    if (endIndex <= total) return lawyerList.slice(startIndex, endIndex)
-    const overflow = endIndex - total
-    return [...lawyerList.slice(startIndex, total), ...lawyerList.slice(0, overflow)]
-  })()
+  const { visibleItems: visibleLawyers, rotateNext } = useChunkedRotate(lawyerList, CHUNK_SIZE)
 
   const handleLawyerClick = (lawyerId: number) => {
     navigate(`/search/lawyer/${lawyerId}`)
@@ -109,7 +93,7 @@ export const LawyerItem = ({
     <section className={styles['lawyer-section']}>
       <header>
         <h2 className={styles['section-title']}>AI 추천 변호사</h2>
-        {lawyerList.length > 0 && <SvgIcon name='refresh' onClick={handleRefresh} />}
+        {lawyerList.length > 0 && <SvgIcon name='refresh' onClick={rotateNext} />}
       </header>
       {divider && <Divider />}
       {lawyerList.length === 0 ? (

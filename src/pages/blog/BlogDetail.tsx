@@ -13,10 +13,11 @@ import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
 import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { COLOR } from '@/styles/color'
 import { copyUrlToClipboard } from '@/utils/clipboard'
 import { useRecommendationLawyer } from '@/hooks/queries/useRecommendation'
+import { useChunkedRotate } from '@/hooks/useChunkedRotate'
 
 type BlogNavigationBarProps = {
   isKeep: boolean
@@ -91,22 +92,10 @@ const BlogDetail = ({ className }: { className?: string }) => {
   }
 
   const { data: recommendationLawyer } = useRecommendationLawyer(10)
-  const [recChunkIndex, setRecChunkIndex] = useState(0)
-  const recChunks = useMemo(() => {
-    const list = recommendationLawyer ?? []
-    const size = 3
-    const result: (typeof list)[] = []
-    for (let i = 0; i < list.length; i += size) {
-      result.push(list.slice(i, i + size))
-    }
-    return result
-  }, [recommendationLawyer])
-  const displayLawyers = recChunks[recChunkIndex] ?? []
-
-  const handleRefreshRecommendLawyer = () => {
-    if (recChunks.length === 0) return
-    setRecChunkIndex(prev => (prev + 1) % recChunks.length)
-  }
+  const { visibleItems: displayLawyers, rotateNext: handleRefreshRecommendLawyer } = useChunkedRotate(
+    recommendationLawyer ?? [],
+    3
+  )
 
   return (
     <div className={`detail-container ${className}`}>

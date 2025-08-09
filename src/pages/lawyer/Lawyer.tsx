@@ -1,11 +1,11 @@
 import AIRecommender from '@/components/aiRecommender/AIRecommender'
-import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
+// import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
 import LawyerList from '@/container/lawyer/LawyerList'
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInfiniteLawyerList } from '@/hooks/queries/useLawyer'
-import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
+// import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import { SortType } from '@/types/sortTypes'
 
 const LawyerLayout = () => {
@@ -20,11 +20,6 @@ const LawyerLayout = () => {
   })
 
   const lawyerList = data?.lawyerList || []
-  const lawyerIds = useMemo(() => lawyerList.map(l => l.lawyerId), [lawyerList])
-
-  const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
-    lawfirmIds: lawyerIds,
-  })
 
   const handleSortCase = (key: SortType) => setSortCase(key === 'all' ? 'createdAt' : key)
   const handleLawyerItemClick = (lawyerId: number) => navigate(`/${subcategoryId}/lawyer/${lawyerId}`)
@@ -45,12 +40,7 @@ const LawyerLayout = () => {
         />
       </section>
       <aside className='aside'>
-        <section>
-          <AIRecommender />
-        </section>
-        <section>
-          <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
-        </section>
+        <section>여긴 필터만 들어가면됨</section>
       </aside>
     </main>
   )

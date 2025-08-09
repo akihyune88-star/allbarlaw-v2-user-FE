@@ -36,10 +36,10 @@ const LegalTermWidget = ({ lagalTermList }: LegalTermWidgetProps) => {
               </p>
             ))}
           </div>
-          {!expanded && lagalTermList.length > 5 && (
-            <button onClick={() => setExpanded(true)}>
-              <span>더보기</span>
-              <SvgIcon name='arrowSmall' />
+          {lagalTermList.length > 5 && (
+            <button onClick={() => setExpanded(prev => !prev)}>
+              <span>{expanded ? '접기' : '더보기'}</span>
+              <SvgIcon name='arrowSmall' style={{ transform: `rotate(${expanded ? 90 : 180}deg)` }} />
             </button>
           )}
         </>
