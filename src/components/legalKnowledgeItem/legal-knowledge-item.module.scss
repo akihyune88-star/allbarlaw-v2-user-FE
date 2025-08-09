@@ -74,19 +74,18 @@
     align-items: center;
     gap: 0.9375rem;
     overflow-x: auto;
-    overflow-y: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    
+
     &::-webkit-scrollbar {
       display: none;
     }
-    
+
     &.dragging {
       cursor: grabbing;
       user-select: none;
     }
-    
+
     &:not(.dragging) {
       cursor: grab;
     }
@@ -155,15 +154,28 @@
 
     .lawyer-list {
       width: 100%;
+      height: auto;
+      min-height: auto;
       border-radius: 0 0 0.5rem 0.5rem;
       padding: 1rem 1.5rem;
       display: flex;
       flex-wrap: wrap;
       gap: 0.9375rem;
+      overflow-x: visible;
+      cursor: default !important;
+      box-sizing: border-box;
 
       .lawyer-item {
+        padding: 0;
+        flex-shrink: 1;
+        white-space: normal;
+
         &:first-child {
           padding-left: 0;
+        }
+
+        &:last-child {
+          padding-right: 0;
         }
       }
     }

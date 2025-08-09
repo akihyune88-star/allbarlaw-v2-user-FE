@@ -37,7 +37,6 @@ export const useInfiniteSearchList = (request: Omit<SearchRequest, 'searchPage'>
         searchPage: pageParam,
       })
     },
-    enabled: !!request.searchQuery,
     initialPageParam: 1,
     getNextPageParam: (lastPage: SearchResponse) => {
       console.log('Last page data:', {
