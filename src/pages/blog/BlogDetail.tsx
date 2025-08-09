@@ -48,7 +48,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
   const [isKeep, setIsKeep] = useState(false)
   const navigate = useNavigate()
-  
+
   // blogCaseId가 변경될 때마다 로딩 다시 시작
   useEffect(() => {
     setShowLoading(true)
@@ -57,7 +57,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
     }, 3000)
     return () => clearTimeout(timer)
   }, [blogCaseId, setShowLoading])
-  
+
   // data가 로드되면 isKeep 상태 업데이트
   useEffect(() => {
     if (data?.isKeep !== undefined) {

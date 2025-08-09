@@ -30,7 +30,9 @@ const VideoLayout = () => {
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
-        <AIBlogCarousel />
+        {/* <div style={{ width: 798 }}>
+          <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={4} />
+        </div> */}
         <VideoList
           videoList={videoList}
           isLoading={isLoading}

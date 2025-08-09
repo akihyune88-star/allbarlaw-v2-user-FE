@@ -25,9 +25,18 @@ const VideoDetail = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
 
-  const { showLoading } = useDelayedLoading({ delay: 3000 })
+  const { showLoading, setShowLoading } = useDelayedLoading({ delay: 3000 })
   const { data } = useGetVideoDetail({ videoCaseId: Number(videoId) })
   const [isKeep, setIsKeep] = useState(false)
+
+  // videoId가 변경될 때마다 로딩 다시 시작
+  useEffect(() => {
+    setShowLoading(true)
+    const timer = setTimeout(() => {
+      setShowLoading(false)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [videoId, setShowLoading])
 
   // data가 로드되면 isKeep 상태 업데이트
   useEffect(() => {
@@ -105,7 +114,12 @@ const VideoDetail = () => {
                     <ContentsRecommender
                       showDivider={false}
                       title='AI 추천영상'
-                      contents={<AiVideoRecommender videoList={recommendationVideo || []} />}
+                      contents={
+                        <AiVideoRecommender
+                          videoList={recommendationVideo || []}
+                          subcategoryId={data?.subcategoryId || 0}
+                        />
+                      }
                     />
                   </>
                 ) : (
