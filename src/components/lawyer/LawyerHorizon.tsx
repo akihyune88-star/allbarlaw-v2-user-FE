@@ -41,6 +41,7 @@ const LawyerHorizon = ({
     <div
       className={`${styles['lawyer-horizon']} ${styles[size]} ${selected ? styles['selected'] : ''} ${className}`}
       onClick={onClick}
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
     >
       <div className={styles['lawyer-horizon-image']}>
         <img src={profileImage} alt='변호사 프로필' />

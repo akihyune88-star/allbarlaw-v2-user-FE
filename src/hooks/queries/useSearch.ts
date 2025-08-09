@@ -16,6 +16,7 @@ export const useSearchList = (request: SearchRequest) => {
       request.searchLawyerId,
     ],
     queryFn: () => searchService.getSearchBlog(request),
+    placeholderData: previousData => previousData,
   })
 }
 
@@ -47,6 +48,7 @@ export const useInfiniteSearchList = (request: Omit<SearchRequest, 'searchPage'>
       if (!lastPage.hasNextPage) return undefined
       return lastPage.currentPage + 1
     },
+    placeholderData: previousData => previousData,
   })
 
   // Combine all pages' search results into one

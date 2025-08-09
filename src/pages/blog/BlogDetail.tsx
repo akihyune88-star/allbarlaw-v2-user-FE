@@ -40,7 +40,7 @@ const BlogNavigationBar = ({ isKeep, onSave, onShare }: BlogNavigationBarProps) 
   )
 }
 
-const BlogDetail = ({ style }: { style?: React.CSSProperties }) => {
+const BlogDetail = ({ className }: { className?: string }) => {
   const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { blogCaseId } = useParams<{ blogCaseId: string }>()
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
@@ -86,7 +86,7 @@ const BlogDetail = ({ style }: { style?: React.CSSProperties }) => {
   }
 
   return (
-    <div className={'detail-container'}>
+    <div className={`detail-container ${className}`}>
       <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
       <div className={'detail-body'}>
         <div>

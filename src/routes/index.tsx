@@ -207,7 +207,11 @@ const router = createBrowserRouter([
                 children: [
                   {
                     path: ':blogCaseId',
-                    element: <BlogDetail />,
+                    element: (
+                      <div style={{ margin: '-24px' }}>
+                        <BlogDetail />
+                      </div>
+                    ),
                   },
                 ],
               },
@@ -217,7 +221,11 @@ const router = createBrowserRouter([
                 children: [
                   {
                     path: ':videoId',
-                    element: <VideoDetail />,
+                    element: (
+                      <div style={{ margin: '-24px' }}>
+                        <VideoDetail />
+                      </div>
+                    ),
                   },
                 ],
               },

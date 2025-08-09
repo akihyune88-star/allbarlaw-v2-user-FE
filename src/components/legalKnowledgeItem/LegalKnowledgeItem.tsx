@@ -93,7 +93,11 @@ const LegalKnowledgeItem = ({
   }
 
   return (
-    <article className={`${styles['legal-knowledge-item']} ${className}`} onClick={onClick}>
+    <article
+      className={`${styles['legal-knowledge-item']} ${className}`}
+      onClick={onClick}
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
+    >
       <header className={styles['header']}>
         <h1>{title}</h1>
         {time && (
@@ -123,7 +127,7 @@ const LegalKnowledgeItem = ({
               style={{ transform: 'translateY(-1px)' }}
             />
           </div>
-          <div 
+          <div
             ref={lawyerListRef}
             className={`${styles['lawyer-list']} ${isDragging ? styles['dragging'] : ''}`}
             onMouseDown={handleMouseDown}
