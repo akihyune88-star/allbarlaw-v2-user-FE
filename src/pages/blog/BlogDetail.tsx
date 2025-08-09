@@ -10,14 +10,12 @@ import { useGetBlogDetail } from '@/hooks/queries/useGetBlogDetail'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDelayedLoading } from '@/hooks'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
-import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
 import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
 import { useState, useEffect } from 'react'
 import { COLOR } from '@/styles/color'
 import { copyUrlToClipboard } from '@/utils/clipboard'
-import { useRecommendationLawyer, useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
-import { useChunkedRotate } from '@/hooks/useChunkedRotate'
+import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import RecommendationLawyer from '@/container/recommendation/RecommendationLawyer'
 
 type BlogNavigationBarProps = {
@@ -44,12 +42,22 @@ const BlogNavigationBar = ({ isKeep, onSave, onShare }: BlogNavigationBarProps) 
 }
 
 const BlogDetail = ({ className }: { className?: string }) => {
-  const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { blogCaseId } = useParams<{ blogCaseId: string }>()
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
+  const { showLoading, setShowLoading } = useDelayedLoading({ delay: 3000 })
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
   const [isKeep, setIsKeep] = useState(false)
   const navigate = useNavigate()
+  
+  // blogCaseId가 변경될 때마다 로딩 다시 시작
+  useEffect(() => {
+    setShowLoading(true)
+    const timer = setTimeout(() => {
+      setShowLoading(false)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [blogCaseId, setShowLoading])
+  
   // data가 로드되면 isKeep 상태 업데이트
   useEffect(() => {
     if (data?.isKeep !== undefined) {
@@ -92,12 +100,6 @@ const BlogDetail = ({ className }: { className?: string }) => {
   const handleLawyerClick = (lawyerId: number) => {
     navigate(`/search/lawyer/${lawyerId}`)
   }
-
-  const { data: recommendationLawyer } = useRecommendationLawyer(10)
-  const { visibleItems: displayLawyers, rotateNext: handleRefreshRecommendLawyer } = useChunkedRotate(
-    recommendationLawyer ?? [],
-    3
-  )
 
   const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
     blogCaseIds: [data?.blogCaseId || 0],
