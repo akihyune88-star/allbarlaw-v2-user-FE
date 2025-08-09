@@ -10,8 +10,6 @@ import EmptyState from '@/components/EmptyState/EmptyState'
 
 const LegalTermVideoList = ({ videoList }: { videoList: VideoCase[] }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  console.log('videoList', videoList)
-  console.log(isMobile)
 
   return (
     <div className={styles.container}>

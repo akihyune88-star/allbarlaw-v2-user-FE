@@ -1,32 +1,31 @@
 import VideoThumbnail from '@/components/video/VideoThumbnail'
-import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
-import { useParams } from 'react-router-dom'
+
 import styles from './ai-video-recommender.module.scss'
+import { VideoCase } from '@/types/videoTypes'
+import { useNavigate } from 'react-router-dom'
 
 type AiVideoRecommenderProps = {
   videoCaseId?: number
+  videoList: VideoCase[]
+  subcategoryId: number
 }
 
-const AiVideoRecommender = ({ videoCaseId }: AiVideoRecommenderProps) => {
-  console.log(videoCaseId)
-  const { subcategoryId } = useParams<{ subcategoryId: string }>()
-
-  const { videoList } = useGetVideoList({
-    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
-    take: 3,
-  })
-
-  const slicedVideoList = videoList.slice(0, 3)
+const AiVideoRecommender = ({ videoList, subcategoryId }: AiVideoRecommenderProps) => {
+  const navigate = useNavigate()
+  const handleVideoItemClick = (videoId: number) => {
+    navigate(`/${subcategoryId}/video/${videoId}`)
+  }
 
   return (
     <div className={styles['ai-recommender-video-grid']}>
-      {slicedVideoList.map(video => (
+      {videoList.map(video => (
         <VideoThumbnail
           key={video.videoCaseId}
           size={'small'}
           imgUrl={video.thumbnail}
           lawyerName={video.lawyerName}
           description={video.summaryContent}
+          onClick={() => handleVideoItemClick(video.videoCaseId)}
         />
       ))}
     </div>

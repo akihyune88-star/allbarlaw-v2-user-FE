@@ -17,6 +17,14 @@
   gap: 1rem;
 }
 
+.blog-carousel-wrapper {
+  width: 798px;
+
+  @media (max-width: $breakpoint-desktop) {
+    width: 100%;
+  }
+}
+
 @media (max-width: $breakpoint-desktop) {
   .blog-container {
     flex-direction: column;

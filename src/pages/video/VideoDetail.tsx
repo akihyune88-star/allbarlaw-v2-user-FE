@@ -3,7 +3,7 @@ import DetailHeader from '@/components/detailHeader/DetailHeader'
 import VideoPlayerContainer from '@/container/video/videoPlayerContainer/VideoPlayerContainer'
 import { useDelayedLoading } from '@/hooks'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useGetVideoDetail } from '@/hooks/queries/useGetVideoDetail'
 import VidoeInfo from '@/container/video/VidoeInfo'
 import styles from './video-detail.module.scss'
@@ -12,19 +12,32 @@ import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import BlogDetailSideBar from '@/container/blog/BlogDetailSideBar'
 import AiVideoRecommender from '@/container/video/aiVideoRecommender/AiVideoRecommender'
-import AiRecommenderVideoSlider from '@/container/video/AiRecommenderVideoSlider'
 import { useState, useEffect } from 'react'
 import { useVideoKeep } from '@/hooks/queries/useGetVideoList'
 import { copyUrlToClipboard } from '@/utils/clipboard'
+import { useRecommendationLegalTerm, useRecommendationVideo } from '@/hooks/queries/useRecommendation'
+import RecommendationLawyer from '@/container/recommendation/RecommendationLawyer'
+import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
+import AiVideoCarousel from '@/container/recommendation/aiVideoCarousel/AiVideoCarousel'
 
 const VideoDetail = () => {
   const { videoId } = useParams<{ videoId: string }>()
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const navigate = useNavigate()
 
-  const { showLoading } = useDelayedLoading({ delay: 3000 })
+  const { showLoading, setShowLoading } = useDelayedLoading({ delay: 3000 })
   const { data } = useGetVideoDetail({ videoCaseId: Number(videoId) })
   const [isKeep, setIsKeep] = useState(false)
-  
+
+  // videoId가 변경될 때마다 로딩 다시 시작
+  useEffect(() => {
+    setShowLoading(true)
+    const timer = setTimeout(() => {
+      setShowLoading(false)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [videoId, setShowLoading])
+
   // data가 로드되면 isKeep 상태 업데이트
   useEffect(() => {
     if (data?.isKeep !== undefined) {
@@ -63,6 +76,19 @@ const VideoDetail = () => {
     }
   }
 
+  const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
+    videoCaseIds: [data?.videoCaseId || 0],
+  })
+
+  const { data: recommendationVideo } = useRecommendationVideo({
+    subcategoryId: data?.subcategoryId || 'all',
+    take: 3,
+  })
+
+  const handleLawyerClick = (lawyerId: number) => {
+    navigate(`/search/lawyer/${lawyerId}`)
+  }
+
   return (
     <div className={'detail-container'}>
       <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
@@ -84,70 +110,52 @@ const VideoDetail = () => {
                 />
                 <VideoSummary summary={data?.summaryContent || ''} />
                 {!isMobile ? (
-                  <ContentsRecommender showDivider={false} title='AI 추천영상' contents={<AiVideoRecommender />} />
+                  <>
+                    <ContentsRecommender
+                      showDivider={false}
+                      title='AI 추천영상'
+                      contents={
+                        <AiVideoRecommender
+                          videoList={recommendationVideo || []}
+                          subcategoryId={data?.subcategoryId || 0}
+                        />
+                      }
+                    />
+                  </>
                 ) : (
                   <div className={styles['video-detail-mobile-side']}>
                     <LawyerHorizon
                       className={styles['lawyer-horizon']}
                       name={data?.lawyerName || ''}
-                      description={data?.lawfirmName || ''}
+                      lawfirm={data?.lawfirmName || ''}
                       profileImage={data?.lawyerProfileImage || ''}
                       buttonComponent={
                         <div className={styles['lawyer-contact-btn-wrapper']}>
-                          <button>변호사 정보</button>
+                          <button onClick={() => handleLawyerClick(data?.lawyerId || 0)}>변호사 정보</button>
                           <button>바로톡</button>
                         </div>
                       }
                     />
-                    <AiRecommenderVideoSlider />
-                    <ContentsRecommender
-                      isRefresh={true}
-                      title='AI 추천 변호사'
-                      contents={
-                        <div className={styles['ai-recommender-lawyer']}>
-                          {mockLawyerList.map(lawyer => (
-                            <LawyerHorizon
-                              key={lawyer.id}
-                              name={lawyer.name}
-                              profileImage={lawyer.profileImage}
-                              description={lawyer.description}
-                              size='x-small'
-                            />
-                          ))}
-                        </div>
-                      }
-                    />
+                    <AiVideoCarousel subcategoryId={data?.subcategoryId || 'all'} take={3} />
+                    <RecommendationLawyer />
+                    <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
                   </div>
                 )}
               </div>
             </div>
           )}
         </div>
-        {!isMobile && <BlogDetailSideBar showLoading={showLoading} lawyer={lawyer || {}} recommendLawyerList={[]} />}
+        {!isMobile && (
+          <BlogDetailSideBar
+            showLoading={showLoading}
+            lawyer={lawyer || {}}
+            blogCaseId={data?.videoCaseId || 0}
+            recommendationLegalTerm={recommendationLegalTerm}
+          />
+        )}
       </div>
     </div>
   )
 }
 
 export default VideoDetail
-
-const mockLawyerList = [
-  {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-  {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-  {
-    id: 1,
-    name: '이보람',
-    description: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    profileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-]

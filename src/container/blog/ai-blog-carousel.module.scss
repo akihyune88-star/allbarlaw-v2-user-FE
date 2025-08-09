@@ -7,3 +7,42 @@
   border-radius: 0.5rem;
   padding: 1.5rem;
 }
+
+.blog-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.blog-title {
+  font-size: 1rem;
+  font-weight: $font-weight-semibold;
+  line-height: 1.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+
+  white-space: pre-line;
+  word-break: keep-all;
+
+  @media (max-width: $breakpoint-desktop) {
+    -webkit-line-clamp: 2;
+    height: 2.5rem;
+  }
+}
+
+.blog-summary {
+  font-size: 0.8125rem;
+  font-weight: $font-weight-regular;
+  color: $color-text-index;
+
+  @include ellipsis(3);
+
+  @media (max-width: $breakpoint-desktop) {
+    display: none;
+  }
+}

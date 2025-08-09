@@ -1,5 +1,5 @@
 import styles from '@/pages/blog/blog-detail.module.scss'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@/components/button/Button'
 import SvgIcon from '@/components/SvgIcon'
 import BlogDetailContents from '@/container/blog/BlogDetailContents'
@@ -10,12 +10,13 @@ import { useGetBlogDetail } from '@/hooks/queries/useGetBlogDetail'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDelayedLoading } from '@/hooks'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
-import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
 import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
 import { useState, useEffect } from 'react'
 import { COLOR } from '@/styles/color'
 import { copyUrlToClipboard } from '@/utils/clipboard'
+import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
+import RecommendationLawyer from '@/container/recommendation/RecommendationLawyer'
 
 type BlogNavigationBarProps = {
   isKeep: boolean
@@ -41,10 +42,21 @@ const BlogNavigationBar = ({ isKeep, onSave, onShare }: BlogNavigationBarProps) 
 }
 
 const BlogDetail = ({ className }: { className?: string }) => {
-  const { showLoading } = useDelayedLoading({ delay: 3000 })
   const { blogCaseId } = useParams<{ blogCaseId: string }>()
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+  const { showLoading, setShowLoading } = useDelayedLoading({ delay: 3000 })
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
   const [isKeep, setIsKeep] = useState(false)
+  const navigate = useNavigate()
+
+  // blogCaseId가 변경될 때마다 로딩 다시 시작
+  useEffect(() => {
+    setShowLoading(true)
+    const timer = setTimeout(() => {
+      setShowLoading(false)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [blogCaseId, setShowLoading])
 
   // data가 로드되면 isKeep 상태 업데이트
   useEffect(() => {
@@ -85,6 +97,14 @@ const BlogDetail = ({ className }: { className?: string }) => {
     }
   }
 
+  const handleLawyerClick = (lawyerId: number) => {
+    navigate(`/search/lawyer/${lawyerId}`)
+  }
+
+  const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
+    blogCaseIds: [data?.blogCaseId || 0],
+  })
+
   return (
     <div className={`detail-container ${className}`}>
       <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
@@ -97,7 +117,9 @@ const BlogDetail = ({ className }: { className?: string }) => {
               <BlogDetailContents summaryContents={data?.summaryContent || ''} tagList={data?.tags || []} />
               <BlogNavigationBar isKeep={isKeep} onSave={handleSave} onShare={handleShare} />
               {!isMobile ? (
-                <AIBlogCarousel />
+                <div style={{ width: 798 }}>
+                  <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={10} />
+                </div>
               ) : (
                 <div className={styles['blog-moblie-side']}>
                   <LawyerHorizon
@@ -107,35 +129,25 @@ const BlogDetail = ({ className }: { className?: string }) => {
                     profileImage={lawyer.profileImage}
                     buttonComponent={
                       <div className={styles['lawyer-contact-btn-wrapper']}>
-                        <button>변호사 정보</button>
+                        <button onClick={() => handleLawyerClick(lawyer.lawyerId)}>변호사 정보</button>
                         <button>바로톡</button>
                       </div>
                     }
                   />
-                  <ContentsRecommender
-                    isRefresh={true}
-                    title='AI 추천 변호사'
-                    contents={
-                      <div className={styles['ai-recommender-lawyer']}>
-                        {mockLawyerList.map(lawyer => (
-                          <LawyerHorizon
-                            key={lawyer.lawyerId}
-                            name={lawyer.lawyerName}
-                            profileImage={lawyer.lawyerProfileImage}
-                            description={lawyer.lawfirmName}
-                            size='x-small'
-                          />
-                        ))}
-                      </div>
-                    }
-                  />
+                  <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={10} />
+                  <RecommendationLawyer />
                 </div>
               )}
             </>
           )}
         </div>
         {!isMobile && (
-          <BlogDetailSideBar showLoading={showLoading} lawyer={lawyer || {}} recommendLawyerList={mockLawyerList} />
+          <BlogDetailSideBar
+            blogCaseId={Number(blogCaseId)}
+            showLoading={showLoading}
+            lawyer={lawyer || {}}
+            recommendationLegalTerm={recommendationLegalTerm}
+          />
         )}
       </div>
     </div>

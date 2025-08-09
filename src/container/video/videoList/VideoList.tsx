@@ -2,24 +2,33 @@ import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import Divider from '@/components/divider/Divider'
 import VideoHorizon from '@/components/video/VideoHorizon'
 import styles from './video-list.module.scss'
-import { useInfiniteVideoList } from '@/hooks/queries/useGetVideoList'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { ROUTER } from '@/routes/routerConstant'
-import { Fragment, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Fragment } from 'react'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
+import { VideoCase } from '@/types/videoTypes'
 
-const VideoList = () => {
-  const [sortCase, setSortCase] = useState<string>('all')
+interface VideoListProps {
+  videoList: VideoCase[]
+  isLoading: boolean
+  hasNextPage: boolean
+  isFetchingNextPage: boolean
+  fetchNextPage: () => void
+  sortCase: string
+  onChangeSort: (_key: string) => void
+  onClickItem: (_videoId: number) => void
+}
+
+const VideoList = ({
+  videoList,
+  isLoading,
+  hasNextPage,
+  isFetchingNextPage,
+  fetchNextPage,
+  sortCase,
+  onChangeSort,
+  onClickItem,
+}: VideoListProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const { subcategoryId } = useParams<{ subcategoryId: string }>()
-  const navigate = useNavigate()
-
-  const { videoList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteVideoList({
-    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
-    take: 4,
-    orderBy: sortCase === 'all' ? 'createdAt' : (sortCase as 'createdAt' | 'viewCount' | 'likesCount'),
-  })
 
   // 무한스크롤 적용
   useInfiniteScroll({
@@ -29,11 +38,11 @@ const VideoList = () => {
   })
 
   const handleSortCase = (key: string) => {
-    setSortCase(key)
+    onChangeSort(key)
   }
 
   const handleVideoClick = (videoCaseId: number) => {
-    navigate(`/${subcategoryId}${ROUTER.VIDEO}/${videoCaseId}`)
+    onClickItem(videoCaseId)
   }
 
   return (

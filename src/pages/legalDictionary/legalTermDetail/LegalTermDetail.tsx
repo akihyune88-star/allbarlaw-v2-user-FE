@@ -27,9 +27,22 @@ const PcTotalContentsHeader = ({ amount }: { amount: number }) => {
 const LegalTermDetail = () => {
   const { termId } = useParams()
   const isMobile = useMediaQuery('(min-width: 80rem)')
-  const { data: legalTermDetail } = useLegalTermDetail(Number(termId))
+  const { data: legalTermDetail, isLoading } = useLegalTermDetail(Number(termId))
   const { data: popularLegalTermList } = usePopularLegalTermList()
   const { data: recentRegisteredLegalTermList } = useRecentRegisteredLegalTermList()
+
+  if (isLoading) {
+    return (
+      <main className={`sub-main-container ${styles.container}`}>
+        <div className={styles['loading-container']}>
+          <div className={styles['loading-spinner']}>
+            <div className={styles['spinner']}></div>
+            <p>법률 용어 정보를 불러오는 중입니다...</p>
+          </div>
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main className={`sub-main-container ${styles.container}`}>

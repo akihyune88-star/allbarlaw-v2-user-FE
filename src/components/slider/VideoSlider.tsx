@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styles from './video-slider.module.scss'
 
-type VideoItem = {
+export type VideoItem = {
   id: number
   title: string
   thumbnail: string

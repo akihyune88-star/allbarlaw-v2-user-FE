@@ -4,9 +4,8 @@ import NotFound from '../pages/NotFound'
 import { ROUTER } from './routerConstant'
 import Main from '@/pages/main/Main'
 import SubMain from '@/pages/subMain/SubMain'
-import BlogLayout from '@/pages/blog/Blog'
 import BlogDetail from '@/pages/blog/BlogDetail'
-import VideoLayout from '@/pages/video/Video'
+import VideoLayout from '@/pages/video/video/Video'
 import VideoDetail from '@/pages/video/VideoDetail'
 import LegalKnowledgeLayout from '@/pages/legalKnowledge/LegalKnowledge'
 import LawyerLayout from '@/pages/lawyer/Lawyer'
@@ -38,6 +37,7 @@ import MainLayout from '@/pages/MainLayout'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import {
   BaroTalkLawyerSelection,
+  BlogLayout,
   Chat,
   ConsultationContentForm,
   LawyerAdminLayout,
@@ -204,56 +204,36 @@ const router = createBrowserRouter([
               {
                 path: 'blog',
                 element: <SearchBlog />,
-                children: [
-                  {
-                    path: ':blogCaseId',
-                    element: (
-                      <div style={{ margin: '-24px' }}>
-                        <BlogDetail />
-                      </div>
-                    ),
-                  },
-                ],
               },
               {
                 path: 'video',
                 element: <SearchVideo />,
-                children: [
-                  {
-                    path: ':videoId',
-                    element: (
-                      <div style={{ margin: '-24px' }}>
-                        <VideoDetail />
-                      </div>
-                    ),
-                  },
-                ],
               },
               {
                 path: 'legal-knowledge',
                 element: <SearchLegalKnowledge />,
-                children: [
-                  {
-                    path: ':knowledgeId',
-                    element: (
-                      <div style={{ margin: '-24px' }}>
-                        <LegalKnowledgeDetail />
-                      </div>
-                    ),
-                  },
-                ],
               },
               {
                 path: 'lawyer',
                 element: <SearchLawyer />,
-                children: [
-                  {
-                    path: ':lawyerId',
-                    element: <LawyerDetail />,
-                  },
-                ],
               },
             ],
+          },
+          {
+            path: '/search/blog/:blogCaseId',
+            element: <BlogDetail />,
+          },
+          {
+            path: '/search/video/:videoId',
+            element: <VideoDetail />,
+          },
+          {
+            path: '/search/legal-knowledge/:knowledgeId',
+            element: <LegalKnowledgeDetail />,
+          },
+          {
+            path: '/search/lawyer/:lawyerId',
+            element: <LawyerDetail />,
           },
           {
             path: ROUTER.FAQ,

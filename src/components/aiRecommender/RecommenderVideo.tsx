@@ -66,7 +66,7 @@ const RecommenderVideo = ({
           <img src={videoUrl} alt='recommender-video' className={styles.thumbnail} />
         </figure>
         <div className={styles.description}>{description}</div>
-        {isLoggedIn && (
+        {isLoggedIn && isVideoKeep !== undefined && (
           <button onClick={handleVideoKeep} style={{ backgroundColor: 'transparent', border: 'none' }}>
             <SvgIcon name='bookMark' style={{ flexShrink: 0, fill: isVideoKeep ? COLOR.green_01 : '#fff' }} size={16} />
           </button>

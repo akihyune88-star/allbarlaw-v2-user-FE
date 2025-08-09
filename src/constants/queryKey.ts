@@ -26,6 +26,7 @@ export const QUERY_KEY = {
   // 변호사
   LAWYER_LIST: 'lawyerList',
   LAWYER_DETAIL: 'lawyerDetail',
+  LAWYER_ACTIVE: 'lawyerActive',
 
   // 법률용어
   POPULAR_LEGAL_TERM_LIST: 'popularLegalTermList',
@@ -47,4 +48,11 @@ export const QUERY_KEY = {
   SEARCH_VIDEO: 'searchVideo',
   SEARCH_CONSULTATION: 'searchConsultation',
   SEARCH_LAWYER: 'searchLawyer',
+
+  // 추천
+  RECOMMENDATION_TAG: 'recommendationTag',
+  RECOMMENDATION_LAWYER: 'recommendationLawyer',
+  RECOMMENDATION_LEGAL_TERM: 'recommendationLegalTerm',
+  RECOMMENDATION_VIDEO: 'recommendationVideo',
+  RECOMMENDATION_BLOG: 'recommendationBlog',
 } as const

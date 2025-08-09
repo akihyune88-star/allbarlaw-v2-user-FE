@@ -1,0 +1,7 @@
+.video-carousel-wrapper {
+  width: 798px;
+
+  @media (max-width: $breakpoint-desktop) {
+    width: 100%;
+  }
+}

@@ -1,21 +1,23 @@
 import { useState } from 'react'
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { useSearchStore } from '@/stores/searchStore'
 import { useInfiniteSearchList } from '@/hooks/queries/useSearch'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import SearchContentHeader from '@/container/search/searchContentHeader/SearchContentHeader'
 import SearchLegalKnowledgeResult from '@/container/search/searchLegalKnowledgeResult/SearchLegalKnowledgeResult'
-// import SearchSideWidget from '@/container/search/searchSideWidget/SearchSideWidget'
 import { SortType } from '@/types/sortTypes'
 import styles from './search-legal-knowledge.module.scss'
-import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import Divider from '@/components/divider/Divider'
+import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
+import RecentActiveLawyer from '@/container/lawyer/recentActiveLawyer/RecentActiveLawyer'
+import { ROUTER } from '@/routes/routerConstant'
 
 const SearchLegalKnowledge = () => {
   const { knowledgeId } = useParams()
   const { searchQuery } = useSearchStore()
   const [sort, setSort] = useState<SortType>('viewCount')
+  const navigate = useNavigate()
 
   const { searchResults, searchTotalCounts, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =
     useInfiniteSearchList({
@@ -35,7 +37,15 @@ const SearchLegalKnowledge = () => {
 
   const knowledgeCount = searchTotalCounts?.searchTotalConsultationCount || 0
 
+  const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
+    knowledgeIds: searchResults?.searchConsultationResults.map(result => result.knowledgeId) || [],
+  })
+
   if (knowledgeId) return <Outlet />
+
+  const handleRequestConsultation = () => {
+    navigate(ROUTER.CHAT)
+  }
 
   return (
     <main className='sub-main-container'>
@@ -48,24 +58,22 @@ const SearchLegalKnowledge = () => {
         />
       </section>
       <aside className='aside'>
-        <section>
-          <ContentsRecommender
-            isRefresh={true}
-            title='AI 추천 변호사'
-            onRefresh={() => {}}
-            contents={<div className={styles['ai-recommender-lawyer']} />}
-          />
+        <section className={styles['consultation-section']}>
+          <div className={styles['consultation-section-header']}>
+            <span className={styles['consultation-section-header-title']}>
+              궁금한 내용을
+              <br />
+              질문하세요
+            </span>
+            <button className={styles['consultation-section-header-button']} onClick={handleRequestConsultation}>
+              변호사 채팅상담하기
+            </button>
+            <Divider padding={16} />
+            <RecentActiveLawyer />
+          </div>
         </section>
         <section>
-          <LegalTermWidget
-            lagalTermList={[
-              '사기죄 [詐欺罪]',
-              '업무방해죄 [業務妨害罪]',
-              '절도죄 [窃盜罪]',
-              '법정대리인 [法定代理人]',
-              '위법성 조각사유 [違법性 阻却事由]',
-            ]}
-          />
+          <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
         </section>
       </aside>
     </main>

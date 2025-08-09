@@ -1,7 +1,7 @@
 import styles from './video-thumbnail.module.scss'
 
 type VideoThumbnailProps = {
-  size: 'small' | 'large' | 'text'
+  size: 'x-small' | 'small' | 'large' | 'text'
   imgUrl?: string
   title?: string
   lawyerName?: string

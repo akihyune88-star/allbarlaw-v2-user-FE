@@ -38,6 +38,22 @@
       font-size: 0.75rem;
       line-height: 180%;
       color: $color-text-index;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .empty-state {
+    padding: 1rem 0;
+    text-align: center;
+
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: $color-text-index;
     }
   }
 }
@@ -47,6 +63,7 @@
     .tag-list {
       p {
         line-height: 1.25rem;
+        white-space: pre-line;
       }
     }
   }
