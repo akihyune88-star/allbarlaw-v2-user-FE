@@ -41,7 +41,7 @@ const TagSection = ({ tagList }: { tagList: RecommendationTag[] }) => {
       </div>
       <button onClick={handleToggle}>
         <span>{isExpanded ? '접기' : '더보기'}</span>
-        <SvgIcon name='arrowSmall' style={{ transform: `rotate(${isArrowUp ? 180 : 0}deg)` }} />
+        <SvgIcon name='arrowSmall' style={{ transform: `rotate(${isArrowUp ? 90 : 180}deg)` }} />
       </button>
     </section>
   )
