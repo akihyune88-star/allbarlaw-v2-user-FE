@@ -21,16 +21,16 @@ export const recommendationService = {
     const { blogCaseIds, videoCaseIds, knowledgeIds, lawfirmIds } = request
 
     const params = new URLSearchParams()
-    if (blogCaseIds !== undefined) params.append('blogCaseIds', blogCaseIds.toString())
-    if (videoCaseIds !== undefined) params.append('videoCaseIds', videoCaseIds.toString())
-    if (knowledgeIds !== undefined) params.append('knowledgeIds', knowledgeIds.toString())
-    if (lawfirmIds !== undefined) params.append('lawfirmIds', lawfirmIds.toString())
+    if (blogCaseIds !== undefined) params.append('blogCaseIds', `[${blogCaseIds}]`)
+    if (videoCaseIds !== undefined) params.append('videoCaseIds', `[${videoCaseIds}]`)
+    if (knowledgeIds !== undefined) params.append('knowledgeIds', `[${knowledgeIds}]`)
+    if (lawfirmIds !== undefined) params.append('lawfirmIds', `[${lawfirmIds}]`)
 
     // 쿼리스트링 생성
     const queryString = params.toString()
     const url = `/legal-terms/extract${queryString ? `?${queryString}` : ''}`
 
-    const response = await instance.post<RecommendationLegalTermResponse>(url)
+    const response = await instance.get<RecommendationLegalTermResponse>(url)
     return response.data
   },
 }

@@ -32,17 +32,27 @@ const TagSection = ({ tagList }: { tagList: RecommendationTag[] }) => {
   return (
     <section className={styles['tag-section']}>
       <h2 className={styles['section-title']}>AI 추천태그</h2>
-      <div className={styles['tag-list']}>
-        {visibleTags.map(tag => (
-          <span key={tag.tagId} className={styles['tag-item']}>
-            #{tag.tagName}
-          </span>
-        ))}
-      </div>
-      <button onClick={handleToggle}>
-        <span>{isExpanded ? '접기' : '더보기'}</span>
-        <SvgIcon name='arrowSmall' style={{ transform: `rotate(${isArrowUp ? 90 : 180}deg)` }} />
-      </button>
+      {tagList.length === 0 ? (
+        <div className={styles['empty-state']}>
+          <p>추천할 태그가 없습니다.</p>
+        </div>
+      ) : (
+        <>
+          <div className={styles['tag-list']}>
+            {visibleTags.map(tag => (
+              <span key={tag.tagId} className={styles['tag-item']}>
+                #{tag.tagName}
+              </span>
+            ))}
+          </div>
+          {tagList.length > 10 && (
+            <button onClick={handleToggle}>
+              <span>{isExpanded ? '접기' : '더보기'}</span>
+              <SvgIcon name='arrowSmall' style={{ transform: `rotate(${isArrowUp ? 90 : 180}deg)` }} />
+            </button>
+          )}
+        </>
+      )}
     </section>
   )
 }
@@ -79,20 +89,26 @@ export const LawyerItem = ({
     <section className={styles['lawyer-section']}>
       <header>
         <h2 className={styles['section-title']}>AI 추천 변호사</h2>
-        <SvgIcon name='refresh' onClick={handleRefresh} />
+        {lawyerList.length > 0 && <SvgIcon name='refresh' onClick={handleRefresh} />}
       </header>
       {divider && <Divider />}
-      <div className={styles['lawyer-list']}>
-        {visibleLawyers.map(lawyer => (
-          <LawyerHorizon
-            key={lawyer.lawyerId}
-            name={lawyer.lawyerName}
-            profileImage={lawyer.lawyerProfileImage}
-            description={lawyer.lawfirmName}
-            size='x-small'
-          />
-        ))}
-      </div>
+      {lawyerList.length === 0 ? (
+        <div className={styles['empty-state']}>
+          <p>추천할 변호사가 없습니다.</p>
+        </div>
+      ) : (
+        <div className={styles['lawyer-list']}>
+          {visibleLawyers.map(lawyer => (
+            <LawyerHorizon
+              key={lawyer.lawyerId}
+              name={lawyer.lawyerName}
+              profileImage={lawyer.lawyerProfileImage}
+              description={lawyer.lawfirmName}
+              size='x-small'
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }

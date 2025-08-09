@@ -40,6 +40,17 @@
       color: $color-text-index;
     }
   }
+
+  .empty-state {
+    padding: 1rem 0;
+    text-align: center;
+
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: $color-text-index;
+    }
+  }
 }
 
 @media (max-width: $breakpoint-desktop) {
@@ -47,6 +58,7 @@
     .tag-list {
       p {
         line-height: 1.25rem;
+        white-space: pre-line;
       }
     }
   }
