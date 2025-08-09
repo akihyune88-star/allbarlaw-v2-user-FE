@@ -33,7 +33,7 @@ const SearchHeader = ({ searchQuery }: SearchHeaderProps) => {
       </h2>
       {isMobile ? (
         <div className={styles['search-input-container']}>
-          <SearchInput className={styles['search-input']} />
+          <SearchInput className={styles['search-input']} initialValue={searchQuery} />
         </div>
       ) : (
         <span className={styles['search-query']}>

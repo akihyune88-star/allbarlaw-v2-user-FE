@@ -10,16 +10,15 @@ interface TotalSearchKnowledgeListProps {
 }
 
 const TotalSearchKnowledgeList = ({ searchResults, query }: TotalSearchKnowledgeListProps) => {
-  console.log('searchResults', searchResults)
   const navigate = useNavigate()
 
   const handleClickMore = () => {
-    navigate(`/search/legal-knowledge?query=${query}`)
+    navigate(`/search/legal-knowledge?q=${encodeURIComponent(query)}`)
   }
 
   return (
     <div className={styles['total-search-knowledge-list']}>
-      <SearchSectionHeader title='법률정보의 글' onClickMore={handleClickMore} />
+      <SearchSectionHeader title='법률 지식인' onClickMore={handleClickMore} />
       <div className={styles['knowledge-list']}>
         {searchResults.map(knowledge => (
           <LegalKnowledgeItem

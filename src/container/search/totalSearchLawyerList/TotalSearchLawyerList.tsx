@@ -10,11 +10,10 @@ interface TotalSearchLawyerListProps {
 }
 
 const TotalSearchLawyerList = ({ searchResults, query }: TotalSearchLawyerListProps) => {
-  console.log('searchResults', searchResults)
   const navigate = useNavigate()
 
   const handleClickMore = () => {
-    navigate(`/search/lawyer?query=${query}`)
+    navigate(`/search/lawyer?q=${encodeURIComponent(query)}`)
   }
 
   const handleClickLawyerPage = (lawyerId: number) => {
@@ -27,7 +26,7 @@ const TotalSearchLawyerList = ({ searchResults, query }: TotalSearchLawyerListPr
 
   return (
     <div className={styles['total-search-lawyer-list']}>
-      <SearchSectionHeader title='법률 영상' onClickMore={handleClickMore} />
+      <SearchSectionHeader title='변호사' onClickMore={handleClickMore} />
       <div className={styles['lawyer-list']}>
         {searchResults.map(lawyer => (
           <LawyerHorizon

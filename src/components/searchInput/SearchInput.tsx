@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import InputBox from '../inputBox/InputBox'
 import SvgIcon from '../SvgIcon'
 
@@ -18,7 +18,14 @@ const SearchInput: React.FC<SearchInputProps> = ({
 }) => {
   const navigate = useNavigate()
   const location = useLocation()
-  const [searchValue, setSearchValue] = useState(initialValue)
+  const [searchParams] = useSearchParams()
+  const queryFromUrl = searchParams.get('q') || ''
+  const [searchValue, setSearchValue] = useState(initialValue || queryFromUrl)
+
+  // URL 쿼리 파라미터가 변경될 때 input 값 동기화
+  useEffect(() => {
+    setSearchValue(queryFromUrl)
+  }, [queryFromUrl])
 
   const handleSearch = () => {
     if (searchValue.trim()) {

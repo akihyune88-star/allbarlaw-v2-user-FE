@@ -13,7 +13,7 @@ const TotalSearchVideoList = ({ searchResults, query }: TotalSearchVideoListProp
   const navigate = useNavigate()
 
   const handleClickMore = () => {
-    navigate(`/search/video?query=${query}`)
+    navigate(`/search/video?q=${encodeURIComponent(query)}`)
   }
 
   return (
