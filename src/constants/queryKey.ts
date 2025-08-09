@@ -47,4 +47,8 @@ export const QUERY_KEY = {
   SEARCH_VIDEO: 'searchVideo',
   SEARCH_CONSULTATION: 'searchConsultation',
   SEARCH_LAWYER: 'searchLawyer',
+
+  // 추천
+  RECOMMENDATION_TAG: 'recommendationTag',
+  RECOMMENDATION_LAWYER: 'recommendationLawyer',
 } as const
