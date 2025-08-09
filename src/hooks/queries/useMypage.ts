@@ -6,6 +6,7 @@ import { VideoListRequest } from '@/types/videoTypes'
 import { KnowledgeListRequest } from '@/types/knowledgeType'
 import { LawyerListRequest } from '@/types/lawyerTypes'
 import { LegalTermListRequest } from '@/types/legalTermTypes'
+import { MyConsultationListRequest } from '@/types/mypageTypes'
 
 // 무한 스크롤용 훅
 export const useInfiniteMyBlogList = (request?: Omit<BlogListRequest, 'cursor' | 'cursorId'>) => {
@@ -167,6 +168,46 @@ export const useInfiniteMyLegalDictionaryList = (request?: Omit<LegalTermListReq
 
   return {
     legalDictionaryList,
+    isLoading,
+    isError,
+    hasNextPage: hasNextPage ?? false,
+    fetchNextPage,
+    isFetchingNextPage,
+  }
+}
+
+export const useInfiniteMyConsultationList = (request: Omit<MyConsultationListRequest, 'cursor' | 'cursorId'>) => {
+  const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: [
+      QUERY_KEY.MY_CONSULTATION_LIST,
+      'infinite',
+      'my',
+      request.year,
+      request.month,
+      request.sort,
+      request.take,
+    ],
+    queryFn: ({ pageParam }) =>
+      mypageService.getMyConsultationList({
+        ...request,
+        cursor: pageParam?.cursor,
+        cursorId: pageParam?.cursorId,
+      }),
+    enabled: true,
+    initialPageParam: undefined as undefined | { cursor: number; cursorId: number },
+    getNextPageParam: lastPage => {
+      if (!lastPage.hasNextPage) return undefined
+      return {
+        cursor: lastPage.nextCursor,
+        cursorId: lastPage.nextCursorId,
+      }
+    },
+  })
+
+  const consultationList = data?.pages.flatMap(page => page.data) ?? []
+
+  return {
+    consultationList,
     isLoading,
     isError,
     hasNextPage: hasNextPage ?? false,

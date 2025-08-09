@@ -1,0 +1,14 @@
+.myChatList {
+  display: flex;
+  background-color: $color-bg-gray-02;
+}
+
+.myChatList-aside {
+  width: 17.125rem;
+  background-color: $color-bg-gray-01;
+  padding: 1.625rem;
+}
+
+.my-chat-list-main {
+  flex: 1;
+}
