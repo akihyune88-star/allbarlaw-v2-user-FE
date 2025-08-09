@@ -30,7 +30,7 @@ const LegalTermWidget = ({ lagalTermList }: LegalTermWidgetProps) => {
       ) : (
         <>
           <div className={styles['tag-list']}>
-            {visibleList.map((term, index) => (
+            {visibleList.map(term => (
               <p key={term.legalTermId} onClick={() => handleLegalTermClick(term.legalTermId)}>
                 {term.koreanName} ({term.chineseName})
               </p>

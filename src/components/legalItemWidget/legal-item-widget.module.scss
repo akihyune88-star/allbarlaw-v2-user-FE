@@ -36,6 +36,10 @@
     font-size: 0.875rem;
     font-weight: $font-weight-semibold;
     color: $color-text-black;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &-discription {

@@ -3,6 +3,7 @@ import Divider from '../divider/Divider'
 import SvgIcon from '../SvgIcon'
 import styles from './legal-item-widget.module.scss'
 import { LegalTermItem } from '@/types/legalTermTypes'
+import { useNavigate } from 'react-router-dom'
 
 interface LegalItemWidgetProps {
   title: string
@@ -12,6 +13,7 @@ interface LegalItemWidgetProps {
 
 const LegalItemWidget = ({ title, legalTermList, onRefresh }: LegalItemWidgetProps) => {
   const [currentChunkIndex, setCurrentChunkIndex] = useState(0)
+  const navigate = useNavigate()
 
   // 5개씩 청크로 나누기
   const chunks = useMemo(() => {
@@ -38,6 +40,10 @@ const LegalItemWidget = ({ title, legalTermList, onRefresh }: LegalItemWidgetPro
     }
   }
 
+  const handleItemClick = (legalTermId: number) => {
+    navigate(`/legal-dictionary/${legalTermId}`)
+  }
+
   return (
     <section className={styles.container}>
       <div className={styles['header']}>
@@ -53,7 +59,7 @@ const LegalItemWidget = ({ title, legalTermList, onRefresh }: LegalItemWidgetPro
         ) : (
           <>
             {displayItems.map(item => (
-              <div className={styles['item']} key={item.legalTermId}>
+              <div className={styles['item']} key={item.legalTermId} onClick={() => handleItemClick(item.legalTermId)}>
                 <h4 className={styles['item-title']}>
                   {item.koreanName} [{item.chineseName}]
                 </h4>

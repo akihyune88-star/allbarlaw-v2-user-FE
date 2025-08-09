@@ -38,6 +38,11 @@
       font-size: 0.75rem;
       line-height: 180%;
       color: $color-text-index;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
