@@ -34,7 +34,7 @@ const TotalSearch = () => {
           query={searchQuery}
         />
         <TotalSearchVideoList searchResults={data?.searchResults.searchVideoResults || []} query={searchQuery} />
-        <TotalSearchLawyerList />
+        <TotalSearchLawyerList searchResults={data?.searchResults.searchLawyerResults || []} query={searchQuery} />
       </div>
     </>
   )
