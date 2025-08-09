@@ -23,6 +23,7 @@
 
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
+  border-bottom: 1px solid $color-line-divider;
 
   @media (max-width: $breakpoint-desktop) {
     grid-template-columns: 1fr;
