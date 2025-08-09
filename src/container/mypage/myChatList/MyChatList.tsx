@@ -35,46 +35,59 @@ const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
         <ChatListFilter year={year} month={month} onYearChange={handleYearChange} onMonthChange={handleMonthChange} />
       </aside>
       <div className={styles['myChatList-main']}>
-        <ul className={styles['myChatList-list']}>
-          {consultationList.map((consultation, index) => {
-            const isEdit = consultation.chatRoomStatus === 'PENDING'
-            return (
-              <li key={consultation.knowledgeId}>
-                <article className={styles['myChatListList-item']}>
-                  <LegalKnowledgeItem
-                    knowledgeId={consultation.knowledgeId}
-                    title={consultation.knowledgeTitle}
-                    description={consultation.summaryContent}
-                    time={new Date(consultation.lastMessageAt)}
-                    lawyerList={consultation.lawyers}
-                    knowledgeKeep={consultation.isKeep}
-                    isLastAnswer={true}
-                  />
-                  <footer className={styles['myChatListList-item-footer']}>
-                    <span
-                      className={styles['myChatListList-item-status']}
-                      style={{ color: isEdit ? COLOR.green_01 : COLOR.error }}
-                    >
-                      {getStatus(consultation.chatRoomStatus)}
-                    </span>
-                    <nav className={styles['myChatListList-item-button']} aria-label='상담 액션'>
-                      <button type='button' aria-label='상담 내용 수정'>
-                        수정
-                      </button>
-                      <button type='button' aria-label='상담 비공개 설정'>
-                        비공개
-                      </button>
-                      <button type='button' aria-label='채팅방 삭제'>
-                        삭제
-                      </button>
-                    </nav>
-                  </footer>
-                </article>
-                {index !== consultationList.length - 1 && <Divider padding={24} />}
-              </li>
-            )
-          })}
-        </ul>
+        {consultationList.length === 0 ? (
+          <div className={styles['myChatList-empty']}>
+            <div className={styles['myChatList-empty-content']}>
+              <h3 className={styles['myChatList-empty-title']}>상담 내역이 없습니다</h3>
+              <p className={styles['myChatList-empty-description']}>
+                {year}년 {month}월에 진행한 상담이 없습니다.
+                <br />
+                변호사와 상담을 시작해보세요.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <ul className={styles['myChatList-list']}>
+            {consultationList.map((consultation, index) => {
+              const isEdit = consultation.chatRoomStatus === 'PENDING'
+              return (
+                <li key={consultation.knowledgeId}>
+                  <article className={styles['myChatListList-item']}>
+                    <LegalKnowledgeItem
+                      knowledgeId={consultation.knowledgeId}
+                      title={consultation.knowledgeTitle}
+                      description={consultation.summaryContent}
+                      time={new Date(consultation.lastMessageAt)}
+                      lawyerList={consultation.lawyers}
+                      knowledgeKeep={consultation.isKeep}
+                      isLastAnswer={true}
+                    />
+                    <footer className={styles['myChatListList-item-footer']}>
+                      <span
+                        className={styles['myChatListList-item-status']}
+                        style={{ color: isEdit ? COLOR.green_01 : COLOR.error }}
+                      >
+                        {getStatus(consultation.chatRoomStatus)}
+                      </span>
+                      <nav className={styles['myChatListList-item-button']} aria-label='상담 액션'>
+                        <button type='button' aria-label='상담 내용 수정'>
+                          수정
+                        </button>
+                        <button type='button' aria-label='상담 비공개 설정'>
+                          비공개
+                        </button>
+                        <button type='button' aria-label='채팅방 삭제'>
+                          삭제
+                        </button>
+                      </nav>
+                    </footer>
+                  </article>
+                  {index !== consultationList.length - 1 && <Divider padding={24} />}
+                </li>
+              )
+            })}
+          </ul>
+        )}
       </div>
     </section>
   )

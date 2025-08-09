@@ -56,3 +56,30 @@
     font-size: 0.75rem;
   }
 }
+
+.myChatList-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 3rem;
+}
+
+.myChatList-empty-content {
+  text-align: center;
+}
+
+.myChatList-empty-title {
+  font-size: 1.25rem;
+  font-weight: $font-weight-semibold;
+  color: $color-text-index;
+  margin-bottom: 1rem;
+}
+
+.myChatList-empty-description {
+  font-size: 1rem;
+  color: $color-text-caption;
+  line-height: 1.5;
+}
