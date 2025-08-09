@@ -1,27 +1,23 @@
 // import SubMenuNavigation from '@/container/subMain/SubMenuNavigation'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styles from './search-header.module.scss'
 import Tabs from '@/components/tabs/Tabs'
 import { SEARCH_TAB_LIST } from '@/constants/searchConstants'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import SearchInput from '@/components/searchInput/SearchInput'
+import { useSearchStore } from '@/stores/searchStore'
 
-type SearchHeaderProps = {
-  searchQuery: string
-}
-
-const SearchHeader = ({ searchQuery }: SearchHeaderProps) => {
+const SearchHeader = () => {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const query = searchParams.get('q') || ''
+  
+  // zustand store에서 검색어 가져오기 (유일한 소스)
+  const { searchQuery: storeQuery } = useSearchStore()
 
   const handleMenuClick = (path: string) => {
-    // searchQuery prop 또는 URL 파라미터에서 쿼리 값 사용
-    const currentSearchValue = searchQuery || query
-
     const basePath = path === '/' ? '' : path
-    navigate(`/search${basePath}?q=${encodeURIComponent(currentSearchValue)}`)
+    // URL 쿼리 파라미터 제거 - store만 사용
+    navigate(`/search${basePath}`)
   }
 
   return (
@@ -37,7 +33,7 @@ const SearchHeader = ({ searchQuery }: SearchHeaderProps) => {
         </div>
       ) : (
         <span className={styles['search-query']}>
-          <strong>“{searchQuery}“</strong>
+          <strong>"{storeQuery}"</strong>
           검색결과 입니다.
         </span>
       )}

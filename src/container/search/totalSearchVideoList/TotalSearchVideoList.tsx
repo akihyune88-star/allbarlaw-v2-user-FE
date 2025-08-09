@@ -9,11 +9,11 @@ interface TotalSearchVideoListProps {
   query: string
 }
 
-const TotalSearchVideoList = ({ searchResults, query }: TotalSearchVideoListProps) => {
+const TotalSearchVideoList = ({ searchResults, query: _query }: TotalSearchVideoListProps) => {
   const navigate = useNavigate()
 
   const handleClickMore = () => {
-    navigate(`/search/video?query=${query}`)
+    navigate('/search/video')
   }
 
   return (

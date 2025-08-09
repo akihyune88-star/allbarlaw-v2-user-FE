@@ -1,11 +1,9 @@
-import { Outlet, useSearchParams, useLocation } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import SearchHeader from '@/container/search/searchHedaer/SearchHeader'
 import styles from './search-main.module.scss'
 
 const SearchMain = () => {
-  const [searchParams] = useSearchParams()
   const location = useLocation()
-  const searchQuery = searchParams.get('q') || ''
 
   // URL 세그먼트를 기반으로 루트 경로 여부 판단
   const pathSegments = location.pathname.split('/').filter(Boolean)
@@ -13,7 +11,7 @@ const SearchMain = () => {
 
   return (
     <div className={styles['search-main']}>
-      <SearchHeader searchQuery={searchQuery} />
+      <SearchHeader />
       <main className={isRootPath ? '' : 'main-container'}>
         <Outlet />
       </main>

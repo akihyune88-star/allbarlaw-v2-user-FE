@@ -1,6 +1,6 @@
 import { useSearchList } from '@/hooks/queries/useSearch'
 import styles from './total-search.module.scss'
-import { useSearchQuery } from '@/utils/urlUtils'
+import { useSearchStore } from '@/stores/searchStore'
 import TotalSearchBlogList from '@/container/search/totalSearchBlogList/TotalSearchBlogList'
 import TotalSearchKnowledgeList from '@/container/search/totalSearchKnowledgeList/TotalSearchKnowledgeList'
 import TotalSearchVideoList from '@/container/search/totalSearchVideoList/TotalSearchVideoList'
@@ -15,7 +15,8 @@ const SearchCount = ({ count }: { count: number }) => {
 }
 
 const TotalSearch = () => {
-  const searchQuery = useSearchQuery()
+  // zustand store에서 검색어 가져오기
+  const { searchQuery } = useSearchStore()
 
   const { data } = useSearchList({
     searchQuery: searchQuery,
