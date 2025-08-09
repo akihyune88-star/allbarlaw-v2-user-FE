@@ -2,7 +2,6 @@ import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
 import VideoList from '@/container/video/videoList/VideoList'
-import { formatKoreanWithHanja } from '@/utils/legalTermFormatter'
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInfiniteVideoList } from '@/hooks/queries/useGetVideoList'
@@ -24,8 +23,6 @@ const VideoLayout = () => {
   const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
     videoCaseIds: videoIds,
   })
-
-  const legalTermNames = useMemo(() => formatKoreanWithHanja(recommendationLegalTerm ?? []), [recommendationLegalTerm])
 
   const handleSortCase = (key: string) => setSortCase(key)
   const handleVideoItemClick = (videoId: number) => navigate(`/${subcategoryId}/video/${videoId}`)
@@ -50,7 +47,7 @@ const VideoLayout = () => {
           <AIRecommender />
         </section>
         <section>
-          <LegalTermWidget lagalTermList={legalTermNames} />
+          <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
         </section>
       </aside>
     </main>

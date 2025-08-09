@@ -1,26 +1,36 @@
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import styles from './lawyer-list.module.scss'
-import React, { useState } from 'react'
+import React from 'react'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Button from '@/components/button/Button'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useInfiniteLawyerList } from '@/hooks/queries/useLawyer'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { SortType } from '@/types/sortTypes'
+import { Lawyer } from '@/types/lawyerTypes'
 
-const LawyerList = () => {
-  const [sortCase, setSortCase] = useState<SortType>('createdAt')
+interface LawyerListProps {
+  lawyerList: Lawyer[]
+  isLoading: boolean
+  hasNextPage: boolean
+  isFetchingNextPage: boolean
+  fetchNextPage: () => void
+  sortCase: SortType
+  onChangeSort: (key: SortType) => void
+  onClickItem: (lawyerId: number) => void
+}
+
+const LawyerList = ({
+  lawyerList,
+  isLoading,
+  hasNextPage,
+  isFetchingNextPage,
+  fetchNextPage,
+  sortCase,
+  onChangeSort,
+  onClickItem,
+}: LawyerListProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const navigate = useNavigate()
-  const { subcategoryId } = useParams<{ subcategoryId: string }>()
-
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteLawyerList({
-    subcategoryId: Number(subcategoryId),
-    orderBy: (sortCase as SortType) || 'createdAt',
-    achievementId: 'all',
-  })
 
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
@@ -29,14 +39,12 @@ const LawyerList = () => {
   })
 
   const handleSortCase = (key: SortType) => {
-    if (key === 'all') {
-      setSortCase('createdAt')
-    } else {
-      setSortCase(key)
-    }
+    onChangeSort(key)
   }
 
-  const handleLawyerDetail = (lawyerId: string) => navigate(`/${subcategoryId}/lawyer/${lawyerId}`)
+  const handleLawyerDetail = (lawyerId: number) => {
+    onClickItem(lawyerId)
+  }
 
   return (
     <div className={styles.container}>
@@ -51,13 +59,13 @@ const LawyerList = () => {
         />
       </header>
       <section className={styles['lawyer-list-wrapper']}>
-        {data?.lawyerList.map((lawyer, index) => {
-          const isLastItem = index === data.lawyerList.length - 1 && !hasNextPage
+        {lawyerList.map((lawyer, index) => {
+          const isLastItem = index === lawyerList.length - 1 && !hasNextPage
 
           return (
             <React.Fragment key={lawyer.lawyerId}>
               <LawyerHorizon
-                onClick={() => handleLawyerDetail(lawyer.lawyerId.toString())}
+                onClick={() => handleLawyerDetail(lawyer.lawyerId)}
                 tags={lawyer.tags}
                 isBaroTalk={true}
                 className={styles['lawyer-list-item']}

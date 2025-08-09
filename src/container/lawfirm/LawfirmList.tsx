@@ -10,9 +10,10 @@ interface LawfirmListProps {
   lawfirmList: Lawfirm[]
   isLoading: boolean
   isFetchingNextPage: boolean
+  onClickItem?: (lawfirmId: number) => void
 }
 
-const LawfirmList = ({ lawfirmList, isLoading, isFetchingNextPage }: LawfirmListProps) => {
+const LawfirmList = ({ lawfirmList, isLoading, isFetchingNextPage, onClickItem }: LawfirmListProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
   return (
@@ -32,7 +33,8 @@ const LawfirmList = ({ lawfirmList, isLoading, isFetchingNextPage }: LawfirmList
               <div
                 key={lawfirm.lawfirmId}
                 className={`${styles['lawfirm-item']} ${hasImages ? styles['has-images'] : ''}`}
-                style={{ width: isMobile ? '100%' : '796px' }}
+                style={{ width: isMobile ? '100%' : '796px', cursor: onClickItem ? 'pointer' : 'default' }}
+                onClick={() => onClickItem?.(lawfirm.lawfirmId)}
               >
                 <LawfirmHorizon
                   className={styles['content-wrapper']}

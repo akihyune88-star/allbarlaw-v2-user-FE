@@ -1,32 +1,38 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import Button from '@/components/button/Button'
 import styles from '@/container/legalKnowledge/legal-knowledge-list.module.scss'
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
 import Divider from '@/components/divider/Divider'
-import { useInfiniteKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
-import { SortType } from '@/types/sortTypes'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
+import { KnowledgeItem } from '@/types/knowledgeType'
 
-const LegalKnowledgeList = () => {
+interface LegalKnowledgeListProps {
+  knowledgeList: KnowledgeItem[]
+  isLoading: boolean
+  hasNextPage: boolean
+  isFetchingNextPage: boolean
+  fetchNextPage: () => void
+  sortCase: string
+  onChangeSort: (key: string) => void
+  onClickItem: (knowledgeId: number) => void
+}
+
+const LegalKnowledgeList = ({
+  knowledgeList,
+  isLoading,
+  hasNextPage,
+  isFetchingNextPage,
+  fetchNextPage,
+  sortCase,
+  onChangeSort,
+  onClickItem,
+}: LegalKnowledgeListProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
-  const { subcategoryId } = useParams<{ subcategoryId: string }>()
-
-  const [sortCase, setSortCase] = useState<SortType>('all')
-
-  const handleSortCase = (key: SortType) => {
-    setSortCase(key)
-  }
-
-  const { knowledgeList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteKnowledgeList({
-    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
-    take: 4,
-    orderBy: sortCase === 'all' ? 'createdAt' : (sortCase as 'createdAt' | 'viewCount' | 'likesCount'),
-  })
 
   // 무한스크롤 적용
   useInfiniteScroll({
@@ -39,8 +45,13 @@ const LegalKnowledgeList = () => {
     navigate(ROUTER.REQUEST_BARO_TALK)
   }
 
-  const handleDetailLegalKnowledgeClick = (knowledgeId: number) =>
-    navigate(`/${subcategoryId}${ROUTER.LEGAL_KNOWLEDGE}/${knowledgeId}`)
+  const handleSortCase = (key: string) => {
+    onChangeSort(key)
+  }
+
+  const handleDetailLegalKnowledgeClick = (knowledgeId: number) => {
+    onClickItem(knowledgeId)
+  }
 
   return (
     <div className={styles['legal-knowledge-list-container']}>

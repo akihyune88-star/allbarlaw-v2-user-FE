@@ -1,13 +1,15 @@
 import LawfirmFilter from '@/container/lawfirm/lawfirmFilter/LawfirmFilter'
 import LawfirmList from '@/container/lawfirm/LawfirmList'
 import { useInfiniteLawfirmList } from '@/hooks/queries/useGetLawfirmList'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { SortType } from '@/types/sortTypes'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
+import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 
 const SubcategoryLawfirmLayout = () => {
+  const navigate = useNavigate()
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const [filter, setFilter] = useState<{
     orderBy: SortType
@@ -24,21 +26,35 @@ const SubcategoryLawfirmLayout = () => {
     recentDays: filter.recentDays,
   })
 
-  // 무한스크롤 적용
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
     isFetchingNextPage,
     fetchNextPage,
   })
 
+  const lawfirmIds = useMemo(() => lawfirmList.map(f => f.lawfirmId), [lawfirmList])
+
+  const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
+    lawfirmIds,
+  })
+
+  const handleLawfirmItemClick = (lawfirmId: number) => navigate(`/${subcategoryId}/law-firm/${lawfirmId}`)
+
+  console.log(recommendationLegalTerm)
+
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
-        <LawfirmList lawfirmList={lawfirmList} isLoading={isLoading} isFetchingNextPage={isFetchingNextPage} />
+        <LawfirmList
+          lawfirmList={lawfirmList}
+          isLoading={isLoading}
+          isFetchingNextPage={isFetchingNextPage}
+          onClickItem={handleLawfirmItemClick}
+        />
       </section>
       <aside className='aside' style={{ width: '250px', flexShrink: 0 }}>
         <LawfirmFilter filter={filter} setFilter={setFilter} />
-        <LegalTermWidget lagalTermList={[]} />
+        <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
       </aside>
     </main>
   )

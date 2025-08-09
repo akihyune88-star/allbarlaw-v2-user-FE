@@ -3,7 +3,6 @@ import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
 import BlogList from '@/container/blog/BlogList'
 import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
-import { formatKoreanWithHanja } from '@/utils/legalTermFormatter'
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInfiniteBlogList } from '@/hooks/queries/useGetBlogList'
@@ -25,8 +24,6 @@ const BlogLayout = () => {
   const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
     blogCaseIds: blogIds,
   })
-
-  const legalTermNames = useMemo(() => formatKoreanWithHanja(recommendationLegalTerm ?? []), [recommendationLegalTerm])
 
   const handleSortCase = (key: string) => setSortCase(key)
   const handleBlogItemClick = (blogId: number) => navigate(`/${subcategoryId}/blog/${blogId}`)
@@ -51,7 +48,7 @@ const BlogLayout = () => {
           <AIRecommender />
         </section>
         <section>
-          <LegalTermWidget lagalTermList={legalTermNames} />
+          <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
         </section>
       </aside>
     </main>
