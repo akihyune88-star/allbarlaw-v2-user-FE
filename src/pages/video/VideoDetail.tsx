@@ -12,13 +12,13 @@ import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import BlogDetailSideBar from '@/container/blog/BlogDetailSideBar'
 import AiVideoRecommender from '@/container/video/aiVideoRecommender/AiVideoRecommender'
-import AiRecommenderVideoSlider from '@/container/video/AiRecommenderVideoSlider'
 import { useState, useEffect } from 'react'
 import { useVideoKeep } from '@/hooks/queries/useGetVideoList'
 import { copyUrlToClipboard } from '@/utils/clipboard'
 import { useRecommendationLegalTerm, useRecommendationVideo } from '@/hooks/queries/useRecommendation'
 import RecommendationLawyer from '@/container/recommendation/RecommendationLawyer'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
+import AiVideoCarousel from '@/container/recommendation/aiVideoCarousel/AiVideoCarousel'
 
 const VideoDetail = () => {
   const { videoId } = useParams<{ videoId: string }>()
@@ -127,7 +127,7 @@ const VideoDetail = () => {
                     <LawyerHorizon
                       className={styles['lawyer-horizon']}
                       name={data?.lawyerName || ''}
-                      description={data?.lawfirmName || ''}
+                      lawfirm={data?.lawfirmName || ''}
                       profileImage={data?.lawyerProfileImage || ''}
                       buttonComponent={
                         <div className={styles['lawyer-contact-btn-wrapper']}>
@@ -136,7 +136,7 @@ const VideoDetail = () => {
                         </div>
                       }
                     />
-                    <AiRecommenderVideoSlider videoList={recommendationVideo || []} />
+                    <AiVideoCarousel subcategoryId={data?.subcategoryId || 'all'} take={3} />
                     <RecommendationLawyer />
                     <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
                   </div>

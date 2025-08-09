@@ -1,4 +1,4 @@
-import styles from '@/pages/blog/bolg.module.scss'
+import styles from './bolg.module.scss'
 import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
 import BlogList from '@/container/blog/BlogList'
 import AIRecommender from '@/components/aiRecommender/AIRecommender'
@@ -31,7 +31,9 @@ const BlogLayout = () => {
   return (
     <main className={styles['blog-container']}>
       <section className={styles['blog-section']}>
-        <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={4} />
+        <div className={styles['blog-carousel-wrapper']}>
+          <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={10} />
+        </div>
         <BlogList
           blogList={blogList}
           isLoading={isLoading}

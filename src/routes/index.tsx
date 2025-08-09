@@ -4,9 +4,8 @@ import NotFound from '../pages/NotFound'
 import { ROUTER } from './routerConstant'
 import Main from '@/pages/main/Main'
 import SubMain from '@/pages/subMain/SubMain'
-import BlogLayout from '@/pages/blog/Blog'
 import BlogDetail from '@/pages/blog/BlogDetail'
-import VideoLayout from '@/pages/video/Video'
+import VideoLayout from '@/pages/video/video/Video'
 import VideoDetail from '@/pages/video/VideoDetail'
 import LegalKnowledgeLayout from '@/pages/legalKnowledge/LegalKnowledge'
 import LawyerLayout from '@/pages/lawyer/Lawyer'
@@ -38,6 +37,7 @@ import MainLayout from '@/pages/MainLayout'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import {
   BaroTalkLawyerSelection,
+  BlogLayout,
   Chat,
   ConsultationContentForm,
   LawyerAdminLayout,

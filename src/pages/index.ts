@@ -20,6 +20,14 @@ import LawyerChatList from './lawyerAdmin/chat/lawyerChatList/LawyerChatList'
 import LegalDictionary from './legalDictionary/LegalDictionary'
 import LegalTermDetail from './legalDictionary/legalTermDetail/LegalTermDetail'
 
+//블로그
+import BlogLayout from './blog/blog/Blog'
+import BlogDetail from './blog/BlogDetail'
+
+//비디오
+import VideoLayout from './video/video/Video'
+import VideoDetail from './video/VideoDetail'
+
 export {
   Mypage,
   LawyerSignupForm,
@@ -32,4 +40,8 @@ export {
   LawyerChatList,
   LegalDictionary,
   LegalTermDetail,
+  BlogLayout,
+  BlogDetail,
+  VideoLayout,
+  VideoDetail,
 }

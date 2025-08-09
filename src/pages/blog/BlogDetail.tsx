@@ -118,7 +118,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
               <BlogNavigationBar isKeep={isKeep} onSave={handleSave} onShare={handleShare} />
               {!isMobile ? (
                 <div style={{ width: 798 }}>
-                  <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={4} />
+                  <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={10} />
                 </div>
               ) : (
                 <div className={styles['blog-moblie-side']}>
@@ -134,7 +134,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
                       </div>
                     }
                   />
-                  <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={4} />
+                  <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={10} />
                   <RecommendationLawyer />
                 </div>
               )}

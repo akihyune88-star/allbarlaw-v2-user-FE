@@ -30,7 +30,6 @@ const LegalKnowledgeLayout = () => {
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
-        <AIBlogCarousel />
         <LegalKnowledgeList
           knowledgeList={knowledgeList}
           isLoading={isLoading}

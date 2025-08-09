@@ -13,6 +13,7 @@ export type RecommendationLawyer = {
   lawyerId: number
   lawyerName: string
   lawyerProfileImage: string
+  lawyerDescription: string
   lawfirmName: string
 }
 

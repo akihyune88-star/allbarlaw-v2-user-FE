@@ -12,16 +12,25 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  cursor: pointer;
+  width: 100%;
 }
 
 .blog-title {
   font-size: 1rem;
   font-weight: $font-weight-semibold;
+  line-height: 1.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 
-  @include ellipsis(1);
+  white-space: pre-line;
+  word-break: keep-all;
 
   @media (max-width: $breakpoint-desktop) {
-    @include ellipsis(2);
+    -webkit-line-clamp: 2;
     height: 2.5rem;
   }
 }

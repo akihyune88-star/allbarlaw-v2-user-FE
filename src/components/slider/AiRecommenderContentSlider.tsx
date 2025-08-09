@@ -7,6 +7,7 @@ type AiRecommenderContentSliderProps = {
   className?: string
   autoPlay?: boolean
   autoPlayInterval?: number
+  itemsPerSlide?: number
 }
 
 const AiRecommenderContentSlider = ({
@@ -15,6 +16,7 @@ const AiRecommenderContentSlider = ({
   className,
   autoPlay = false,
   autoPlayInterval = 3000,
+  itemsPerSlide = 1,
 }: AiRecommenderContentSliderProps) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
@@ -22,22 +24,11 @@ const AiRecommenderContentSlider = ({
   const [translateX, setTranslateX] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(true)
-  const [isMobile, setIsMobile] = useState(false)
   const sliderRef = useRef<HTMLDivElement>(null)
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const childrenArray = React.Children.toArray(children)
-  const itemsToShow = isMobile ? 1 : 2
-  const totalSlides = Math.ceil(childrenArray.length / itemsToShow)
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  const totalSlides = Math.ceil(childrenArray.length / itemsPerSlide)
 
   const goToNextSlide = () => {
     setCurrentSlide(prev => (prev + 1) % totalSlides)
@@ -189,8 +180,8 @@ const AiRecommenderContentSlider = ({
             >
               {Array.from({ length: totalSlides }).map((_, slideIndex) => (
                 <div key={slideIndex} className={styles.slideGroup}>
-                  {childrenArray.slice(slideIndex * itemsToShow, (slideIndex + 1) * itemsToShow).map((child, index) => (
-                    <div key={`${slideIndex}-${index}`} className={styles.slideItem}>
+                  {childrenArray.slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide).map((child, index) => (
+                    <div key={`${slideIndex}-${index}`} className={styles.slideItem} style={{ flex: `0 0 calc(${100 / itemsPerSlide}% - ${itemsPerSlide > 1 ? '8px' : '0px'})` }}>
                       {child}
                     </div>
                   ))}

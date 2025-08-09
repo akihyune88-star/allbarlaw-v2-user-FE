@@ -1,11 +1,12 @@
 import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
-import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
 import VideoList from '@/container/video/videoList/VideoList'
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInfiniteVideoList } from '@/hooks/queries/useGetVideoList'
 import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
+import AiVideoCarousel from '@/container/recommendation/aiVideoCarousel/AiVideoCarousel'
+import styles from './video.module.scss'
 
 const VideoLayout = () => {
   const navigate = useNavigate()
@@ -30,9 +31,9 @@ const VideoLayout = () => {
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
-        {/* <div style={{ width: 798 }}>
-          <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={4} />
-        </div> */}
+        <div className={styles['video-carousel-wrapper']}>
+          <AiVideoCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={4} />
+        </div>
         <VideoList
           videoList={videoList}
           isLoading={isLoading}

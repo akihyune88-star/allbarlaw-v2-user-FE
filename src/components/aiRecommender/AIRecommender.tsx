@@ -9,6 +9,7 @@ import { RecommendationTag } from '@/types/recommendationTypes'
 import { useNavigate } from 'react-router-dom'
 import { useSearchStore } from '@/stores/searchStore'
 import { useChunkedRotate } from '@/hooks/useChunkedRotate'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const TagSection = ({ tagList }: { tagList: RecommendationTag[] }) => {
   const [visibleCount, setVisibleCount] = useState<number>(10)
@@ -81,7 +82,8 @@ export const LawyerItem = ({
   lawyerList: AIRecommenderLawyerItem[]
   divider?: boolean
 }) => {
-  const CHUNK_SIZE = 3
+  const isMobile = useMediaQuery('(max-width: 80rem)')
+  const CHUNK_SIZE = isMobile ? 4 : 3
   const navigate = useNavigate()
   const { visibleItems: visibleLawyers, rotateNext } = useChunkedRotate(lawyerList, CHUNK_SIZE)
 

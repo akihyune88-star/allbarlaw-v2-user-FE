@@ -27,7 +27,6 @@ const LawyerLayout = () => {
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
-        <AIBlogCarousel />
         <LawyerList
           lawyerList={lawyerList}
           isLoading={!data}

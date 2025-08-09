@@ -3,11 +3,12 @@ import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import { useChunkedRotate } from '@/hooks/useChunkedRotate'
 import { useRecommendationLawyer } from '@/hooks/queries/useRecommendation'
 import { useNavigate } from 'react-router-dom'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 type RecommendationLawyerProps = {
   title?: string
   take?: number
-  chunkSize?: number
+  // chunkSize?: number
   className?: string
   showDivider?: boolean
   dividerPadding?: number
@@ -16,11 +17,13 @@ type RecommendationLawyerProps = {
 const RecommendationLawyer = ({
   title = 'AI 추천 변호사',
   take = 10,
-  chunkSize = 3,
+  // chunkSize = 3,
   className,
   showDivider,
   dividerPadding,
 }: RecommendationLawyerProps) => {
+  const isMobile = useMediaQuery('(max-width: 80rem)')
+  const chunkSize = isMobile ? 4 : 3
   const navigate = useNavigate()
   const { data: recommendationLawyer } = useRecommendationLawyer(take)
   const { visibleItems, rotateNext } = useChunkedRotate(recommendationLawyer ?? [], chunkSize)
@@ -40,7 +43,7 @@ const RecommendationLawyer = ({
               key={lawyer.lawyerId}
               name={lawyer.lawyerName}
               profileImage={lawyer.lawyerProfileImage}
-              description={lawyer.lawfirmName}
+              description={isMobile ? lawyer.lawyerDescription : lawyer.lawfirmName}
               size='x-small'
               onClick={() => navigate(`/search/lawyer/${lawyer.lawyerId}`)}
             />
