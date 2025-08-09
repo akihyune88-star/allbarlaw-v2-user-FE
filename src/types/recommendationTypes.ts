@@ -20,3 +20,21 @@ export type RecommendationLawyerResponse = {
   data: RecommendationLawyer[]
   isPersonalized: boolean
 }
+
+export type RecommendationLegalTerm = {
+  legalTermId: number
+  koreanName: string
+  chineseName: string
+  englishName: string
+}
+
+export type RecommendationLegalTermResponse = {
+  legalTerms: RecommendationLegalTerm[]
+}
+
+export type RecommendationLegalTermRequest = {
+  blogCaseIds?: number[]
+  videoCaseIds?: number[]
+  knowledgeIds?: number[]
+  lawfirmIds?: number[]
+}

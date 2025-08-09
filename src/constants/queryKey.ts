@@ -51,4 +51,5 @@ export const QUERY_KEY = {
   // 추천
   RECOMMENDATION_TAG: 'recommendationTag',
   RECOMMENDATION_LAWYER: 'recommendationLawyer',
+  RECOMMENDATION_LEGAL_TERM: 'recommendationLegalTerm',
 } as const

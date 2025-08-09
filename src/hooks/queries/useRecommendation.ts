@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { recommendationService } from '@/services/recommendationService'
 import { QUERY_KEY } from '@/constants/queryKey'
+import { RecommendationLegalTermRequest } from '@/types/recommendationTypes'
 
 export const useRecommendationTag = (take: number) => {
   return useQuery({
@@ -16,6 +17,21 @@ export const useRecommendationLawyer = (take: number) => {
     queryKey: [QUERY_KEY.RECOMMENDATION_LAWYER, take],
     queryFn: () => recommendationService.getRecommendationLawyer(take),
     select: data => data.data,
+    placeholderData: previousData => previousData,
+  })
+}
+
+export const useRecommendationLegalTerm = (request: RecommendationLegalTermRequest) => {
+  return useQuery({
+    queryKey: [
+      QUERY_KEY.RECOMMENDATION_LEGAL_TERM,
+      request.blogCaseIds,
+      request.videoCaseIds,
+      request.knowledgeIds,
+      request.lawfirmIds,
+    ],
+    queryFn: () => recommendationService.getRecommendationLegalTerm(request),
+    select: data => data.legalTerms,
     placeholderData: previousData => previousData,
   })
 }
