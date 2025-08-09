@@ -6,6 +6,7 @@ import LawyerHorizon from '../lawyer/LawyerHorizon'
 import { useEffect, useState } from 'react'
 import { useRecommendationLawyer, useRecommendationTag } from '@/hooks/queries/useRecommendation'
 import { RecommendationTag } from '@/types/recommendationTypes'
+import { useNavigate } from 'react-router-dom'
 
 const TagSection = ({ tagList }: { tagList: RecommendationTag[] }) => {
   const [visibleCount, setVisibleCount] = useState<number>(10)
@@ -66,7 +67,7 @@ export const LawyerItem = ({
 }) => {
   const CHUNK_SIZE = 3
   const [startIndex, setStartIndex] = useState<number>(0)
-
+  const navigate = useNavigate()
   useEffect(() => {
     setStartIndex(0)
   }, [lawyerList])
@@ -84,6 +85,10 @@ export const LawyerItem = ({
     const overflow = endIndex - total
     return [...lawyerList.slice(startIndex, total), ...lawyerList.slice(0, overflow)]
   })()
+
+  const handleLawyerClick = (lawyerId: number) => {
+    navigate(`/search/lawyer/${lawyerId}`)
+  }
 
   return (
     <section className={styles['lawyer-section']}>
@@ -105,6 +110,7 @@ export const LawyerItem = ({
               profileImage={lawyer.lawyerProfileImage}
               description={lawyer.lawfirmName}
               size='x-small'
+              onClick={() => handleLawyerClick(lawyer.lawyerId)}
             />
           ))}
         </div>

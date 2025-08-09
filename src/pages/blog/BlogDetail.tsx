@@ -1,5 +1,5 @@
 import styles from '@/pages/blog/blog-detail.module.scss'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@/components/button/Button'
 import SvgIcon from '@/components/SvgIcon'
 import BlogDetailContents from '@/container/blog/BlogDetailContents'
@@ -13,9 +13,10 @@ import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
 import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { COLOR } from '@/styles/color'
 import { copyUrlToClipboard } from '@/utils/clipboard'
+import { useRecommendationLawyer } from '@/hooks/queries/useRecommendation'
 
 type BlogNavigationBarProps = {
   isKeep: boolean
@@ -45,7 +46,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
   const { blogCaseId } = useParams<{ blogCaseId: string }>()
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
   const [isKeep, setIsKeep] = useState(false)
-
+  const navigate = useNavigate()
   // data가 로드되면 isKeep 상태 업데이트
   useEffect(() => {
     if (data?.isKeep !== undefined) {
@@ -85,6 +86,28 @@ const BlogDetail = ({ className }: { className?: string }) => {
     }
   }
 
+  const handleLawyerClick = (lawyerId: number) => {
+    navigate(`/search/lawyer/${lawyerId}`)
+  }
+
+  const { data: recommendationLawyer } = useRecommendationLawyer(10)
+  const [recChunkIndex, setRecChunkIndex] = useState(0)
+  const recChunks = useMemo(() => {
+    const list = recommendationLawyer ?? []
+    const size = 3
+    const result: (typeof list)[] = []
+    for (let i = 0; i < list.length; i += size) {
+      result.push(list.slice(i, i + size))
+    }
+    return result
+  }, [recommendationLawyer])
+  const displayLawyers = recChunks[recChunkIndex] ?? []
+
+  const handleRefreshRecommendLawyer = () => {
+    if (recChunks.length === 0) return
+    setRecChunkIndex(prev => (prev + 1) % recChunks.length)
+  }
+
   return (
     <div className={`detail-container ${className}`}>
       <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
@@ -107,7 +130,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
                     profileImage={lawyer.profileImage}
                     buttonComponent={
                       <div className={styles['lawyer-contact-btn-wrapper']}>
-                        <button>변호사 정보</button>
+                        <button onClick={() => handleLawyerClick(lawyer.lawyerId)}>변호사 정보</button>
                         <button>바로톡</button>
                       </div>
                     }
@@ -115,9 +138,10 @@ const BlogDetail = ({ className }: { className?: string }) => {
                   <ContentsRecommender
                     isRefresh={true}
                     title='AI 추천 변호사'
+                    onRefresh={handleRefreshRecommendLawyer}
                     contents={
                       <div className={styles['ai-recommender-lawyer']}>
-                        {mockLawyerList.map(lawyer => (
+                        {displayLawyers.map(lawyer => (
                           <LawyerHorizon
                             key={lawyer.lawyerId}
                             name={lawyer.lawyerName}
@@ -135,7 +159,12 @@ const BlogDetail = ({ className }: { className?: string }) => {
           )}
         </div>
         {!isMobile && (
-          <BlogDetailSideBar showLoading={showLoading} lawyer={lawyer || {}} recommendLawyerList={mockLawyerList} />
+          <BlogDetailSideBar
+            blogCaseId={Number(blogCaseId)}
+            showLoading={showLoading}
+            lawyer={lawyer || {}}
+            recommendLawyerList={mockLawyerList}
+          />
         )}
       </div>
     </div>

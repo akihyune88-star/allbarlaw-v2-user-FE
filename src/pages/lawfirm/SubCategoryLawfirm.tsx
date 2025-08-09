@@ -40,8 +40,6 @@ const SubcategoryLawfirmLayout = () => {
 
   const handleLawfirmItemClick = (lawfirmId: number) => navigate(`/${subcategoryId}/law-firm/${lawfirmId}`)
 
-  console.log(recommendationLegalTerm)
-
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
