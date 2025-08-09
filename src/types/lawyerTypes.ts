@@ -118,3 +118,27 @@ export type RandomLawyerListResponse = {
 export type LawyerKeepResponse = {
   isKeep: boolean
 }
+
+export type LawyerActiveRequest = {
+  page?: number
+  take?: number
+  days?: number
+}
+
+export type LawyerActiveResponse = {
+  data: {
+    lawyerId: number
+    lawyerName: string
+    lawyerProfileImage: string
+    lawyerLawfirmName: string
+    lawyerDescription: string
+    recentMessageCount: number
+    activeChatRoomCount: number
+    tags: Tag[]
+  }[]
+
+  total: number
+  page: number
+  totalPages: number
+  hasNextPage: boolean
+}

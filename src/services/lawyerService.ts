@@ -1,5 +1,7 @@
 import instance from '@/lib/axios'
 import {
+  LawyerActiveRequest,
+  LawyerActiveResponse,
   LawyerDetailResponse,
   LawyerKeepResponse,
   LawyerListRequest,
@@ -7,6 +9,7 @@ import {
   RandomLawyerListRequest,
   RandomLawyerListResponse,
 } from '@/types/lawyerTypes'
+import { getDefaultHighWaterMark } from 'stream'
 
 export const lawyerService = {
   getLawyerList: async (request: LawyerListRequest) => {
@@ -47,6 +50,21 @@ export const lawyerService = {
 
   changeLawyerKeep: async (lawyerId: number) => {
     const response = await instance.put<LawyerKeepResponse>(`/lawyer/${lawyerId}/keep`)
+    return response.data
+  },
+
+  getLawyerActive: async (request: LawyerActiveRequest) => {
+    const { page, take, days } = request
+
+    const params = new URLSearchParams()
+    if (page !== undefined) params.append('page', page.toString())
+    if (take !== undefined) params.append('take', take.toString())
+    if (days !== undefined) params.append('days', days.toString())
+
+    const queryString = params.toString()
+    const url = `/lawyer/active${queryString ? `?${queryString}` : ''}`
+
+    const response = await instance.get<LawyerActiveResponse>(url)
     return response.data
   },
 }

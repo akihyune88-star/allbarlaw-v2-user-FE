@@ -1,7 +1,12 @@
 import { useQuery, useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
 import { lawyerService } from '@/services/lawyerService'
-import { LawyerKeepResponse, LawyerListRequest, RandomLawyerListRequest } from '@/types/lawyerTypes'
+import {
+  LawyerActiveRequest,
+  LawyerKeepResponse,
+  LawyerListRequest,
+  RandomLawyerListRequest,
+} from '@/types/lawyerTypes'
 
 export const useLawyerList = (request: LawyerListRequest) => {
   return useQuery({
@@ -75,5 +80,13 @@ export const useLawyerKeep = ({
     onError: () => {
       onError()
     },
+  })
+}
+
+export const useLawyerActive = (request: LawyerActiveRequest) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_ACTIVE, request.page, request.take, request.days],
+    queryFn: () => lawyerService.getLawyerActive(request),
+    select: data => data.data,
   })
 }

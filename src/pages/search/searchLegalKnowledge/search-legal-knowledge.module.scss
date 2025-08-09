@@ -5,3 +5,39 @@
 
   gap: 0;
 }
+
+.consultation-section {
+  background-color: $color-white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+
+  border: 1px solid rgba(32, 191, 98, 0.3);
+}
+
+.consultation-section-header {
+  display: flex;
+  flex-direction: column;
+
+  &-title {
+    font-size: 1.25rem;
+    font-weight: $font-weight-extra-bold;
+    white-space: pre-line;
+    color: $color-green-01;
+    margin-bottom: 1.5rem;
+  }
+
+  &-button {
+    width: 100%;
+    height: 2.5rem;
+
+    background-color: transparent;
+
+    border: 1px solid $color-green-01;
+    border-radius: 0.5rem;
+
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+    color: $color-green-01;
+  }
+}
