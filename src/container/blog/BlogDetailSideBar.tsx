@@ -1,9 +1,9 @@
-import AIRecommender, { LawyerItem } from '@/components/aiRecommender/AIRecommender'
+import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LawyerVertical from '@/components/lawyer/LawyerVertical'
 import styles from './blog-detail-sidebar.module.scss'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
-import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import { useNavigate } from 'react-router-dom'
+import { RecommendationLegalTerm } from '@/types/recommendationTypes'
 
 type BlogDetailSideBarProps = {
   showLoading: boolean
@@ -14,19 +14,11 @@ type BlogDetailSideBarProps = {
     lawfirm: string
     profileImage: string
   }
-  recommendLawyerList: {
-    lawyerId: number
-    lawyerName: string
-    lawfirmName: string
-    lawyerProfileImage: string
-  }[]
+  recommendationLegalTerm: RecommendationLegalTerm[] | undefined
 }
 
-const BlogDetailSideBar = ({ blogCaseId, showLoading, lawyer, recommendLawyerList }: BlogDetailSideBarProps) => {
+const BlogDetailSideBar = ({ showLoading, lawyer, recommendationLegalTerm }: BlogDetailSideBarProps) => {
   const navigate = useNavigate()
-  const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
-    blogCaseIds: [blogCaseId],
-  })
 
   const handleLawyerClick = (lawyerId: number) => {
     navigate(`/search/lawyer/${lawyerId}`)
@@ -64,7 +56,7 @@ const BlogDetailSideBar = ({ blogCaseId, showLoading, lawyer, recommendLawyerLis
       {!showLoading && (
         <div className={styles['sidebar-mobile-wrapper']}>
           <div className={styles['lawyer-section']}>
-            <LawyerItem lawyerList={recommendLawyerList} divider />
+            {/* <LawyerItem lawyerList={recommendLawyerList} divider /> */}
           </div>
 
           <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />

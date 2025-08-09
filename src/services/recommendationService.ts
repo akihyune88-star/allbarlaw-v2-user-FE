@@ -4,6 +4,8 @@ import {
   RecommendationLegalTermRequest,
   RecommendationLegalTermResponse,
   RecommendationTagResponse,
+  RecommendationVideoRequest,
+  RecommendationVideoResponse,
 } from '@/types/recommendationTypes'
 
 export const recommendationService = {
@@ -31,6 +33,20 @@ export const recommendationService = {
     const url = `/legal-terms/extract${queryString ? `?${queryString}` : ''}`
 
     const response = await instance.get<RecommendationLegalTermResponse>(url)
+    return response.data
+  },
+  getRecommendationVideo: async (request: RecommendationVideoRequest): Promise<RecommendationVideoResponse> => {
+    const { subcategoryId, take, excludeIds } = request
+
+    const params = new URLSearchParams()
+    if (subcategoryId !== undefined) params.append('subcategoryId', subcategoryId.toString())
+    if (take !== undefined) params.append('take', take.toString())
+    if (excludeIds !== undefined) params.append('excludeIds', `[${excludeIds}]`)
+
+    const queryString = params.toString()
+    const url = `/api/recommendations/video-cases/${subcategoryId}${queryString ? `?${queryString}` : ''}`
+
+    const response = await instance.get<RecommendationVideoResponse>(url)
     return response.data
   },
 }

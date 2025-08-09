@@ -204,56 +204,36 @@ const router = createBrowserRouter([
               {
                 path: 'blog',
                 element: <SearchBlog />,
-                children: [
-                  {
-                    path: ':blogCaseId',
-                    element: (
-                      <div style={{ margin: '-24px' }}>
-                        <BlogDetail />
-                      </div>
-                    ),
-                  },
-                ],
               },
               {
                 path: 'video',
                 element: <SearchVideo />,
-                children: [
-                  {
-                    path: ':videoId',
-                    element: (
-                      <div style={{ margin: '-24px' }}>
-                        <VideoDetail />
-                      </div>
-                    ),
-                  },
-                ],
               },
               {
                 path: 'legal-knowledge',
                 element: <SearchLegalKnowledge />,
-                children: [
-                  {
-                    path: ':knowledgeId',
-                    element: (
-                      <div style={{ margin: '-24px' }}>
-                        <LegalKnowledgeDetail />
-                      </div>
-                    ),
-                  },
-                ],
               },
               {
                 path: 'lawyer',
                 element: <SearchLawyer />,
-                children: [
-                  {
-                    path: ':lawyerId',
-                    element: <LawyerDetail />,
-                  },
-                ],
               },
             ],
+          },
+          {
+            path: '/search/blog/:blogCaseId',
+            element: <BlogDetail />,
+          },
+          {
+            path: '/search/video/:videoId',
+            element: <VideoDetail />,
+          },
+          {
+            path: '/search/legal-knowledge/:knowledgeId',
+            element: <LegalKnowledgeDetail />,
+          },
+          {
+            path: '/search/lawyer/:lawyerId',
+            element: <LawyerDetail />,
           },
           {
             path: ROUTER.FAQ,

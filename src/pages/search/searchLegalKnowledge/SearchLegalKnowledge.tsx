@@ -1,23 +1,23 @@
 import { useState } from 'react'
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { useSearchStore } from '@/stores/searchStore'
 import { useInfiniteSearchList } from '@/hooks/queries/useSearch'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import SearchContentHeader from '@/container/search/searchContentHeader/SearchContentHeader'
 import SearchLegalKnowledgeResult from '@/container/search/searchLegalKnowledgeResult/SearchLegalKnowledgeResult'
-// import SearchSideWidget from '@/container/search/searchSideWidget/SearchSideWidget'
 import { SortType } from '@/types/sortTypes'
 import styles from './search-legal-knowledge.module.scss'
-import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import Divider from '@/components/divider/Divider'
 import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import RecentActiveLawyer from '@/container/lawyer/recentActiveLawyer/RecentActiveLawyer'
+import { ROUTER } from '@/routes/routerConstant'
 
 const SearchLegalKnowledge = () => {
   const { knowledgeId } = useParams()
   const { searchQuery } = useSearchStore()
   const [sort, setSort] = useState<SortType>('viewCount')
+  const navigate = useNavigate()
 
   const { searchResults, searchTotalCounts, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =
     useInfiniteSearchList({
@@ -43,6 +43,10 @@ const SearchLegalKnowledge = () => {
 
   if (knowledgeId) return <Outlet />
 
+  const handleRequestConsultation = () => {
+    navigate(ROUTER.CHAT)
+  }
+
   return (
     <main className='sub-main-container'>
       <section className={`contents-section ${styles.contentBox}`}>
@@ -61,7 +65,9 @@ const SearchLegalKnowledge = () => {
               <br />
               질문하세요
             </span>
-            <button className={styles['consultation-section-header-button']}>변호사 채팅상담하기</button>
+            <button className={styles['consultation-section-header-button']} onClick={handleRequestConsultation}>
+              변호사 채팅상담하기
+            </button>
             <Divider padding={16} />
             <RecentActiveLawyer />
           </div>

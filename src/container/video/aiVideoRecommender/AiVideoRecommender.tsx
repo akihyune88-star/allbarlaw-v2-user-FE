@@ -1,26 +1,17 @@
 import VideoThumbnail from '@/components/video/VideoThumbnail'
-import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
-import { useParams } from 'react-router-dom'
+
 import styles from './ai-video-recommender.module.scss'
+import { VideoCase } from '@/types/videoTypes'
 
 type AiVideoRecommenderProps = {
   videoCaseId?: number
+  videoList: VideoCase[]
 }
 
-const AiVideoRecommender = ({ videoCaseId }: AiVideoRecommenderProps) => {
-  console.log(videoCaseId)
-  const { subcategoryId } = useParams<{ subcategoryId: string }>()
-
-  const { videoList } = useGetVideoList({
-    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
-    take: 3,
-  })
-
-  const slicedVideoList = videoList.slice(0, 3)
-
+const AiVideoRecommender = ({ videoList }: AiVideoRecommenderProps) => {
   return (
     <div className={styles['ai-recommender-video-grid']}>
-      {slicedVideoList.map(video => (
+      {videoList.map(video => (
         <VideoThumbnail
           key={video.videoCaseId}
           size={'small'}

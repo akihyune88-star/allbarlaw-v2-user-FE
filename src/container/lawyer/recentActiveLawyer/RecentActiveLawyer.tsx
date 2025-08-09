@@ -15,7 +15,11 @@ const RecentActiveLawyer = () => {
   return (
     <div className={styles['recent-active-lawyer-container']}>
       <header className={styles['header']}>
-        <h3>최근 활동 변호사</h3>
+        <h3 className={styles['header-title']}>
+          최근 답변이 많은
+          <br />
+          변호사 입니다.
+        </h3>
         <button onClick={rotateNext}>
           <SvgIcon name='refresh' />
         </button>

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { recommendationService } from '@/services/recommendationService'
 import { QUERY_KEY } from '@/constants/queryKey'
-import { RecommendationLegalTermRequest } from '@/types/recommendationTypes'
+import { RecommendationLegalTermRequest, RecommendationVideoRequest } from '@/types/recommendationTypes'
 
 export const useRecommendationTag = (take: number) => {
   return useQuery({
@@ -32,6 +32,15 @@ export const useRecommendationLegalTerm = (request: RecommendationLegalTermReque
     ],
     queryFn: () => recommendationService.getRecommendationLegalTerm(request),
     select: data => data.legalTerms,
+    placeholderData: previousData => previousData,
+  })
+}
+
+export const useRecommendationVideo = (request: RecommendationVideoRequest) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.RECOMMENDATION_VIDEO, request.subcategoryId, request.take, request.excludeIds],
+    queryFn: () => recommendationService.getRecommendationVideo(request),
+    select: data => data.data,
     placeholderData: previousData => previousData,
   })
 }

@@ -1,17 +1,12 @@
-import { useParams } from 'react-router-dom'
 import VideoSlider from '../../components/slider/VideoSlider'
-import { useGetVideoList } from '@/hooks/queries/useGetVideoList'
+import { VideoCase } from '@/types/videoTypes'
 
-const AiRecommenderVideoSlider = () => {
-  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+type AiRecommenderVideoSliderProps = {
+  videoList: VideoCase[]
+}
 
-  const { videoList } = useGetVideoList({
-    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
-    take: 3,
-  })
-
-  const sliderVideos = videoList?.slice(0, 3)
-  const videos = sliderVideos?.map(video => ({
+const AiRecommenderVideoSlider = ({ videoList }: AiRecommenderVideoSliderProps) => {
+  const videos = videoList?.map(video => ({
     id: video.videoCaseId,
     title: video.title,
     thumbnail: video.thumbnail,

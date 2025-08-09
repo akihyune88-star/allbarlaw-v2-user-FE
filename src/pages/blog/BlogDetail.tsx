@@ -16,7 +16,7 @@ import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
 import { useState, useEffect } from 'react'
 import { COLOR } from '@/styles/color'
 import { copyUrlToClipboard } from '@/utils/clipboard'
-import { useRecommendationLawyer } from '@/hooks/queries/useRecommendation'
+import { useRecommendationLawyer, useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import { useChunkedRotate } from '@/hooks/useChunkedRotate'
 
 type BlogNavigationBarProps = {
@@ -97,6 +97,10 @@ const BlogDetail = ({ className }: { className?: string }) => {
     3
   )
 
+  const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
+    blogCaseIds: [data?.blogCaseId || 0],
+  })
+
   return (
     <div className={`detail-container ${className}`}>
       <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
@@ -152,7 +156,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
             blogCaseId={Number(blogCaseId)}
             showLoading={showLoading}
             lawyer={lawyer || {}}
-            recommendLawyerList={mockLawyerList}
+            recommendationLegalTerm={recommendationLegalTerm}
           />
         )}
       </div>

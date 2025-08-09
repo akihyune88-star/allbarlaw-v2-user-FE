@@ -38,3 +38,26 @@ export type RecommendationLegalTermRequest = {
   knowledgeIds?: number[]
   lawfirmIds?: number[]
 }
+
+export type RecommendationVideoRequest = {
+  subcategoryId: number | 'all'
+  take?: number
+  excludeIds?: number[]
+}
+
+export type RecommendationVideoResponse = {
+  data: {
+    videoCaseId: number
+    title: string
+    thumbnail: string
+    channelName: string
+    channelThumbnail: string
+    summaryContent: string
+    lawyerName: string
+    lawfirmName: string
+    subcategoryId: number
+    isKeep: boolean
+  }[]
+
+  isPersonalized: true
+}
