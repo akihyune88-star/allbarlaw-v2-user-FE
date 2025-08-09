@@ -9,7 +9,6 @@ import {
   RandomLawyerListRequest,
   RandomLawyerListResponse,
 } from '@/types/lawyerTypes'
-import { getDefaultHighWaterMark } from 'stream'
 
 export const lawyerService = {
   getLawyerList: async (request: LawyerListRequest) => {

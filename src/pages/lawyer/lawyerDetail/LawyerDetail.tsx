@@ -8,6 +8,7 @@ import LawyerLegalKnowledge from '@/container/lawyer/lawyerLegalKnowledge/Lawyer
 import LawyerProfile from '@/container/lawyer/lawyerProfile/LawyerProfile'
 import LawyerVideo from '@/container/lawyer/lawyerVideo/LawyerVideo'
 import { useLawyerDetail } from '@/hooks/queries/useLawyer'
+import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import React, { useRef } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -23,6 +24,14 @@ const LawyerDetail = () => {
   const scrollToSection = (ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+
+  const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
+    knowledgeIds: lawyerDetail?.consultationRequests.map(request => request.knowledgeId) ?? [],
+    blogCaseIds: lawyerDetail?.blogCases.map(blog => blog.blogCaseId) ?? [],
+    videoCaseIds: lawyerDetail?.videoCases.map(video => video.videoCaseId) ?? [],
+  })
+
+  console.log(recommendationLegalTerm)
 
   const lawyerProfileImages = lawyerDetail?.lawyerProfileImages.map(image => image.imageUrl)
 
@@ -73,6 +82,7 @@ const LawyerDetail = () => {
           lawyerLawfirm={lawyerDetail?.lawfirmName ?? ''}
           lawyerProfileImage={lawyerProfileImages ?? []}
           lawyerIsKeep={lawyerDetail?.isKeep!}
+          recommendationLegalTerm={recommendationLegalTerm || []}
         />
       </aside>
     </main>

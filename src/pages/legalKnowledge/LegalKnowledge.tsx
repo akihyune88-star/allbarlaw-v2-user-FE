@@ -1,6 +1,5 @@
 import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
-import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
 import LegalKnowledgeList from '@/container/legalKnowledge/LegalKnowledgeList'
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'

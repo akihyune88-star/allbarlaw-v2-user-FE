@@ -7,7 +7,6 @@ import SearchContentHeader from '@/container/search/searchContentHeader/SearchCo
 import SearchVideoResult from '@/container/search/searchVideoResult/SearchVideoResult'
 import { SortType } from '@/types/sortTypes'
 import styles from './search-video.module.scss'
-import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import Divider from '@/components/divider/Divider'
 import RecommendationLawyer from '@/container/recommendation/RecommendationLawyer'
