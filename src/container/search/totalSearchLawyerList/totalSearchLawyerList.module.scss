@@ -37,22 +37,24 @@
 
 .lawyer-list {
   // LawyerHorizon 내부 스타일 오버라이드
+
   div[class*='lawyer-horizon'] {
     align-items: center !important;
+    padding-left: 1rem !important;
 
     // lawyer-horizon-content는 가로 정렬 유지
     div[class*='lawyer-horizon-content'] {
+      width: 100% !important;
       align-items: flex-start !important;
     }
 
-    // description 2줄 제한
     p[class*='description'] {
       display: -webkit-box !important;
       -webkit-line-clamp: 2 !important;
       -webkit-box-orient: vertical !important;
       overflow: hidden !important;
       text-overflow: ellipsis !important;
-      max-height: 2.25rem !important;
+      min-width: 22.9375rem !important; // 112px 고정
       line-height: 1.125rem !important;
     }
   }
