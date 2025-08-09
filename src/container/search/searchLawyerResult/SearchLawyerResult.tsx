@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import styles from './searchLawyerResult.module.scss'
 import { Lawyer } from '@/types/lawyerTypes'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
@@ -11,11 +11,11 @@ type SearchLawyerResultProps = {
 }
 
 const SearchLawyerResult = ({ searchResults, isLoading }: SearchLawyerResultProps) => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
-  const _handleLawyerClick = (lawyerId: number) => {
-    navigate(`/search/lawyer/${lawyerId}${window.location.search}`)
-  }
+  // const _handleLawyerClick = (lawyerId: number) => {
+  //   navigate(`/search/lawyer/${lawyerId}${window.location.search}`)
+  // }
 
   if (isLoading) {
     return (
