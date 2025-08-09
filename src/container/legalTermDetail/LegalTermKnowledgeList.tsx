@@ -35,6 +35,7 @@ const LegalTermKnowledgeList = ({ knowledgeList }: { knowledgeList: KnowledgeIte
                 time={new Date(knowledge.lastMessageAt)}
                 lawyerList={knowledge.lawyers}
                 isLastAnswer={true}
+                knowledgeKeep={knowledge.isKeep}
               />
               {index !== knowledgeList.length - 1 && <Divider padding={0} />}
             </Fragment>
