@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { useState } from 'react'
 import { SortType } from '@/types/sortTypes'
+import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 
 const SubcategoryLawfirmLayout = () => {
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
@@ -37,6 +38,7 @@ const SubcategoryLawfirmLayout = () => {
       </section>
       <aside className='aside' style={{ width: '250px', flexShrink: 0 }}>
         <LawfirmFilter filter={filter} setFilter={setFilter} />
+        <LegalTermWidget lagalTermList={[]} />
       </aside>
     </main>
   )
