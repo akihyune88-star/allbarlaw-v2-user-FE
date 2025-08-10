@@ -122,8 +122,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   // 메인 레이아웃에서 사용할 함수
+  // 변경: 변호사도 메인 레이아웃에서 로그인 상태 표시 (요구사항 3번)
   const getDisplayLoginStatus = (_isMainLayout: boolean) => {
-    return _isMainLayout ? isLoggedIn && !isLawyer : isLoggedIn
+    return isLoggedIn // 변호사와 일반 유저 모두 로그인 상태 표시
   }
 
   // 토큰에서 유저 ID 추출 함수
