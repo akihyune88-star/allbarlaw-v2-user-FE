@@ -41,6 +41,7 @@ const BaroTalkLawyersList = ({ type, lawyers, onLawyerClick, onRefresh, title }:
           <LawyerHorizon
             key={lawyer.lawyerId}
             selected={isSelected}
+            lawyerId={lawyer.lawyerId}
             className={styles['lawyer-list-item']}
             name={lawyer.lawyerName}
             lawfirm={lawyer.lawfirmName}

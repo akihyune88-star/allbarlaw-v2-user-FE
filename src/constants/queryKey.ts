@@ -27,6 +27,7 @@ export const QUERY_KEY = {
   LAWYER_LIST: 'lawyerList',
   LAWYER_DETAIL: 'lawyerDetail',
   LAWYER_ACTIVE: 'lawyerActive',
+  LAWYER: 'lawyer',
 
   // 법률용어
   POPULAR_LEGAL_TERM_LIST: 'popularLegalTermList',

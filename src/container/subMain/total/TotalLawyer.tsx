@@ -2,6 +2,7 @@ import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import LawyerVertical from '@/components/lawyer/LawyerVertical'
 import SvgIcon from '@/components/SvgIcon'
 import { SOCIAL_LINK_LIST } from '@/constants/lawyer'
+import { LOCAL } from '@/constants/local'
 import styles from '@/container/subMain/total/total-lawyer.module.scss'
 import { useRandomLawyerList } from '@/hooks/queries/useLawyer'
 // import { useLawyerList } from '@/hooks/queries/useLawyer'
@@ -26,7 +27,12 @@ const TotalLawyer = () => {
   const handleTotalLawyerClick = () => navigate(`/${subcategoryId}${ROUTER.LAWYER}`)
 
   const handleLawyerClick = (lawyer: Lawyer) => {
-    navigate(`/search/lawyer/${lawyer.lawyerId}?q=${lawyer.lawyerName}`)
+    navigate(`/search/lawyer/${lawyer.lawyerId}`)
+  }
+
+  const handleBaroTalk = (lawyerId: number) => {
+    sessionStorage.setItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString())
+    navigate(ROUTER.REQUEST_BARO_TALK)
   }
 
   return (
@@ -47,6 +53,7 @@ const TotalLawyer = () => {
             <LawyerHorizon
               className={styles['lawyer-horizon']}
               key={lawyer.lawyerId}
+              lawyerId={lawyer.lawyerId}
               name={lawyer.lawyerName}
               lawfirm={lawyer.lawfirmName}
               socialLink={SOCIAL_LINK_LIST}
@@ -60,7 +67,12 @@ const TotalLawyer = () => {
                   >
                     더보기
                   </button>
-                  <button className={`${styles['footer-button']} ${styles['left']}`}>바로톡</button>
+                  <button
+                    className={`${styles['footer-button']} ${styles['left']}`}
+                    onClick={() => handleBaroTalk(lawyer.lawyerId)}
+                  >
+                    바로톡
+                  </button>
                 </div>
               }
             />
@@ -84,7 +96,12 @@ const TotalLawyer = () => {
                   >
                     더보기
                   </button>
-                  <button className={`${styles['footer-button']} ${styles['right']}`}>바로톡</button>
+                  <button
+                    className={`${styles['footer-button']} ${styles['right']}`}
+                    onClick={() => handleBaroTalk(lawyer.lawyerId)}
+                  >
+                    바로톡
+                  </button>
                 </div>
               }
             />

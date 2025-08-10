@@ -126,6 +126,7 @@ const VideoDetail = () => {
                   <div className={styles['video-detail-mobile-side']}>
                     <LawyerHorizon
                       className={styles['lawyer-horizon']}
+                      lawyerId={data?.lawyerId || 0}
                       name={data?.lawyerName || ''}
                       lawfirm={data?.lawfirmName || ''}
                       profileImage={data?.lawyerProfileImage || ''}

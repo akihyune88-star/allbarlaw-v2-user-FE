@@ -107,6 +107,7 @@ export const LawyerItem = ({
           {visibleLawyers.map(lawyer => (
             <LawyerHorizon
               key={lawyer.lawyerId}
+              lawyerId={lawyer.lawyerId}
               name={lawyer.lawyerName}
               profileImage={lawyer.lawyerProfileImage}
               description={lawyer.lawfirmName}

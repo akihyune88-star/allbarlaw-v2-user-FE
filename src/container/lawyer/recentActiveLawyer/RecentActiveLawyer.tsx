@@ -29,6 +29,7 @@ const RecentActiveLawyer = () => {
         {visibleItems.map((lawyer: LawyerActiveResponse['data'][number]) => (
           <LawyerHorizon
             key={lawyer.lawyerId}
+            lawyerId={lawyer.lawyerId}
             name={lawyer.lawyerName}
             profileImage={lawyer.lawyerProfileImage}
             description={lawyer.lawyerDescription}

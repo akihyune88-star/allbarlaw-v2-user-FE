@@ -5,6 +5,10 @@ import { COLOR } from '@/styles/color'
 import React from 'react'
 import { SocialLink, Tag as TagType } from '@/types/lawyerTypes'
 import { blog, instagram, youtube } from '@/assets/imgs'
+import { LOCAL } from '@/constants/local'
+import { useNavigate } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
+import { setTemporaryItem } from '@/utils/temporaryStorage'
 
 type LawyerHorizonProps = {
   name: string
@@ -20,6 +24,7 @@ type LawyerHorizonProps = {
   buttonComponent?: React.ReactNode
   ad?: boolean
   isBaroTalk?: boolean
+  lawyerId?: number
 }
 
 const LawyerHorizon = ({
@@ -35,8 +40,18 @@ const LawyerHorizon = ({
   selected = false,
   buttonComponent,
   ad = false,
+  lawyerId,
   socialLink,
 }: LawyerHorizonProps) => {
+  const navigate = useNavigate()
+  const handleBaroTalk = (e: React.MouseEvent) => {
+    e.stopPropagation() // 이벤트 버블링 방지
+    if (lawyerId) {
+      setTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString(), 30) // 30분 유효
+      navigate(ROUTER.REQUEST_BARO_TALK)
+    }
+  }
+
   return (
     <div
       className={`${styles['lawyer-horizon']} ${styles[size]} ${selected ? styles['selected'] : ''} ${className}`}
@@ -46,7 +61,11 @@ const LawyerHorizon = ({
       <div className={styles['lawyer-horizon-image']}>
         <img src={profileImage} alt='변호사 프로필' />
         {selected && <SvgIcon name='checkRound' size={16} fill={COLOR.green_01} stroke={COLOR.white} />}
-        {isBaroTalk && <button className={styles['baro-talk']}>바로톡</button>}
+        {isBaroTalk && (
+          <button className={styles['baro-talk']} onClick={handleBaroTalk}>
+            바로톡
+          </button>
+        )}
       </div>
       <div className={styles['lawyer-horizon-content']}>
         <div>

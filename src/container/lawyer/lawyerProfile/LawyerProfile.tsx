@@ -43,6 +43,7 @@ const LawyerProfile = ({
         <blockquote className={styles['description']}>{discription}</blockquote>
         <div className={styles['lawyer-banner']}>
           <LawyerHorizon
+            lawyerId={lawyerId}
             name={lawyerName}
             lawfirm={lawyerLawfirm}
             profileImage='https://picsum.photos/200/300'

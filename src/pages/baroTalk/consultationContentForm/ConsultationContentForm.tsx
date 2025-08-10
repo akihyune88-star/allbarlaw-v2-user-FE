@@ -7,6 +7,7 @@ import styles from './consultation-content-form.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useBaroTalkStore } from '@/store/baroTalkStore'
+import { LOCAL } from '@/constants/local'
 
 const ConsultationContentForm = () => {
   const navigate = useNavigate()
@@ -30,7 +31,8 @@ const ConsultationContentForm = () => {
   }, [consultationRequestTitle, consultationRequestDescription])
 
   const handleCancel = () => {
-    navigate(-1) // 이전 페이지로 이동
+    sessionStorage.removeItem(LOCAL.CHAT_SELECTED_LAWYER_ID) // 취소 시 세션 정리
+    navigate(ROUTER.MAIN)
   }
 
   const handleNext = () => {

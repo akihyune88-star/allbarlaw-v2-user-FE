@@ -10,6 +10,8 @@ import { useNavigationHistory } from '@/hooks'
 import { Lawyer } from '@/types/lawyerTypes'
 import SvgIcon from '@/components/SvgIcon'
 import { useNavigate } from 'react-router-dom'
+import { LOCAL } from '@/constants/local'
+import { ROUTER } from '@/routes/routerConstant'
 
 const LawyerAdvertisementListHeader = ({
   onNext,
@@ -59,6 +61,11 @@ const LawyerAdvertisementList = () => {
     navigate(`/search/lawyer/${lawyer.lawyerId}?q=${lawyer.lawyerName}`)
   }
 
+  const handleBaroTalk = (lawyerId: number) => {
+    sessionStorage.setItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString())
+    navigate(ROUTER.REQUEST_BARO_TALK)
+  }
+
   return (
     <section className={styles['container']}>
       <LawyerAdvertisementListHeader
@@ -72,6 +79,7 @@ const LawyerAdvertisementList = () => {
           isMobile ? (
             <LawyerHorizon
               className={styles['lawyer-horizon']}
+              lawyerId={lawyer.lawyerId}
               key={lawyer.lawyerId}
               name={lawyer.lawyerName}
               lawfirm={lawyer.lawfirmName}
@@ -86,7 +94,12 @@ const LawyerAdvertisementList = () => {
                   >
                     더보기
                   </button>
-                  <button className={`${styles['footer-button']} ${styles['left']}`}>바로톡</button>
+                  <button
+                    className={`${styles['footer-button']} ${styles['left']}`}
+                    onClick={() => handleBaroTalk(lawyer.lawyerId)}
+                  >
+                    바로톡
+                  </button>
                 </div>
               }
             />
@@ -110,7 +123,12 @@ const LawyerAdvertisementList = () => {
                   >
                     더보기
                   </button>
-                  <button className={`${styles['footer-button']} ${styles['right']}`}>바로톡</button>
+                  <button
+                    className={`${styles['footer-button']} ${styles['right']}`}
+                    onClick={() => handleBaroTalk(lawyer.lawyerId)}
+                  >
+                    바로톡
+                  </button>
                 </div>
               }
             />

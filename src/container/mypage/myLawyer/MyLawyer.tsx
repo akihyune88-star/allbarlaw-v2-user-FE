@@ -31,6 +31,7 @@ const MyLawyer = ({ sort }: { sort: 'asc' | 'desc' }) => {
               <LawyerHorizon
                 key={lawyer.lawyerId}
                 name={lawyer.lawyerName}
+                lawyerId={lawyer.lawyerId}
                 profileImage={lawyer.lawyerProfileImage}
                 description={lawyer.lawyerDescription}
                 tags={lawyer.tags}

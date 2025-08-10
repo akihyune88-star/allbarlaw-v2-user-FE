@@ -1,5 +1,6 @@
 import instance from '@/lib/axios'
 import {
+  Lawyer,
   LawyerActiveRequest,
   LawyerActiveResponse,
   LawyerDetailResponse,
@@ -64,6 +65,11 @@ export const lawyerService = {
     const url = `/lawyer/active${queryString ? `?${queryString}` : ''}`
 
     const response = await instance.get<LawyerActiveResponse>(url)
+    return response.data
+  },
+
+  getLawyer: async (lawyerId: number) => {
+    const response = await instance.get<Lawyer>(`/lawyer/${lawyerId}`)
     return response.data
   },
 }

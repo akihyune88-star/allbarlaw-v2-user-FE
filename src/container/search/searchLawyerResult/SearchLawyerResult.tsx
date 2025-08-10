@@ -41,6 +41,7 @@ const SearchLawyerResult = ({ searchResults, isLoading }: SearchLawyerResultProp
           <LawyerHorizon
             onClick={() => handleClickLawyerDetail(lawyer.lawyerId)}
             tags={lawyer.tags}
+            lawyerId={lawyer.lawyerId}
             isBaroTalk={true}
             name={lawyer.lawyerName}
             lawfirm={lawyer.lawfirmName}
