@@ -47,7 +47,13 @@ const ChatBody = ({
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    console.log('키 눌림:', e.key, 'Shift:', e.shiftKey)
+    console.log('키 눌림:', e.key, 'Shift:', e.shiftKey, 'Composing:', e.nativeEvent.isComposing)
+    
+    // 한글 입력 중(조합 중)일 때는 엔터키 이벤트 무시
+    if (e.nativeEvent.isComposing) {
+      return
+    }
+    
     if (e.key === 'Enter' && !e.shiftKey) {
       console.log('엔터키 감지, 메시지 전송 시도')
       e.preventDefault()

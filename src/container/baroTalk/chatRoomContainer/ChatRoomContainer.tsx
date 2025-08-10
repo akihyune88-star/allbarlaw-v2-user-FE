@@ -25,8 +25,6 @@ const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId }: ChatR
   const { userKeyId } = useAuth()
   const navigate = useNavigate()
 
-  console.log('messages', messages)
-
   // 커스텀 훅 사용
   const { isConnected, sendMessage, leaveRoom, isLawyer } = useChatSocket({
     chatRoomId,
@@ -35,9 +33,6 @@ const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId }: ChatR
 
   const { mutate: leaveChatRoom } = useLeaveChatRoom({
     onSuccess: data => {
-      console.log('✅ leaveChatRoom 성공:', data)
-      console.log('✅ isLawyer:', isLawyer)
-
       // 서버가 WebSocket 이벤트를 보내지 않는 경우를 대비해 WebSocket leaveRoom도 호출
       leaveRoom()
       setChatRoomId(null)
