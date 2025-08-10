@@ -3,8 +3,12 @@ import styles from './lawyerProfile.module.scss'
 import Tag from '@/components/tag/Tag'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import Modal from '@/components/modal'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { formatPhoneNumber } from '@/utils/numberFormatter'
+import { setTemporaryItem } from '@/utils/temporaryStorage'
+import { LOCAL } from '@/constants/local'
+import { useNavigate } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
 
 type LawyerProfileProps = {
   discription: string
@@ -27,9 +31,14 @@ const LawyerProfile = ({
 }: LawyerProfileProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
+  const navigate = useNavigate()
 
-  const handleBaroTalk = () => {
-    console.log('baroTalk', lawyerId)
+  const handleBaroTalk = (e: React.MouseEvent) => {
+    e.stopPropagation() // 이벤트 버블링 방지
+    if (lawyerId) {
+      setTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString(), 30) // 30분 유효
+      navigate(ROUTER.REQUEST_BARO_TALK)
+    }
   }
 
   const handleOpenContactModal = () => {
