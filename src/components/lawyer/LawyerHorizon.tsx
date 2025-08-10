@@ -8,6 +8,7 @@ import { blog, instagram, youtube } from '@/assets/imgs'
 import { LOCAL } from '@/constants/local'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
+import { setTemporaryItem } from '@/utils/temporaryStorage'
 
 type LawyerHorizonProps = {
   name: string
@@ -46,7 +47,7 @@ const LawyerHorizon = ({
   const handleBaroTalk = (e: React.MouseEvent) => {
     e.stopPropagation() // 이벤트 버블링 방지
     if (lawyerId) {
-      sessionStorage.setItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString())
+      setTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString(), 30) // 30분 유효
       navigate(ROUTER.REQUEST_BARO_TALK)
     }
   }
