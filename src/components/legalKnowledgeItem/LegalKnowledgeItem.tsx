@@ -39,7 +39,6 @@ const LegalKnowledgeItem = ({
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { isLoggedIn } = useAuth()
   const formattedTime = time ? formatTimeAgo(time) : ''
-  console.log(time)
 
   const [isKeep, setIsKeep] = useState(knowledgeKeep)
   const lawyerListRef = useRef<HTMLDivElement>(null)
