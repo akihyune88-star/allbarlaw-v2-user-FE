@@ -95,6 +95,7 @@ export const useKnowledgeKeep = ({
 
       onSuccess(data)
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_CONSULTATION_LIST] })
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_LEGAL_KNOWLEDGE_LIST] })
     },
     onError: () => {
       console.error('Failed to change knowledge keep')

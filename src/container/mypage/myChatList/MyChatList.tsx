@@ -12,6 +12,7 @@ import { ChatRoomStatus } from '@/types/baroTalkTypes'
 import { COLOR } from '@/styles/color'
 import Modal, { AlertModal } from '@/components/modal/Modal'
 import { KnowledgeItem } from '@/types/knowledgeType'
+import { useNavigate } from 'react-router-dom'
 
 const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const [year, setYear] = useState(2025)
@@ -23,6 +24,8 @@ const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const [editTitle, setEditTitle] = useState('')
   const [editConsultationRequestId, setEditConsultationRequestId] = useState<number | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const navigate = useNavigate()
 
   const { consultationList } = useInfiniteMyConsultationList({
     year,
@@ -94,6 +97,10 @@ const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
     setEditContent(e.target.value)
   }
 
+  const goToChatRoom = (consultationRequestId: number) => {
+    navigate(`/chat/${consultationRequestId}`)
+  }
+
   return (
     <>
       <AlertModal isOpen={alertOpen} onClose={() => setAlertOpen(false)} message={alertMessage} confirmText='확인' />
@@ -145,6 +152,7 @@ const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
                   <li key={consultation.knowledgeId}>
                     <article className={styles['myChatListList-item']}>
                       <LegalKnowledgeItem
+                        onClick={() => goToChatRoom(consultation.knowledgeId)}
                         knowledgeId={consultation.knowledgeId}
                         title={consultation.knowledgeTitle}
                         description={consultation.summaryContent}
