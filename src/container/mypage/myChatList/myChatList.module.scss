@@ -181,8 +181,8 @@
     }
 
     &:hover {
-      background-color: darken($color-green-01, 5%);
-      border-color: darken($color-green-01, 5%);
+      background-color: $color-green-01;
+      border-color: $color-green-01, 5%;
     }
 
     &:active {

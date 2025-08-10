@@ -97,8 +97,8 @@ const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
     setEditContent(e.target.value)
   }
 
-  const goToChatRoom = (consultationRequestId: number) => {
-    navigate(`/chat/${consultationRequestId}`)
+  const goToChatRoom = (_consultationRequestId: number) => {
+    navigate(`/chat`)
   }
 
   return (

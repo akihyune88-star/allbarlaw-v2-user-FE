@@ -73,8 +73,6 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
         return <span className={`${styles.statusBadge} ${styles.answered}`}>답변완료 채팅시작 대기중</span>
       case 'COMPLETED':
         return <span className={`${styles.statusBadge} ${styles.completed}`}>완료</span>
-      case 'CANCELLED':
-        return <span className={`${styles.statusBadge} ${styles.cancelled}`}>취소</span>
       default:
         return <span className={`${styles.statusBadge} ${styles.completed}`}>종료</span>
     }
