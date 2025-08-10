@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import styles from './select-box.module.scss'
 import SvgIcon from '../SvgIcon'
 
@@ -10,7 +10,7 @@ export type SelectOption<T = string> = {
 type SelectBoxProps<T = string> = {
   options: SelectOption<T>[]
   value?: T
-  onChange?: (value: T) => void
+  onChange?: (_value: T) => void
   placeholder?: string
   className?: string
   disabled?: boolean
