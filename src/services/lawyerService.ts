@@ -7,6 +7,8 @@ import {
   LawyerKeepResponse,
   LawyerListRequest,
   LawyerListResponse,
+  LawyerSignUpRequest,
+  LawyerSignUpResponse,
   RandomLawyerListRequest,
   RandomLawyerListResponse,
 } from '@/types/lawyerTypes'
@@ -70,6 +72,11 @@ export const lawyerService = {
 
   getLawyer: async (lawyerId: number) => {
     const response = await instance.get<Lawyer>(`/lawyer/${lawyerId}`)
+    return response.data
+  },
+
+  signUpLawyer: async (request: LawyerSignUpRequest) => {
+    const response = await instance.post<LawyerSignUpResponse>(`/lawyer/signup`, request)
     return response.data
   },
 }

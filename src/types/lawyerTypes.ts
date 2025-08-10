@@ -142,3 +142,20 @@ export type LawyerActiveResponse = {
   totalPages: number
   hasNextPage: boolean
 }
+
+export type LawyerSignUpRequest = {
+  lawyerAccount: string
+  lawyerPassword: string
+  lawyerPasswordRepeat: string
+  lawyerName: string
+  lawyerContact: string
+  lawyerLawfirmName: string
+  lawyerBarExamNumber: string
+  lawyerEmail: string
+}
+
+export type LawyerSignUpResponse = {
+  lawyerId: number
+  lawyerAccount: string
+  message: string
+}

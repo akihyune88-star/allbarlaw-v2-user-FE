@@ -12,22 +12,28 @@ import { useDelayedLoading } from '@/hooks'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
 import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { COLOR } from '@/styles/color'
 import { copyUrlToClipboard } from '@/utils/clipboard'
 import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import RecommendationLawyer from '@/container/recommendation/RecommendationLawyer'
+import { setTemporaryItem } from '@/utils/temporaryStorage'
+import { LOCAL } from '@/constants/local'
+import { ROUTER } from '@/routes/routerConstant'
 
 type BlogNavigationBarProps = {
   isKeep: boolean
   onSave: () => void
   onShare: () => void
+  onBlogLink: () => void
 }
 
-const BlogNavigationBar = ({ isKeep, onSave, onShare }: BlogNavigationBarProps) => {
+const BlogNavigationBar = ({ isKeep, onSave, onShare, onBlogLink }: BlogNavigationBarProps) => {
   return (
     <div className={styles['blog-navigation-bar']}>
-      <button className={styles['blog-link-btn']}>블로그 바로가기</button>
+      <button className={styles['blog-link-btn']} onClick={onBlogLink}>
+        블로그 바로가기
+      </button>
       <div className={styles['button-wrapper']}>
         <Button variant='share' onClick={onShare}>
           공유
@@ -49,6 +55,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
   const [isKeep, setIsKeep] = useState(false)
   const navigate = useNavigate()
 
+  console.log('data', data)
   // blogCaseId가 변경될 때마다 로딩 다시 시작
   useEffect(() => {
     setShowLoading(true)
@@ -105,6 +112,18 @@ const BlogDetail = ({ className }: { className?: string }) => {
     blogCaseIds: [data?.blogCaseId || 0],
   })
 
+  const handleBaroTalk = (e: React.MouseEvent, lawyerId: number) => {
+    e.stopPropagation() // 이벤트 버블링 방지
+    if (lawyerId) {
+      setTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString(), 30) // 30분 유효
+      navigate(ROUTER.REQUEST_BARO_TALK)
+    }
+  }
+
+  const handleBlogLink = () => {
+    window.open(data?.source || '', '_blank')
+  }
+
   return (
     <div className={`detail-container ${className}`}>
       <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
@@ -115,7 +134,12 @@ const BlogDetail = ({ className }: { className?: string }) => {
           ) : (
             <>
               <BlogDetailContents summaryContents={data?.summaryContent || ''} tagList={data?.tags || []} />
-              <BlogNavigationBar isKeep={isKeep} onSave={handleSave} onShare={handleShare} />
+              <BlogNavigationBar
+                isKeep={isKeep}
+                onSave={handleSave}
+                onShare={handleShare}
+                onBlogLink={handleBlogLink}
+              />
               {!isMobile ? (
                 <div style={{ width: 798 }}>
                   <AIBlogCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={10} />
@@ -131,7 +155,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
                     buttonComponent={
                       <div className={styles['lawyer-contact-btn-wrapper']}>
                         <button onClick={() => handleLawyerClick(lawyer.lawyerId)}>변호사 정보</button>
-                        <button>바로톡</button>
+                        <button onClick={e => handleBaroTalk(e, lawyer.lawyerId)}>바로톡</button>
                       </div>
                     }
                   />

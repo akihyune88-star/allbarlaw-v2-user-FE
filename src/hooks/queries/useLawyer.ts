@@ -5,6 +5,7 @@ import {
   LawyerActiveRequest,
   LawyerKeepResponse,
   LawyerListRequest,
+  LawyerSignUpRequest,
   RandomLawyerListRequest,
 } from '@/types/lawyerTypes'
 
@@ -96,5 +97,17 @@ export const useLawyer = (lawyerId: number) => {
     queryKey: [QUERY_KEY.LAWYER, lawyerId],
     queryFn: () => lawyerService.getLawyer(lawyerId),
     enabled: lawyerId !== undefined,
+  })
+}
+
+export const useLawyerSignUp = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
+  return useMutation({
+    mutationFn: (request: LawyerSignUpRequest) => lawyerService.signUpLawyer(request),
+    onSuccess: () => {
+      onSuccess()
+    },
+    onError: () => {
+      onError()
+    },
   })
 }

@@ -10,7 +10,7 @@ export type LawyerCertificationProps<T extends FieldValues> = {
 }
 
 function LawyerCertification<
-  T extends { lawyerName: string; lawyerContact: string; lawyerExam: number } & FieldValues
+  T extends { lawyerName: string; lawyerContact: string; lawyerExam: string } & FieldValues
 >({ register, errors }: LawyerCertificationProps<T>) {
   return (
     <section className={styles['lawyer-cert-section']}>
