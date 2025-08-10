@@ -28,7 +28,7 @@ const Mypage = () => {
         sortOrder={sortOrder}
         onSortChange={handleSortChange}
       />
-      <section>{tab === TABS[0] ? <KeepList sortOrder={sortOrder} /> : <ChatList />}</section>
+      <section>{tab === TABS[0] ? <KeepList sortOrder={sortOrder} /> : <ChatList sort={sortOrder} />}</section>
     </div>
   )
 }

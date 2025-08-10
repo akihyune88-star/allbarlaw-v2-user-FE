@@ -1,8 +1,14 @@
 import instance from '@/lib/axios'
+import { ChatRoomStatus } from '@/types/baroTalkTypes'
 import { BlogListRequest } from '@/types/blogTypes'
 import { KnowledgeListRequest, KnowledgeListResponse } from '@/types/knowledgeType'
 import { LawyerListRequest } from '@/types/lawyerTypes'
 import { LegalTermListRequest } from '@/types/legalTermTypes'
+import {
+  ChangeConsultationContentRequest,
+  MyConsultationListRequest,
+  MyConsultationListResponse,
+} from '@/types/mypageTypes'
 import { VideoListRequest } from '@/types/videoTypes'
 
 export const mypageService = {
@@ -85,6 +91,39 @@ export const mypageService = {
     const url = `/mypage/legal-terms${queryString ? `?${queryString}` : ''}`
 
     const response = await instance.get(url)
+    return response.data
+  },
+
+  getMyConsultationList: async (request: MyConsultationListRequest) => {
+    const { take, cursor, cursorId, sort, year, month } = request
+
+    const params = new URLSearchParams()
+    if (take !== undefined) params.append('take', take.toString())
+    if (cursor !== undefined) params.append('cursor', cursor.toString())
+    if (cursorId !== undefined) params.append('cursorId', cursorId.toString())
+    if (sort !== undefined) params.append('sort', sort)
+    if (year !== undefined) params.append('year', year.toString())
+    if (month !== undefined) params.append('month', month.toString())
+
+    const queryString = params.toString()
+    const url = `/mypage/consultation-requests${queryString ? `?${queryString}` : ''}`
+
+    const response = await instance.get<MyConsultationListResponse>(url)
+    return response.data
+  },
+
+  changeConsultationStatus: async (consultationRequestId: number, consultationRequestStatus: ChatRoomStatus) => {
+    const response = await instance.patch(`/consultation-requests/${consultationRequestId}/status`, {
+      consultationRequestStatus,
+    })
+    return response.data
+  },
+
+  changeConsultationContent: async (request: ChangeConsultationContentRequest) => {
+    const response = await instance.patch(`/consultation-requests/${request.consultationRequestId}`, {
+      consultationRequestTitle: request.knowledgeTitle,
+      consultationRequestSummaryContent: request.summaryContent,
+    })
     return response.data
   },
 }

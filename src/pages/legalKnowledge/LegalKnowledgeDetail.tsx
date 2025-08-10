@@ -1,6 +1,5 @@
 import AILoading from '@/components/aiLoading/AILoading'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
-import LegalKnowledgeDetailSideBar from '@/container/legalKnowledge/LegalKnowledgeDetailSideBar'
 import { useDelayedLoading } from '@/hooks'
 import { useGetKnowledgeDetail } from '@/hooks/queries/useGetKnowledgeDetail'
 import { useMediaQuery } from '@/hooks/useMediaQuery'

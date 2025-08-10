@@ -93,10 +93,11 @@ export type ChatRoomStatus =
   | 'PENDING'
   | 'ACTIVE'
   | 'COMPLETED'
-  | 'CANCELLED'
   | 'CONSULTING'
   | 'PARTIAL_LEFT'
   | 'REJECTED'
+  | 'HIDE'
+  | 'DELETED'
 
 export type JoinRoomSuccessData = {
   chatRoomId: number

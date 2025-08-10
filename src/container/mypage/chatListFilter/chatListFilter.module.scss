@@ -1,0 +1,33 @@
+.chatListFilter {
+  width: 100%;
+  height: 100%;
+}
+
+.chatListFilter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &-title {
+    font-size: 1.5rem;
+    font-weight: $font-weight-extra-bold;
+
+    @media (max-width: 768px) {
+      font-size: 1.125rem;
+    }
+  }
+}
+
+.chatListFilter-section {
+  margin-top: 1.125rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    margin-top: 0.75rem;
+    gap: 0.5rem;
+  }
+}

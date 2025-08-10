@@ -155,24 +155,3 @@ const BlogDetail = ({ className }: { className?: string }) => {
 }
 
 export default BlogDetail
-
-const mockLawyerList = [
-  {
-    lawyerId: 1,
-    lawyerName: '이보람',
-    lawfirmName: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    lawyerProfileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-  {
-    lawyerId: 2,
-    lawyerName: '이보람',
-    lawfirmName: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    lawyerProfileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-  {
-    lawyerId: 1,
-    lawyerName: '이보람',
-    lawfirmName: '이보람은 경찰 고소 공범 통장 보이스피싱 사기공범 신고 은행 경찰 고소에 능하며 어쩌구 저쩌구 ',
-    lawyerProfileImage: 'https://cdn.goenhance.ai/user/2024/07/12/6df8872f-c15e-442f-a4df-caa520c34c77_1.jpg',
-  },
-]

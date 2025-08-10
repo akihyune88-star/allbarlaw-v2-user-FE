@@ -1,11 +1,7 @@
-import AIRecommender from '@/components/aiRecommender/AIRecommender'
-// import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
-import AIBlogCarousel from '@/container/blog/AIBlogCarousel'
 import LawyerList from '@/container/lawyer/LawyerList'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInfiniteLawyerList } from '@/hooks/queries/useLawyer'
-// import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import { SortType } from '@/types/sortTypes'
 
 const LawyerLayout = () => {

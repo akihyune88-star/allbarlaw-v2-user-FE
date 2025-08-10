@@ -1,6 +1,5 @@
 import Divider from '@/components/divider/Divider'
 import styles from './legal-knowledge-detail-sideBar.module.scss'
-import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import { generateRandomLawyers } from '@/utils/mockDataGenerator'
@@ -44,7 +43,7 @@ const LegalKnowledgeDetailSideBar = ({ recommendLawyerList }: LegalKnowledgeDeta
         />
       </section>
       <section>
-        <LegalTermWidget
+        {/* <LegalTermWidget
           lagalTermList={[
             '사기죄 [詐欺罪]',
             '업무방해죄 [業務妨害罪]',
@@ -52,7 +51,7 @@ const LegalKnowledgeDetailSideBar = ({ recommendLawyerList }: LegalKnowledgeDeta
             '법정대리인 [法定代理人]',
             '위법성 조각사유 [違法性 阻却事由]',
           ]}
-        />
+        /> */}
       </section>
     </aside>
   )

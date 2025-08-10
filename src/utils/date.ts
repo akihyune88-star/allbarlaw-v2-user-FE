@@ -81,3 +81,41 @@ export const getRelativeTimeString = (date: Date | string): string => {
   const diffInYears = Math.floor(diffInMonths / 12)
   return `${diffInYears}년 전`
 }
+
+/**
+ * 1월부터 12월까지의 SelectBox 옵션 배열을 반환합니다.
+ * @returns SelectBox 옵션 형식의 월 배열
+ */
+export const getMonthsArray = () => {
+  return Array.from({ length: 12 }, (_, i) => ({
+    value: i + 1,
+    label: `${i + 1}월`,
+  }))
+}
+
+/**
+ * 2025년부터 현재 연도까지의 SelectBox 옵션 배열을 반환합니다.
+ * @returns SelectBox 옵션 형식의 연도 배열
+ * @example 2026년 1월에 접속한 경우 [{ value: 2025, label: '2025년' }, { value: 2026, label: '2026년' }]
+ */
+export const getYearsFrom2025 = () => {
+  const startYear = 2025
+  const currentYear = new Date().getFullYear()
+
+  const options: { value: number; label: string }[] = []
+
+  // 현재 연도가 2025년보다 이전인 경우 빈 배열 반환
+  if (currentYear < startYear) {
+    return options
+  }
+
+  // 2025년부터 현재 연도까지의 옵션 생성
+  for (let year = startYear; year <= currentYear; year++) {
+    options.push({
+      value: year,
+      label: `${year}년`,
+    })
+  }
+
+  return options
+}

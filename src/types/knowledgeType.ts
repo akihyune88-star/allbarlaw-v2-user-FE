@@ -1,3 +1,4 @@
+import { ChatRoomStatus } from './baroTalkTypes'
 import { Tag } from './lawyerTypes'
 import { SortType } from './sortTypes'
 
@@ -21,6 +22,8 @@ export type KnowledgeItem = {
   summaryContent: string
   lastMessageAt: string
   isKeep: boolean
+  chatRoomStatus: ChatRoomStatus
+
   lawyers: {
     lawyerId: number
     lawyerName: string
