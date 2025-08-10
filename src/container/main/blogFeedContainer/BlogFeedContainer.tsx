@@ -90,6 +90,7 @@ const BlogFeedContainer = () => {
               thumbnailUrl={blogList[0].thumbnail}
               title={blogList[0].title}
               content={blogList[0].summaryContent}
+              className={styles['main-blog-item']}
               lawyerInfo={{
                 name: blogList[0].lawyerName,
                 profileImageUrl: blogList[0].lawyerProfileImage,
