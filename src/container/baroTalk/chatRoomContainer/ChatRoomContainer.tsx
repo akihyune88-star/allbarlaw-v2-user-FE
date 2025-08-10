@@ -32,7 +32,7 @@ const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId }: ChatR
   })
 
   const { mutate: leaveChatRoom } = useLeaveChatRoom({
-    onSuccess: data => {
+    onSuccess: _data => {
       // 서버가 WebSocket 이벤트를 보내지 않는 경우를 대비해 WebSocket leaveRoom도 호출
       leaveRoom()
       setChatRoomId(null)
