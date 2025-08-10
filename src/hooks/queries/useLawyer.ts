@@ -90,3 +90,11 @@ export const useLawyerActive = (request: LawyerActiveRequest) => {
     select: data => data.data,
   })
 }
+
+export const useLawyer = (lawyerId: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER, lawyerId],
+    queryFn: () => lawyerService.getLawyer(lawyerId),
+    enabled: lawyerId !== undefined,
+  })
+}

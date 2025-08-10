@@ -1,6 +1,6 @@
 import RequestHeader from '@/container/baroTalk/RequestHeader'
 import styles from './baro-talk-lawyer-selection.module.scss'
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useEffect } from 'react'
 import Input from '@/components/input/Input'
 import CheckBoxGroup from '@/components/checkBox/CheckBoxGroup'
 import ProgressButton from '@/components/progressButton/ProgressButton'
@@ -14,15 +14,31 @@ import { useBaroTalkStore } from '@/store/baroTalkStore'
 import { useLawyerSelection } from '@/hooks/useLawyerSelection'
 import { useAgreementCheck } from '@/hooks/useAgreementCheck'
 import { LOCAL } from '@/constants/local'
+import { useLawyer } from '@/hooks/queries/useLawyer'
 
 const BaroTalkLawyerSelection = () => {
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
-
+  const selectedLawyerId = sessionStorage.getItem(LOCAL.CHAT_SELECTED_LAWYER_ID)
   const { consultationRequestSubcategoryId, getCreateBaroTalkRequest, reset } = useBaroTalkStore()
 
   const { selectedLawyers, handleLawyerClick, handleRemoveLawyer, isSelectionValid } = useLawyerSelection(4)
   const { agreementChecked, handleCheckboxChange, isAgreementValid } = useAgreementCheck(['notice'])
+
+  const { data: selectedLawyer } = useLawyer(Number(selectedLawyerId))
+
+  // selectedLawyer가 있을 때 자동으로 선택된 변호사 목록에 추가
+  useEffect(() => {
+    if (selectedLawyer && selectedLawyerId) {
+      // 이미 선택된 변호사인지 확인
+      const isAlreadySelected = selectedLawyers.some(lawyer => lawyer.lawyerId === selectedLawyer.lawyerId)
+
+      if (!isAlreadySelected) {
+        // 선택되지 않았다면 추가
+        handleLawyerClick(selectedLawyer)
+      }
+    }
+  }, [selectedLawyer, selectedLawyerId, selectedLawyers, handleLawyerClick])
 
   // 태그 배열을 useMemo로 메모이제이션
   const tags = useMemo(
@@ -48,6 +64,7 @@ const BaroTalkLawyerSelection = () => {
   const { mutate: createBaroTalk } = useCreateBaroTalk({
     onSuccess: () => {
       reset() // 세션 데이터 초기화
+      sessionStorage.removeItem(LOCAL.CHAT_SELECTED_LAWYER_ID) // 채팅 생성 성공 시 세션 정리
       navigate(ROUTER.CHAT)
     },
     onError: (error: Error) => {
@@ -67,8 +84,6 @@ const BaroTalkLawyerSelection = () => {
     tags,
   })
 
-  console.log('lawyer', sessionStorage.getItem(LOCAL.CHAT_SELECTED_LAWYER_ID))
-
   const allLawyers = useMemo(() => {
     if (!lawyer) return []
     return lawyer.flatMap(page => page)
@@ -85,7 +100,8 @@ const BaroTalkLawyerSelection = () => {
   }, [refetch])
 
   const handleCancel = useCallback(() => {
-    navigate(-1)
+    sessionStorage.removeItem(LOCAL.CHAT_SELECTED_LAWYER_ID) // 취소 시 세션 정리
+    navigate(ROUTER.MAIN)
   }, [navigate])
 
   const handleNext = useCallback(() => {
@@ -104,6 +120,7 @@ const BaroTalkLawyerSelection = () => {
   }, [selectedLawyers, getCreateBaroTalkRequest, createBaroTalk])
 
   const handlePrev = useCallback(() => {
+    // 이전 단계로 갈 때는 세션 유지 (다시 돌아올 수 있도록)
     navigate(ROUTER.CONSULTATION_CONTENT_FORM)
   }, [navigate])
 

@@ -7,6 +7,7 @@ import { useBaroTalkStore } from '@/store/baroTalkStore'
 
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { LOCAL } from '@/constants/local'
 
 const RequestBaroTalk = () => {
   const isMobile = useMediaQuery('(max-width: 1279px)')
@@ -35,6 +36,11 @@ const RequestBaroTalk = () => {
     }
   }
 
+  const handleCancel = () => {
+    sessionStorage.removeItem(LOCAL.CHAT_SELECTED_LAWYER_ID) // 취소 시 세션 정리
+    navigate(ROUTER.MAIN)
+  }
+
   return (
     <div className='form-container'>
       <RequestHeader title='법률 상담하기' description={isMobile ? '상담을 위해 아래 항목을 선택해주세요.' : ''} />
@@ -51,7 +57,7 @@ const RequestBaroTalk = () => {
           <ProgressButton
             steps={3}
             currentStep={1}
-            onCancel={() => navigate(-1)}
+            onCancel={handleCancel}
             onNext={handleNext}
             style={{ marginTop: isMobile ? 0 : 16 }}
             disabled={!selectedSubcategoryId} // 서브카테고리가 선택되지 않으면 버튼 비활성화
