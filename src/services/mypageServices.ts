@@ -1,4 +1,5 @@
 import instance from '@/lib/axios'
+import { ChatRoomStatus } from '@/types/baroTalkTypes'
 import { BlogListRequest } from '@/types/blogTypes'
 import { KnowledgeListRequest, KnowledgeListResponse } from '@/types/knowledgeType'
 import { LawyerListRequest } from '@/types/lawyerTypes'
@@ -104,6 +105,13 @@ export const mypageService = {
     const url = `/mypage/consultation-requests${queryString ? `?${queryString}` : ''}`
 
     const response = await instance.get<MyConsultationListResponse>(url)
+    return response.data
+  },
+
+  changeConsultationStatus: async (consultationRequestId: number, consultationRequestStatus: ChatRoomStatus) => {
+    const response = await instance.patch(`/consultation-requests/${consultationRequestId}/status`, {
+      consultationRequestStatus,
+    })
     return response.data
   },
 }

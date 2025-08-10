@@ -102,7 +102,7 @@ export const getYearsFrom2025 = () => {
   const startYear = 2025
   const currentYear = new Date().getFullYear()
 
-  const options = []
+  const options: { value: number; label: string }[] = []
 
   // 현재 연도가 2025년보다 이전인 경우 빈 배열 반환
   if (currentYear < startYear) {

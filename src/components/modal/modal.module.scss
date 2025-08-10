@@ -70,3 +70,46 @@
   gap: 12px;
   justify-content: flex-end;
 }
+
+// Alert 모달 스타일
+.modalAlert {
+  max-width: 320px;
+  width: 90%;
+  
+  .footer {
+    border-top: none;
+    background-color: white;
+    padding-top: 0;
+    justify-content: center;
+  }
+}
+
+.alertContent {
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+  padding: 8px 0;
+}
+
+.alertButton {
+  flex: 1;
+  padding: 10px 20px;
+  background-color: #59C47C;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+
+  &:hover {
+    background-color: #4CAF50;
+  }
+
+  &:active {
+    background-color: #45A049;
+  }
+}

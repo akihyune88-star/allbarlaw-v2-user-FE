@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode } from 'react'
+import React, { createContext, useContext, ReactNode, useEffect } from 'react'
 import styles from './modal.module.scss'
 
 interface ModalContextType {
@@ -21,9 +21,25 @@ interface ModalProps {
   onClose: () => void
   children: ReactNode
   className?: string
+  type?: 'default' | 'alert'
 }
 
-const Modal = ({ isOpen, onClose, children, className }: ModalProps) => {
+const Modal = ({ isOpen, onClose, children, className, type = 'default' }: ModalProps) => {
+  useEffect(() => {
+    if (isOpen) {
+      // 모달이 열릴 때 body 스크롤 막기
+      document.body.style.overflow = 'hidden'
+    } else {
+      // 모달이 닫힐 때 body 스크롤 복원
+      document.body.style.overflow = ''
+    }
+
+    // 컴포넌트 언마운트 시 스크롤 복원
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
   if (!isOpen) return null
 
   const handleOverlayClick = (e: React.MouseEvent) => {
@@ -35,7 +51,9 @@ const Modal = ({ isOpen, onClose, children, className }: ModalProps) => {
   return (
     <ModalContext.Provider value={{ isOpen, onClose }}>
       <div className={styles.overlay} onClick={handleOverlayClick}>
-        <div className={`${styles.modal} ${className || ''}`}>{children}</div>
+        <div className={`${styles.modal} ${type === 'alert' ? styles.modalAlert : ''} ${className || ''}`}>
+          {children}
+        </div>
       </div>
     </ModalContext.Provider>
   )
@@ -78,6 +96,30 @@ interface ModalFooterProps {
 
 const ModalFooter = ({ children, className }: ModalFooterProps) => {
   return <div className={`${styles.footer} ${className || ''}`}>{children}</div>
+}
+
+// Alert 타입을 위한 간편 컴포넌트
+interface AlertModalProps {
+  isOpen: boolean
+  onClose: () => void
+  message: string
+  confirmText?: string
+  className?: string
+}
+
+export const AlertModal = ({ isOpen, onClose, message, confirmText = '확인', className }: AlertModalProps) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} type="alert" className={className}>
+      <Modal.Body>
+        <div className={styles.alertContent}>{message}</div>
+      </Modal.Body>
+      <Modal.Footer>
+        <button className={styles.alertButton} onClick={onClose}>
+          {confirmText}
+        </button>
+      </Modal.Footer>
+    </Modal>
+  )
 }
 
 Modal.Header = ModalHeader
