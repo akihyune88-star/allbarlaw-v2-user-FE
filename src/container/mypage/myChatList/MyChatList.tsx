@@ -1,5 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
-import { useChangeConsultationStatus, useInfiniteMyConsultationList } from '@/hooks/queries/useMypage'
+import React, { useState, useRef } from 'react'
+import {
+  useChangeConsultationContent,
+  useChangeConsultationStatus,
+  useInfiniteMyConsultationList,
+} from '@/hooks/queries/useMypage'
 import styles from './myChatList.module.scss'
 import ChatListFilter from '../chatListFilter/ChatListFilter'
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
@@ -17,6 +21,7 @@ const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [editContent, setEditContent] = useState('')
   const [editTitle, setEditTitle] = useState('')
+  const [editConsultationRequestId, setEditConsultationRequestId] = useState<number | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const { consultationList } = useInfiniteMyConsultationList({
@@ -28,6 +33,19 @@ const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const { mutate: changeConsultationStatus } = useChangeConsultationStatus({
     onSuccess: () => {
       setAlertMessage('변경이 완료되었습니다.')
+      setAlertOpen(true)
+    },
+    onError: () => {
+      setAlertMessage('변경에 실패했습니다. 다시 시도해주세요.')
+      setAlertOpen(true)
+    },
+  })
+
+  const { mutate: changeConsultationContent } = useChangeConsultationContent({
+    onSuccess: () => {
+      setAlertMessage('변경이 완료되었습니다.')
+      setEditConsultationRequestId(null)
+      setEditModalOpen(false)
       setAlertOpen(true)
     },
     onError: () => {
@@ -56,15 +74,20 @@ const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
     changeConsultationStatus({ consultationRequestId, consultationRequestStatus: 'HIDE' })
   }
 
-
   const handleEditConsultation = (KnowledgeItem: KnowledgeItem) => {
     setEditContent(KnowledgeItem.summaryContent)
     setEditTitle(KnowledgeItem.knowledgeTitle)
+    setEditConsultationRequestId(KnowledgeItem.knowledgeId)
     setEditModalOpen(true)
   }
 
   const handleEditConsultationSubmit = () => {
-    console.log(editTitle, editContent)
+    if (!editConsultationRequestId) return
+    changeConsultationContent({
+      consultationRequestId: editConsultationRequestId,
+      knowledgeTitle: editTitle,
+      summaryContent: editContent,
+    })
   }
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -77,21 +100,21 @@ const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
       <Modal isOpen={editModalOpen} onClose={() => setEditModalOpen(false)}>
         <div className={styles['myChatList-edit-modal']}>
           <h3>상담 내용 수정</h3>
-          <input 
-            type='text' 
-            value={editTitle} 
-            onChange={e => setEditTitle(e.target.value)} 
+          <input
+            type='text'
+            value={editTitle}
+            onChange={e => setEditTitle(e.target.value)}
             className={styles['myChatList-edit-modal-input']}
           />
-          <textarea 
+          <textarea
             ref={textareaRef}
-            value={editContent} 
+            value={editContent}
             onChange={handleTextareaChange}
             className={styles['myChatList-edit-modal-textarea']}
-            style={{ 
+            style={{
               height: '300px',
               resize: 'none',
-              overflow: 'auto'
+              overflow: 'auto',
             }}
           />
           <button onClick={handleEditConsultationSubmit}>수정</button>

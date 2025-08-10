@@ -4,7 +4,11 @@ import { BlogListRequest } from '@/types/blogTypes'
 import { KnowledgeListRequest, KnowledgeListResponse } from '@/types/knowledgeType'
 import { LawyerListRequest } from '@/types/lawyerTypes'
 import { LegalTermListRequest } from '@/types/legalTermTypes'
-import { MyConsultationListRequest, MyConsultationListResponse } from '@/types/mypageTypes'
+import {
+  ChangeConsultationContentRequest,
+  MyConsultationListRequest,
+  MyConsultationListResponse,
+} from '@/types/mypageTypes'
 import { VideoListRequest } from '@/types/videoTypes'
 
 export const mypageService = {
@@ -111,6 +115,14 @@ export const mypageService = {
   changeConsultationStatus: async (consultationRequestId: number, consultationRequestStatus: ChatRoomStatus) => {
     const response = await instance.patch(`/consultation-requests/${consultationRequestId}/status`, {
       consultationRequestStatus,
+    })
+    return response.data
+  },
+
+  changeConsultationContent: async (request: ChangeConsultationContentRequest) => {
+    const response = await instance.patch(`/consultation-requests/${request.consultationRequestId}`, {
+      consultationRequestTitle: request.knowledgeTitle,
+      consultationRequestSummaryContent: request.summaryContent,
     })
     return response.data
   },

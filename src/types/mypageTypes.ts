@@ -15,3 +15,9 @@ export type MyConsultationListResponse = {
   data: KnowledgeItem[]
   hasNextPage: boolean
 }
+
+export type ChangeConsultationContentRequest = {
+  consultationRequestId: number
+  knowledgeTitle: string
+  summaryContent: string
+}

@@ -6,6 +6,10 @@
   @media (max-width: $breakpoint-desktop) {
     min-width: 100px;
   }
+
+  @media (max-width: 768px) {
+    min-width: 80px;
+  }
 }
 
 .selectButton {
@@ -28,6 +32,13 @@
     font-size: 14px;
     line-height: 20px;
     border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px 12px;
+    font-size: 13px;
+    line-height: 18px;
+    border-radius: 8px;
   }
 
   &:hover:not(:disabled) {
@@ -120,6 +131,12 @@
     padding: 10px 16px;
     font-size: 14px;
     line-height: 20px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px 12px;
+    font-size: 13px;
+    line-height: 18px;
   }
 
   &:hover {

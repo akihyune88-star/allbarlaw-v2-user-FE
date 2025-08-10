@@ -6,7 +6,7 @@ import { VideoListRequest } from '@/types/videoTypes'
 import { KnowledgeListRequest } from '@/types/knowledgeType'
 import { LawyerListRequest } from '@/types/lawyerTypes'
 import { LegalTermListRequest } from '@/types/legalTermTypes'
-import { MyConsultationListRequest } from '@/types/mypageTypes'
+import { ChangeConsultationContentRequest, MyConsultationListRequest } from '@/types/mypageTypes'
 import { ChatRoomStatus } from '@/types/baroTalkTypes'
 
 // 무한 스크롤용 훅
@@ -228,6 +228,27 @@ export const useChangeConsultationStatus = ({ onSuccess, onError }: { onSuccess:
       consultationRequestId: number
       consultationRequestStatus: ChatRoomStatus
     }) => mypageService.changeConsultationStatus(consultationRequestId, consultationRequestStatus),
+    onSuccess: () => {
+      onSuccess()
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_CONSULTATION_LIST] })
+    },
+    onError: () => {
+      onError()
+    },
+  })
+}
+
+export const useChangeConsultationContent = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void
+  onError: () => void
+}) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (request: ChangeConsultationContentRequest) => mypageService.changeConsultationContent(request),
     onSuccess: () => {
       onSuccess()
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_CONSULTATION_LIST] })

@@ -109,7 +109,7 @@ interface AlertModalProps {
 
 export const AlertModal = ({ isOpen, onClose, message, confirmText = '확인', className }: AlertModalProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} type="alert" className={className}>
+    <Modal isOpen={isOpen} onClose={onClose} type='alert' className={className}>
       <Modal.Body>
         <div className={styles.alertContent}>{message}</div>
       </Modal.Body>
