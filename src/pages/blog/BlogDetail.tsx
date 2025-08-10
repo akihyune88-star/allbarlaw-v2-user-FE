@@ -124,6 +124,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
                 <div className={styles['blog-moblie-side']}>
                   <LawyerHorizon
                     className={styles['lawyer-horizon']}
+                    lawyerId={lawyer.lawyerId}
                     name={lawyer.name}
                     description='법률사무소 바로'
                     profileImage={lawyer.profileImage}

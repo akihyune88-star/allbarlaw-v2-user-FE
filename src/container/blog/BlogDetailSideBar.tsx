@@ -4,6 +4,8 @@ import styles from './blog-detail-sidebar.module.scss'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import { useNavigate } from 'react-router-dom'
 import { RecommendationLegalTerm } from '@/types/recommendationTypes'
+import { LOCAL } from '@/constants/local'
+import { ROUTER } from '@/routes/routerConstant'
 
 type BlogDetailSideBarProps = {
   showLoading: boolean
@@ -24,6 +26,11 @@ const BlogDetailSideBar = ({ showLoading, lawyer, recommendationLegalTerm }: Blo
     navigate(`/search/lawyer/${lawyerId}`)
   }
 
+  const handleBaroTalk = (lawyerId: number) => {
+    sessionStorage.setItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString())
+    navigate(ROUTER.REQUEST_BARO_TALK)
+  }
+
   return (
     <aside className={styles['blog-detail-sidebar']}>
       <div className={styles['sidebar-desktop-wrapper']}>
@@ -37,7 +44,7 @@ const BlogDetailSideBar = ({ showLoading, lawyer, recommendationLegalTerm }: Blo
             footer={
               <div className={styles['lawyer-vertical-footer']}>
                 <button onClick={() => handleLawyerClick(lawyer.lawyerId)}>변호사 정보</button>
-                <button>바로 톡</button>
+                <button onClick={() => handleBaroTalk(lawyer.lawyerId)}>바로 톡</button>
               </div>
             }
           />

@@ -7,6 +7,9 @@ import Button from '../button/Button'
 import SvgIcon from '../SvgIcon'
 import { SocialLink, Tag as TagType } from '@/types/lawyerTypes'
 import { COLOR } from '@/styles/color'
+import { LOCAL } from '@/constants/local'
+import { ROUTER } from '@/routes/routerConstant'
+import { useNavigate } from 'react-router-dom'
 
 type LawyerVerticalProps = {
   lawyerId: number
@@ -46,7 +49,14 @@ const LawyerVertical = ({
   isKeep = false,
   saveHandler,
   shareHandler,
+  lawyerId,
 }: LawyerVerticalProps) => {
+  const navigate = useNavigate()
+  const handleBaroTalk = () => {
+    sessionStorage.setItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString())
+    navigate(ROUTER.REQUEST_BARO_TALK)
+  }
+
   return (
     <div className={`${styles['lawyer-vertical']} ${styles[`type-${type}`]} ${className}`}>
       {type === 2 ? (
@@ -75,7 +85,11 @@ const LawyerVertical = ({
           </div>
         )}
 
-        {type === 2 && <button className={styles['baro-talk-button']}>바로 톡</button>}
+        {type === 2 && (
+          <button className={styles['baro-talk-button']} onClick={handleBaroTalk}>
+            바로 톡
+          </button>
+        )}
 
         <div className={styles['social-link-wrapper']}>
           <div className={styles['social-link']}>

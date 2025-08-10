@@ -41,6 +41,7 @@ const RecommendationLawyer = ({
           {visibleItems.map(lawyer => (
             <LawyerHorizon
               key={lawyer.lawyerId}
+              lawyerId={lawyer.lawyerId}
               name={lawyer.lawyerName}
               profileImage={lawyer.lawyerProfileImage}
               description={isMobile ? lawyer.lawyerDescription : lawyer.lawfirmName}

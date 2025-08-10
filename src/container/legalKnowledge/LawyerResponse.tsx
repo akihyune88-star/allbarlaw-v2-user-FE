@@ -5,6 +5,9 @@ import { COLOR } from '@/styles/color'
 import Divider from '@/components/divider/Divider'
 import { useState } from 'react'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { LOCAL } from '@/constants/local'
+import { ROUTER } from '@/routes/routerConstant'
+import { useNavigate } from 'react-router-dom'
 
 type LawyerResponseProps = {
   lawyers: {
@@ -19,10 +22,16 @@ type LawyerResponseProps = {
 
 const LawyerResponse = ({ lawyers }: LawyerResponseProps) => {
   const [_isReportModalOpen, setIsReportModalOpen] = useState(false)
+  const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   const handleReportModalOpen = () => {
     setIsReportModalOpen(true)
+  }
+
+  const handleBaroTalk = (lawyerId: number) => {
+    sessionStorage.setItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString())
+    navigate(ROUTER.REQUEST_BARO_TALK)
   }
 
   return (
@@ -58,10 +67,18 @@ const LawyerResponse = ({ lawyers }: LawyerResponseProps) => {
                 )}
               </div>
               <p className={styles['info-description']}>{lawyer.lawyerDescription}</p>
-              {!isMobile && <button className={styles['barotalk-btn']}>바로톡</button>}
+              {!isMobile && (
+                <button className={styles['barotalk-btn']} onClick={() => handleBaroTalk(lawyer.lawyerId)}>
+                  바로톡
+                </button>
+              )}
             </div>
           </Card.Header>
-          {isMobile && <button className={styles['mobile-barotalk-btn']}>바로톡</button>}
+          {isMobile && (
+            <button className={styles['mobile-barotalk-btn']} onClick={() => handleBaroTalk(lawyer.lawyerId)}>
+              바로톡
+            </button>
+          )}
           <Divider />
           <Card.Content>
             <p className={styles['description']}>{lawyer.content}</p>

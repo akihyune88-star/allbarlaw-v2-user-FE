@@ -31,8 +31,6 @@ const LawyerDetail = () => {
     videoCaseIds: lawyerDetail?.videoCases.map(video => video.videoCaseId) ?? [],
   })
 
-  console.log(recommendationLegalTerm)
-
   const lawyerProfileImages = lawyerDetail?.lawyerProfileImages.map(image => image.imageUrl)
 
   return (

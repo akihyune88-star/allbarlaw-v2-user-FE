@@ -86,6 +86,7 @@ const LegalKnowledgeDetail = () => {
                       {mockLawyerList.map(lawyer => (
                         <LawyerHorizon
                           key={lawyer.lawyerId}
+                          lawyerId={lawyer.lawyerId}
                           name={lawyer.lawyerName}
                           profileImage={lawyer.lawyerProfileImage}
                           description={lawyer.lawfirmName}

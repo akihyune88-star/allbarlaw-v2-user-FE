@@ -47,12 +47,13 @@ const LawyerListAlternative = () => {
       <section className={styles['lawyer-list-wrapper']}>
         {data?.lawyerList.map((lawyer, index) => {
           const isLastItem = index === data.lawyerList.length - 1 && !hasNextPage
-          
+
           return (
             <div key={lawyer.lawyerId} style={{ display: 'contents' }}>
               <LawyerHorizon
                 onClick={() => handleLawyerDetail(lawyer.lawyerId.toString())}
                 tags={lawyer.tags}
+                lawyerId={lawyer.lawyerId}
                 className={styles['lawyer-list-item']}
                 name={lawyer.lawyerName}
                 lawfirm={lawyer.lawfirmName}
@@ -70,13 +71,13 @@ const LawyerListAlternative = () => {
                 size='small'
               />
               {!isLastItem && (
-                <div 
-                  style={{ 
+                <div
+                  style={{
                     width: '100%',
                     height: '1px',
                     backgroundColor: '#e5e5e5',
-                    margin: '16px 0'
-                  }} 
+                    margin: '16px 0',
+                  }}
                 />
               )}
             </div>

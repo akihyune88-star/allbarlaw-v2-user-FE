@@ -13,6 +13,7 @@ import { useCreateBaroTalk, useGetBaroTalkLawyerList } from '@/hooks/queries/use
 import { useBaroTalkStore } from '@/store/baroTalkStore'
 import { useLawyerSelection } from '@/hooks/useLawyerSelection'
 import { useAgreementCheck } from '@/hooks/useAgreementCheck'
+import { LOCAL } from '@/constants/local'
 
 const BaroTalkLawyerSelection = () => {
   const navigate = useNavigate()
@@ -66,7 +67,8 @@ const BaroTalkLawyerSelection = () => {
     tags,
   })
 
-  // 모든 변호사 데이터를 하나의 배열로 합치기
+  console.log('lawyer', sessionStorage.getItem(LOCAL.CHAT_SELECTED_LAWYER_ID))
+
   const allLawyers = useMemo(() => {
     if (!lawyer) return []
     return lawyer.flatMap(page => page)

@@ -31,6 +31,7 @@ const LegalKnowledgeDetailSideBar = ({ recommendLawyerList }: LegalKnowledgeDeta
             <div className={styles['list']}>
               {mockLawyerList.map(lawyer => (
                 <LawyerHorizon
+                  lawyerId={lawyer.lawyerId}
                   key={lawyer.lawyerId}
                   name={lawyer.lawyerName}
                   profileImage={lawyer.lawyerProfileImage}
