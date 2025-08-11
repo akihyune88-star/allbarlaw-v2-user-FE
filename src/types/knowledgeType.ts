@@ -23,7 +23,7 @@ export type KnowledgeItem = {
   lastMessageAt: string
   isKeep: boolean
   chatRoomStatus: ChatRoomStatus
-
+  subcategoryId: number
   lawyers: {
     lawyerId: number
     lawyerName: string
