@@ -14,12 +14,13 @@ import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 
 const SearchVideo = () => {
   const { videoId } = useParams()
-  const { searchQuery } = useSearchStore()
+  const { searchQuery, searchLawyerId } = useSearchStore()
   const [sort, setSort] = useState<SortType>('viewCount')
 
   const { searchResults, searchTotalCounts, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =
     useInfiniteSearchList({
       searchQuery,
+      searchLawyerId,
       searchTab: 'video',
       searchSize: 10,
       searchSortBy: sort,

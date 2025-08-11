@@ -25,7 +25,7 @@ interface LawyerListProps {
 
 const LawyerList = ({
   lawyerList,
-  isLoading: _isLoading,
+  isLoading,
   hasNextPage,
   isFetchingNextPage,
   fetchNextPage,
@@ -36,6 +36,7 @@ const LawyerList = ({
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
 
+  console.log('🟢 LawyerList: lawyerList', lawyerList)
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
     isFetchingNextPage,
@@ -69,45 +70,62 @@ const LawyerList = ({
         />
       </header>
       <section className={styles['lawyer-list-wrapper']}>
-        {lawyerList.map((lawyer, index) => {
-          const isLastItem = index === lawyerList.length - 1 && !hasNextPage
+        {isLoading ? (
+          <div className={styles['loading-state']}>
+            <p>변호사 목록을 불러오고 있습니다...</p>
+          </div>
+        ) : lawyerList.length === 0 ? (
+          <div className={styles['empty-state']}>
+            <p>현재 등록된 변호사가 없습니다.</p>
+            <p>다른 분야를 선택해보세요.</p>
+          </div>
+        ) : (
+          lawyerList.map((lawyer, index) => {
+            // null/undefined 체크
+            if (!lawyer || !lawyer.lawyerId) {
+              console.error('❌ 잘못된 변호사 데이터:', lawyer)
+              return null
+            }
+            
+            const isLastItem = index === lawyerList.length - 1 && !hasNextPage
 
-          return (
-            <React.Fragment key={lawyer.lawyerId}>
-              <LawyerHorizon
-                lawyerId={lawyer.lawyerId}
-                onClick={() => handleLawyerDetail(lawyer.lawyerId)}
-                tags={lawyer.tags}
-                isBaroTalk={true}
-                className={styles['lawyer-list-item']}
-                name={lawyer.lawyerName}
-                lawfirm={lawyer.lawfirmName}
-                profileImage={lawyer.lawyerProfileImage}
-                description={lawyer.lawyerDescription}
-                ad={true}
-                buttonComponent={
-                  isMobile && (
-                    <div className={styles['button-wrapper']}>
-                      <Button
-                        onClick={e => {
-                          e.stopPropagation()
-                          handleLawyerDetail(lawyer.lawyerId)
-                        }}
-                      >
-                        변호사페이지
-                      </Button>
-                      <Button variant='fill' onClick={e => handleBaroTalk(e, lawyer.lawyerId)}>
-                        채팅상담
-                      </Button>
-                    </div>
-                  )
-                }
-                size='small'
-              />
-              {!isLastItem && <Divider padding={16} />}
-            </React.Fragment>
-          )
-        })}
+            return (
+              <React.Fragment key={lawyer.lawyerId}>
+                <LawyerHorizon
+                  lawyerId={lawyer.lawyerId}
+                  onClick={() => handleLawyerDetail(lawyer.lawyerId)}
+                  tags={lawyer.tags}
+                  isBaroTalk={true}
+                  className={styles['lawyer-list-item']}
+                  name={lawyer.lawyerName || '이름 없음'}
+                  lawfirm={lawyer.lawfirmName || '소속 없음'}
+                  profileImage={lawyer.lawyerProfileImage}
+                  description={lawyer.lawyerDescription}
+                  ad={true}
+                  buttonComponent={
+                    isMobile && (
+                      <div className={styles['button-wrapper']}>
+                        <Button
+                          onClick={e => {
+                            e.stopPropagation()
+                            handleLawyerDetail(lawyer.lawyerId)
+                          }}
+                        >
+                          변호사페이지
+                        </Button>
+                        <Button variant='fill' onClick={e => handleBaroTalk(e, lawyer.lawyerId)}>
+                          채팅상담
+                        </Button>
+                      </div>
+                    )
+                  }
+                  size='small'
+                />
+                {!isLastItem && <Divider padding={16} />}
+              </React.Fragment>
+            )
+          })
+        )}
       </section>
     </div>
   )

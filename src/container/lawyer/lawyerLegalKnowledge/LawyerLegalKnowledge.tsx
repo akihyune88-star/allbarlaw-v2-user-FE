@@ -4,13 +4,25 @@ import styles from './lawyerLegalKnowledge.module.scss'
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
 import { forwardRef } from 'react'
 import { LawyerDetailResponse } from '@/types/lawyerTypes'
+import { useNavigate } from 'react-router-dom'
+import { useSearchStore } from '@/stores/searchStore'
 
 type LawyerLegalKnowledgeProps = {
   knowledgeList: LawyerDetailResponse['consultationRequests'] | []
+  lawyerId: number
 }
 
-const LawyerLegalKnowledge = forwardRef<HTMLElement, LawyerLegalKnowledgeProps>(({ knowledgeList = [] }, ref) => {
+const LawyerLegalKnowledge = forwardRef<HTMLElement, LawyerLegalKnowledgeProps>(({ knowledgeList = [], lawyerId }, ref) => {
+  const navigate = useNavigate()
+  const { setSearchLawyerId, clearSearchQuery } = useSearchStore()
   const hasKnowledge = knowledgeList.length > 0
+
+  const handleMoreKnowledge = () => {
+    // 검색어는 지우고 변호사 ID만 설정하여 해당 변호사의 모든 법률 지식 표시
+    clearSearchQuery()
+    setSearchLawyerId(lawyerId)
+    navigate(`/search/knowledge`)
+  }
 
   return (
     <section ref={ref} className={styles['lawyer-legal-knowledge']} aria-label='변호사의 법률 지식'>
@@ -21,6 +33,7 @@ const LawyerLegalKnowledge = forwardRef<HTMLElement, LawyerLegalKnowledgeProps>(
             type='button'
             className={styles['lawyer-legal-knowledge__button']}
             aria-label='변호사의 법률 지식 더보기'
+            onClick={handleMoreKnowledge}
           >
             더보기
             <SvgIcon name='arrowSmall' className={styles['lawyer-legal-knowledge__button-icon']} size={14} />

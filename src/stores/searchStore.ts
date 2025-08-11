@@ -3,14 +3,19 @@ import { persist } from 'zustand/middleware'
 
 interface SearchState {
   searchQuery: string
+  searchLawyerId: number | undefined
   setSearchQuery: (_query: string) => void
+  setSearchLawyerId: (_lawyerId: number | undefined) => void
   clearSearchQuery: () => void
+  clearSearchLawyerId: () => void
+  clearAll: () => void
 }
 
 export const useSearchStore = create<SearchState>()(
   persist(
     set => ({
       searchQuery: '',
+      searchLawyerId: undefined,
       
       setSearchQuery: (query: string) => {
         set({ searchQuery: query })
@@ -18,9 +23,30 @@ export const useSearchStore = create<SearchState>()(
         sessionStorage.setItem('searchQuery', query)
       },
       
+      setSearchLawyerId: (lawyerId: number | undefined) => {
+        set({ searchLawyerId: lawyerId })
+        // sessionStorage에 저장
+        if (lawyerId !== undefined) {
+          sessionStorage.setItem('searchLawyerId', lawyerId.toString())
+        } else {
+          sessionStorage.removeItem('searchLawyerId')
+        }
+      },
+      
       clearSearchQuery: () => {
         set({ searchQuery: '' })
         sessionStorage.removeItem('searchQuery')
+      },
+      
+      clearSearchLawyerId: () => {
+        set({ searchLawyerId: undefined })
+        sessionStorage.removeItem('searchLawyerId')
+      },
+      
+      clearAll: () => {
+        set({ searchQuery: '', searchLawyerId: undefined })
+        sessionStorage.removeItem('searchQuery')
+        sessionStorage.removeItem('searchLawyerId')
       },
     }),
     {

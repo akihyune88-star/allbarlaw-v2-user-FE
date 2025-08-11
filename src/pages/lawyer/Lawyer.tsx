@@ -9,13 +9,22 @@ const LawyerLayout = () => {
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const [sortCase, setSortCase] = useState<SortType>('createdAt')
 
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteLawyerList({
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = useInfiniteLawyerList({
     subcategoryId: Number(subcategoryId),
     orderBy: sortCase,
     achievementId: 'all',
   })
 
   const lawyerList = data?.lawyerList || []
+
+  console.log('🔍 Lawyer.tsx 디버그:', {
+    subcategoryId,
+    parsedSubcategoryId: Number(subcategoryId),
+    isNaN: isNaN(Number(subcategoryId)),
+    data,
+    lawyerList,
+    isLoading
+  })
 
   const handleSortCase = (key: SortType) => setSortCase(key === 'all' ? 'createdAt' : key)
   const handleLawyerItemClick = (lawyerId: number) => navigate(`/${subcategoryId}/lawyer/${lawyerId}`)
@@ -25,7 +34,7 @@ const LawyerLayout = () => {
       <section className='contents-section'>
         <LawyerList
           lawyerList={lawyerList}
-          isLoading={!data}
+          isLoading={isLoading}
           hasNextPage={hasNextPage || false}
           isFetchingNextPage={isFetchingNextPage}
           fetchNextPage={fetchNextPage}

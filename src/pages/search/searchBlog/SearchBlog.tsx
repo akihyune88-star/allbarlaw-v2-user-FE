@@ -15,7 +15,7 @@ import RecommendationLawyer from '@/container/recommendation/RecommendationLawye
 
 const SearchBlog = () => {
   const [sort, setSort] = useState<SortType>('viewCount')
-  const { searchQuery } = useSearchStore()
+  const { searchQuery, searchLawyerId } = useSearchStore()
   const { blogCaseId } = useParams()
 
   const handleSearchTab = (tab: SortType) => {
@@ -24,6 +24,7 @@ const SearchBlog = () => {
 
   const { hasNextPage, fetchNextPage, isFetchingNextPage, searchResults, searchTotalCounts } = useInfiniteSearchList({
     searchQuery,
+    searchLawyerId,
     searchTab: 'blog',
     searchSize: 10,
     searchSortBy: sort,

@@ -4,20 +4,37 @@ import BlogItem from '@/components/blogItem/BlogItem'
 import SvgIcon from '@/components/SvgIcon'
 import { forwardRef } from 'react'
 import { LawyerDetailResponse } from '@/types/lawyerTypes'
+import { useNavigate } from 'react-router-dom'
+import { useSearchStore } from '@/stores/searchStore'
 
 type LawyerBlogProps = {
   blogList: LawyerDetailResponse['blogCases'] | []
+  lawyerId: number
 }
 
-const LawyerBlog = forwardRef<HTMLElement, LawyerBlogProps>(({ blogList = [] }, ref) => {
+const LawyerBlog = forwardRef<HTMLElement, LawyerBlogProps>(({ blogList = [], lawyerId }, ref) => {
+  const navigate = useNavigate()
+  const { setSearchLawyerId, clearSearchQuery } = useSearchStore()
   const hasBlogPosts = blogList && blogList.length > 0
+
+  const handleMoreBlog = () => {
+    // 검색어는 지우고 변호사 ID만 설정하여 해당 변호사의 모든 글 표시
+    clearSearchQuery()
+    setSearchLawyerId(lawyerId)
+    navigate(`/search/blog`)
+  }
 
   return (
     <section ref={ref} className={styles['lawyer-blog']} aria-label='법률정보의 글'>
       <header className={styles['lawyer-blog__header']}>
         <h3 className={styles['lawyer-blog__title']}>법률정보의 글</h3>
         {hasBlogPosts && (
-          <button type='button' className={styles['lawyer-blog__button']} aria-label='법률정보의 글 더보기'>
+          <button
+            type='button'
+            className={styles['lawyer-blog__button']}
+            aria-label='법률정보의 글 더보기'
+            onClick={handleMoreBlog}
+          >
             더보기
             <SvgIcon name='arrowSmall' className={styles['lawyer-blog__button-icon']} size={14} />
           </button>

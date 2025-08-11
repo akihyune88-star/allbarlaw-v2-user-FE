@@ -9,8 +9,9 @@ import LawyerProfile from '@/container/lawyer/lawyerProfile/LawyerProfile'
 import LawyerVideo from '@/container/lawyer/lawyerVideo/LawyerVideo'
 import { useLawyerDetail } from '@/hooks/queries/useLawyer'
 import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useSearchStore } from '@/stores/searchStore'
 
 const LawyerDetail = () => {
   const careerRef = useRef<HTMLElement>(null)
@@ -18,8 +19,16 @@ const LawyerDetail = () => {
   const videoRef = useRef<HTMLElement>(null)
   const legalKnowledgeRef = useRef<HTMLElement>(null)
   const { lawyerId } = useParams()
+  const { clearSearchLawyerId } = useSearchStore()
 
   const { data: lawyerDetail } = useLawyerDetail(Number(lawyerId))
+
+  // 컴포넌트 언마운트 시 searchLawyerId 초기화
+  useEffect(() => {
+    return () => {
+      clearSearchLawyerId()
+    }
+  }, [])
 
   const scrollToSection = (ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -69,9 +78,13 @@ const LawyerDetail = () => {
           careerHistory={lawyerDetail?.careers ?? []}
           activities={lawyerDetail?.activities ?? []}
         />
-        <LawyerBlog ref={blogRef} blogList={lawyerDetail?.blogCases ?? []} />
-        <LawyerVideo ref={videoRef} videoList={lawyerDetail?.videoCases ?? []} />
-        <LawyerLegalKnowledge ref={legalKnowledgeRef} knowledgeList={lawyerDetail?.consultationRequests ?? []} />
+        <LawyerBlog ref={blogRef} blogList={lawyerDetail?.blogCases ?? []} lawyerId={Number(lawyerId)} />
+        <LawyerVideo ref={videoRef} videoList={lawyerDetail?.videoCases ?? []} lawyerId={Number(lawyerId)} />
+        <LawyerLegalKnowledge
+          ref={legalKnowledgeRef}
+          knowledgeList={lawyerDetail?.consultationRequests ?? []}
+          lawyerId={Number(lawyerId)}
+        />
       </section>
       <aside className='aside'>
         <LawyerDetailSidebar

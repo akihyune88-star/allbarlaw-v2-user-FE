@@ -15,13 +15,14 @@ import { ROUTER } from '@/routes/routerConstant'
 
 const SearchLegalKnowledge = () => {
   const { knowledgeId } = useParams()
-  const { searchQuery } = useSearchStore()
+  const { searchQuery, searchLawyerId } = useSearchStore()
   const [sort, setSort] = useState<SortType>('viewCount')
   const navigate = useNavigate()
 
   const { searchResults, searchTotalCounts, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =
     useInfiniteSearchList({
       searchQuery,
+      searchLawyerId,
       searchTab: 'consultation',
       searchSize: 10,
       searchSortBy: sort,

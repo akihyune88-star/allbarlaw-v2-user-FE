@@ -17,6 +17,8 @@ export const lawyerService = {
   getLawyerList: async (request: LawyerListRequest) => {
     const { subcategoryId, take, cursor, cursorId, orderBy, gender, achievementId } = request
 
+    console.log('🟣 getLawyerList API 호출:', request)
+
     const params = new URLSearchParams()
     if (subcategoryId !== undefined) params.append('subcategoryId', subcategoryId.toString())
     if (take !== undefined) params.append('take', take.toString())
@@ -27,9 +29,60 @@ export const lawyerService = {
     if (achievementId !== undefined) params.append('achievementId', achievementId)
 
     const queryString = params.toString()
-    const url = `/lawyer/${subcategoryId}${queryString ? `?${queryString}` : ''}`
-    const response = await instance.get<LawyerListResponse>(url)
-    return response.data
+    const url = `/lawyer/list/${subcategoryId}${queryString ? `?${queryString}` : ''}`
+
+    console.log('🌐 API URL:', url)
+
+    try {
+      const response = await instance.get<any>(url)
+      console.log('✅ API 원본 응답:', response.data)
+
+      // 서버가 잘못된 형식으로 응답하는 경우를 처리
+      // Case 1: 정상적인 응답 (data 배열을 포함)
+      if (response.data?.data && Array.isArray(response.data.data)) {
+        return response.data as LawyerListResponse
+      }
+
+      // Case 2: 단일 객체를 반환하는 경우 (서버 버그)
+      if (response.data?.lawyerId) {
+        console.warn('⚠️ 서버가 단일 객체를 반환했습니다. 배열로 변환합니다.')
+        return {
+          data: [response.data],
+          nextCursor: 0,
+          nextCursorId: 0,
+          hasNextPage: false,
+        } as LawyerListResponse
+      }
+
+      // Case 3: 배열을 직접 반환하는 경우
+      if (Array.isArray(response.data)) {
+        console.warn('⚠️ 서버가 배열을 직접 반환했습니다. 구조를 변환합니다.')
+        return {
+          data: response.data,
+          nextCursor: 0,
+          nextCursorId: 0,
+          hasNextPage: false,
+        } as LawyerListResponse
+      }
+
+      // Case 4: 예상치 못한 형식
+      console.error('❌ 예상치 못한 API 응답 형식:', response.data)
+      return {
+        data: [],
+        nextCursor: 0,
+        nextCursorId: 0,
+        hasNextPage: false,
+      } as LawyerListResponse
+    } catch (error) {
+      console.error('❌ API 에러:', error)
+      // 에러 발생 시에도 빈 배열 반환하여 UI가 깨지지 않도록 함
+      return {
+        data: [],
+        nextCursor: 0,
+        nextCursorId: 0,
+        hasNextPage: false,
+      } as LawyerListResponse
+    }
   },
 
   getLawyerDetail: async (lawyerId: number) => {

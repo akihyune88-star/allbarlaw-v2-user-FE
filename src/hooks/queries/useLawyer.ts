@@ -18,15 +18,24 @@ export const useLawyerList = (request: LawyerListRequest) => {
 }
 
 export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' | 'cursorId'>) => {
+  console.log('🔵 useInfiniteLawyerList 요청:', {
+    subcategoryId: request.subcategoryId,
+    orderBy: request.orderBy,
+    achievementId: request.achievementId,
+    enabled: request.subcategoryId !== undefined && !isNaN(request.subcategoryId)
+  })
+  
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.LAWYER_LIST, 'infinite', request.subcategoryId, request.orderBy],
-    queryFn: ({ pageParam }) =>
-      lawyerService.getLawyerList({
+    queryFn: ({ pageParam }) => {
+      console.log('🟢 API 호출 시작:', { pageParam, request })
+      return lawyerService.getLawyerList({
         ...request,
         cursor: pageParam?.cursor,
         cursorId: pageParam?.cursorId,
-      }),
-    enabled: request.subcategoryId !== undefined,
+      })
+    },
+    enabled: request.subcategoryId !== undefined && !isNaN(request.subcategoryId),
     initialPageParam: undefined as undefined | { cursor: number; cursorId: number },
     getNextPageParam: lastPage => {
       if (!lastPage.hasNextPage) return undefined
@@ -35,11 +44,23 @@ export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' 
         cursorId: lastPage.nextCursorId,
       }
     },
-    select: data => ({
-      pages: data.pages,
-      pageParams: data.pageParams,
-      lawyerList: data.pages.flatMap(page => page.data),
-    }),
+    select: data => {
+      const lawyerList = data.pages.flatMap(page => {
+        // 서버 응답이 정상적인 경우
+        if (Array.isArray(page?.data)) {
+          return page.data.filter(Boolean) // null/undefined 제거
+        }
+        // 비정상 응답인 경우 빈 배열 반환
+        console.warn('⚠️ 비정상적인 페이지 데이터:', page)
+        return []
+      })
+      
+      return {
+        pages: data.pages,
+        pageParams: data.pageParams,
+        lawyerList,
+      }
+    },
   })
 }
 
