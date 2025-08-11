@@ -14,8 +14,9 @@ interface LawyerChatListProps {
 }
 
 const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
-  const { getUserIdFromToken } = useAuth()
-  const lawyerId = getUserIdFromToken() // 임시로 userId를 lawyerId로 사용
+  const { getLawyerIdFromToken } = useAuth()
+  const lawyerId = getLawyerIdFromToken() // 임시로 userId를 lawyerId로 사용
+  console.log('🟢 LawyerChatList: lawyerId', lawyerId)
   const [clipStates, setClipStates] = useState<Record<number, boolean>>({})
   const setChatRoomId = useSetChatRoomId()
   const navigate = useNavigate()

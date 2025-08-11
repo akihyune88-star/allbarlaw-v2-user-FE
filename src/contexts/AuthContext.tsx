@@ -52,9 +52,11 @@ const getUserIdFromToken = (): number | null => {
 // 토큰에서 변호사 ID 추출
 const getLawyerIdFromToken = (): number | null => {
   const token = localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN)
+  console.log('🟢 getLawyerIdFromToken: token', token)
   if (!token) return null
 
   const decoded = decodeToken(token)
+  console.log('🟢 getLawyerIdFromToken: decoded', decoded)
   if (!decoded) return null
 
   // 토큰에서 변호사 ID 추출 (API 응답 구조에 따라 필드명 조정 필요)
