@@ -18,13 +18,6 @@ export const useLawyerList = (request: LawyerListRequest) => {
 }
 
 export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' | 'cursorId'>) => {
-  console.log('🔵 useInfiniteLawyerList 요청:', {
-    subcategoryId: request.subcategoryId,
-    orderBy: request.orderBy,
-    achievementId: request.achievementId,
-    enabled: request.subcategoryId !== undefined && !isNaN(request.subcategoryId)
-  })
-  
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.LAWYER_LIST, 'infinite', request.subcategoryId, request.orderBy],
     queryFn: ({ pageParam }) => {
@@ -35,7 +28,7 @@ export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' 
         cursorId: pageParam?.cursorId,
       })
     },
-    enabled: request.subcategoryId !== undefined && !isNaN(request.subcategoryId),
+    enabled: request.subcategoryId !== undefined,
     initialPageParam: undefined as undefined | { cursor: number; cursorId: number },
     getNextPageParam: lastPage => {
       if (!lastPage.hasNextPage) return undefined
@@ -54,7 +47,7 @@ export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' 
         console.warn('⚠️ 비정상적인 페이지 데이터:', page)
         return []
       })
-      
+
       return {
         pages: data.pages,
         pageParams: data.pageParams,
