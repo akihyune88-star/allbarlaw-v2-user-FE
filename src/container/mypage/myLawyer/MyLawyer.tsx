@@ -3,8 +3,11 @@ import styles from './myLawyer.module.scss'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import Divider from '@/components/divider/Divider'
+import { useNavigate } from 'react-router-dom'
+import { Lawyer } from '@/types/lawyerTypes'
 
 const MyLawyer = ({ sort }: { sort: 'asc' | 'desc' }) => {
+  const navigate = useNavigate()
   const { lawyerList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteMyLawyerList({
     take: 10,
     sort: sort,
@@ -16,8 +19,8 @@ const MyLawyer = ({ sort }: { sort: 'asc' | 'desc' }) => {
     fetchNextPage,
   })
 
-  const handleLawyerDetail = (lawyerId: string) => {
-    console.log(lawyerId)
+  const handleLawyerDetail = (lawyer: Lawyer) => {
+    navigate(`/search/lawyer/${lawyer.lawyerId}`)
   }
 
   return (
@@ -38,7 +41,7 @@ const MyLawyer = ({ sort }: { sort: 'asc' | 'desc' }) => {
                 isBaroTalk={true}
                 className={styles.lawyerItem}
                 ad={true}
-                onClick={() => handleLawyerDetail(lawyer.lawyerId)}
+                onClick={() => handleLawyerDetail(lawyer)}
               />
               {index !== lawyerList.length - 1 && <Divider padding={16} />}
             </>

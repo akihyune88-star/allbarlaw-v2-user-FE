@@ -23,6 +23,7 @@ export type Lawyer = {
   lawyerBlogUrl?: string
   lawyerYoutubeUrl?: string
   lawyerInstagramUrl?: string
+  subcategoryId: number
 }
 
 export type AIRecommenderLawyerItem = Pick<
