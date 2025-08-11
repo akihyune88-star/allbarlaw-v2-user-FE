@@ -3,15 +3,65 @@ import styles from './bottom-navigation.module.scss'
 import SvgIcon from '../SvgIcon'
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
+import { useAuth } from '@/contexts/AuthContext'
+import { useGetBaroTalkChatList } from '@/hooks/queries/useBaroTalk'
+import { ROUTER } from '@/routes/routerConstant'
 
 const BottomNavigation = () => {
   const navigate = useNavigate()
+  const { getDisplayLoginStatus } = useAuth()
   const [activeMenuPath, setActiveMenuPath] = useState<string | null>(null)
   const [isVisible, setIsVisible] = useState(true)
+  const [isCheckingBaroTalk, setIsCheckingBaroTalk] = useState(false)
   const lastScrollY = useRef(0)
   const scrollTimeout = useRef<number | null>(null)
 
-  const handleItemClick = (path: string) => {
+  // 채팅방 목록 데이터 (prefetch용)
+  const { refetch: refetchChatList } = useGetBaroTalkChatList({
+    chatRoomOrderBy: 'lastMessageAt',
+    chatRoomSort: 'desc',
+  })
+
+  // 바로톡(상담) 클릭 핸들러
+  const handleBaroTalkClick = async () => {
+    const isLoggedIn = getDisplayLoginStatus(true)
+
+    if (!isLoggedIn) {
+      // 로그인하지 않은 경우 바로 상담 요청 페이지로
+      navigate(ROUTER.REQUEST_BARO_TALK)
+      return
+    }
+
+    setIsCheckingBaroTalk(true)
+
+    try {
+      // 채팅방 목록 조회
+      const result = await refetchChatList()
+      const allChatRooms = result.data?.pages.flatMap(page => page.chatRooms) || []
+
+      if (allChatRooms.length > 0) {
+        // 채팅방이 1개 이상 있으면 채팅 페이지로
+        navigate(ROUTER.CHAT)
+      } else {
+        // 채팅방이 없으면 상담 요청 페이지로
+        navigate(ROUTER.REQUEST_BARO_TALK)
+      }
+    } catch (error) {
+      console.error('채팅방 목록 조회 실패:', error)
+      // 에러 발생 시 기본적으로 상담 요청 페이지로
+      navigate(ROUTER.REQUEST_BARO_TALK)
+    } finally {
+      setIsCheckingBaroTalk(false)
+    }
+  }
+
+  const handleItemClick = (path: string, itemName: string) => {
+    // 상담 메뉴인 경우 특별 처리
+    if (itemName === '상담') {
+      handleBaroTalkClick()
+      return
+    }
+
     setActiveMenuPath(path)
     navigate(path)
   }
@@ -59,8 +109,8 @@ const BottomNavigation = () => {
         return (
           <div
             key={item.path}
-            className={`${styles.item} ${isActive ? styles.active : ''}`}
-            onClick={() => handleItemClick(item.path)}
+            className={`${styles.item} ${isActive ? styles.active : ''} ${item.name === '상담' && isCheckingBaroTalk ? styles.disabled : ''}`}
+            onClick={() => !isCheckingBaroTalk && handleItemClick(item.path, item.name)}
           >
             <SvgIcon name={isActive ? item.activeIcon : item.icon} size={24} />
             <span className={styles['menu-name']}>{item.name}</span>
