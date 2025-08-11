@@ -17,6 +17,12 @@ const SearchBlog = () => {
   const [sort, setSort] = useState<SortType>('viewCount')
   const { searchQuery, searchLawyerId } = useSearchStore()
   const { blogCaseId } = useParams()
+  
+  console.log('📢 SearchBlog 컴포넌트:', {
+    searchQuery,
+    searchLawyerId,
+    sort
+  })
 
   const handleSearchTab = (tab: SortType) => {
     setSort(tab)

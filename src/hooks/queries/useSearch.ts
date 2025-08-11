@@ -33,6 +33,15 @@ export const useInfiniteSearchList = (request: Omit<SearchRequest, 'searchPage'>
       request.searchLawyerId,
     ],
     queryFn: ({ pageParam = 1 }) => {
+      console.log('🔍 무한스크롤 API 호출:', {
+        pageParam,
+        request,
+        searchLawyerId: request.searchLawyerId,
+        finalRequest: {
+          ...request,
+          searchPage: pageParam,
+        }
+      })
       return searchService.getSearchBlog({
         ...request,
         searchPage: pageParam,

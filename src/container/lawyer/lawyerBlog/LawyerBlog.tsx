@@ -10,17 +10,19 @@ import { useSearchStore } from '@/stores/searchStore'
 type LawyerBlogProps = {
   blogList: LawyerDetailResponse['blogCases'] | []
   lawyerId: number
+  lawyerName: string
 }
 
-const LawyerBlog = forwardRef<HTMLElement, LawyerBlogProps>(({ blogList = [], lawyerId }, ref) => {
+const LawyerBlog = forwardRef<HTMLElement, LawyerBlogProps>(({ blogList = [], lawyerId, lawyerName }, ref) => {
   const navigate = useNavigate()
-  const { setSearchLawyerId, clearSearchQuery } = useSearchStore()
+  const { setSearchLawyerId, setSearchQuery } = useSearchStore()
   const hasBlogPosts = blogList && blogList.length > 0
 
   const handleMoreBlog = () => {
     // 검색어는 지우고 변호사 ID만 설정하여 해당 변호사의 모든 글 표시
-    clearSearchQuery()
+    setSearchQuery(lawyerName)
     setSearchLawyerId(lawyerId)
+
     navigate(`/search/blog`)
   }
 

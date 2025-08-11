@@ -14,12 +14,16 @@ import { generateRandomLawyers } from '@/utils/mockDataGenerator'
 import { useState } from 'react'
 import { useKnowledgeKeep } from '@/hooks/queries/useGetKnowledgeList'
 import { copyUrlToClipboard } from '@/utils/clipboard'
-import AIRecommender from '@/components/aiRecommender/AIRecommender'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
+import Divider from '@/components/divider/Divider'
+import RecentActiveLawyer from '@/container/lawyer/recentActiveLawyer/RecentActiveLawyer'
+import { ROUTER } from '@/routes/routerConstant'
+import { useNavigate } from 'react-router-dom'
 
 const LegalKnowledgeDetail = () => {
   const { knowledgeId } = useParams<{ knowledgeId: string }>()
+  const navigate = useNavigate()
   const { showLoading } = useDelayedLoading({ delay: 3000 })
 
   const isMobile = useMediaQuery('(max-width: 80rem)')
@@ -46,6 +50,10 @@ const LegalKnowledgeDetail = () => {
       setIsKeep(prevState => !prevState)
       changeKnowledgeKeep(Number(knowledgeId))
     }
+  }
+
+  const handleRequestConsultation = () => {
+    navigate(ROUTER.REQUEST_BARO_TALK)
   }
 
   const mockLawyerList = generateRandomLawyers(3)
@@ -101,9 +109,20 @@ const LegalKnowledgeDetail = () => {
           )}
         </div>
         {!isMobile && (
-          <section style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div>
-              <AIRecommender />
+          <section style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: 250 }}>
+            <div className={styles['consultation-section']}>
+              <div className={styles['consultation-section-header']}>
+                <span className={styles['consultation-section-header-title']}>
+                  궁금한 내용을
+                  <br />
+                  질문하세요
+                </span>
+                <button className={styles['consultation-section-header-button']} onClick={handleRequestConsultation}>
+                  변호사 채팅상담하기
+                </button>
+                <Divider padding={16} />
+                <RecentActiveLawyer />
+              </div>
             </div>
             <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
           </section>

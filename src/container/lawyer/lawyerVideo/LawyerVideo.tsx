@@ -10,16 +10,16 @@ import { useSearchStore } from '@/stores/searchStore'
 type LawyerVideoProps = {
   videoList: LawyerDetailResponse['videoCases'] | []
   lawyerId: number
+  lawyerName: string
 }
 
-const LawyerVideo = forwardRef<HTMLElement, LawyerVideoProps>(({ videoList = [], lawyerId }, ref) => {
+const LawyerVideo = forwardRef<HTMLElement, LawyerVideoProps>(({ videoList = [], lawyerId, lawyerName }, ref) => {
   const navigate = useNavigate()
-  const { setSearchLawyerId, clearSearchQuery } = useSearchStore()
+  const { setSearchLawyerId, setSearchQuery } = useSearchStore()
   const hasVideos = videoList && videoList.length > 0
 
   const handleMoreVideo = () => {
-    // 검색어는 지우고 변호사 ID만 설정하여 해당 변호사의 모든 영상 표시
-    clearSearchQuery()
+    setSearchQuery(lawyerName)
     setSearchLawyerId(lawyerId)
     navigate(`/search/video`)
   }
@@ -29,7 +29,12 @@ const LawyerVideo = forwardRef<HTMLElement, LawyerVideoProps>(({ videoList = [],
       <header className={styles['lawyer-video__header']}>
         <h3 className={styles['lawyer-video__title']}>변호사의 영상</h3>
         {hasVideos && (
-          <button type='button' className={styles['lawyer-video__button']} aria-label='변호사의 영상 더보기' onClick={handleMoreVideo}>
+          <button
+            type='button'
+            className={styles['lawyer-video__button']}
+            aria-label='변호사의 영상 더보기'
+            onClick={handleMoreVideo}
+          >
             더보기
             <SvgIcon name='arrowSmall' className={styles['lawyer-video__button-icon']} size={14} />
           </button>

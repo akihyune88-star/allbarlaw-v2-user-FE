@@ -19,16 +19,8 @@ const LawyerDetail = () => {
   const videoRef = useRef<HTMLElement>(null)
   const legalKnowledgeRef = useRef<HTMLElement>(null)
   const { lawyerId } = useParams()
-  const { clearSearchLawyerId } = useSearchStore()
 
   const { data: lawyerDetail } = useLawyerDetail(Number(lawyerId))
-
-  // 컴포넌트 언마운트 시 searchLawyerId 초기화
-  useEffect(() => {
-    return () => {
-      clearSearchLawyerId()
-    }
-  }, [])
 
   const scrollToSection = (ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -78,12 +70,23 @@ const LawyerDetail = () => {
           careerHistory={lawyerDetail?.careers ?? []}
           activities={lawyerDetail?.activities ?? []}
         />
-        <LawyerBlog ref={blogRef} blogList={lawyerDetail?.blogCases ?? []} lawyerId={Number(lawyerId)} />
-        <LawyerVideo ref={videoRef} videoList={lawyerDetail?.videoCases ?? []} lawyerId={Number(lawyerId)} />
+        <LawyerBlog
+          ref={blogRef}
+          blogList={lawyerDetail?.blogCases ?? []}
+          lawyerId={Number(lawyerId)}
+          lawyerName={lawyerDetail?.lawyerName ?? ''}
+        />
+        <LawyerVideo
+          ref={videoRef}
+          videoList={lawyerDetail?.videoCases ?? []}
+          lawyerId={Number(lawyerId)}
+          lawyerName={lawyerDetail?.lawyerName ?? ''}
+        />
         <LawyerLegalKnowledge
           ref={legalKnowledgeRef}
           knowledgeList={lawyerDetail?.consultationRequests ?? []}
           lawyerId={Number(lawyerId)}
+          lawyerName={lawyerDetail?.lawyerName ?? ''}
         />
       </section>
       <aside className='aside'>
