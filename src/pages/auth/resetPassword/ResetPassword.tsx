@@ -41,7 +41,7 @@ const ResetPassword = () => {
     onSuccess: data => {
       setIsVerified(true)
       stopTimer()
-      setStep('result')
+      setApiMessage({ text: '인증이 완료되었습니다. 비밀번호 찾기 버튼을 눌러주세요.', isError: false })
     },
     onError: () => {
       setApiMessage({ text: '비밀번호 재설정에 실패했습니다.', isError: true })
@@ -109,18 +109,21 @@ const ResetPassword = () => {
   if (step === 'result') {
     return (
       <main className={`${styles['reset-password-main']} center-layout`}>
-        <div className={styles['reset-password-result-section']}>
-          <h2 className={styles['result-title']}>비밀번호 찾기 결과</h2>
+        <SignUpTitle title='비밀번호 찾기' />
+        <div className={styles['reset-password-section']}>
+          <h2 className={styles.title}>비밀번호 찾기 결과</h2>
+          {!isMobile && <Divider padding={1} />}
           <div className={styles['result-content']}>
             <p className={styles['result-text']}>
               휴대폰 인증이 완료되었습니다.
               <br />
-              등록된 이메일 주소로 <span className={styles['highlight']}>초기화된 비밀번호</span>를 보내 드렸습니다.
+              등록된 이메일 주소로 <strong>초기화된 비밀번호</strong>를{isMobile && <br />}
+              보내 드렸습니다.
               <br />
               확인후 로그인 하세요.
             </p>
           </div>
-          <button className={styles['login-button']} onClick={handleLogin}>
+          <button className={styles['submit-button']} onClick={handleLogin}>
             로그인
           </button>
         </div>
@@ -129,15 +132,16 @@ const ResetPassword = () => {
   }
 
   const isButtonDisabled = isTimerRunning || !phoneNumber || isVerified
-  const isVerificationDisabled = !isCodeSent || isVerified || (isCodeSent && !isTimerRunning && !isVerified) || isResetting
+  const isVerificationDisabled =
+    !isCodeSent || isVerified || (isCodeSent && !isTimerRunning && !isVerified) || isResetting
 
   return (
     <main className={`${styles['reset-password-main']} center-layout`}>
       <SignUpTitle title='비밀번호 찾기' />
       <div className={styles['reset-password-section']}>
-        <h2 className={styles.title}>본인 확인</h2>
+        <h2 className={styles.title}>휴대폰 인증</h2>
         {!isMobile && <Divider padding={1} />}
-        
+
         <LabelInput
           label='아이디'
           placeholder='아이디를 입력해주세요'
@@ -146,7 +150,7 @@ const ResetPassword = () => {
           isError={!!accountError}
           message={accountError}
         />
-        
+
         <PhoneInput
           label='휴대폰 번호'
           placeholder="'-' 없이 숫자만 입력"
@@ -170,9 +174,7 @@ const ResetPassword = () => {
             )
           }
           message={
-            isCodeSent && !codeError
-              ? '인증번호가 문자로 발송되었습니다. 인증번호를 입력해주세요.'
-              : codeError?.text
+            isCodeSent && !codeError ? '인증번호가 문자로 발송되었습니다. 인증번호를 입력해주세요.' : codeError?.text
           }
         />
         <PhoneInput

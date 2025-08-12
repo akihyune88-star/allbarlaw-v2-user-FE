@@ -12,10 +12,12 @@
 }
 
 .label {
+  min-width: 7.5rem;
   width: 7.5rem;
   font-size: 1rem;
   font-weight: $font-weight-semibold;
   color: $color-text-black;
+  flex-shrink: 0;
 }
 
 .input-container {
