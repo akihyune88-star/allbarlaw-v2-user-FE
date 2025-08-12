@@ -74,9 +74,9 @@ const Login = () => {
 
   const handleAuthAction = (type: AuthActionType) => {
     if (type === 'ID_FIND') {
-      // navigate(ROUTER.i)
+      navigate(ROUTER.FIND_ID)
     } else if (type === 'PASSWORD_RESET') {
-      console.log('PASSWORD_RESET')
+      navigate(ROUTER.RESET_PASSWORD)
     } else if (type === 'SIGNUP') {
       navigate(ROUTER.SIGNUP)
     }

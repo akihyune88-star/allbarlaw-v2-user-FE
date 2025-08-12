@@ -49,6 +49,8 @@ import {
 } from '@/pages'
 import LawyerChat from '@/pages/lawyerAdmin/chat/lawyerChat/LawyerChat'
 import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
+import FindId from '@/pages/auth/findId/FindId'
+import ResetPassword from '@/pages/auth/resetPassword/ResetPassword'
 
 const router = createBrowserRouter([
   {
@@ -75,6 +77,14 @@ const router = createBrowserRouter([
           {
             path: ROUTER.LAWYER_SIGNUP_FORM,
             element: <LawyerSignupForm />,
+          },
+          {
+            path: ROUTER.FIND_ID,
+            element: <FindId />,
+          },
+          {
+            path: ROUTER.RESET_PASSWORD,
+            element: <ResetPassword />,
           },
         ],
       },

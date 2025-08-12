@@ -54,7 +54,7 @@ const PhoneVerificationSection = () => {
     const isValid = await trigger('phoneNumber')
     if (isValid) {
       setValue('verificationCode', '')
-      sendVerificationCode(getValues('phoneNumber'))
+      sendVerificationCode({ phone: getValues('phoneNumber'), purpose: 'signup' })
     }
   }
 

@@ -11,8 +11,8 @@ interface UseSendVerificationCodeOptions {
 // 휴대폰 인증번호 발송 뮤테이션 훅
 export const useSendVerificationCode = (options?: UseSendVerificationCodeOptions) => {
   return useMutation({
-    mutationFn: async (phone: string) => {
-      const response = await authService.sendVerificationCode(phone)
+    mutationFn: async ({ phone, purpose }: { phone: string; purpose?: 'recovery' | 'signup' }) => {
+      const response = await authService.sendVerificationCode(phone, purpose)
       return response
     },
     onSuccess: () => {

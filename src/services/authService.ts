@@ -12,9 +12,9 @@ export const authService = {
       throw error
     }
   },
-  sendVerificationCode: async (phone: string) => {
+  sendVerificationCode: async (phone: string, purpose?: 'recovery' | 'signup') => {
     try {
-      const response = await instance.post('/user/send-verification', { phone })
+      const response = await instance.post('/user/send-verification', { phone, purpose })
       return response.data
     } catch (error) {
       console.error('Failed to send verification code:', error)
@@ -86,6 +86,39 @@ export const authService = {
       return response.data
     } catch (error) {
       console.error('Failed to find id:', error)
+      throw error
+    }
+  },
+  userResetPassword: async (inputValue: { account: string; phone: string; certNumber: string }) => {
+    try {
+      const response = await instance.post<{ message: string }>('/user/reset-password', inputValue)
+      return response.data
+    } catch (error) {
+      console.error('Failed to find password:', error)
+      throw error
+    }
+  },
+
+  lawyerFindId: async (inputValue: { lawyerEmail: string; lawyerName: string; lawyerContact: string }) => {
+    try {
+      const response = await instance.post<{ lawyerAccount: string }>('/lawyer/find-account', inputValue)
+      return response.data
+    } catch (error) {
+      console.error('Failed to find id:', error)
+      throw error
+    }
+  },
+  lawyerResetPassword: async (inputValue: {
+    lawyerAccount: string
+    lawyerEmail: string
+    lawyerName: string
+    lawyerContact: string
+  }) => {
+    try {
+      const response = await instance.post<{ message: string }>('/lawyer/reset-password', inputValue)
+      return response.data
+    } catch (error) {
+      console.error('Failed to find password:', error)
       throw error
     }
   },

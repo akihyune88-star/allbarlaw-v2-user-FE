@@ -3,6 +3,69 @@
 ## 🎯 프로젝트 개요
 올바로우 변호사 매칭 플랫폼의 프론트엔드 시스템 - 실시간 채팅 상담 기능 구현
 
+## 🔐 Auth 페이지 레이아웃 표준
+
+### 공통 레이아웃 구조
+모든 인증 관련 페이지(회원가입, 아이디 찾기, 비밀번호 찾기 등)는 다음의 표준 레이아웃을 따릅니다:
+
+```tsx
+// 기본 구조
+<main className={`${styles['page-main']} center-layout`}>
+  <SignUpTitle title='페이지 타이틀' />
+  <div className={styles['page-section']}>
+    {/* 카드 내부 컨텐츠 */}
+  </div>
+</main>
+```
+
+### 스타일 규격
+```scss
+// 메인 컨테이너
+.page-main {
+  padding-top: 3.875rem; // 상단 패딩
+}
+
+// 카드 섹션
+.page-section {
+  margin-top: 3.0625rem; // 타이틀과 카드 간격
+  width: 34rem;          // 544px 고정 너비
+  background-color: $color-white;
+  padding: 2.625rem;     // 42px 내부 패딩
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+// 모바일 반응형
+@media (max-width: $breakpoint-desktop) {
+  .page-main {
+    padding-top: 0;
+  }
+  
+  .page-section {
+    margin-top: 0.25rem;
+    width: 100%;
+    padding: 1.5rem 1.25rem;
+  }
+}
+```
+
+### 구현 예시
+- `src/pages/auth/signUp/signUpForm/SignUpForm.tsx` - 회원가입
+- `src/pages/auth/findId/FindId.tsx` - 아이디 찾기
+
+### 주요 특징
+1. **타이틀**: `SignUpTitle` 컴포넌트 재사용
+2. **카드 디자인**: 흰색 배경, 그림자 없음, 둥근 모서리
+3. **중앙 정렬**: `center-layout` 클래스로 화면 중앙 배치
+4. **일관된 간격**: 타이틀-카드 간 49px, 카드 내부 패딩 42px
+
+### 사용 시 주의사항
+- 카드 내부 컨텐츠만 변경하고 외부 레이아웃은 유지
+- `PhoneInput` 컴포넌트 사용 시 기존 스타일 적용
+- 버튼은 카드 하단에 전체 너비로 배치
+
 ## 📌 Keep 기능 캐시 관리 전략
 
 ### 개요
