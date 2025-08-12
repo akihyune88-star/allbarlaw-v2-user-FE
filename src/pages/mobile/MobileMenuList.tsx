@@ -4,6 +4,7 @@ import styles from './mobileMenuList.module.scss'
 import SearchInput from '@/components/searchInput/SearchInput'
 import SvgIcon from '@/components/SvgIcon'
 import { useCategory } from '@/hooks/queries/useCategory'
+import { CategoryInfo } from '@/types/categoryTypes'
 
 const MobileMenuList = () => {
   const navigate = useNavigate()
@@ -14,7 +15,10 @@ const MobileMenuList = () => {
   const handleFaq = () => navigate(ROUTER.FAQ)
 
   const { data: categoryList } = useCategory()
-  console.log('categoryList', categoryList)
+
+  const handleCategory = (category: CategoryInfo) => {
+    navigate(`/${category.subcategories[0].subcategoryId}`)
+  }
 
   return (
     <main className={styles['mobile-menu-list']}>
@@ -24,16 +28,16 @@ const MobileMenuList = () => {
           <span>로그아웃</span>
           <div className={styles['mobile-menu-list-header-button']}>
             <button onClick={handleMyPage}>
-              <SvgIcon name='user' />
-              마이페이지
+              <SvgIcon name='user' size={24} />
+              <span className={styles['icon-span']}>마이페이지</span>
             </button>
             <button onClick={handleChat}>
-              <SvgIcon name='talk' />
-              <span></span>상담
+              <SvgIcon name='talk' size={24} />
+              <span className={styles['icon-span']}>상담</span>
             </button>
             <button onClick={handleMyPage}>
-              <SvgIcon name='bookMark' />
-              찜리스트
+              <SvgIcon name='bookMark' size={24} />
+              <span className={styles['icon-span']}>찜리스트</span>
             </button>
           </div>
         </header>
@@ -48,12 +52,22 @@ const MobileMenuList = () => {
           </button>
         </div>
       </section>
-      <section>
-        <header>분류 선택</header>
+      <section className={styles['mobile-menu-list-section']}>
+        <header>
+          <h1 className={styles['mobile-menu-list-header-title']}>분류 선택</h1>
+        </header>
         <div className={styles['mobile-menu-list-category-container']}>
           {categoryList?.map(category => (
-            <button key={category.categoryId} className={styles['mobile-menu-list-category-button']}>
-              {category.categoryName}
+            <button
+              key={category.categoryId}
+              className={styles['mobile-menu-list-category-button']}
+              onClick={() => handleCategory(category)}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <img src={category.clickedImageUrl} alt={category.categoryName} />
+                {category.categoryName}
+              </div>
+              <SvgIcon name='arrowSmall' style={{ transform: 'rotate(135deg)' }} />
             </button>
           ))}
         </div>

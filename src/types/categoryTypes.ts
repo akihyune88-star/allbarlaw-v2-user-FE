@@ -13,7 +13,7 @@ interface SubcategoryInfo extends Subcategory {
   categoryId: number
 }
 
-type CategoryInfo = {
+export type CategoryInfo = {
   categoryId: number
   categoryName: string
   imageUrl: string

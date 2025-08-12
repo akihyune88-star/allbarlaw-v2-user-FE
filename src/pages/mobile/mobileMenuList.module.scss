@@ -1,14 +1,14 @@
 .mobile-menu-list {
   display: flex;
   flex-direction: column;
-  gap: 1.625rem;
+  // gap: 1.625rem;
   background-color: $color-bg-gray-02;
 }
 
 .mobile-menu-list-section {
   display: flex;
   flex-direction: column;
-  padding: 0 1.25rem;
+  padding: 1.25rem;
 
   gap: 1rem;
 }
@@ -45,15 +45,29 @@
 
 .mobile-menu-list-header-button {
   display: flex;
-
-  gap: 1.25rem;
+  justify-content: center;
+  width: 100%;
+  gap: 2rem;
 
   button {
     display: flex;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    width: auto;
+    min-width: 3.75rem;
+    height: auto;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
+    cursor: pointer;
+  }
+
+  .icon-span {
+    text-align: center;
+    font-size: 0.75rem;
+    white-space: nowrap;
   }
 }
 
@@ -69,4 +83,35 @@
 .mobile-menu-list-button-container {
   display: flex;
   gap: 0.5rem;
+}
+
+.mobile-menu-list-category-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mobile-menu-list-category-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+
+  padding: 0.5625rem 1.0625rem 0.5625rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: $color-white;
+
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  svg {
+    margin-left: auto;
+  }
+}
+
+.mobile-menu-list-header-title {
+  font-size: 0.875rem;
+  font-weight: $font-weight-semibold;
 }
