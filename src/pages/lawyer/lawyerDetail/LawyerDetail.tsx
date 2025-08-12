@@ -9,9 +9,8 @@ import LawyerProfile from '@/container/lawyer/lawyerProfile/LawyerProfile'
 import LawyerVideo from '@/container/lawyer/lawyerVideo/LawyerVideo'
 import { useLawyerDetail } from '@/hooks/queries/useLawyer'
 import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSearchStore } from '@/stores/searchStore'
 
 const LawyerDetail = () => {
   const careerRef = useRef<HTMLElement>(null)
