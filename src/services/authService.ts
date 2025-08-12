@@ -80,4 +80,13 @@ export const authService = {
       throw error
     }
   },
+  userFindId: async (inputValue: { phone: string; certNumber: string }) => {
+    try {
+      const response = await instance.post('/user/find-account', inputValue)
+      return response.data
+    } catch (error) {
+      console.error('Failed to find id:', error)
+      throw error
+    }
+  },
 }

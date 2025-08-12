@@ -6,16 +6,32 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Divider from '@/components/divider/Divider'
 import { KnowledgeItem } from '@/types/knowledgeType'
 import EmptyState from '@/components/EmptyState/EmptyState'
+import { useNavigate } from 'react-router-dom'
+import { useSearchStore } from '@/stores/searchStore'
 
-const LegalTermKnowledgeList = ({ knowledgeList }: { knowledgeList: KnowledgeItem[] }) => {
+const LegalTermKnowledgeList = ({
+  knowledgeList,
+  termsName,
+}: {
+  knowledgeList: KnowledgeItem[]
+  termsName: string
+}) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const { setSearchQuery, setSearchLawyerId } = useSearchStore()
+  const navigate = useNavigate()
+
+  const handleMore = () => {
+    setSearchQuery(termsName)
+    setSearchLawyerId(undefined)
+    navigate(`/search/legal-knowledge`)
+  }
 
   return (
     <div className={styles.container}>
       <header className={`${styles['list-header']} ${styles['knowledge']}`}>
         <h3>법률 지식인</h3>
         {knowledgeList.length > 0 && (
-          <button>
+          <button onClick={handleMore}>
             <span>더보기</span>
             <SvgIcon name='arrowSmall' style={{ transform: 'rotate(-90deg)' }} />
           </button>

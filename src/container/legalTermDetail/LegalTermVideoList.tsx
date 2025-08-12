@@ -7,16 +7,26 @@ import Divider from '@/components/divider/Divider'
 import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
 import { VideoCase } from '@/types/videoTypes'
 import EmptyState from '@/components/EmptyState/EmptyState'
+import { useSearchStore } from '@/stores/searchStore'
+import { useNavigate } from 'react-router-dom'
 
-const LegalTermVideoList = ({ videoList }: { videoList: VideoCase[] }) => {
+const LegalTermVideoList = ({ videoList, termsName }: { videoList: VideoCase[]; termsName: string }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const { setSearchQuery, setSearchLawyerId } = useSearchStore()
+  const navigate = useNavigate()
+
+  const handleMore = () => {
+    setSearchQuery(termsName)
+    setSearchLawyerId(undefined)
+    navigate(`/search/video`)
+  }
 
   return (
     <div className={styles.container}>
       <header className={`${styles['list-header']} ${styles['video']}`}>
         <h3>법률영상</h3>
         {videoList.length > 0 && (
-          <button>
+          <button onClick={handleMore}>
             <span>더보기</span>
             <SvgIcon name='arrowSmall' style={{ transform: 'rotate(-90deg)' }} />
           </button>

@@ -34,6 +34,7 @@ const LegalTermDetail = () => {
   const { data: legalTermDetail, isLoading } = useLegalTermDetail(Number(termId))
   const { data: popularLegalTermList } = usePopularLegalTermList()
   const { data: recentRegisteredLegalTermList } = useRecentRegisteredLegalTermList()
+  console.log(11, legalTermDetail)
 
   if (isLoading) {
     return (
@@ -49,8 +50,6 @@ const LegalTermDetail = () => {
   }
 
   const similarTermsClick = (terms: LegalTermItem) => {
-    console.log(11)
-
     setSearchQuery(terms.koreanName)
     navigate(`/search`)
   }
@@ -69,9 +68,18 @@ const LegalTermDetail = () => {
         />
         <div className={styles['related-content-section']}>
           {isMobile && <PcTotalContentsHeader amount={legalTermDetail?.viewCount || 0} />}
-          <LegalTermBlogList blogList={legalTermDetail?.relatedContent?.blogCases || []} />
-          <LegalTermKnowledgeList knowledgeList={legalTermDetail?.relatedContent?.knowledgeAnswers || []} />
-          <LegalTermVideoList videoList={legalTermDetail?.relatedContent?.videoCases || []} />
+          <LegalTermBlogList
+            blogList={legalTermDetail?.relatedContent?.blogCases || []}
+            termsName={legalTermDetail?.koreanName || ''}
+          />
+          <LegalTermKnowledgeList
+            knowledgeList={legalTermDetail?.relatedContent?.knowledgeAnswers || []}
+            termsName={legalTermDetail?.koreanName || ''}
+          />
+          <LegalTermVideoList
+            videoList={legalTermDetail?.relatedContent?.videoCases || []}
+            termsName={legalTermDetail?.koreanName || ''}
+          />
         </div>
       </div>
       <div className='aside' style={{ width: 250, flexShrink: 0 }}>
@@ -80,7 +88,7 @@ const LegalTermDetail = () => {
           contents={
             <div className={styles['tag-list']}>
               {legalTermDetail?.similarTerms?.map(term => (
-                <span key={term.legalTermId} onClick={() => similarTermsClick(term)}>
+                <span key={term.legalTermId} onClick={() => similarTermsClick(term)} style={{ cursor: 'pointer' }}>
                   #{term.koreanName}
                 </span>
               ))}

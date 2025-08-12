@@ -3,14 +3,25 @@ import styles from './legal-term-list.module.scss'
 import { BlogCase } from '@/types/blogTypes'
 import BlogItem from '@/components/blogItem/BlogItem'
 import EmptyState from '@/components/EmptyState/EmptyState'
+import { useSearchStore } from '@/stores/searchStore'
+import { useNavigate } from 'react-router-dom'
 
-const LegalTermBlogList = ({ blogList }: { blogList: BlogCase[] }) => {
+const LegalTermBlogList = ({ blogList, termsName }: { blogList: BlogCase[]; termsName: string }) => {
+  const { setSearchQuery, setSearchLawyerId } = useSearchStore()
+  const navigate = useNavigate()
+
+  const handleMore = () => {
+    setSearchQuery(termsName)
+    setSearchLawyerId(undefined)
+    navigate(`/search/blog`)
+  }
+
   return (
     <div className={styles.container}>
       <header className={`${styles['list-header']} ${styles['blog']}`}>
         <h3>법률정보의 글</h3>
         {blogList.length > 0 && (
-          <button>
+          <button onClick={handleMore}>
             <span>더보기</span>
             <SvgIcon name='arrowSmall' style={{ transform: 'rotate(-90deg)' }} />
           </button>
