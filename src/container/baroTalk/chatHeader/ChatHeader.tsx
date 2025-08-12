@@ -21,9 +21,9 @@ interface ChatHeaderProps {
 }
 
 const ChatHeader = ({
-  lawfirmName,
+  // lawfirmName,
   lawyerName,
-  lawyerProfileImage,
+  // lawyerProfileImage,
   isActive = false,
   count,
   className,
@@ -46,9 +46,9 @@ const ChatHeader = ({
         <button 
           className={styles['back-button']} 
           onClick={onBack}
-          aria-label="뒤로가기"
+          aria-label='뒤로가기'
         >
-          <SvgIcon name="arrowSmall" size={24} />
+          <SvgIcon name='arrowSmall' size={24} />
         </button>
       )}
       
@@ -72,8 +72,8 @@ const ChatHeader = ({
       {/* 오른쪽: 정보 버튼 (모바일) / 기존 섹션 (데스크탑) */}
       <div className={styles['header-actions']}>
         {!isLawyer && (
-          <button className={styles['info-button-mobile']} aria-label="변호사 정보">
-            <SvgIcon name="menu" size={20} />
+          <button className={styles['info-button-mobile']} aria-label='변호사 정보'>
+            <SvgIcon name='menu' size={20} />
           </button>
         )}
       </div>
