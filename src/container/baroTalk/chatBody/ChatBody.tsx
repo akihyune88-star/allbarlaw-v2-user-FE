@@ -7,6 +7,7 @@ import SvgIcon from '@/components/SvgIcon'
 import React, { ChangeEvent, useState } from 'react'
 import { ChatMessage, ChatRoomStatus } from '@/types/baroTalkTypes'
 import { formatTimeAgo } from '@/utils/date'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 type ChatBodyProps = {
   chatStatus: ChatRoomStatus
@@ -32,6 +33,7 @@ const ChatBody = ({
   isLawyer,
 }: ChatBodyProps) => {
   const [message, setMessage] = useState('')
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
   console.log('🗋 ChatBody: userLeft', userLeft)
 
@@ -126,6 +128,12 @@ const ChatBody = ({
 
   return (
     <>
+      {isMobile && (
+        <div className={styles['mobile-info-header']}>
+          <span>바로톡</span>
+          <p>변호사와 1:1 상담을 진행할 수 있습니다.</p>
+        </div>
+      )}
       <div className={styles.chatBody}>
         {messages.length === 0 ? (
           <div className={styles['empty-messages']}>

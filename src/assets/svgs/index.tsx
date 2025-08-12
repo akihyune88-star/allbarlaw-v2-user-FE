@@ -36,6 +36,7 @@ import kakao from '@/assets/svgs/kakao.svg?react'
 import google from '@/assets/svgs/google.svg?react'
 import naver from '@/assets/svgs/naver.svg?react'
 import clip from '@/assets/svgs/clip.svg?react'
+import user from '@/assets/svgs/user.svg?react'
 
 export {
   react,
@@ -76,4 +77,5 @@ export {
   google,
   naver,
   clip,
+  user,
 }

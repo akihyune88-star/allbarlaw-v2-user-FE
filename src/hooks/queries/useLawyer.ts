@@ -21,7 +21,6 @@ export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' 
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.LAWYER_LIST, 'infinite', request.subcategoryId, request.orderBy],
     queryFn: ({ pageParam }) => {
-      console.log('🟢 API 호출 시작:', { pageParam, request })
       return lawyerService.getLawyerList({
         ...request,
         cursor: pageParam?.cursor,
@@ -44,7 +43,6 @@ export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' 
           return page.data.filter(Boolean) // null/undefined 제거
         }
         // 비정상 응답인 경우 빈 배열 반환
-        console.warn('⚠️ 비정상적인 페이지 데이터:', page)
         return []
       })
 

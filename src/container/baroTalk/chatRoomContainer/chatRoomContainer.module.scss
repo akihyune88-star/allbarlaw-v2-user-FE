@@ -1,9 +1,17 @@
 .chat-content {
   gap: 2.375rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 @media (max-width: $breakpoint-desktop) {
   .chat-content {
-    display: none;
+    gap: 0;
+    padding: 0;
+    background-color: transparent;
+    height: 100vh;
+    width: 100%;
+    position: relative;
   }
 }

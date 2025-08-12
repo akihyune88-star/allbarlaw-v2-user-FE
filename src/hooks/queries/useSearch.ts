@@ -33,15 +33,6 @@ export const useInfiniteSearchList = (request: Omit<SearchRequest, 'searchPage'>
       request.searchLawyerId,
     ],
     queryFn: ({ pageParam = 1 }) => {
-      console.log('🔍 무한스크롤 API 호출:', {
-        pageParam,
-        request,
-        searchLawyerId: request.searchLawyerId,
-        finalRequest: {
-          ...request,
-          searchPage: pageParam,
-        }
-      })
       return searchService.getSearchBlog({
         ...request,
         searchPage: pageParam,
@@ -49,11 +40,6 @@ export const useInfiniteSearchList = (request: Omit<SearchRequest, 'searchPage'>
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage: SearchResponse) => {
-      console.log('Last page data:', {
-        currentPage: lastPage.currentPage,
-        hasNextPage: lastPage.hasNextPage,
-        totalPages: lastPage.totalPages,
-      })
       if (!lastPage.hasNextPage) return undefined
       return lastPage.currentPage + 1
     },

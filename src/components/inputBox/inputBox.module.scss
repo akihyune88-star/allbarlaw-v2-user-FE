@@ -54,3 +54,25 @@
   color: #20bf62;
   pointer-events: none;
 }
+
+@media (max-width: $breakpoint-desktop) {
+  .input-container {
+    margin-bottom: 0;
+    border-radius: 0;
+    min-height: 3.5rem;
+    height: 3.5rem;
+  }
+  
+  .input {
+    padding: 1rem;
+    font-size: 0.9375rem;
+    min-height: 3.5rem;
+    height: 3.5rem;
+  }
+  
+  .icon {
+    right: 1rem;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+}

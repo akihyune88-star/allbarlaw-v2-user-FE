@@ -1,0 +1,72 @@
+.mobile-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.625rem;
+  background-color: $color-bg-gray-02;
+}
+
+.mobile-menu-list-section {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.25rem;
+
+  gap: 1rem;
+}
+
+.mobile-menu-list-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: $color-white;
+  padding: 1rem 1.3125rem;
+  border-radius: 0.5rem;
+
+  gap: 1.25rem;
+
+  h1 {
+    text-align: left;
+    align-self: flex-start; // h1만 좌측 정렬
+
+    font-size: 1.25rem;
+    font-weight: $font-weight-semibold;
+  }
+
+  span {
+    text-align: left;
+    align-self: flex-start;
+    text-decoration: underline;
+
+    font-size: 0.8125rem;
+    color: $color-text-index;
+  }
+}
+
+.mobile-menu-list-header-button {
+  display: flex;
+
+  gap: 1.25rem;
+
+  button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.mobile-menu-list-button {
+  background-color: $color-white;
+  width: 100%;
+  padding: 0.9375rem 0;
+  text-align: center;
+  border-radius: 0.5rem;
+  border: 1px solid $color-line-borderbox;
+}
+
+.mobile-menu-list-button-container {
+  display: flex;
+  gap: 0.5rem;
+}

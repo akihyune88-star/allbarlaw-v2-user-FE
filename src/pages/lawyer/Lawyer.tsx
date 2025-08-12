@@ -17,15 +17,6 @@ const LawyerLayout = () => {
 
   const lawyerList = data?.lawyerList || []
 
-  console.log('🔍 Lawyer.tsx 디버그:', {
-    subcategoryId,
-    parsedSubcategoryId: Number(subcategoryId),
-    isNaN: isNaN(Number(subcategoryId)),
-    data,
-    lawyerList,
-    isLoading
-  })
-
   const handleSortCase = (key: SortType) => setSortCase(key === 'all' ? 'createdAt' : key)
   const handleLawyerItemClick = (lawyerId: number) => navigate(`/${subcategoryId}/lawyer/${lawyerId}`)
 

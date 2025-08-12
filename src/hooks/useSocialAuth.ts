@@ -106,7 +106,13 @@ export const useSocialAuth = (provider: string | undefined) => {
 
   useEffect(() => {
     const processLogin = async () => {
+      console.log('🟡 processLogin 시작')
+      console.log('- provider:', provider)
+      console.log('- location:', location.pathname)
+      console.log('- search:', location.search)
+      
       if (!isValidProvider(provider)) {
+        console.log('❌ 유효하지 않은 provider:', provider)
         navigate(ROUTER.MAIN + ROUTER.AUTH)
         return
       }
@@ -114,6 +120,7 @@ export const useSocialAuth = (provider: string | undefined) => {
       try {
         let accessToken = ''
         const code = new URLSearchParams(location.search).get('code')
+        console.log('- code:', code)
 
         switch (provider) {
           case 'kakao':
@@ -126,14 +133,21 @@ export const useSocialAuth = (provider: string | undefined) => {
           case 'google':
             if (!code) throw new Error('인증 코드가 없습니다.')
             accessToken = await getGoogleToken(code)
+
             break
         }
 
         if (accessToken) {
+          console.log('🔥 소셜 로그인 요청 시작')
+          console.log('- provider:', provider)
+          console.log('- accessToken:', accessToken)
+          
           socialLogin({
             userProvider: provider,
             userAccessToken: accessToken,
           })
+        } else {
+          console.error('❌ accessToken이 없습니다')
         }
       } catch (error) {
         console.error('소셜 로그인 처리 실패:', error)

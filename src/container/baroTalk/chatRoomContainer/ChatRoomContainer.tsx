@@ -13,9 +13,11 @@ interface ChatRoomContainerProps {
   userLeft?: boolean
   clientName?: string
   clientId?: number
+  onBack?: () => void
+  isMobile?: boolean
 }
 
-const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId }: ChatRoomContainerProps) => {
+const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId, onBack, isMobile }: ChatRoomContainerProps) => {
   // Zustand 상태 구독
   const messages = useMessages()
   const chatStatus = useChatStatus()
@@ -90,6 +92,7 @@ const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId }: ChatR
         count={{ total: 1256, month: 251 }}
         onEndChat={handleEndChat}
         isLawyer={isLawyer}
+        onBack={isMobile ? onBack : undefined}
         // 변호사 정보 (유저가 볼 때)
         lawyerName={(roomInfo as any)?.chatRoomLawyer?.lawyerName || ''}
         lawfirmName={(roomInfo as any)?.chatRoomLawyer?.lawfirmName || ''}

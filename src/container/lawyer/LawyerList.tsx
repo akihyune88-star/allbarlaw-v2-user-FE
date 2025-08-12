@@ -36,7 +36,6 @@ const LawyerList = ({
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
 
-  console.log('🟢 LawyerList: lawyerList', lawyerList)
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
     isFetchingNextPage,

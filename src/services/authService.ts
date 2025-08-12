@@ -59,10 +59,12 @@ export const authService = {
   },
   socialLogin: async (inputValue: SocialLoginRequest) => {
     try {
+      console.log('🚀 서버에 소셜 로그인 요청:', inputValue)
       const response = await instance.post('/user/social-auth', inputValue)
+      console.log('✅ 서버 응답:', response.data)
       return response.data
     } catch (error) {
-      console.error('Failed to social login:', error)
+      console.error('❌ 소셜 로그인 실패:', error)
       throw error
     }
   },

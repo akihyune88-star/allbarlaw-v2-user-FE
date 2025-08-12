@@ -1,4 +1,5 @@
 import styles from './chatHeader.module.scss'
+import SvgIcon from '@/components/SvgIcon'
 
 interface ChatHeaderProps {
   isActive: boolean
@@ -8,6 +9,7 @@ interface ChatHeaderProps {
   }
   className?: string
   onEndChat?: () => void
+  onBack?: () => void
   isLawyer: boolean
   // 변호사 정보 (유저가 볼 때)
   lawfirmName?: string
@@ -26,6 +28,7 @@ const ChatHeader = ({
   count,
   className,
   onEndChat,
+  onBack,
   isLawyer,
   userId,
   userName,
@@ -38,40 +41,43 @@ const ChatHeader = ({
 
   return (
     <header className={`${styles['chat-header']} ${className}`}>
-      <section className={styles['header-right']}>
+      {/* 뒤로가기 버튼 */}
+      {onBack && (
+        <button 
+          className={styles['back-button']} 
+          onClick={onBack}
+          aria-label="뒤로가기"
+        >
+          <SvgIcon name="arrowSmall" size={24} />
+        </button>
+      )}
+      
+      {/* 중앙: 변호사/유저 정보 */}
+      <div className={styles['header-center']}>
         {!isLawyer ? (
           // 유저가 보는 화면 - 변호사 정보 표시
-          <>
-            <figure>
-              <img src={lawyerProfileImage} alt={lawyerName} />
-            </figure>
-            <div className={styles['lawyer-info-text']}>
-              <div className={styles['lawyer-name-badge-wrap']}>
-                <span className={styles['lawyer-name']}>{lawyerName} 변호사</span>
-                {isActive && <span className={styles['badge']} />}
-              </div>
-              <p className={styles['lawyer-lawfirm']}>{lawfirmName}</p>
-            </div>
-            <button className={styles['lawyer-info-button']}>
-              <span>변호사 정보</span>
-            </button>
-          </>
+          <div className={styles['lawyer-name-badge-wrap']}>
+            <span className={styles['lawyer-name']}>{lawyerName} 변호사</span>
+            {isActive && <span className={styles['badge']} />}
+          </div>
         ) : (
           // 변호사가 보는 화면 - 유저 정보 표시
-          <>
-            {/* <figure>
-              <img src='https://picsum.photos/200/300' alt={userName || `사용자 ${userId}`} />
-            </figure> */}
-            <div className={styles['lawyer-info-text']}>
-              <div className={styles['lawyer-name-badge-wrap']}>
-                <span className={styles['lawyer-name']}>{userName ? `${userName} 님` : `사용자 ${userId}`}</span>
-                {isActive && <span className={styles['badge']} />}
-              </div>
-              {/* <p className={styles['lawyer-lawfirm']}>상담 의뢰자</p> */}
-            </div>
-          </>
+          <div className={styles['lawyer-name-badge-wrap']}>
+            <span className={styles['lawyer-name']}>{userName ? `${userName} 님` : `사용자 ${userId}`}</span>
+            {isActive && <span className={styles['badge']} />}
+          </div>
         )}
-      </section>
+      </div>
+      
+      {/* 오른쪽: 정보 버튼 (모바일) / 기존 섹션 (데스크탑) */}
+      <div className={styles['header-actions']}>
+        {!isLawyer && (
+          <button className={styles['info-button-mobile']} aria-label="변호사 정보">
+            <SvgIcon name="menu" size={20} />
+          </button>
+        )}
+      </div>
+      
       <section className={styles['header-left']}>
         {!isLawyer && (
           <div className={styles['chat-info']}>

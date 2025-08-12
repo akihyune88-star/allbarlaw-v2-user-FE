@@ -12,7 +12,7 @@ interface UseSocialLoginOptions {
 }
 
 export const useSocialLogin = (options?: UseSocialLoginOptions) => {
-  const { checkLoginStatus } = useAuth()
+  const { setUserInfo } = useAuth()
 
   return useMutation<LoginResponse, Error, SocialLoginRequest>({
     mutationFn: async (inputValue: SocialLoginRequest) => {
@@ -20,11 +20,37 @@ export const useSocialLogin = (options?: UseSocialLoginOptions) => {
       return response
     },
     onSuccess: (data, _variables) => {
-      localStorage.setItem(LOCAL.TOKEN, data.accessToken)
+      console.log('소셜 로그인 성공:', data)
+      console.log('LOCAL.USER_INFO 키:', LOCAL.USER_INFO)
 
-      // 토큰 저장 후 로그인 상태 체크
-      checkLoginStatus()
-      options?.onSuccess?.()
+      // 1. 토큰 저장
+      localStorage.setItem(LOCAL.TOKEN, data.accessToken)
+      console.log('토큰 저장 완료')
+
+      // 2. 사용자 정보 생성 및 저장
+      const userInfo = {
+        userId: data.userId,
+        userAccount: '', // 소셜 로그인은 계정명이 없을 수 있음
+        userEmail: '', // 소셜 로그인은 이메일이 없을 수 있음
+        userType: data.userType || 'user',
+        lawyerId: data.lawyerId,
+        lawyerName: data.lawyerName,
+        lawFirmName: data.lawFirmName,
+      }
+      console.log('저장할 userInfo:', userInfo)
+      
+      localStorage.setItem(LOCAL.USER_INFO, JSON.stringify(userInfo))
+      console.log('localStorage 저장 후 확인:', localStorage.getItem(LOCAL.USER_INFO))
+
+      // 3. AuthContext 상태 업데이트
+      setUserInfo(userInfo)
+      console.log('setUserInfo 호출 완료')
+
+      // 4. 성공 콜백 실행
+      setTimeout(() => {
+        console.log('onSuccess 콜백 실행')
+        options?.onSuccess?.()
+      }, 100)
     },
     onError: error => {
       if (isAxiosError(error)) {
