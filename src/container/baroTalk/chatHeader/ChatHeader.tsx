@@ -43,15 +43,11 @@ const ChatHeader = ({
     <header className={`${styles['chat-header']} ${className}`}>
       {/* 뒤로가기 버튼 */}
       {onBack && (
-        <button 
-          className={styles['back-button']} 
-          onClick={onBack}
-          aria-label='뒤로가기'
-        >
-          <SvgIcon name='arrowSmall' size={24} />
+        <button className={styles['back-button']} onClick={onBack} aria-label='뒤로가기'>
+          <SvgIcon name='arrowSmall' size={24} style={{ transform: 'rotate(45deg)' }} />
         </button>
       )}
-      
+
       {/* 중앙: 변호사/유저 정보 */}
       <div className={styles['header-center']}>
         {!isLawyer ? (
@@ -68,7 +64,7 @@ const ChatHeader = ({
           </div>
         )}
       </div>
-      
+
       {/* 오른쪽: 정보 버튼 (모바일) / 기존 섹션 (데스크탑) */}
       <div className={styles['header-actions']}>
         {!isLawyer && (
@@ -77,7 +73,7 @@ const ChatHeader = ({
           </button>
         )}
       </div>
-      
+
       <section className={styles['header-left']}>
         {!isLawyer && (
           <div className={styles['chat-info']}>

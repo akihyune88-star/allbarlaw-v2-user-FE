@@ -40,6 +40,7 @@
     background-color: #f5f5f5;
     padding-top: 52px; // 고정된 헤더 높이만큼 패딩 추가
     height: calc(100vh - 120px); // 안내 메시지 + 입력창 높이
+    min-height: 300px; // 모바일에서 최소 높이 300px 설정
   }
 }
 
