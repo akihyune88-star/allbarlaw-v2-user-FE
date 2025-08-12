@@ -74,9 +74,19 @@ const Login = () => {
 
   const handleAuthAction = (type: AuthActionType) => {
     if (type === 'ID_FIND') {
-      navigate(ROUTER.FIND_ID)
+      // 탭에 따라 다른 아이디 찾기 페이지로 이동
+      if (activeTab === '/user') {
+        navigate(ROUTER.FIND_ID)
+      } else {
+        navigate(ROUTER.LAWYER_FIND_ID)
+      }
     } else if (type === 'PASSWORD_RESET') {
-      navigate(ROUTER.RESET_PASSWORD)
+      // 탭에 따라 다른 비밀번호 찾기 페이지로 이동
+      if (activeTab === '/user') {
+        navigate(ROUTER.RESET_PASSWORD)
+      } else {
+        navigate(ROUTER.LAWYER_RESET_PASSWORD)
+      }
     } else if (type === 'SIGNUP') {
       navigate(ROUTER.SIGNUP)
     }

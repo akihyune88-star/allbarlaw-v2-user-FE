@@ -26,7 +26,7 @@ const ResetPassword = () => {
 
   const { isTimerRunning, formattedTime, startTimer, stopTimer } = useVerificationTimer(180)
 
-  const { mutate: sendVerificationCode, isPending: isSending } = useSendVerificationCode({
+  const { mutate: sendVerificationCode, isPending: _isSending } = useSendVerificationCode({
     onSuccess: () => {
       startTimer()
       setIsCodeSent(true)
@@ -38,7 +38,7 @@ const ResetPassword = () => {
   })
 
   const { mutate: resetPassword, isPending: isResetting } = useUserResetPassword({
-    onSuccess: data => {
+    onSuccess: _data => {
       setIsVerified(true)
       stopTimer()
       setApiMessage({ text: '인증이 완료되었습니다. 비밀번호 찾기 버튼을 눌러주세요.', isError: false })

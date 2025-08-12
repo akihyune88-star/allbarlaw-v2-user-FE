@@ -12,6 +12,8 @@ export const ROUTER = {
   LAWYER_ADMIN: '/lawyer-admin',
   FIND_ID: 'find-id',
   RESET_PASSWORD: 'reset-password',
+  LAWYER_FIND_ID: 'lawyer-find-id',
+  LAWYER_RESET_PASSWORD: 'lawyer-reset-password',
 
   // 마이페이지
   MYPAGE: '/mypage',

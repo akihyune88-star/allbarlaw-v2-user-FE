@@ -53,7 +53,7 @@
   text-align: center;
 
   &:hover {
-    background-color: darken($color-green-01, 10%);
+    // background-color: darken($color-green-01, 10%);
   }
 
   &:disabled {
@@ -136,7 +136,7 @@
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: darken($color-green-01, 10%);
+    // background-color: darken($color-green-01, 10%);
   }
 }
 

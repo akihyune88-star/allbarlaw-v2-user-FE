@@ -51,6 +51,8 @@ import LawyerChat from '@/pages/lawyerAdmin/chat/lawyerChat/LawyerChat'
 import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
 import FindId from '@/pages/auth/findId/FindId'
 import ResetPassword from '@/pages/auth/resetPassword/ResetPassword'
+import LawyerFindId from '@/pages/auth/lawyerFindId/LawyerFindId'
+import LawyerResetPassword from '@/pages/auth/lawyerResetPassword/LawyerResetPassword'
 
 const router = createBrowserRouter([
   {
@@ -85,6 +87,14 @@ const router = createBrowserRouter([
           {
             path: ROUTER.RESET_PASSWORD,
             element: <ResetPassword />,
+          },
+          {
+            path: ROUTER.LAWYER_FIND_ID,
+            element: <LawyerFindId />,
+          },
+          {
+            path: ROUTER.LAWYER_RESET_PASSWORD,
+            element: <LawyerResetPassword />,
           },
         ],
       },

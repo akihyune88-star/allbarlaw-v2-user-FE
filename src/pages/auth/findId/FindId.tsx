@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './findId.module.scss'
 import { useSendVerificationCode } from '@/hooks/mutatate/useSendVerificationCode'
-import { useVerifyVerificationCode } from '@/hooks/mutatate/useVerifyVerificationCode'
 import { useUserFindId } from '@/hooks/queries/useAuth'
 import useVerificationTimer from '@/hooks/useVerificationTimer'
 import { ROUTER } from '@/routes/routerConstant'
@@ -25,7 +24,7 @@ const FindId = () => {
 
   const { isTimerRunning, formattedTime, startTimer, stopTimer } = useVerificationTimer(180)
 
-  const { mutate: sendVerificationCode, isPending: isSending } = useSendVerificationCode({
+  const { mutate: sendVerificationCode, isPending: _isSending } = useSendVerificationCode({
     onSuccess: () => {
       startTimer()
       setIsCodeSent(true)
