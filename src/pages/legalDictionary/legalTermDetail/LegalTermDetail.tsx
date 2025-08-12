@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import LegalItemWidget from '@/components/legalItemWidget/LegalItemWidget'
 import styles from './legal-term-detail.module.scss'
 import LegalTermDefinition from '@/container/legalTermDetail/LegalTermDefinition'
@@ -12,6 +12,8 @@ import {
   usePopularLegalTermList,
   useRecentRegisteredLegalTermList,
 } from '@/hooks/queries/useLegalTerm'
+import { useSearchStore } from '@/stores/searchStore'
+import { LegalTermItem } from '@/types/legalTermTypes'
 
 const PcTotalContentsHeader = ({ amount }: { amount: number }) => {
   return (
@@ -26,6 +28,8 @@ const PcTotalContentsHeader = ({ amount }: { amount: number }) => {
 
 const LegalTermDetail = () => {
   const { termId } = useParams()
+  const navigate = useNavigate()
+  const { setSearchQuery } = useSearchStore()
   const isMobile = useMediaQuery('(min-width: 80rem)')
   const { data: legalTermDetail, isLoading } = useLegalTermDetail(Number(termId))
   const { data: popularLegalTermList } = usePopularLegalTermList()
@@ -42,6 +46,13 @@ const LegalTermDetail = () => {
         </div>
       </main>
     )
+  }
+
+  const similarTermsClick = (terms: LegalTermItem) => {
+    console.log(11)
+
+    setSearchQuery(terms.koreanName)
+    navigate(`/search`)
   }
 
   return (
@@ -69,7 +80,9 @@ const LegalTermDetail = () => {
           contents={
             <div className={styles['tag-list']}>
               {legalTermDetail?.similarTerms?.map(term => (
-                <span key={term.legalTermId}>#{term.koreanName}</span>
+                <span key={term.legalTermId} onClick={() => similarTermsClick(term)}>
+                  #{term.koreanName}
+                </span>
               ))}
             </div>
           }

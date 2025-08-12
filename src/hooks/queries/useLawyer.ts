@@ -78,6 +78,27 @@ export const useLawyerDetail = (lawyerId: number) => {
   })
 }
 
+// useLawyer는 useLawyerDetail의 별칭
+export const useLawyer = useLawyerDetail
+
+// 복수의 변호사 정보를 조회하는 훅
+export const useLawyers = (lawyerIds: number[]) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_DETAIL, 'multiple', lawyerIds],
+    queryFn: async () => {
+      if (!lawyerIds || lawyerIds.length === 0) return []
+      
+      const promises = lawyerIds.map(id => lawyerService.getLawyerDetail(id))
+      const results = await Promise.allSettled(promises)
+      
+      return results
+        .filter((result): result is PromiseFulfilledResult<any> => result.status === 'fulfilled')
+        .map(result => result.value)
+    },
+    enabled: lawyerIds && lawyerIds.length > 0,
+  })
+}
+
 export const useLawyerKeep = ({
   onSuccess,
   onError,
@@ -104,13 +125,6 @@ export const useLawyerActive = (request: LawyerActiveRequest) => {
   })
 }
 
-export const useLawyer = (lawyerId: number) => {
-  return useQuery({
-    queryKey: [QUERY_KEY.LAWYER, lawyerId],
-    queryFn: () => lawyerService.getLawyer(lawyerId),
-    enabled: lawyerId !== undefined,
-  })
-}
 
 export const useLawyerSignUp = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
   return useMutation({

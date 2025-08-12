@@ -14,17 +14,18 @@ import { useBaroTalkStore } from '@/store/baroTalkStore'
 import { useLawyerSelection } from '@/hooks/useLawyerSelection'
 import { useAgreementCheck } from '@/hooks/useAgreementCheck'
 import { LOCAL } from '@/constants/local'
-import { useLawyer } from '@/hooks/queries/useLawyer'
-import { getTemporaryItem, removeTemporaryItem } from '@/utils/temporaryStorage'
+import { useLawyer, useLawyers } from '@/hooks/queries/useLawyer'
+import { getTemporaryItem, removeTemporaryItem, setTemporaryItem } from '@/utils/temporaryStorage'
 import { Lawyer } from '@/types/lawyerTypes'
 
 const BaroTalkLawyerSelection = () => {
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const selectedLawyerId = getTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_ID)
+  const selectedLawyerIds = getTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_IDS) // 복수 변호사 ID 가져오기
   const { consultationRequestSubcategoryId, getCreateBaroTalkRequest, reset } = useBaroTalkStore()
 
-  const { selectedLawyers, handleLawyerClick, handleRemoveLawyer, isSelectionValid } = useLawyerSelection(4)
+  const { selectedLawyers, handleLawyerClick, handleRemoveLawyer, isSelectionValid, setSelectedLawyers } = useLawyerSelection(4)
   const { agreementChecked, handleCheckboxChange, isAgreementValid } = useAgreementCheck(['notice'])
   
   // 세션에서 해제된 변호사를 추적 (추천 리스트에 유지하기 위함)
@@ -48,19 +49,46 @@ const BaroTalkLawyerSelection = () => {
   )
 
   const { data: selectedLawyer } = useLawyer(Number(selectedLawyerId))
+  
+  // 세션에서 복수 변호사 ID들 파싱
+  const parsedSelectedLawyerIds = useMemo(() => {
+    if (selectedLawyerIds) {
+      try {
+        return JSON.parse(selectedLawyerIds) as number[]
+      } catch {
+        return []
+      }
+    }
+    return []
+  }, [selectedLawyerIds])
+  
+  // 복수 변호사 정보 조회
+  const { data: sessionLawyersData } = useLawyers(parsedSelectedLawyerIds)
 
-  // selectedLawyer가 있을 때 자동으로 선택된 변호사 목록에 추가
+  // 세션에 저장된 변호사들을 초기 선택 목록에 추가
   useEffect(() => {
-    if (selectedLawyer && selectedLawyerId) {
-      // 이미 선택된 변호사인지 확인
+    // 복수 변호사 ID들이 있고 데이터가 로드되면
+    if (sessionLawyersData && sessionLawyersData.length > 0 && selectedLawyers.length === 0) {
+      setSelectedLawyers(sessionLawyersData)
+    }
+    // 단일 변호사 ID만 있는 경우 (레거시 지원)
+    else if (selectedLawyer && selectedLawyerId && !parsedSelectedLawyerIds.length) {
       const isAlreadySelected = selectedLawyers.some(lawyer => lawyer.lawyerId === selectedLawyer.lawyerId)
-
       if (!isAlreadySelected) {
-        // 선택되지 않았다면 추가
         handleLawyerClick(selectedLawyer)
       }
     }
-  }, [selectedLawyer, selectedLawyerId, selectedLawyers, handleLawyerClick])
+  }, [selectedLawyer, selectedLawyerId, sessionLawyersData, parsedSelectedLawyerIds, setSelectedLawyers])
+  
+  // 선택된 변호사들이 변경될 때마다 세션에 저장
+  useEffect(() => {
+    if (selectedLawyers.length > 0) {
+      const lawyerIds = selectedLawyers.map(lawyer => lawyer.lawyerId)
+      setTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_IDS, JSON.stringify(lawyerIds))
+    } else {
+      removeTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_IDS)
+    }
+  }, [selectedLawyers])
 
   // 태그 배열을 useMemo로 메모이제이션
   const tags = useMemo(
@@ -86,7 +114,8 @@ const BaroTalkLawyerSelection = () => {
   const { mutate: createBaroTalk } = useCreateBaroTalk({
     onSuccess: () => {
       reset() // 세션 데이터 초기화
-      removeTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_ID) // 채팅 생성 성공 시 세션 정리
+      removeTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_ID) // 단일 변호사 ID 세션 정리
+      removeTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_IDS) // 복수 변호사 IDs 세션 정리
       navigate(ROUTER.CHAT)
     },
     onError: (error: Error) => {
@@ -135,7 +164,8 @@ const BaroTalkLawyerSelection = () => {
   }, [refetch])
 
   const handleCancel = useCallback(() => {
-    removeTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_ID) // 취소 시 세션 정리
+    removeTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_ID) // 단일 변호사 ID 세션 정리
+    removeTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_IDS) // 복수 변호사 IDs 세션 정리
     navigate(ROUTER.MAIN)
   }, [navigate])
 
