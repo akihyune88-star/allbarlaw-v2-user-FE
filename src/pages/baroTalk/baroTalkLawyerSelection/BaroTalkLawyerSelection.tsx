@@ -25,9 +25,10 @@ const BaroTalkLawyerSelection = () => {
   const selectedLawyerIds = getTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_IDS) // 복수 변호사 ID 가져오기
   const { consultationRequestSubcategoryId, getCreateBaroTalkRequest, reset } = useBaroTalkStore()
 
-  const { selectedLawyers, handleLawyerClick, handleRemoveLawyer, isSelectionValid, setSelectedLawyers } = useLawyerSelection(4)
+  const { selectedLawyers, handleLawyerClick, handleRemoveLawyer, isSelectionValid, setSelectedLawyers } =
+    useLawyerSelection(4)
   const { agreementChecked, handleCheckboxChange, isAgreementValid } = useAgreementCheck(['notice'])
-  
+
   // 세션에서 해제된 변호사를 추적 (추천 리스트에 유지하기 위함)
   const [removedSessionLawyer, setRemovedSessionLawyer] = useState<Lawyer | null>(null)
 
@@ -49,7 +50,7 @@ const BaroTalkLawyerSelection = () => {
   )
 
   const { data: selectedLawyer } = useLawyer(Number(selectedLawyerId))
-  
+
   // 세션에서 복수 변호사 ID들 파싱
   const parsedSelectedLawyerIds = useMemo(() => {
     if (selectedLawyerIds) {
@@ -61,7 +62,7 @@ const BaroTalkLawyerSelection = () => {
     }
     return []
   }, [selectedLawyerIds])
-  
+
   // 복수 변호사 정보 조회
   const { data: sessionLawyersData } = useLawyers(parsedSelectedLawyerIds)
 
@@ -75,11 +76,15 @@ const BaroTalkLawyerSelection = () => {
     else if (selectedLawyer && selectedLawyerId && !parsedSelectedLawyerIds.length) {
       const isAlreadySelected = selectedLawyers.some(lawyer => lawyer.lawyerId === selectedLawyer.lawyerId)
       if (!isAlreadySelected) {
-        handleLawyerClick(selectedLawyer)
+        const lawyerWithSubcategory: Lawyer = {
+          ...selectedLawyer,
+          subcategoryId: selectedLawyer.subcategories?.[0]?.id || 1,
+        }
+        handleLawyerClick(lawyerWithSubcategory)
       }
     }
   }, [selectedLawyer, selectedLawyerId, sessionLawyersData, parsedSelectedLawyerIds, setSelectedLawyers])
-  
+
   // 선택된 변호사들이 변경될 때마다 세션에 저장
   useEffect(() => {
     if (selectedLawyers.length > 0) {
@@ -142,9 +147,13 @@ const BaroTalkLawyerSelection = () => {
 
     // 세션에서 온 변호사가 있고, 목록에 없으면 추가
     if (selectedLawyer && !lawyers.some(l => l.lawyerId === selectedLawyer.lawyerId)) {
-      result.push(selectedLawyer)
+      const lawyerWithSubcategory: Lawyer = {
+        ...selectedLawyer,
+        subcategoryId: selectedLawyer.subcategories?.[0]?.id || 1, // 첫 번째 subcategory의 id 사용
+      }
+      result.push(lawyerWithSubcategory)
     }
-    
+
     // 해제된 세션 변호사가 있고, 목록에 없으면 추가 (추천 리스트에 유지)
     if (removedSessionLawyer && !result.some(l => l.lawyerId === removedSessionLawyer.lawyerId)) {
       result.push(removedSessionLawyer)

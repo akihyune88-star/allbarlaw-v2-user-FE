@@ -1,0 +1,218 @@
+.find-id-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: $color-bg-gray-02;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.find-id-header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: $font-weight-bold;
+    color: $color-text-black;
+  }
+}
+
+.find-id-form,
+.find-id-result {
+  width: 100%;
+  max-width: 500px;
+  background-color: $color-white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+
+  h2 {
+    font-size: 1.125rem;
+    font-weight: $font-weight-semibold;
+    color: $color-text-black;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: $font-weight-medium;
+    color: $color-text-black;
+    margin-bottom: 0.5rem;
+  }
+
+  .input-with-button {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+
+    input {
+      flex: 1;
+      height: 48px;
+      padding: 0 1rem;
+      border: 1px solid $color-line-divider;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      color: $color-text-black;
+      background-color: $color-white;
+      transition: border-color 0.2s ease;
+
+      &::placeholder {
+        color: $color-text-caption;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $color-green-01;
+      }
+
+      &:disabled {
+        background-color: $color-bg-gray-01;
+        cursor: not-allowed;
+      }
+    }
+
+    button {
+      min-width: 120px;
+      height: 48px;
+      padding: 0 1rem;
+      background-color: $color-text-index;
+      color: $color-white;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: $font-weight-medium;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      white-space: nowrap;
+
+      &:hover:not(:disabled) {
+        background-color: darken($color-text-index, 10%);
+      }
+
+      &:disabled {
+        background-color: $color-line-divider;
+        cursor: not-allowed;
+      }
+    }
+
+    .send-button {
+      background-color: $color-text-index;
+    }
+
+    .verify-button {
+      background-color: $color-text-index;
+    }
+  }
+
+  .error-message {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: $color-error;
+  }
+
+  .success-message {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: $color-green-01;
+  }
+
+  .timer {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: $color-text-caption;
+  }
+}
+
+.submit-button {
+  width: 100%;
+  height: 52px;
+  background-color: $color-green-01;
+  color: $color-white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 1rem;
+
+  &:hover:not(:disabled) {
+    background-color: darken($color-green-01, 10%);
+  }
+
+  &:disabled {
+    background-color: $color-line-divider;
+    cursor: not-allowed;
+  }
+}
+
+// 결과 화면 스타일
+.find-id-result {
+  text-align: center;
+
+  .result-box {
+    background-color: $color-bg-gray-01;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+
+    p {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: $color-text-black;
+
+      .highlight {
+        color: $color-green-01;
+        font-weight: $font-weight-semibold;
+      }
+    }
+  }
+
+  .login-button {
+    width: 100%;
+    height: 52px;
+    background-color: $color-green-01;
+    color: $color-white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: darken($color-green-01, 10%);
+    }
+  }
+}
+
+// 반응형 스타일
+@media (max-width: $breakpoint-desktop) {
+  .find-id-container {
+    padding: 1rem;
+  }
+
+  .find-id-form,
+  .find-id-result {
+    padding: 1.5rem;
+  }
+
+  .input-group {
+    .input-with-button {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
