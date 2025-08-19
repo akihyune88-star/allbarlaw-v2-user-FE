@@ -11,13 +11,23 @@ const SearchHeader = () => {
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
   
-  // zustand store에서 검색어 가져오기 (유일한 소스)
-  const { searchQuery: storeQuery } = useSearchStore()
+  // zustand store에서 검색어와 변호사 ID 가져오기
+  const { searchQuery: storeQuery, searchLawyerId: storeLawyerId } = useSearchStore()
 
   const handleMenuClick = (path: string) => {
     const basePath = path === '/' ? '' : path
-    // URL 쿼리 파라미터 제거 - store만 사용
-    navigate(`/search${basePath}`)
+    
+    // URL 파라미터 구성
+    const params = new URLSearchParams()
+    if (storeQuery) {
+      params.set('q', storeQuery)
+    }
+    if (storeLawyerId !== undefined) {
+      params.set('lawyerId', storeLawyerId.toString())
+    }
+    
+    const queryString = params.toString()
+    navigate(`/search${basePath}${queryString ? `?${queryString}` : ''}`)
   }
 
   return (

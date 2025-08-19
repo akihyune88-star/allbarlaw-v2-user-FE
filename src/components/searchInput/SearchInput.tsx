@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import InputBox from '../inputBox/InputBox'
 import SvgIcon from '../SvgIcon'
 import { useSearchStore } from '@/stores/searchStore'
@@ -19,12 +19,41 @@ const SearchInput: React.FC<SearchInputProps> = ({
 }) => {
   const navigate = useNavigate()
   const location = useLocation()
+  const [searchParams] = useSearchParams()
   
-  // zustand store에서 검색어 가져오기 (유일한 소스)
-  const { searchQuery: storeQuery, setSearchQuery: setStoreQuery } = useSearchStore()
+  // zustand store에서 검색어와 변호사 ID 가져오기
+  const { 
+    searchQuery: storeQuery, 
+    setSearchQuery: setStoreQuery,
+    searchLawyerId: storeLawyerId,
+    setSearchLawyerId: setStoreLawyerId 
+  } = useSearchStore()
   
   // 로컬 상태 - store 값으로 초기화
   const [searchValue, setSearchValue] = useState(storeQuery)
+
+  // URL 쿼리 파라미터를 읽어서 store에 동기화
+  useEffect(() => {
+    const urlQuery = searchParams.get('q') || searchParams.get('query') || ''
+    const urlLawyerId = searchParams.get('lawyerId')
+    
+    // 검색어 동기화
+    if (urlQuery && urlQuery !== storeQuery) {
+      setStoreQuery(urlQuery)
+      setSearchValue(urlQuery)
+    }
+    
+    // 변호사 ID 동기화
+    if (urlLawyerId) {
+      const lawyerId = parseInt(urlLawyerId)
+      if (!isNaN(lawyerId) && lawyerId !== storeLawyerId) {
+        setStoreLawyerId(lawyerId)
+      }
+    } else if (storeLawyerId !== undefined) {
+      // URL에 lawyerId가 없지만 store에 있으면 제거
+      setStoreLawyerId(undefined)
+    }
+  }, [searchParams, setStoreQuery, setStoreLawyerId])
 
   // store 값이 변경될 때 input 값 동기화
   useEffect(() => {
@@ -56,8 +85,13 @@ const SearchInput: React.FC<SearchInputProps> = ({
           searchPath = '/search'
         }
 
-        // URL 쿼리 파라미터 제거 - store만 사용
-        navigate(searchPath)
+        // URL에 쿼리 파라미터 추가
+        const params = new URLSearchParams()
+        params.set('q', searchValue.trim())
+        if (storeLawyerId !== undefined) {
+          params.set('lawyerId', storeLawyerId.toString())
+        }
+        navigate(`${searchPath}?${params.toString()}`)
       }
     }
   }
