@@ -8,6 +8,7 @@ import { toggleClipChatRoom, isClippedChatRoom, sortChatRoomsByClip } from '@/ut
 import { useSetChatRoomId } from '@/stores/socketStore'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
+import HeaderPortal from '@/components/headerPortal/HeaderPortal'
 
 interface LawyerChatListProps {
   onChatRoomSelect?: (_chatRoomId: number) => void
@@ -160,8 +161,19 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
   }
 
   return (
-    <div className={styles.container}>
-      <table className={styles.table}>
+    <>
+      {/* 헤더 포탈을 통해 페이지별 컴포넌트 주입 */}
+      <HeaderPortal>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 600 }}>채팅 상담 목록</h2>
+          <span style={{ fontSize: '0.875rem', color: '#666' }}>
+            총 {chatRooms.length}개의 상담
+          </span>
+        </div>
+      </HeaderPortal>
+      
+      <div className={styles.container}>
+        <table className={styles.table}>
         <thead>
           <tr>
             <th className={styles.clipColumn}></th>
@@ -214,6 +226,7 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
         {isFetchingNextPage && <div className={styles.loadingMore}>더 많은 데이터를 불러오는 중...</div>}
       </div>
     </div>
+    </>
   )
 }
 

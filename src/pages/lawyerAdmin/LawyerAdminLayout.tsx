@@ -17,10 +17,14 @@ const LawyerAdminLayout = () => {
 
   const handleSubcategoryClick = (id: number) => {
     setSelectedSubcategory(id)
-
-    // 채팅리스트 서브카테고리 클릭 시 채팅 페이지로 이동
-    if (id === 1) {
-      navigate(ROUTER.LAWYER_ADMIN_CHAT_LIST)
+    switch (id) {
+      case 1:
+        navigate(ROUTER.LAWYER_ADMIN_CHAT_LIST)
+        break
+      case 2:
+        navigate(ROUTER.LAWYER_ADMIN_CHAT_LIST)
+        break
+      case 3:
     }
   }
 
@@ -49,16 +53,64 @@ export default LawyerAdminLayout
 const categories: CategoryList = [
   {
     categoryId: 1,
-    categoryName: '채팅상담',
+    categoryName: '변호사 정보관리',
     imageUrl: '',
     clickedImageUrl: '',
     isUncategorized: false,
     subcategories: [
       {
         subcategoryId: 1,
-        subcategoryName: '채팅리스트',
+        subcategoryName: '변호사 정보 상세',
         isUncategorized: false,
         categoryId: 1,
+      },
+      {
+        subcategoryId: 2,
+        subcategoryName: '변호사 정보 수정',
+        isUncategorized: false,
+        categoryId: 1,
+      },
+    ],
+  },
+  {
+    categoryId: 2,
+    categoryName: '분류별 컨텐츠 관리',
+    imageUrl: '',
+    clickedImageUrl: '',
+    isUncategorized: false,
+    subcategories: [
+      {
+        subcategoryId: 3,
+        subcategoryName: '블로그 글',
+        isUncategorized: false,
+        categoryId: 2,
+      },
+      {
+        subcategoryId: 4,
+        subcategoryName: '법률영상',
+        isUncategorized: false,
+        categoryId: 2,
+      },
+      {
+        subcategoryId: 5,
+        subcategoryName: '법률 지식인',
+        isUncategorized: false,
+        categoryId: 2,
+      },
+    ],
+  },
+  {
+    categoryId: 3,
+    categoryName: '채팅상담',
+    imageUrl: '',
+    clickedImageUrl: '',
+    isUncategorized: false,
+    subcategories: [
+      {
+        subcategoryId: 6,
+        subcategoryName: '채팅리스트',
+        isUncategorized: false,
+        categoryId: 3,
       },
     ],
   },
