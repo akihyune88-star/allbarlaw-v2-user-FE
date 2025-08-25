@@ -6,11 +6,21 @@ const AdminLawyerDetail = () => {
   return (
     <>
       <HeaderPortal>
-        <h2>변호사 정보 상세</h2>
+        <div className={styles.header}>
+          <h1 className={styles.header__title}>변호사 정보 상세</h1>
+          <nav className={styles.header__button}>
+            <button type='button' className={styles.header__button__item}>
+              홈페이지에서 보기
+            </button>
+            <button type='button' className={styles.header__button__item}>
+              변호사 정보 변경하기
+            </button>
+          </nav>
+        </div>
       </HeaderPortal>
-      <div className={styles.container}>
+      <main className={styles.container}>
         <LawyerDetail />
-      </div>
+      </main>
     </>
   )
 }
