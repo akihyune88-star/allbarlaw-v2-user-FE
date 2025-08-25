@@ -31,18 +31,21 @@ const CategoryItem = ({
 }: CategoryItemProps) => {
   const shouldShowSubcategories = alwaysExpanded || isActive
 
+  // 현재 카테고리의 서브카테고리가 선택되었는지 확인
+  const hasSelectedSubcategory = category.subcategories.some(sub => sub.subcategoryId === selectedSubcategory)
+
   return (
     <li className={styles['category-list-item']}>
       <div className={styles['category-list-header']}>
         <h3
-          className={`${styles.categoryName} ${isActive ? styles.active : ''}`}
+          className={`${styles.categoryName} ${isActive || hasSelectedSubcategory ? styles.active : ''}`}
           onClick={alwaysExpanded ? undefined : onClick}
           style={{ cursor: alwaysExpanded ? 'default' : 'pointer' }}
         >
           {category.categoryName}
         </h3>
         {isActive && !alwaysExpanded && (
-          <SvgIcon name='arrowSmall' color={COLOR.green_01} size={16} style={{ transform: 'rotate(180deg)' }} />
+          <SvgIcon name='arrowSmall' color={COLOR.green_01} size={16} style={{ transform: 'rotate(90deg)' }} />
         )}
       </div>
       {shouldShowSubcategories && (

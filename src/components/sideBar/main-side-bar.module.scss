@@ -39,6 +39,11 @@
         cursor: pointer;
         width: 100%;
         margin: 0; // h3의 기본 마진 제거
+        
+        &.active {
+          color: $color-green-01;
+          font-weight: $font-weight-semibold;
+        }
       }
     }
   }
