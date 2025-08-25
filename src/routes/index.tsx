@@ -53,6 +53,7 @@ import FindId from '@/pages/auth/findId/FindId'
 import ResetPassword from '@/pages/auth/resetPassword/ResetPassword'
 import LawyerFindId from '@/pages/auth/lawyerFindId/LawyerFindId'
 import LawyerResetPassword from '@/pages/auth/lawyerResetPassword/LawyerResetPassword'
+import AdminLawyerDetail from '@/pages/lawyerAdmin/lawyerInfo/adminLawyerDetail/AdminLawyerDetail'
 
 const router = createBrowserRouter([
   {
@@ -309,7 +310,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <div>변호사 관리 메인 페이지</div>,
+        element: <Navigate to={ROUTER.LAWYER_ADMIN_LAWYER_DETAIL} replace />,
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_LAWYER_DETAIL,
+        element: <AdminLawyerDetail />,
       },
       {
         path: ROUTER.LAWYER_ADMIN_CHAT_LIST,

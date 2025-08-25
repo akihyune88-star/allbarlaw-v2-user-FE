@@ -7,8 +7,8 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 
 const LawyerAdminLayout = () => {
-  const [selectedMainCategory, setSelectedMainCategory] = useState<number | null>(null)
-  const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(null)
+  const [selectedMainCategory, setSelectedMainCategory] = useState<number | null>(1)
+  const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(1)
   const navigate = useNavigate()
 
   const handleMainCategoryClick = (id: number) => {
@@ -19,7 +19,7 @@ const LawyerAdminLayout = () => {
     setSelectedSubcategory(id)
     switch (id) {
       case 1:
-        navigate(ROUTER.LAWYER_ADMIN_CHAT_LIST)
+        navigate(ROUTER.LAWYER_ADMIN_LAWYER_DETAIL)
         break
       case 2:
         navigate(ROUTER.LAWYER_ADMIN_CHAT_LIST)

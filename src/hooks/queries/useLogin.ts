@@ -7,7 +7,7 @@ import { getErrorMessage } from '@/utils/errorHandler'
 import { isAxiosError } from 'axios'
 
 interface UseLoginOptions {
-  onSuccess?: () => void
+  onSuccess?: (_accessToken: string) => void
   onError?: (_message: string) => void
 }
 
@@ -40,7 +40,7 @@ export const useLogin = (options?: UseLoginOptions) => {
 
       // 토큰 저장 후 로그인 상태 체크
       checkLoginStatus()
-      options?.onSuccess?.()
+      options?.onSuccess?.(data.accessToken)
     },
     onError: error => {
       if (isAxiosError(error)) {
@@ -62,7 +62,6 @@ export const useLawyerLogin = (options?: UseLoginOptions) => {
     onSuccess: (data, _variables) => {
       const storage = _variables.rememberMe ? localStorage : sessionStorage
       storage.setItem(LOCAL.TOKEN, data.accessToken)
-      console.log('lawyerLoginData', data)
 
       // 사용자 정보 저장
       const userInfo: UserInfo = {
@@ -79,7 +78,7 @@ export const useLawyerLogin = (options?: UseLoginOptions) => {
 
       // 토큰 저장 후 로그인 상태 체크
       checkLoginStatus()
-      options?.onSuccess?.()
+      options?.onSuccess?.(data.accessToken)
     },
     onError: error => {
       if (isAxiosError(error)) {
