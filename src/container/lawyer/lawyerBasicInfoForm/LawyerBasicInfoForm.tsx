@@ -62,9 +62,9 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
               className={styles.select}
               value={formData.birthYear || ''}
               onChange={e => onInputChange('birthYear', e.target.value ? Number(e.target.value) : undefined)}
-              style={{ borderColor: errors.birthYear ? '#ff4d4f' : undefined }}
+              style={{ borderColor: errors.birthYear ? '#ff4d4f' : undefined, width: 172 }}
             >
-              <option value=''>년도</option>
+              <option value=''>연도 선택</option>
               {Array.from({ length: 50 }, (_, i) => 2024 - i).map(year => (
                 <option key={year} value={year}>
                   {year}
@@ -75,7 +75,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
               className={styles.select}
               value={formData.birthMonth || ''}
               onChange={e => onInputChange('birthMonth', e.target.value ? Number(e.target.value) : undefined)}
-              style={{ borderColor: errors.birthMonth ? '#ff4d4f' : undefined }}
+              style={{ borderColor: errors.birthMonth ? '#ff4d4f' : undefined, width: 108 }}
             >
               <option value=''>월</option>
               {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
@@ -88,7 +88,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
               className={styles.select}
               value={formData.birthDay || ''}
               onChange={e => onInputChange('birthDay', e.target.value ? Number(e.target.value) : undefined)}
-              style={{ borderColor: errors.birthDay ? '#ff4d4f' : undefined }}
+              style={{ borderColor: errors.birthDay ? '#ff4d4f' : undefined, width: 108 }}
             >
               <option value=''>일</option>
               {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
