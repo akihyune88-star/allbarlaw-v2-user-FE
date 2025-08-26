@@ -154,7 +154,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
           <label className={styles.label}>
             관련 태그
             <br />
-            <span className={styles.helperText} style={{ fontSize: 10 }}>
+            <span className={styles.helperText} style={{ fontSize: 12 }}>
               (최소2개/최대20개)
             </span>
           </label>

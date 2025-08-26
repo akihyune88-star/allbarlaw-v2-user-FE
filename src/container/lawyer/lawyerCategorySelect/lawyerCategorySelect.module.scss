@@ -1,8 +1,8 @@
 .formRow {
   display: flex;
   align-items: stretch;
-  margin-bottom: 0;
-  border-bottom: 1px solid #d9d9d9;
+
+  background-color: $color-white;
 
   &:last-child {
     border-bottom: none;
@@ -10,14 +10,11 @@
 }
 
 .labelCol {
-  width: 200px;
+  width: 7.5rem;
   flex-shrink: 0;
-  padding: 16px;
-  background-color: #fafafa;
-  border-right: 1px solid #d9d9d9;
+  padding: 0 0 0 16px;
   display: flex;
   align-items: center;
-  min-height: 56px;
 }
 
 .inputCol {
@@ -34,31 +31,35 @@
   margin: 0;
   font-weight: 500;
   text-align: left;
-  color: #262626;
-  font-size: 14px;
+  color: $color-text-index;
+  font-size: 0.8125rem;
   line-height: 1.4;
 }
 
 .categoryList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.625rem;
 }
 
 .categoryItem {
   display: flex;
-  gap: 8px;
+  gap: 0.625rem;
   align-items: center;
 }
 
 .select {
-  width: auto;
-  min-width: 150px;
-  padding: 8px 12px;
+  height: 3rem;
+  padding: 8px 30px 8px 12px;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
   font-size: 14px;
   transition: border-color 0.3s;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
 
   &:focus {
     outline: none;
@@ -71,14 +72,23 @@
   }
 }
 
+.selectMain {
+  width: 10.75rem;
+}
+
+.selectSub {
+  width: 15.5rem;
+}
+
 .removeButton {
-  padding: 4px 12px;
+  padding: 0.3438rem 0.5rem;
+  height: 1.625rem;
   background-color: #fff;
-  border: 1px solid #ff4d4f;
-  color: #ff4d4f;
-  border-radius: 4px;
+  border: 1px solid $color-line-borderbox;
+  color: $color-text-index;
+  border-radius: 0.625rem;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.75rem;
   transition: all 0.3s;
 
   &:hover {
@@ -88,18 +98,19 @@
 }
 
 .addButton {
-  width: 100%;
-  padding: 8px 16px;
-  background-color: #fafafa;
-  border: 1px dashed #d9d9d9;
-  border-radius: 4px;
+  padding: 0.3438rem 0.5rem;
+  height: 1.625rem;
+  background-color: #fff;
+  border: 1px solid $color-green-01;
+  color: $color-green-01;
+  border-radius: 0.625rem;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.75rem;
   transition: all 0.3s;
 
   &:hover {
-    background-color: #f0f0f0;
-    border-color: $color-green-01;
+    background-color: $color-green-01;
+    color: white;
   }
 }
 
