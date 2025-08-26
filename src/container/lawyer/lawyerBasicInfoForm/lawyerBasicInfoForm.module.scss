@@ -1,8 +1,16 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
 .formRow {
   display: flex;
   align-items: stretch;
   margin-bottom: 0;
   border-bottom: 1px solid #d9d9d9;
+
+  background-color: $color-white;
 
   &:last-child {
     border-bottom: none;
@@ -10,14 +18,11 @@
 }
 
 .labelCol {
-  width: 200px;
+  width: 7.5rem;
   flex-shrink: 0;
   padding: 16px;
-  background-color: #fafafa;
-  border-right: 1px solid #d9d9d9;
   display: flex;
   align-items: center;
-  min-height: 56px;
 }
 
 .inputCol {
@@ -34,8 +39,8 @@
   margin: 0;
   font-weight: 500;
   text-align: left;
-  color: #262626;
-  font-size: 14px;
+  color: $color-text-index;
+  font-size: 0.8125rem;
   line-height: 1.4;
 }
 
@@ -89,21 +94,28 @@
     font-size: 14px;
   }
 
-  input[type="radio"] {
+  input[type='radio'] {
     cursor: pointer;
   }
 }
 
+.errorWrapper {
+  min-height: 1.25rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+}
+
 .error {
   color: #ff4d4f;
-  font-size: 14px;
-  margin-top: 4px;
+  font-size: 0.75rem;
+  line-height: 1;
 }
 
 .helperText {
   color: #8c8c8c;
-  font-size: 12px;
-  margin-top: 8px;
+  font-size: 0.75rem;
+  line-height: 1;
 }
 
 .button {

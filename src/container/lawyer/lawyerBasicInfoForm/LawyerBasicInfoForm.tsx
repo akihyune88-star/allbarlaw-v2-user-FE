@@ -9,7 +9,7 @@ interface LawyerBasicInfoFormProps {
 
 const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInfoFormProps) => {
   return (
-    <>
+    <section className={styles.formContainer}>
       {/* 인사말 */}
       <div className={styles.formRow}>
         <div className={styles.labelCol}>
@@ -25,7 +25,9 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             onChange={e => onInputChange('greeting', e.target.value)}
             style={{ borderColor: errors.greeting ? '#ff4d4f' : undefined }}
           />
-          {errors.greeting && <div className={styles.error}>{errors.greeting}</div>}
+          <div className={styles.errorWrapper}>
+            {errors.greeting && <span className={styles.error}>{errors.greeting}</span>}
+          </div>
         </div>
       </div>
 
@@ -43,7 +45,9 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             onChange={e => onInputChange('lawyerName', e.target.value)}
             style={{ borderColor: errors.lawyerName ? '#ff4d4f' : undefined }}
           />
-          {errors.lawyerName && <div className={styles.error}>{errors.lawyerName}</div>}
+          <div className={styles.errorWrapper}>
+            {errors.lawyerName && <span className={styles.error}>{errors.lawyerName}</span>}
+          </div>
         </div>
       </div>
 
@@ -114,11 +118,13 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
               </label>
             </div>
           </div>
-          {(errors.birthYear || errors.birthMonth || errors.birthDay || errors.gender) && (
-            <div className={styles.error}>
-              {errors.birthYear || errors.birthMonth || errors.birthDay || errors.gender}
-            </div>
-          )}
+          <div className={styles.errorWrapper}>
+            {(errors.birthYear || errors.birthMonth || errors.birthDay || errors.gender) && (
+              <span className={styles.error}>
+                {errors.birthYear || errors.birthMonth || errors.birthDay || errors.gender}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -136,7 +142,9 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             onChange={e => onInputChange('phoneNumber', e.target.value)}
             style={{ borderColor: errors.phoneNumber ? '#ff4d4f' : undefined }}
           />
-          {errors.phoneNumber && <div className={styles.error}>{errors.phoneNumber}</div>}
+          <div className={styles.errorWrapper}>
+            {errors.phoneNumber && <span className={styles.error}>{errors.phoneNumber}</span>}
+          </div>
         </div>
       </div>
 
@@ -146,7 +154,9 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
           <label className={styles.label}>
             관련 태그
             <br />
-            (최소2개 / 최대 4개)
+            <span className={styles.helperText} style={{ fontSize: 10 }}>
+              (최소2개/최대20개)
+            </span>
           </label>
         </div>
         <div className={styles.inputCol}>
@@ -158,8 +168,15 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             onChange={e => onInputChange('tags', e.target.value)}
             style={{ borderColor: errors.tags ? '#ff4d4f' : undefined }}
           />
-          {errors.tags && <div className={styles.error}>{errors.tags}</div>}
-          <div className={styles.helperText}>2개이상의 태그를 입력해주세요. 콤마를 이용하여 구분할 수 있습니다.</div>
+          <div className={styles.errorWrapper}>
+            {errors.tags ? (
+              <span className={styles.error}>{errors.tags}</span>
+            ) : (
+              <span className={styles.helperText}>
+                2개이상의 태그를 입력해주세요. 콤마를 이용하여 구분할 수 있습니다.
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -177,7 +194,9 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             onChange={e => onInputChange('lawfirmName', e.target.value)}
             style={{ borderColor: errors.lawfirmName ? '#ff4d4f' : undefined }}
           />
-          {errors.lawfirmName && <div className={styles.error}>{errors.lawfirmName}</div>}
+          <div className={styles.errorWrapper}>
+            {errors.lawfirmName && <span className={styles.error}>{errors.lawfirmName}</span>}
+          </div>
         </div>
       </div>
 
@@ -200,7 +219,9 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
               onChange={e => onInputChange('address', e.target.value)}
             />
           </div>
-          {errors.address && <div className={styles.error}>{errors.address}</div>}
+          <div className={styles.errorWrapper}>
+            {errors.address && <span className={styles.error}>{errors.address}</span>}
+          </div>
           <input
             className={styles.input}
             type='text'
@@ -209,7 +230,9 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             value={formData.addressDetail}
             onChange={e => onInputChange('addressDetail', e.target.value)}
           />
-          {errors.addressDetail && <div className={styles.error}>{errors.addressDetail}</div>}
+          <div className={styles.errorWrapper}>
+            {errors.addressDetail && <span className={styles.error}>{errors.addressDetail}</span>}
+          </div>
         </div>
       </div>
 
@@ -227,10 +250,12 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             onChange={e => onInputChange('officePhone', e.target.value)}
             style={{ borderColor: errors.officePhone ? '#ff4d4f' : undefined }}
           />
-          {errors.officePhone && <div className={styles.error}>{errors.officePhone}</div>}
+          <div className={styles.errorWrapper}>
+            {errors.officePhone && <span className={styles.error}>{errors.officePhone}</span>}
+          </div>
         </div>
       </div>
-    </>
+    </section>
   )
 }
 
