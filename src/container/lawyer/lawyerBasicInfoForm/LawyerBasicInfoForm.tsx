@@ -43,7 +43,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             placeholder='이름을 입력해주세요'
             value={formData.lawyerName}
             onChange={e => onInputChange('lawyerName', e.target.value)}
-            style={{ borderColor: errors.lawyerName ? '#ff4d4f' : undefined }}
+            style={{ borderColor: errors.lawyerName ? '#ff4d4f' : undefined, width: 340 }}
           />
           <div className={styles.errorWrapper}>
             {errors.lawyerName && <span className={styles.error}>{errors.lawyerName}</span>}
