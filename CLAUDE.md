@@ -324,6 +324,17 @@ useEffect(() => {
 - WebSocket 연결 재시도 로직
 - 메모리 사용량 최적화
 
+## 📚 참조 프로젝트
+
+### EX-ALLBARLAW-V2-FE-ADMIN
+**경로**: `C:\Users\lucyl\Desktop\ALLBARLAW\EX-ALLBARLAW-V2-FE-ADMIN`
+
+관리자 페이지 프로젝트로, 다음과 같은 기능들을 참조할 수 있습니다:
+- 관리자 전용 UI/UX 패턴
+- 데이터 관리 및 CRUD 구현
+- 권한 기반 접근 제어
+- 통계 및 리포팅 기능
+
 ---
 
 이 문서는 백엔드 API 검토 및 프론트엔드 구현을 위한 컨텍스트 참조용으로 작성되었습니다.

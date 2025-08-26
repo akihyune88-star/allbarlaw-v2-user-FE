@@ -54,6 +54,8 @@ import ResetPassword from '@/pages/auth/resetPassword/ResetPassword'
 import LawyerFindId from '@/pages/auth/lawyerFindId/LawyerFindId'
 import LawyerResetPassword from '@/pages/auth/lawyerResetPassword/LawyerResetPassword'
 import AdminLawyerDetail from '@/pages/lawyerAdmin/lawyerInfo/adminLawyerDetail/AdminLawyerDetail'
+import LawyerEditLayout from '@/pages/lawyerAdmin/lawyerInfo/lawyerEditLayout/LawyerEditLayout'
+import BasicInfoEdit from '@/pages/lawyerAdmin/lawyerInfo/basicInfoEdit/BasicInfoEdit'
 
 const router = createBrowserRouter([
   {
@@ -315,6 +317,20 @@ const router = createBrowserRouter([
       {
         path: ROUTER.LAWYER_ADMIN_LAWYER_DETAIL,
         element: <AdminLawyerDetail />,
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_LAWYER_EDIT,
+        element: <LawyerEditLayout />,
+        children: [
+          {
+            path: '',
+            element: <Navigate to={ROUTER.LAWYER_ADMIN_LAWYER_EDIT_BASIC_INFO} replace />,
+          },
+          {
+            path: ROUTER.LAWYER_ADMIN_LAWYER_EDIT_BASIC_INFO,
+            element: <BasicInfoEdit />,
+          },
+        ],
       },
       {
         path: ROUTER.LAWYER_ADMIN_CHAT_LIST,
