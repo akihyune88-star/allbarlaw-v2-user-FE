@@ -37,6 +37,7 @@ import google from '@/assets/svgs/google.svg?react'
 import naver from '@/assets/svgs/naver.svg?react'
 import clip from '@/assets/svgs/clip.svg?react'
 import user from '@/assets/svgs/user.svg?react'
+import human from '@/assets/svgs/human.svg?react'
 
 export {
   react,
@@ -78,4 +79,5 @@ export {
   naver,
   clip,
   user,
+  human,
 }

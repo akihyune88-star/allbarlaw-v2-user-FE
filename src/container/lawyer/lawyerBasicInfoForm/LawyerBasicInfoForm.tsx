@@ -159,9 +159,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             style={{ borderColor: errors.tags ? '#ff4d4f' : undefined }}
           />
           {errors.tags && <div className={styles.error}>{errors.tags}</div>}
-          <div className={styles.helperText}>
-            2개이상의 태그를 입력해주세요. 콤마를 이용하여 구분할 수 있습니다.
-          </div>
+          <div className={styles.helperText}>2개이상의 태그를 입력해주세요. 콤마를 이용하여 구분할 수 있습니다.</div>
         </div>
       </div>
 

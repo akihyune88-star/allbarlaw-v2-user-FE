@@ -63,7 +63,7 @@ const BasicInfoEdit = () => {
         </div>
       </HeaderPortal>
 
-      <div className={styles.container}>
+      <section className={styles.formContainer}>
         <div className={styles.formSection}>
           {/* 프로필 사진 섹션 */}
           <LawyerProfileImageEdit
@@ -85,7 +85,7 @@ const BasicInfoEdit = () => {
             onCategoryChange={handleCategoryChange}
           />
         </div>
-      </div>
+      </section>
     </>
   )
 }
