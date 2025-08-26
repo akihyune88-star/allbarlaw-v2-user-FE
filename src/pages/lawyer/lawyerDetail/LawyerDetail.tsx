@@ -11,15 +11,24 @@ import { useLawyerDetail } from '@/hooks/queries/useLawyer'
 import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import React, { useRef } from 'react'
 import { useParams } from 'react-router-dom'
+import { LawyerDetailResponse } from '@/types/lawyerTypes'
 
-const LawyerDetail = () => {
+interface LawyerDetailProps {
+  detailData?: LawyerDetailResponse
+}
+
+const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
   const careerRef = useRef<HTMLElement>(null)
   const blogRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLElement>(null)
   const legalKnowledgeRef = useRef<HTMLElement>(null)
   const { lawyerId } = useParams()
 
-  const { data: lawyerDetail } = useLawyerDetail(Number(lawyerId))
+  // props로 데이터가 넘어오면 그것을 사용, 아니면 훅으로 조회
+  const { data: fetchedData } = useLawyerDetail(Number(lawyerId), { enabled: !detailData })
+  
+  // detailData가 있으면 props 데이터 사용, 없으면 훅으로 조회한 데이터 사용
+  const lawyerDetail = detailData || fetchedData
 
   const scrollToSection = (ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -72,19 +81,19 @@ const LawyerDetail = () => {
         <LawyerBlog
           ref={blogRef}
           blogList={lawyerDetail?.blogCases ?? []}
-          lawyerId={Number(lawyerId)}
+          lawyerId={lawyerDetail?.lawyerId ?? Number(lawyerId)}
           lawyerName={lawyerDetail?.lawyerName ?? ''}
         />
         <LawyerVideo
           ref={videoRef}
           videoList={lawyerDetail?.videoCases ?? []}
-          lawyerId={Number(lawyerId)}
+          lawyerId={lawyerDetail?.lawyerId ?? Number(lawyerId)}
           lawyerName={lawyerDetail?.lawyerName ?? ''}
         />
         <LawyerLegalKnowledge
           ref={legalKnowledgeRef}
           knowledgeList={lawyerDetail?.consultationRequests ?? []}
-          lawyerId={Number(lawyerId)}
+          lawyerId={lawyerDetail?.lawyerId ?? Number(lawyerId)}
           lawyerName={lawyerDetail?.lawyerName ?? ''}
         />
       </section>

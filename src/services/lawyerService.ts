@@ -81,6 +81,11 @@ export const lawyerService = {
     return response.data
   },
 
+  getLawyerDetailForMe: async () => {
+    const response = await instance.get<LawyerDetailResponse>(`/lawyer/me/detail`)
+    return response.data
+  },
+
   getRandomLawyerList: async (request: RandomLawyerListRequest) => {
     const { subcategoryId, take, excludeIds } = request
 
