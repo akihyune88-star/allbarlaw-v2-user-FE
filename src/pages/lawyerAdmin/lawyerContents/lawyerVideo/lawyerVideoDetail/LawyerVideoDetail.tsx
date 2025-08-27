@@ -10,11 +10,11 @@ import { useState } from 'react'
 import HeaderPortal from '@/components/headerPortal/HeaderPortal'
 import { useLawyerDetailForMe } from '@/hooks/queries/useLawyer'
 import { ROUTER } from '@/routes/routerConstant'
-import VideoPlayerContainer from '@/container/video/videoPlayerContainer/VideoPlayerContainer'
 import VideoSummary from '@/container/video/videoSummary/VideoSummary'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
 import YoutubePlayer from '@/components/youtubePlayer/YoutubePlayer'
 import { Tag } from '@/types/lawyerTypes'
+import VidoeInfo from '@/container/video/VidoeInfo'
 
 type VideoNavigationBarProps = {
   isKeep: boolean
@@ -107,11 +107,17 @@ const LawyerVideoDetail = () => {
             ))}
           </div>
         </div>
-        <div className={styles['lawyer-video-detail-info']}>
-          <h2 className={styles['lawyer-video-detail-title']}>{data?.title}</h2>
-          <VideoSummary summary={data?.summaryContent || ''} />
-        </div>
-        <VideoNavigationBar isKeep={isKeep} onSave={handleSave} onShare={handleShare} onVideoLink={handleVideoLink} />
+        <VidoeInfo
+          channelThumbnail={data?.channelThumbnail || ''}
+          channelName={data?.channelName || ''}
+          handleName={data?.handleName || ''}
+          subscriberCount={data?.subscriberCount || 0}
+          channelDescription={data?.channelDescription || ''}
+          source={data?.source || ''}
+        />
+        <VideoSummary summary={data?.summaryContent || ''} className={styles['lawyer-video-detail-summary']} />
+
+        {/* <VideoNavigationBar isKeep={isKeep} onSave={handleSave} onShare={handleShare} onVideoLink={handleVideoLink} /> */}
       </div>
     </>
   )
