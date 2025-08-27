@@ -13,6 +13,8 @@ import { ROUTER } from '@/routes/routerConstant'
 import VideoPlayerContainer from '@/container/video/videoPlayerContainer/VideoPlayerContainer'
 import VideoSummary from '@/container/video/videoSummary/VideoSummary'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
+import YoutubePlayer from '@/components/youtubePlayer/YoutubePlayer'
+import { Tag } from '@/types/lawyerTypes'
 
 type VideoNavigationBarProps = {
   isKeep: boolean
@@ -98,7 +100,12 @@ const LawyerVideoDetail = () => {
       <div className={styles['lawyer-video-detail']}>
         <DetailHeader title={data?.title || ''} className={styles['lawyer-video-detail-header']} />
         <div className={styles['lawyer-video-detail-player']}>
-          <VideoPlayerContainer videoUrl={data?.source || ''} tags={data?.tags || []} />
+          <YoutubePlayer url={data?.source || ''} height={506} />
+          <div className={styles['lawyer-video-detail-tags']}>
+            {(data?.tags as unknown as Tag[])?.map((tag: Tag) => (
+              <span key={tag.id}>#{tag.name}</span>
+            ))}
+          </div>
         </div>
         <div className={styles['lawyer-video-detail-info']}>
           <h2 className={styles['lawyer-video-detail-title']}>{data?.title}</h2>

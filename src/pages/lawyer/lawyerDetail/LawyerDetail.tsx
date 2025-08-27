@@ -89,6 +89,7 @@ const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
           videoList={lawyerDetail?.videoCases ?? []}
           lawyerId={lawyerDetail?.lawyerId ?? Number(lawyerId)}
           lawyerName={lawyerDetail?.lawyerName ?? ''}
+          className={styles['lawyer-detail__video-section']}
         />
         <LawyerLegalKnowledge
           ref={legalKnowledgeRef}

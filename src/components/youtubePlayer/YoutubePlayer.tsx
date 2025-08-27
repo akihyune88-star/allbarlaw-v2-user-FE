@@ -7,6 +7,7 @@ type YoutubePlayerProps = {
   videoId?: string
   url?: string
   width?: string | number
+  height?: string | number
   autoplay?: boolean
   controls?: boolean
   className?: string
@@ -20,6 +21,7 @@ const YoutubePlayer = ({
   videoId,
   url,
   width,
+  height,
   autoplay = false,
   controls = true,
   className,
@@ -64,8 +66,11 @@ const YoutubePlayer = ({
     },
   }
 
-  // 컨테이너 스타일 - width가 지정되면 해당 값 사용, 아니면 기본 CSS 사용
-  const containerStyle: React.CSSProperties = width ? { width, minWidth: width, maxWidth: width } : {}
+  // 컨테이너 스타일 - width/height가 지정되면 해당 값 사용, 아니면 기본 CSS 사용
+  const containerStyle: React.CSSProperties = {
+    ...(width && { width, minWidth: width, maxWidth: width }),
+    ...(height && { height, minHeight: height, maxHeight: height }),
+  }
 
   const handleReady = () => {
     setIsLoading(false)
