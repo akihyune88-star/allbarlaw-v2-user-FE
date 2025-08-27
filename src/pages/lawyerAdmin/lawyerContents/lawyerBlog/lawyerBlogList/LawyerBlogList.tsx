@@ -109,7 +109,7 @@ const LawyerBlogList = () => {
     take: 10,
     orderBy: sortCase === 'all' ? 'createdAt' : (sortCase as 'createdAt' | 'viewCount' | 'likesCount'),
     lawyerId: lawyerId || undefined,
-    search: search || undefined,
+    search: search.trim() || undefined,
   })
 
   useInfiniteScroll({
@@ -122,10 +122,7 @@ const LawyerBlogList = () => {
     console.log(blogCaseId)
   }
 
-  const onSearch = (search: string) => {
-    console.log('onSearch', search)
-    setSearch(search)
-  }
+  const onSearch = (search: string) => setSearch(search)
 
   return (
     <div className={styles['lawyer-blog-list']}>
