@@ -51,6 +51,10 @@ import {
   Mypage,
   RequestBaroTalk,
 } from '@/pages'
+import LawyerVideoLayout from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoLayout/LawyerVideoLayout'
+import LawyerVideoList from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoList/LawyerVideoList'
+import LawyerVideoDetail from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoDetail/LawyerVideoDetail'
+import LawyerVideoEditor from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoEditor/LawyerVideoEditor'
 import LawyerChat from '@/pages/lawyerAdmin/chat/lawyerChat/LawyerChat'
 import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
 import FindId from '@/pages/auth/findId/FindId'
@@ -361,6 +365,24 @@ const router = createBrowserRouter([
           {
             path: ROUTER.LAWYER_ADMIN_CONTENT_BLOG_EDIT,
             element: <LawyerBlogEditor />,
+          },
+        ],
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CONTENT_VIDEO,
+        element: <LawyerVideoLayout />,
+        children: [
+          {
+            path: '',
+            element: <LawyerVideoList />,
+          },
+          {
+            path: `${ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_DETAIL}/:videoCaseId`,
+            element: <LawyerVideoDetail />,
+          },
+          {
+            path: ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_EDIT,
+            element: <LawyerVideoEditor />,
           },
         ],
       },

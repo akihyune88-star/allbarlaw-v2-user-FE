@@ -1,5 +1,3 @@
-import LawfirmFilter from '@/container/lawfirm/lawfirmFilter/LawfirmFilter'
-
 export const ROUTER = {
   // Auth
   AUTH: '/auth',
@@ -64,4 +62,9 @@ export const ROUTER = {
   LAWYER_ADMIN_CONTENT_BLOG_LIST: '/lawyer-admin/content/blog/list',
   LAWYER_ADMIN_CONTENT_BLOG_DETAIL: '/lawyer-admin/content/blog/detail',
   LAWYER_ADMIN_CONTENT_BLOG_EDIT: '/lawyer-admin/content/blog/edit',
+  
+  LAWYER_ADMIN_CONTENT_VIDEO: '/lawyer-admin/content/video',
+  LAWYER_ADMIN_CONTENT_VIDEO_LIST: '/lawyer-admin/content/video/list',
+  LAWYER_ADMIN_CONTENT_VIDEO_DETAIL: '/lawyer-admin/content/video/detail',
+  LAWYER_ADMIN_CONTENT_VIDEO_EDIT: '/lawyer-admin/content/video/edit',
 } as const

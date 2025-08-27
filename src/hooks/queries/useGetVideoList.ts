@@ -25,7 +25,14 @@ export const useGetVideoList = (request: VideoListRequest) => {
 // 무한 스크롤용 훅
 export const useInfiniteVideoList = (request: Omit<VideoListRequest, 'cursor' | 'cursorId'>) => {
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: [QUERY_KEY.VIDEO_LIST, 'infinite', request.subcategoryId, request.orderBy],
+    queryKey: [
+      QUERY_KEY.VIDEO_LIST,
+      'infinite',
+      request.subcategoryId,
+      request.orderBy,
+      request.search,
+      request.lawyerId,
+    ],
     queryFn: ({ pageParam }) =>
       videoService.getVideoList({
         ...request,
@@ -70,36 +77,31 @@ export const useVideoKeep = ({
     mutationFn: (videoCaseId: number) => videoService.changeVideoKeep(videoCaseId),
     onSuccess: (data: VideoKeepResponse, videoCaseId: number) => {
       // 무한 스크롤 쿼리 캐시 업데이트
-      queryClient.setQueriesData(
-        { queryKey: [QUERY_KEY.VIDEO_LIST, 'infinite'] },
-        (oldData: any) => {
-          if (!oldData || !oldData.pages) return oldData
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page: any) => ({
-              ...page,
-              data: page.data?.map((video: any) =>
+      queryClient.setQueriesData({ queryKey: [QUERY_KEY.VIDEO_LIST, 'infinite'] }, (oldData: any) => {
+        if (!oldData || !oldData.pages) return oldData
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page: any) => ({
+            ...page,
+            data:
+              page.data?.map((video: any) =>
                 video.videoCaseId === videoCaseId ? { ...video, isKeep: data.isKeep } : video
               ) || [],
-            })),
-          }
+          })),
         }
-      )
-      
+      })
+
       // 일반 리스트 쿼리 캐시 업데이트
-      queryClient.setQueriesData(
-        { queryKey: [QUERY_KEY.VIDEO_LIST] },
-        (oldData: any) => {
-          if (!oldData || !oldData.data) return oldData
-          return {
-            ...oldData,
-            data: oldData.data.map((video: any) =>
-              video.videoCaseId === videoCaseId ? { ...video, isKeep: data.isKeep } : video
-            ),
-          }
+      queryClient.setQueriesData({ queryKey: [QUERY_KEY.VIDEO_LIST] }, (oldData: any) => {
+        if (!oldData || !oldData.data) return oldData
+        return {
+          ...oldData,
+          data: oldData.data.map((video: any) =>
+            video.videoCaseId === videoCaseId ? { ...video, isKeep: data.isKeep } : video
+          ),
         }
-      )
-      
+      })
+
       onSuccess(data)
     },
     onError: () => {
