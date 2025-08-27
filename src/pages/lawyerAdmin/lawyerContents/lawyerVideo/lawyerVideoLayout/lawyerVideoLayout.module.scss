@@ -5,6 +5,11 @@
 
   padding: 1.5rem;
   gap: 1.5rem;
+
+  section {
+    flex: 1;
+    min-width: 0;
+  }
 }
 
 .lawyer-video-layout-side-bar {

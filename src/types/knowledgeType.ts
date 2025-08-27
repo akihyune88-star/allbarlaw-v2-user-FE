@@ -9,6 +9,8 @@ export type KnowledgeListRequest = {
   cursorId?: number
   orderBy?: SortType
   sort?: 'asc' | 'desc'
+  search?: string
+  lawyerId?: number
 }
 
 export type KnowledgeDetailRequest = {

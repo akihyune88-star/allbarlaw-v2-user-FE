@@ -12,6 +12,7 @@ import { useLawyerDetailForMe } from '@/hooks/queries/useLawyer'
 import { ROUTER } from '@/routes/routerConstant'
 import VideoPlayerContainer from '@/container/video/videoPlayerContainer/VideoPlayerContainer'
 import VideoSummary from '@/container/video/videoSummary/VideoSummary'
+import DetailHeader from '@/components/detailHeader/DetailHeader'
 
 type VideoNavigationBarProps = {
   isKeep: boolean
@@ -45,7 +46,7 @@ const LawyerVideoDetail = () => {
   const { data } = useGetVideoDetail({ videoCaseId: Number(videoCaseId) })
   const { data: lawyerBasicInfo } = useLawyerDetailForMe()
   const [isKeep, setIsKeep] = useState(false)
-  
+
   const { mutate: changeVideoKeep } = useVideoKeep({
     onSuccess: data => {
       setIsKeep(data.isKeep)
@@ -68,13 +69,13 @@ const LawyerVideoDetail = () => {
   }
 
   const handleVideoLink = () => {
-    window.open(data?.sourceUrl || '', '_blank')
+    window.open(data?.source || '', '_blank')
   }
 
   const handleExcelUpload = () => {
     console.log('ExcelUpload')
   }
-  
+
   const handleDirectUpload = () => {
     navigate(ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_EDIT)
   }
@@ -95,25 +96,15 @@ const LawyerVideoDetail = () => {
         </div>
       </HeaderPortal>
       <div className={styles['lawyer-video-detail']}>
+        <DetailHeader title={data?.title || ''} className={styles['lawyer-video-detail-header']} />
         <div className={styles['lawyer-video-detail-player']}>
-          <VideoPlayerContainer 
-            videoUrl={data?.videoUrl || ''}
-            thumbnailUrl={data?.thumbnailUrl || ''}
-          />
+          <VideoPlayerContainer videoUrl={data?.source || ''} tags={data?.tags || []} />
         </div>
         <div className={styles['lawyer-video-detail-info']}>
           <h2 className={styles['lawyer-video-detail-title']}>{data?.title}</h2>
-          <VideoSummary 
-            summaryContent={data?.summaryContent || ''}
-            tags={data?.tags || []}
-          />
+          <VideoSummary summary={data?.summaryContent || ''} />
         </div>
-        <VideoNavigationBar 
-          isKeep={isKeep} 
-          onSave={handleSave} 
-          onShare={handleShare} 
-          onVideoLink={handleVideoLink} 
-        />
+        <VideoNavigationBar isKeep={isKeep} onSave={handleSave} onShare={handleShare} onVideoLink={handleVideoLink} />
       </div>
     </>
   )

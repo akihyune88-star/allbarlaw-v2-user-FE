@@ -126,6 +126,7 @@ const LawyerBlogList = () => {
   }
 
   const onSearch = (search: string) => setSearch(search)
+
   const handleExcelUpload = () => {
     console.log('ExcelUpload')
   }
@@ -158,12 +159,21 @@ const LawyerBlogList = () => {
           onSearch={onSearch}
         />
         <section className={styles['blog-list']} aria-label='블로그 목록'>
-          {blogList.map((blogItem, idx) => (
-            <React.Fragment key={blogItem.blogCaseId}>
-              <BlogItem type='regular' item={blogItem} onClick={() => onClickItem(blogItem.blogCaseId)} />
-              {isMobile || (idx !== blogList.length - 1 && <Divider padding={0} />)}
-            </React.Fragment>
-          ))}
+          {blogList.length > 0 ? (
+            blogList.map((blogItem, idx) => (
+              <React.Fragment key={blogItem.blogCaseId}>
+                <BlogItem type='regular' item={blogItem} onClick={() => onClickItem(blogItem.blogCaseId)} />
+                {isMobile || (idx !== blogList.length - 1 && <Divider padding={0} />)}
+              </React.Fragment>
+            ))
+          ) : (
+            <div className={styles['blog-list-empty']}>
+              <p>등록된 블로그 글이 없습니다.</p>
+              <button type='button' className={styles['blog-list-empty-button']} onClick={handleDirectUpload}>
+                블로그 글 등록하기
+              </button>
+            </div>
+          )}
         </section>
       </div>
     </>

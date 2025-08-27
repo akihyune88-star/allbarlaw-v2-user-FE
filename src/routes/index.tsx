@@ -55,6 +55,9 @@ import LawyerVideoLayout from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/la
 import LawyerVideoList from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoList/LawyerVideoList'
 import LawyerVideoDetail from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoDetail/LawyerVideoDetail'
 import LawyerVideoEditor from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoEditor/LawyerVideoEditor'
+import LawyerLegalKnowledgeLayout from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeLayout/LawyerLegalKnowledgeLayout'
+import LawyerLegalKnowledgeList from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeList/LawyerLegalKnowledgeList'
+import LawyerLegalKnowledgeDetail from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeDetail/LawyerLegalKnowledgeDetail'
 import LawyerChat from '@/pages/lawyerAdmin/chat/lawyerChat/LawyerChat'
 import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
 import FindId from '@/pages/auth/findId/FindId'
@@ -383,6 +386,20 @@ const router = createBrowserRouter([
           {
             path: ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_EDIT,
             element: <LawyerVideoEditor />,
+          },
+        ],
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE,
+        element: <LawyerLegalKnowledgeLayout />,
+        children: [
+          {
+            path: '',
+            element: <LawyerLegalKnowledgeList />,
+          },
+          {
+            path: `${ROUTER.LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE_DETAIL}/:knowledgeId`,
+            element: <LawyerLegalKnowledgeDetail />,
           },
         ],
       },

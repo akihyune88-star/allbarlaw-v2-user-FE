@@ -67,4 +67,8 @@ export const ROUTER = {
   LAWYER_ADMIN_CONTENT_VIDEO_LIST: '/lawyer-admin/content/video/list',
   LAWYER_ADMIN_CONTENT_VIDEO_DETAIL: '/lawyer-admin/content/video/detail',
   LAWYER_ADMIN_CONTENT_VIDEO_EDIT: '/lawyer-admin/content/video/edit',
+
+  LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE: '/lawyer-admin/content/legal-knowledge',
+  LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE_LIST: '/lawyer-admin/content/legal-knowledge/list',
+  LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE_DETAIL: '/lawyer-admin/content/legal-knowledge/detail',
 } as const

@@ -145,23 +145,36 @@ const LawyerVideoList = () => {
           onSearch={onSearch}
         />
         <section className={styles['video-list']} aria-label='영상 목록'>
-          {videoList.map((videoItem, idx) => (
-            <React.Fragment key={videoItem.videoCaseId}>
-              <VideoHorizon
-                thumbnailUrl={videoItem.thumbnail}
-                title={videoItem.title}
-                videoCaseId={videoItem.videoCaseId}
-                isKeep={videoItem.isKeep}
-                lawyerName={videoItem.lawyerName}
-                lawfirmName={videoItem.lawfirmName}
-                channelName={videoItem.channelName}
-                channelThumbnail={videoItem.channelThumbnail}
-                summaryContents={videoItem.summaryContent}
-                onClick={() => onClickItem(videoItem.videoCaseId)}
-              />
-              {isMobile || (idx !== videoList.length - 1 && <Divider padding={24} />)}
-            </React.Fragment>
-          ))}
+          {videoList.length > 0 ? (
+            videoList.map((videoItem, idx) => (
+              <React.Fragment key={videoItem.videoCaseId}>
+                <VideoHorizon
+                  thumbnailUrl={videoItem.thumbnail}
+                  title={videoItem.title}
+                  videoCaseId={videoItem.videoCaseId}
+                  isKeep={videoItem.isKeep}
+                  lawyerName={videoItem.lawyerName}
+                  lawfirmName={videoItem.lawfirmName}
+                  channelName={videoItem.channelName}
+                  channelThumbnail={videoItem.channelThumbnail}
+                  summaryContents={videoItem.summaryContent}
+                  onClick={() => onClickItem(videoItem.videoCaseId)}
+                />
+                {isMobile || (idx !== videoList.length - 1 && <Divider padding={24} />)}
+              </React.Fragment>
+            ))
+          ) : (
+            <div className={styles['video-list-empty']}>
+              <p>등록된 영상이 없습니다.</p>
+              <button 
+                type='button' 
+                className={styles['video-list-empty-button']}
+                onClick={handleDirectUpload}
+              >
+                영상 등록하기
+              </button>
+            </div>
+          )}
         </section>
       </div>
     </>

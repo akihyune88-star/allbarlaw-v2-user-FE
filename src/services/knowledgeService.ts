@@ -8,7 +8,7 @@ import {
 
 export const knowledgeService = {
   getKnowledgeList: async (request: KnowledgeListRequest) => {
-    const { subcategoryId, take, cursor, cursorId, orderBy } = request
+    const { subcategoryId, take, cursor, cursorId, orderBy, search, lawyerId } = request
 
     // 쿼리 파라미터 객체 생성 (값이 있을 때만 포함)
     const params = new URLSearchParams()
@@ -16,6 +16,8 @@ export const knowledgeService = {
     if (cursor !== undefined) params.append('cursor', cursor.toString())
     if (cursorId !== undefined) params.append('cursorId', cursorId.toString())
     if (orderBy !== undefined) params.append('orderBy', orderBy)
+    if (search !== undefined) params.append('search', search)
+    if (lawyerId !== undefined) params.append('lawyerId', lawyerId.toString())
 
     // 쿼리스트링 생성
     const queryString = params.toString()
