@@ -36,10 +36,19 @@
   font-size: 1.125rem;
 }
 
-.legal-knowledge-detail {
+.detail-header {
   background-color: $color-white;
+  padding: 1.5rem;
+  height: 7.5rem;
+}
+
+.legal-knowledge-detail {
   border-radius: 0.5rem;
   overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 
   &-content {
     padding: 2rem;
@@ -62,6 +71,14 @@
       line-height: 1.8;
       color: $color-text-black;
     }
+  }
+
+  .consultation-content-card {
+    gap: 0.5rem;
+  }
+
+  .lawyer-response {
+    margin-top: 0.5rem;
   }
 
   &-answers {

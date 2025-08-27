@@ -18,9 +18,10 @@ type LawyerResponseProps = {
     lawyerProfileImage: string
     content: string
   }[]
+  className?: string
 }
 
-const LawyerResponse = ({ lawyers }: LawyerResponseProps) => {
+const LawyerResponse = ({ lawyers, className }: LawyerResponseProps) => {
   const [_isReportModalOpen, setIsReportModalOpen] = useState(false)
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
@@ -35,7 +36,7 @@ const LawyerResponse = ({ lawyers }: LawyerResponseProps) => {
   }
 
   return (
-    <section className={styles['lawyer-response']}>
+    <section className={`${styles['lawyer-response']} ${className || ''}`}>
       {lawyers.map(lawyer => (
         <Card key={lawyer.lawyerId} shadow={false} border={false} className={styles['lawyer-response-card']}>
           <Card.Header className={styles['card-header']}>
