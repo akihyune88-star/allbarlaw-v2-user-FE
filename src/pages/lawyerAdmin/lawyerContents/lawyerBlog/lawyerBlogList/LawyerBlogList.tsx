@@ -10,8 +10,10 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import BlogItem from '@/components/blogItem/BlogItem'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Divider from '@/components/divider/Divider'
-// import { ROUTER } from '@/routes/routerConstant'
 import SvgIcon from '@/components/SvgIcon'
+import { ROUTER } from '@/routes/routerConstant'
+import HeaderPortal from '@/components/headerPortal/HeaderPortal'
+import { useLawyerDetailForMe } from '@/hooks/queries/useLawyer'
 
 interface BlogListHeaderProps {
   sortCase: SortType
@@ -99,8 +101,10 @@ const BlogListHeader = ({ sortCase, setSortCase, search, setSearch, blogCount, o
 
 const LawyerBlogList = () => {
   const { selectedSubcategoryId } = useOutletContext<LawyerBlogLayoutContext>()
+  const navigate = useNavigate()
   const [sortCase, setSortCase] = useState<SortType>('createdAt')
   const [search, setSearch] = useState<string>('')
+  const { data: lawyerBasicInfo } = useLawyerDetailForMe()
   const lawyerId = getLawyerIdFromToken(sessionStorage.getItem(LOCAL.TOKEN) || localStorage.getItem(LOCAL.TOKEN) || '')
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
@@ -119,30 +123,51 @@ const LawyerBlogList = () => {
   })
 
   const onClickItem = (blogCaseId: number) => {
-    console.log(blogCaseId)
+    navigate(`${ROUTER.LAWYER_ADMIN_CONTENT_BLOG_DETAIL}/${blogCaseId}`)
   }
 
   const onSearch = (search: string) => setSearch(search)
+  const handleExcelUpload = () => {
+    console.log('ExcelUpload')
+  }
+  const handleDirectUpload = () => {
+    navigate(ROUTER.LAWYER_ADMIN_CONTENT_BLOG_EDIT)
+  }
 
   return (
-    <div className={styles['lawyer-blog-list']}>
-      <BlogListHeader
-        sortCase={sortCase}
-        setSortCase={setSortCase}
-        search={search}
-        setSearch={setSearch}
-        blogCount={blogList.length}
-        onSearch={onSearch}
-      />
-      <section className={styles['blog-list']} aria-label='블로그 목록'>
-        {blogList.map((blogItem, idx) => (
-          <React.Fragment key={blogItem.blogCaseId}>
-            <BlogItem type='regular' item={blogItem} onClick={() => onClickItem(blogItem.blogCaseId)} />
-            {isMobile || (idx !== blogList.length - 1 && <Divider padding={0} />)}
-          </React.Fragment>
-        ))}
-      </section>
-    </div>
+    <>
+      <HeaderPortal>
+        <div className={styles.headerContent}>
+          <h1 className={styles.headerTitle}>{lawyerBasicInfo?.lawyerName}변호사님이 등록한 블로그 글입니다.</h1>
+          <div className={styles.headerButtonWrapper}>
+            <button type='button' onClick={handleExcelUpload}>
+              블로그 글 등록(Excel)
+            </button>
+            <button type='button' onClick={handleDirectUpload}>
+              블로그 글 등록(직접)
+            </button>
+          </div>
+        </div>
+      </HeaderPortal>
+      <div className={styles['lawyer-blog-list']}>
+        <BlogListHeader
+          sortCase={sortCase}
+          setSortCase={setSortCase}
+          search={search}
+          setSearch={setSearch}
+          blogCount={blogList.length}
+          onSearch={onSearch}
+        />
+        <section className={styles['blog-list']} aria-label='블로그 목록'>
+          {blogList.map((blogItem, idx) => (
+            <React.Fragment key={blogItem.blogCaseId}>
+              <BlogItem type='regular' item={blogItem} onClick={() => onClickItem(blogItem.blogCaseId)} />
+              {isMobile || (idx !== blogList.length - 1 && <Divider padding={0} />)}
+            </React.Fragment>
+          ))}
+        </section>
+      </div>
+    </>
   )
 }
 

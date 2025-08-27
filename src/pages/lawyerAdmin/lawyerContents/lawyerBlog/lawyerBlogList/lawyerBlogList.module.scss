@@ -1,3 +1,39 @@
+.headerContent {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerTitle {
+  font-size: 1.5rem;
+  font-weight: $font-weight-extra-bold;
+  color: $color-text-black;
+}
+
+.headerButtonWrapper {
+  display: flex;
+  gap: 0.6875rem;
+
+  button {
+    padding: 0.7188rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+
+  button:last-child {
+    background-color: $color-green-01;
+    color: $color-white;
+    font-weight: $font-weight-semibold;
+  }
+
+  button:first-child {
+    background-color: $color-white;
+    color: $color-text-black;
+    font-weight: $font-weight-semibold;
+    border: 1px solid $color-line-borderbox;
+  }
+}
+
 .lawyer-blog-list {
   border-radius: 0.5rem;
   display: flex;

@@ -8,11 +8,12 @@ type DetailHeaderProps = {
   onShare?: () => void
   onSave?: () => void
   isKeep?: boolean
+  className?: string
 }
 
-const DetailHeader = ({ title, onShare, onSave, isKeep }: DetailHeaderProps) => {
+const DetailHeader = ({ title, onShare, onSave, isKeep, className }: DetailHeaderProps) => {
   return (
-    <div className={styles['detail-header']}>
+    <div className={`${styles['detail-header']} ${className}`}>
       <h1>{title}</h1>
       <div className={styles['button-wrapper']}>
         {onShare && (

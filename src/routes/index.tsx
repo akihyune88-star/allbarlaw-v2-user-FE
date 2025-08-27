@@ -355,7 +355,7 @@ const router = createBrowserRouter([
             element: <LawyerBlogList />,
           },
           {
-            path: ROUTER.LAWYER_ADMIN_CONTENT_BLOG_DETAIL,
+            path: `${ROUTER.LAWYER_ADMIN_CONTENT_BLOG_DETAIL}/:blogCaseId`,
             element: <LawyerBlogDetail />,
           },
           {
