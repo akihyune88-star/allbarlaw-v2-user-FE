@@ -10,6 +10,7 @@ interface SideBarProps {
   onMainCategoryClick: (_id: number) => void
   onSubcategoryClick: (_id: number) => void
   alwaysExpanded?: boolean // 항상 펼쳐보기 옵션
+  className?: string
 }
 
 interface CategoryItemProps {
@@ -75,9 +76,10 @@ const SideBar = ({
   onMainCategoryClick,
   onSubcategoryClick,
   alwaysExpanded = false,
+  className,
 }: SideBarProps) => {
   return (
-    <nav className={styles.container} aria-label='카테고리 네비게이션'>
+    <nav className={`${styles.container} ${className}`} aria-label='카테고리 네비게이션'>
       <ul className={styles['category-list']}>
         {categories.map(category => (
           <CategoryItem

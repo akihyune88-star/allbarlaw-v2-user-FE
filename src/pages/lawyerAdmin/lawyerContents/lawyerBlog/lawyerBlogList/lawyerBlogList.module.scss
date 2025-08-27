@@ -1,0 +1,153 @@
+.lawyer-blog-list {
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.blog-list {
+  padding: 0 1.5rem;
+  background-color: $color-white;
+  border-radius: 0.5rem;
+}
+
+.blog-list-header {
+  padding: 1.875rem 1.625rem 1.3125rem;
+  background-color: $color-white;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.625rem;
+
+  &-title {
+    font-size: 1.5rem;
+    font-weight: $font-weight-extra-bold;
+    color: $color-text-black;
+    margin: 0;
+  }
+
+  &-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  &-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  &-select {
+    padding: 0.875rem 2.5rem 0.875rem 1.5rem;
+    min-width: 10.75rem;
+
+    border: 1px solid $color-line-borderbox;
+    border-radius: 0.5rem;
+
+    font-size: 1rem;
+    font-weight: $font-weight-semibold;
+    color: $color-text-caption;
+
+    background-color: $color-white;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236e6e6e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: $color-green-01;
+    }
+
+    &:hover {
+      border-color: $color-neutral-400;
+    }
+  }
+
+  &-search {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 16.25rem;
+    flex-shrink: 0;
+
+    &-input {
+      width: 100%;
+      padding: 0.875rem 1rem 0.875rem 1.5rem;
+
+      border: 1px solid $color-green-01;
+      border-radius: 0.375rem;
+
+      font-size: 1rem;
+      color: $color-text-black;
+      background-color: $color-white;
+
+      &::placeholder {
+        color: $color-text-caption;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $color-green-01;
+        box-shadow: 0 0 0 2px rgba($color-green-01, 0.1);
+      }
+    }
+
+    &-button {
+      position: absolute;
+      right: 0.75rem;
+      padding: 0.25rem;
+      background: transparent;
+      border: none;
+      color: $color-icon-green;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &-actions-right {
+    display: flex;
+    align-items: center;
+    gap: 0.6875rem;
+    flex-shrink: 0;
+  }
+
+  &-count {
+    width: 7.125rem;
+    text-align: center;
+
+    font-size: 0.875rem;
+    font-weight: $font-weight-extra-bold;
+
+    color: $color-text-black;
+    white-space: nowrap;
+  }
+
+  &-sort-buttons {
+    display: flex;
+    gap: 0.6875rem;
+  }
+
+  &-sort-button {
+    background-color: transparent;
+    color: $color-text-index;
+    font-weight: $font-weight-regular;
+    width: 3.875rem;
+
+    &.active {
+      font-weight: $font-weight-extra-bold;
+    }
+  }
+}

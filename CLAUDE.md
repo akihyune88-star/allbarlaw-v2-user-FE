@@ -335,6 +335,92 @@ useEffect(() => {
 - 권한 기반 접근 제어
 - 통계 및 리포팅 기능
 
+## 🎨 프로젝트 색상 변수
+
+### 주요 색상 (Key Colors)
+```scss
+$color-green-01: #20bf62;    // 메인 그린
+$color-green-02: #23735d;    // 다크 그린
+$color-green-hover: #20bf62; // 호버 그린
+```
+
+### 텍스트 색상
+```scss
+$color-text-black: #333333;   // 메인 텍스트
+$color-text-index: #6e6e6e;   // 보조 텍스트
+$color-text-caption: #999999; // 캡션 텍스트
+```
+
+### 아이콘 색상
+```scss
+$color-icon-black: #333333;      // 블랙 아이콘
+$color-icon-gray: #dddddd;       // 그레이 아이콘
+$color-icon-gray-50: #bebebe;    // 연한 그레이 아이콘
+$color-icon-darkgray: #6a6a6a;   // 진한 그레이 아이콘
+$color-icon-green: #20bf62;      // 그린 아이콘
+$color-icon-puregreen: #4cd65f;  // 퓨어 그린
+$color-icon-lightgreen: #c3e85b; // 라이트 그린
+$color-icon-darkgreen: #23735d;  // 다크 그린
+```
+
+### 배경 색상
+```scss
+$color-bg-black: #000000;         // 블랙 배경
+$color-bg-gray-01: #eeeeee;       // 그레이 배경 1
+$color-bg-gray-02: #f6f7fb;       // 그레이 배경 2
+$color-bg-gray-03: #f7f7f7;       // 그레이 배경 3
+$color-bg-gray-disable: #c7c7c7;  // 비활성화 배경
+$color-bg-gradient-01: #c5e1d1;   // 그라데이션 배경
+```
+
+### 기본 색상
+```scss
+$color-white: #ffffff;       // 흰색
+$color-02-orange: #e3872c;   // 오렌지
+$color-03-sky: #2cd1e3;      // 스카이 블루
+$color-04-blue: #2c69e3;     // 블루
+$color-07-black: #504e4f;    // 블랙
+```
+
+### 선/테두리 색상
+```scss
+$color-line-divider: #e6e6e6;      // 구분선
+$color-line-borderbox: #d9d9d9;    // 박스 테두리
+```
+
+### 중립 색상 (Neutral)
+```scss
+$color-neutral-50: #f9fafb;
+$color-neutral-100: #f3f4f6;
+$color-neutral-200: #e5e7eb;
+$color-neutral-300: #d1d5db;
+$color-neutral-400: #9ca3af;
+$color-neutral-500: #6b7280;
+$color-neutral-600: #4b5563;
+$color-neutral-700: #374151;
+$color-neutral-800: #1f2937;
+$color-neutral-900: #111827;
+```
+
+### 기능 색상
+```scss
+$color-success: #10b981;  // 성공
+$color-warning: #f59e0b;  // 경고
+$color-error: #ff0000;    // 에러
+$color-info: #3b82f6;     // 정보
+```
+
+### 사용 예시
+- **버튼**: 활성화 시 `$color-green-01` 사용
+- **테두리**: 기본 `$color-line-borderbox`, 포커스 시 `$color-green-01`
+- **텍스트**: 메인 `$color-text-black`, 보조 `$color-text-index`
+- **배경**: 카드 배경 `$color-white`, 섹션 배경 `$color-bg-gray-02`
+
+### 주의사항
+- 새로운 색상 추가 금지 - 반드시 정의된 변수 사용
+- 인라인 색상 사용 금지
+- 색상 변수 직접 수정 금지
+
 ---
 
 이 문서는 백엔드 API 검토 및 프론트엔드 구현을 위한 컨텍스트 참조용으로 작성되었습니다.

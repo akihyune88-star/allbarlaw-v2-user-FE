@@ -26,7 +26,7 @@ export const useGetBlogList = (request: BlogListRequest) => {
 // 무한 스크롤용 훅
 export const useInfiniteBlogList = (request: Omit<BlogListRequest, 'cursor' | 'cursorId'>) => {
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: [QUERY_KEY.BLOG_LIST, 'infinite', request.subcategoryId, request.orderBy, request.take],
+    queryKey: [QUERY_KEY.BLOG_LIST, 'infinite', request.subcategoryId, request.orderBy, request.take, request.search],
     queryFn: ({ pageParam }) =>
       blogService.getBlogList({
         ...request,

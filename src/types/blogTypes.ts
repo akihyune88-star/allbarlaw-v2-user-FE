@@ -12,6 +12,8 @@ export type BlogListRequest = {
   cursorId?: number
   orderBy?: SortType
   sort?: 'asc' | 'desc'
+  lawyerId?: number
+  search?: string
 }
 
 export type RandomBlogListRequest = {

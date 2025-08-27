@@ -25,6 +25,8 @@ const LawyerAdminLayout = () => {
         navigate(ROUTER.LAWYER_ADMIN_CHAT_LIST)
         break
       case 3:
+        navigate(ROUTER.LAWYER_ADMIN_CONTENT_BLOG)
+        break
     }
   }
 

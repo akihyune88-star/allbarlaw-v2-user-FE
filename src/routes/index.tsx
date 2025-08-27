@@ -41,6 +41,10 @@ import {
   Chat,
   ConsultationContentForm,
   LawyerAdminLayout,
+  LawyerBlogDetail,
+  LawyerBlogEditor,
+  LawyerBlogLayout,
+  LawyerBlogList,
   LawyerChatList,
   LawyerSignupForm,
   LegalTermDetail,
@@ -339,6 +343,24 @@ const router = createBrowserRouter([
           {
             path: ROUTER.LAWYER_ADMIN_LAWYER_EDIT_ACTIVITY,
             element: <LawyerEditActivity />,
+          },
+        ],
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CONTENT_BLOG,
+        element: <LawyerBlogLayout />,
+        children: [
+          {
+            path: '',
+            element: <LawyerBlogList />,
+          },
+          {
+            path: ROUTER.LAWYER_ADMIN_CONTENT_BLOG_DETAIL,
+            element: <LawyerBlogDetail />,
+          },
+          {
+            path: ROUTER.LAWYER_ADMIN_CONTENT_BLOG_EDIT,
+            element: <LawyerBlogEditor />,
           },
         ],
       },

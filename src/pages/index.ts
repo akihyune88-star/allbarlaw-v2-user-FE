@@ -28,6 +28,12 @@ import BlogDetail from './blog/BlogDetail'
 import VideoLayout from './video/video/Video'
 import VideoDetail from './video/VideoDetail'
 
+//변호사어드민 블로그
+import LawyerBlogLayout from './lawyerAdmin/lawyerContents/lawyerBlog/lawyerBlogLayout/LawyerBlogLayout'
+import LawyerBlogList from './lawyerAdmin/lawyerContents/lawyerBlog/lawyerBlogList/LawyerBlogList'
+import LawyerBlogDetail from './lawyerAdmin/lawyerContents/lawyerBlog/lawyerBlogDetail/LawyerBlogDetail'
+import LawyerBlogEditor from './lawyerAdmin/lawyerContents/lawyerBlog/lawyerBlogEditor/LawyerBlogEditor'
+
 export {
   Mypage,
   LawyerSignupForm,
@@ -44,4 +50,8 @@ export {
   BlogDetail,
   VideoLayout,
   VideoDetail,
+  LawyerBlogLayout,
+  LawyerBlogList,
+  LawyerBlogDetail,
+  LawyerBlogEditor,
 }
