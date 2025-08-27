@@ -55,4 +55,6 @@ export const ROUTER = {
   LAWYER_ADMIN_LAWYER_DETAIL: '/lawyer-admin/lawyer-detail',
   LAWYER_ADMIN_LAWYER_EDIT: '/lawyer-admin/lawyer-edit',
   LAWYER_ADMIN_LAWYER_EDIT_BASIC_INFO: '/lawyer-admin/lawyer-edit/basic-info',
+  LAWYER_ADMIN_LAWYER_EDIT_ACTIVITY: '/lawyer-admin/lawyer-edit/activity',
+  LAWYER_ADMIN_LAWYER_EDIT_CAREER: '/lawyer-admin/lawyer-edit/career',
 } as const

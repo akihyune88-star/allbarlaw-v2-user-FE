@@ -3,6 +3,7 @@ import {
   Lawyer,
   LawyerActiveRequest,
   LawyerActiveResponse,
+  LawyerCareer,
   LawyerDetailResponse,
   LawyerKeepResponse,
   LawyerListRequest,
@@ -126,6 +127,18 @@ export const lawyerService = {
 
   signUpLawyer: async (request: LawyerSignUpRequest) => {
     const response = await instance.post<LawyerSignUpResponse>(`/lawyer/signup`, request)
+    return response.data
+  },
+
+  // 변호사 경력 조회
+  getLawyerCareer: async (lawyerId: number) => {
+    const response = await instance.get<LawyerCareer[]>(`/lawyer/${lawyerId}/career`)
+    return response.data
+  },
+
+  // 변호사 경력 업데이트
+  updateLawyerCareer: async (careerData: LawyerCareer[]) => {
+    const response = await instance.put<LawyerCareer[]>(`/lawyer/me/career`, careerData)
     return response.data
   },
 }

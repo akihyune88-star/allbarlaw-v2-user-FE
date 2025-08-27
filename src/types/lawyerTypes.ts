@@ -63,11 +63,10 @@ type LawyerStatistics = {
   totalSiteVisitCount: number
 }
 
-type LawyerCareer = {
-  id: number
-  categoryName: string
-  content: string
-  displayOrder: number
+export type LawyerCareer = {
+  lawyerCareerCategoryName: string
+  lawyerCareerContent: string
+  lawyerCareerDisplayOrder: number
 }
 
 type LawyerActivity = {

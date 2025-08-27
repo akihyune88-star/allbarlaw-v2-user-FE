@@ -7,6 +7,7 @@ import {
   LawyerListRequest,
   LawyerSignUpRequest,
   RandomLawyerListRequest,
+  LawyerCareer,
 } from '@/types/lawyerTypes'
 
 export const useLawyerList = (request: LawyerListRequest) => {
@@ -142,6 +143,34 @@ export const useLawyerSignUp = ({ onSuccess, onError }: { onSuccess: () => void;
     },
     onError: () => {
       onError()
+    },
+  })
+}
+
+// 변호사 경력 조회 훅
+export const useLawyerCareer = (lawyerId?: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_DETAIL, 'career', lawyerId],
+    queryFn: () => lawyerService.getLawyerCareer(lawyerId!),
+    enabled: !!lawyerId,
+  })
+}
+
+// 변호사 경력 업데이트 훅
+export const useUpdateLawyerCareer = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void
+  onError?: (error: any) => void
+}) => {
+  return useMutation({
+    mutationFn: (careerData: LawyerCareer[]) => lawyerService.updateLawyerCareer(careerData),
+    onSuccess: () => {
+      onSuccess?.()
+    },
+    onError: error => {
+      onError?.(error)
     },
   })
 }
