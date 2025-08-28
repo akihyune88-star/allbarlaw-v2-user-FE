@@ -44,8 +44,11 @@ const LawyerBlogEditor = () => {
   React.useEffect(() => {
     if (blogAiSummary && shouldFetchSummary) {
       if (blogAiSummary.title) setBlogTitle(blogAiSummary.title)
-      if (blogAiSummary.content) setBlogContent(blogAiSummary.content)
-      if (blogAiSummary.keywords) setBlogKeywords(blogAiSummary.keywords.join(', '))
+      if (blogAiSummary.text) setBlogContent(blogAiSummary.text)
+      if (blogAiSummary.tags) {
+        const tagsWithoutHash = blogAiSummary.tags.map((tag: string) => tag.replace(/^#/, ''))
+        setBlogKeywords(tagsWithoutHash.join(', '))
+      }
       if (blogAiSummary.thumbnail) setThumbnail(blogAiSummary.thumbnail)
       setShouldFetchSummary(false)
     }

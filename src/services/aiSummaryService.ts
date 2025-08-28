@@ -1,4 +1,3 @@
-import instance from '@/lib/axios'
 import { BlogAiSummaryRequest, BlogAiSummaryResponse } from '@/types/aiSummaryTypes'
 import axios from 'axios'
 
@@ -10,7 +9,7 @@ export const aiSummaryService = {
     if (url) params.append('url', url)
     if (category) params.append('category', category)
 
-    const urlPath = `http://3.36.247.161:8000/latest/summary/blog?${params.toString()}`
+    const urlPath = `${import.meta.env.VITE_AI_SUMMARY_SERVER_API}/latest/summary/blog?${params.toString()}`
 
     const response = await axios.get<BlogAiSummaryResponse>(urlPath)
     return response.data
