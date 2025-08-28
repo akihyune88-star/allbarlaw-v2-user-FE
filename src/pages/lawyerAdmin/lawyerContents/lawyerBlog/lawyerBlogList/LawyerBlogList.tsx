@@ -162,7 +162,12 @@ const LawyerBlogList = () => {
           {blogList.length > 0 ? (
             blogList.map((blogItem, idx) => (
               <React.Fragment key={blogItem.blogCaseId}>
-                <BlogItem type='regular' item={blogItem} onClick={() => onClickItem(blogItem.blogCaseId)} />
+                <BlogItem
+                  type='regular'
+                  item={blogItem}
+                  onClick={() => onClickItem(blogItem.blogCaseId)}
+                  className={styles['blog-item']}
+                />
                 {isMobile || (idx !== blogList.length - 1 && <Divider padding={0} />)}
               </React.Fragment>
             ))
