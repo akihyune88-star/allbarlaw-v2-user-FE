@@ -365,11 +365,11 @@ const router = createBrowserRouter([
             path: `${ROUTER.LAWYER_ADMIN_CONTENT_BLOG_DETAIL}/:blogCaseId`,
             element: <LawyerBlogDetail />,
           },
-          {
-            path: ROUTER.LAWYER_ADMIN_CONTENT_BLOG_EDIT,
-            element: <LawyerBlogEditor />,
-          },
         ],
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CONTENT_BLOG_EDIT,
+        element: <LawyerBlogEditor />,
       },
       {
         path: ROUTER.LAWYER_ADMIN_CONTENT_VIDEO,

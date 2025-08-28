@@ -57,4 +57,7 @@ export const QUERY_KEY = {
   RECOMMENDATION_LEGAL_TERM: 'recommendationLegalTerm',
   RECOMMENDATION_VIDEO: 'recommendationVideo',
   RECOMMENDATION_BLOG: 'recommendationBlog',
+
+  // AI
+  BLOG_AI_SUMMARY: 'blogAiSummary',
 } as const

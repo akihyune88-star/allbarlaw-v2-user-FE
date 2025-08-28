@@ -4,6 +4,8 @@ import {
   BlogDetailResponse,
   BlogListRequest,
   BlogListResponse,
+  LawyerAdminBlogCreateRequest,
+  LawyerAdminBlogCreateResponse,
   RandomBlogListRequest,
 } from '@/types/blogTypes'
 
@@ -72,6 +74,11 @@ export const blogService = {
 
   changeBlogKeep: async (blogCaseId: number) => {
     const response = await instance.put(`/blog-case/${blogCaseId}/keep`)
+    return response.data
+  },
+
+  createLawyerAdminBlog: async (request: LawyerAdminBlogCreateRequest) => {
+    const response = await instance.post<LawyerAdminBlogCreateResponse>(`/blog-case`, request)
     return response.data
   },
 }
