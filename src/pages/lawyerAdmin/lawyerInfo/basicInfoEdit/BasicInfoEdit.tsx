@@ -44,7 +44,7 @@ const BasicInfoEdit = () => {
     onSuccess: () => {
       success('기본 정보가 성공적으로 수정되었습니다.')
       setTimeout(() => {
-        navigate(ROUTER.LAWYER_ADMIN_LAWYER_DETAIL)
+        navigate(ROUTER.LAWYER_ADMIN_LAWYER_EDIT)
       }, 1000)
     },
     onError: () => {
@@ -98,7 +98,7 @@ const BasicInfoEdit = () => {
   return (
     <>
       <ToastContainer toasts={toasts} onRemove={removeToast} />
-      
+
       <HeaderPortal>
         <div className={styles.header}>
           <h1 className={styles.header__title}>기본 정보 수정</h1>

@@ -68,7 +68,7 @@ export const lawyerService = {
         nextCursorId: 0,
         hasNextPage: false,
       } as LawyerListResponse
-    } catch (error) {
+    } catch {
       // 에러 발생 시에도 빈 배열 반환하여 UI가 깨지지 않도록 함
       return {
         data: [],
