@@ -16,7 +16,7 @@ export const ProtectedRoute = ({
   requireUser = false,
   requireUserOnly = false,
 }: ProtectedRouteProps) => {
-  const { isLoggedIn, isLawyer, userInfo, isLoading } = useAuth()
+  const { isLoggedIn, isLawyer, isLoading } = useAuth()
   const [shouldRedirect, setShouldRedirect] = useState(false)
 
   // 부드러운 리다이렉트를 위한 useEffect

@@ -4,9 +4,9 @@ import { useGetVideoDetail } from '@/hooks/queries/useGetVideoDetail'
 // import Button from '@/components/button/Button'
 // import SvgIcon from '@/components/SvgIcon'
 // import { COLOR } from '@/styles/color'
-import { copyUrlToClipboard } from '@/utils/clipboard'
-import { useVideoKeep } from '@/hooks/queries/useGetVideoList'
-import { useState } from 'react'
+// import { copyUrlToClipboard } from '@/utils/clipboard'
+// import { useVideoKeep } from '@/hooks/queries/useGetVideoList'
+// import { useState } from 'react'
 import HeaderPortal from '@/components/headerPortal/HeaderPortal'
 import { useLawyerDetailForMe } from '@/hooks/queries/useLawyer'
 import { ROUTER } from '@/routes/routerConstant'
@@ -47,17 +47,16 @@ const LawyerVideoDetail = () => {
   const navigate = useNavigate()
   const { data } = useGetVideoDetail({ videoCaseId: Number(videoCaseId) })
   const { data: lawyerBasicInfo } = useLawyerDetailForMe()
-  const [_isKeep, setIsKeep] = useState(false)
 
-  const { mutate: changeVideoKeep } = useVideoKeep({
-    onSuccess: data => {
-      setIsKeep(data.isKeep)
-    },
-    onError: () => {
-      console.error('Failed to change video keep')
-      setIsKeep(prevState => !prevState)
-    },
-  })
+  // const { mutate: changeVideoKeep } = useVideoKeep({
+  //   onSuccess: data => {
+  //     setIsKeep(data.isKeep)
+  //   },
+  //   onError: () => {
+  //     console.error('Failed to change video keep')
+  //     setIsKeep(prevState => !prevState)
+  //   },
+  // })
 
   // const handleShare = () => {
   //   copyUrlToClipboard()

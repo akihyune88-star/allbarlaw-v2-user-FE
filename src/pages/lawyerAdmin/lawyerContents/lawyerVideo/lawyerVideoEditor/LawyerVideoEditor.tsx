@@ -33,13 +33,13 @@ const LawyerVideoEditor = () => {
     }))
   }
 
-  const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const tags = e.target.value.split(',').map(tag => tag.trim())
-    setFormData(prev => ({
-      ...prev,
-      tags,
-    }))
-  }
+  // const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const tags = e.target.value.split(',').map(tag => tag.trim())
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     tags,
+  //   }))
+  // }
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value ? Number(e.target.value) : null

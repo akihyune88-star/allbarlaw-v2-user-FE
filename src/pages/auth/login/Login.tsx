@@ -12,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginFormData, defaultValues } from './loginSchema'
 import LabelInput from '@/components/labelInput/LabelInput'
 import { useLogin, useLawyerLogin } from '@/hooks/queries/useLogin'
-import { userInfo } from 'os'
+
 import { getLawyerIdFromToken } from '@/utils/tokenUtils'
 
 type AuthActionType = 'ID_FIND' | 'PASSWORD_RESET' | 'SIGNUP'
