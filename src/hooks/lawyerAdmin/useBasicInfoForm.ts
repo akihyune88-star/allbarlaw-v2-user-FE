@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { LawyerDetailResponse } from '@/types/lawyerTypes'
+import { LawyerBasicInfoEditResponse } from '@/types/lawyerTypes'
 import { CategoryList } from '@/types/categoryTypes'
 
 export interface BasicInfoFormData {
@@ -35,7 +35,7 @@ const initialFormData: BasicInfoFormData = {
 }
 
 export const useBasicInfoForm = (
-  lawyerBasicInfo: LawyerDetailResponse | undefined,
+  lawyerBasicInfo: LawyerBasicInfoEditResponse | undefined,
   categoryList: CategoryList | undefined
 ) => {
   const [formData, setFormData] = useState<BasicInfoFormData>(initialFormData)
@@ -47,27 +47,27 @@ export const useBasicInfoForm = (
     if (lawyerBasicInfo && categoryList && !isDataInitialized) {
       // subcategory ID로 해당하는 category ID 찾기
       const mappedCategories =
-        lawyerBasicInfo.subcategories?.map((sub: any) => {
-          const parentCategory = categoryList.find(cat => cat.subcategories.some(s => s.subcategoryId === sub.id))
+        lawyerBasicInfo.lawyerSubcategories?.map((sub: any) => {
+          const parentCategory = categoryList.find(cat => cat.subcategories.some(s => s.subcategoryId === sub.subcategoryId))
           return {
             categoryId: parentCategory?.categoryId || 0,
-            subcategoryId: sub.id || null,
+            subcategoryId: sub.subcategoryId || null,
           }
         }) || []
 
       setFormData({
         greeting: lawyerBasicInfo.lawyerDescription || '',
         lawyerName: lawyerBasicInfo.lawyerName || '',
-        birthYear: undefined, // API에서 제공 안됨
-        birthMonth: undefined,
-        birthDay: undefined,
-        gender: '',
-        phoneNumber: '',
-        tags: lawyerBasicInfo.tags?.map(tag => tag.name).join(', ') || '',
-        lawfirmName: lawyerBasicInfo.lawfirmName || '',
-        address: lawyerBasicInfo.lawfirmAddress || '',
-        addressDetail: '',
-        officePhone: lawyerBasicInfo.lawfirmContact || '',
+        birthYear: lawyerBasicInfo.lawyerBirthYear || undefined,
+        birthMonth: lawyerBasicInfo.lawyerBirthMonth || undefined,
+        birthDay: lawyerBasicInfo.lawyerBirthDay || undefined,
+        gender: lawyerBasicInfo.lawyerGender === 1 ? 'male' : lawyerBasicInfo.lawyerGender === 2 ? 'female' : '',
+        phoneNumber: lawyerBasicInfo.lawyerPhone || '',
+        tags: lawyerBasicInfo.lawyerTags?.map(tag => tag.tagName).join(', ') || '',
+        lawfirmName: lawyerBasicInfo.lawyerLawfirmName || '',
+        address: lawyerBasicInfo.lawyerLawfirmAddress || '',
+        addressDetail: lawyerBasicInfo.lawyerLawfirmAddressDetail || '',
+        officePhone: lawyerBasicInfo.lawyerLawfirmContact || '',
         categories: mappedCategories,
       })
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useFileUpload } from '@/hooks/useFileUpload'
-import { LawyerDetailResponse } from '@/types/lawyerTypes'
+import { LawyerBasicInfoEditResponse } from '@/types/lawyerTypes'
 
 export interface ProfileImage {
   url: string
@@ -9,7 +9,7 @@ export interface ProfileImage {
   imageId?: number
 }
 
-export const useProfileImageManager = (lawyerBasicInfo: LawyerDetailResponse | undefined) => {
+export const useProfileImageManager = (lawyerBasicInfo: LawyerBasicInfoEditResponse | undefined) => {
   const [profileImages, setProfileImages] = useState<(ProfileImage | null)[]>([null, null, null, null, null])
   const [isImagesInitialized, setIsImagesInitialized] = useState(false)
   const { uploadFile } = useFileUpload()
@@ -25,7 +25,7 @@ export const useProfileImageManager = (lawyerBasicInfo: LawyerDetailResponse | u
               url: img.imageUrl,
               isExisting: true,
               originalDisplayOrder: img.displayOrder,
-              imageId: img.imageId,
+              imageId: img.id,
             }
           }
         })

@@ -1,5 +1,5 @@
 import styles from './basicInfoEdit.module.scss'
-import { useLawyerDetailForMe, useLawyerBasicInfoEdit } from '@/hooks/queries/useLawyer'
+import { useLawyerBasicInfoEdit, useLawyerBasicInfo } from '@/hooks/queries/useLawyer'
 import { useCategory } from '@/hooks/queries/useCategory'
 import { useBasicInfoForm } from '@/hooks/lawyerAdmin/useBasicInfoForm'
 import { useProfileImageManager } from '@/hooks/lawyerAdmin/useProfileImageManager'
@@ -11,11 +11,17 @@ import LawyerProfileImageEdit from '@/container/lawyer/lawyerProfileImageEdit/La
 import LawyerBasicInfoForm from '@/container/lawyer/lawyerBasicInfoForm/LawyerBasicInfoForm'
 import LawyerCategorySelect from '@/container/lawyer/lawyerCategorySelect/LawyerCategorySelect'
 import { LawyerBasicInfoEditRequest } from '@/types/lawyerTypes'
+import { getLawyerIdFromToken } from '@/utils/tokenUtils'
+import { LOCAL } from '@/constants/local'
+import { useToast } from '@/hooks/useToast'
+import { ToastContainer } from '@/components/toast/Toast'
 
 const BasicInfoEdit = () => {
   const navigate = useNavigate()
-  const { data: lawyerBasicInfo } = useLawyerDetailForMe()
+  const lawyerId = getLawyerIdFromToken(sessionStorage.getItem(LOCAL.TOKEN) || localStorage.getItem(LOCAL.TOKEN) || '')
+  const { data: lawyerBasicInfo } = useLawyerBasicInfo(lawyerId ?? 0)
   const { data: categoryList } = useCategory()
+  const { toasts, removeToast, success, error } = useToast()
 
   // 커스텀 훅들 사용
   const {
@@ -36,12 +42,13 @@ const BasicInfoEdit = () => {
   // mutation hook 사용
   const { mutate: updateBasicInfo, isPending } = useLawyerBasicInfoEdit({
     onSuccess: () => {
-      console.log('기본 정보가 성공적으로 수정되었습니다.')
-
-      navigate(ROUTER.LAWYER_ADMIN_LAWYER_DETAIL)
+      success('기본 정보가 성공적으로 수정되었습니다.')
+      setTimeout(() => {
+        navigate(ROUTER.LAWYER_ADMIN_LAWYER_DETAIL)
+      }, 1000)
     },
     onError: () => {
-      console.log('기본 정보 수정에 실패했습니다. 다시 시도해주세요.')
+      error('기본 정보 수정에 실패했습니다. 다시 시도해주세요.')
     },
   })
 
@@ -66,7 +73,7 @@ const BasicInfoEdit = () => {
         lawyerLawfirmName: formDataToSubmit.lawfirmName,
         lawyerLawfirmAddress: formDataToSubmit.address,
         lawyerLawfirmAddressDetail: formDataToSubmit.addressDetail || '',
-        lawyerLawfirmContact: formDataToSubmit.greeting,
+        lawyerLawfirmContact: formDataToSubmit.officePhone,
         lawyerSubcategories: formDataToSubmit.categories.map(cat => ({
           subcategoryId: cat.subcategoryId ?? 0,
           subcategoryName:
@@ -80,7 +87,7 @@ const BasicInfoEdit = () => {
       }
 
       // API 호출
-      updateBasicInfo({ lawyerId: lawyerBasicInfo?.lawyerId ?? 0, request: requestData })
+      updateBasicInfo({ lawyerId: lawyerId ?? 0, request: requestData })
     }
   }
 
@@ -90,6 +97,8 @@ const BasicInfoEdit = () => {
 
   return (
     <>
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
+      
       <HeaderPortal>
         <div className={styles.header}>
           <h1 className={styles.header__title}>기본 정보 수정</h1>

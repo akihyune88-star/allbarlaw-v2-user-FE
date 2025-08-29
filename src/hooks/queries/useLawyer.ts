@@ -10,6 +10,7 @@ import {
   LawyerCareer,
   LawyerBasicInfoEditRequest,
 } from '@/types/lawyerTypes'
+import { queryClient } from '@/lib/queryClient'
 
 export const useLawyerList = (request: LawyerListRequest) => {
   return useQuery({
@@ -148,11 +149,19 @@ export const useLawyerSignUp = ({ onSuccess, onError }: { onSuccess: () => void;
   })
 }
 
+export const useLawyerBasicInfo = (lawyerId: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_ADMIN_BASIC_INFO, lawyerId],
+    queryFn: () => lawyerService.getLawyerBasicInfo(lawyerId),
+  })
+}
+
 export const useLawyerBasicInfoEdit = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
   return useMutation({
     mutationFn: ({ lawyerId, request }: { lawyerId: number; request: LawyerBasicInfoEditRequest }) =>
       lawyerService.updateLaywerBasic(lawyerId, request),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_ADMIN_BASIC_INFO] })
       onSuccess()
     },
     onError: () => {

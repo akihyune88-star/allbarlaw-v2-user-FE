@@ -25,8 +25,10 @@ const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
   const { lawyerId } = useParams()
 
   // props로 데이터가 넘어오면 그것을 사용, 아니면 훅으로 조회
-  const { data: fetchedData } = useLawyerDetail(Number(lawyerId), { enabled: !detailData })
-  
+  // lawyerId가 유효한 숫자일 때만 API 호출
+  const shouldFetchData = !detailData && !!lawyerId && !isNaN(Number(lawyerId))
+  const { data: fetchedData } = useLawyerDetail(Number(lawyerId), { enabled: shouldFetchData })
+
   // detailData가 있으면 props 데이터 사용, 없으면 훅으로 조회한 데이터 사용
   const lawyerDetail = detailData || fetchedData
 

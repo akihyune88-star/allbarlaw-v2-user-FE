@@ -22,7 +22,7 @@ const LawyerAdminLayout = () => {
         navigate(ROUTER.LAWYER_ADMIN_LAWYER_DETAIL)
         break
       case 2:
-        navigate(ROUTER.LAWYER_ADMIN_CHAT_LIST)
+        navigate(ROUTER.LAWYER_ADMIN_LAWYER_EDIT)
         break
       case 3:
         navigate(ROUTER.LAWYER_ADMIN_CONTENT_BLOG)

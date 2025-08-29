@@ -58,6 +58,9 @@ export const QUERY_KEY = {
   RECOMMENDATION_VIDEO: 'recommendationVideo',
   RECOMMENDATION_BLOG: 'recommendationBlog',
 
+  // 변호사 관리자
+  LAWYER_ADMIN_BASIC_INFO: 'lawyerAdminBasicInfo',
+
   // AI
   BLOG_AI_SUMMARY: 'blogAiSummary',
 } as const

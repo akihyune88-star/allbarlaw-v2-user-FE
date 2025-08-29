@@ -144,6 +144,11 @@ export const lawyerService = {
     return response.data
   },
 
+  getLawyerBasicInfo: async (lawyerId: number) => {
+    const response = await instance.get<LawyerBasicInfoEditResponse>(`/lawyer/profile/${lawyerId}/basic-info`)
+    return response.data
+  },
+
   updateLaywerBasic: async (lawyerId: number, request: LawyerBasicInfoEditRequest) => {
     const response = await instance.put<LawyerBasicInfoEditResponse>(`/lawyer/profile/${lawyerId}/basic-info`, request)
     return response.data
