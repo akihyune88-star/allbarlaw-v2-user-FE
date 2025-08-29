@@ -8,6 +8,7 @@ import {
   LawyerSignUpRequest,
   RandomLawyerListRequest,
   LawyerCareer,
+  LawyerBasicInfoEditRequest,
 } from '@/types/lawyerTypes'
 
 export const useLawyerList = (request: LawyerListRequest) => {
@@ -138,6 +139,19 @@ export const useLawyerActive = (request: LawyerActiveRequest) => {
 export const useLawyerSignUp = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
   return useMutation({
     mutationFn: (request: LawyerSignUpRequest) => lawyerService.signUpLawyer(request),
+    onSuccess: () => {
+      onSuccess()
+    },
+    onError: () => {
+      onError()
+    },
+  })
+}
+
+export const useLawyerBasicInfoEdit = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
+  return useMutation({
+    mutationFn: ({ lawyerId, request }: { lawyerId: number; request: LawyerBasicInfoEditRequest }) =>
+      lawyerService.updateLaywerBasic(lawyerId, request),
     onSuccess: () => {
       onSuccess()
     },

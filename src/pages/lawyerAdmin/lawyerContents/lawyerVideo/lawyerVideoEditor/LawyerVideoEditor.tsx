@@ -3,12 +3,20 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HeaderPortal from '@/components/headerPortal/HeaderPortal'
 import { ROUTER } from '@/routes/routerConstant'
+import { useCategory } from '@/hooks/queries/useCategory'
 
 const LawyerVideoEditor = () => {
   const navigate = useNavigate()
+
+  const { data: categoryList } = useCategory()
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
+  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<number | null>(null)
+
+  const selectedCategory = categoryList?.find(c => c.categoryId === selectedCategoryId)
+
   const [formData, setFormData] = useState({
     title: '',
-    sourceUrl: '',
+    source: '',
     videoUrl: '',
     thumbnailUrl: '',
     summaryContent: '',
@@ -33,6 +41,17 @@ const LawyerVideoEditor = () => {
     }))
   }
 
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value ? Number(e.target.value) : null
+    setSelectedCategoryId(value)
+    setSelectedSubcategoryId(null) // Reset subcategory when category changes
+  }
+
+  const handleSubcategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value ? Number(e.target.value) : null
+    setSelectedSubcategoryId(value)
+  }
+
   const handleSave = () => {
     console.log('Save video:', formData)
     // API 호출 로직 추가
@@ -46,150 +65,116 @@ const LawyerVideoEditor = () => {
   return (
     <>
       <HeaderPortal>
-        <div className={styles.header}>
-          <h1 className={styles.header__title}>영상 등록</h1>
-          <nav className={styles.header__button}>
-            <button type='button' className={styles.header__button__cancel} onClick={handleCancel}>
+        <div className={styles['header-portal']}>
+          <h1 className={styles['header-title']}>영상 등록</h1>
+          <nav className={styles['header-buttons']}>
+            <button type='button' className={styles['header-button-cancel']} onClick={handleCancel}>
               취소
             </button>
-            <button type='button' className={styles.header__button__save} onClick={handleSave}>
+            <button type='button' className={styles['header-button-save']} onClick={handleSave}>
               저장
             </button>
           </nav>
         </div>
       </HeaderPortal>
-      
-      <section className={styles.container}>
-        <div className={styles.form}>
-          <div className={styles.formGroup}>
-            <label htmlFor='title' className={styles.label}>
-              제목 <span className={styles.required}>*</span>
-            </label>
+
+      <div className={styles['lawyer-video-editor']}>
+        <h1 className={styles['video-editor-title']}>영상 등록</h1>
+        <section className={styles['video-editor-section']}>
+          <div className={styles['video-editor-row-form']}>
+            <h2>카테고리</h2>
+            <div className={styles['category-select-wrapper']}>
+              <select
+                className={styles['category-select']}
+                value={selectedCategoryId || ''}
+                onChange={handleCategoryChange}
+              >
+                <option value=''>대분류 선택</option>
+                {categoryList?.map(cat => (
+                  <option key={cat.categoryId} value={cat.categoryId}>
+                    {cat.categoryName}
+                  </option>
+                ))}
+              </select>
+              <select
+                className={styles['category-select']}
+                value={selectedSubcategoryId || ''}
+                onChange={handleSubcategoryChange}
+                disabled={!selectedCategoryId}
+              >
+                <option value=''>소분류 선택</option>
+                {selectedCategory?.subcategories?.map(sub => (
+                  <option key={sub.subcategoryId} value={sub.subcategoryId}>
+                    {sub.subcategoryName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className={styles['video-editor-row-form']}>
+            <h2>유튜브 채널 경로</h2>
             <input
               type='text'
-              id='title'
-              name='title'
-              value={formData.title}
-              onChange={handleChange}
-              className={styles.input}
-              placeholder='영상 제목을 입력하세요'
+              value={formData.source}
+              onChange={e => handleChange(e)}
+              placeholder='유튜브 채널 홈화면 경로를 입력해주세요.'
+              className={styles['video-editor__input']}
             />
           </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor='sourceUrl' className={styles.label}>
-              원본 URL
-            </label>
+          <div className={styles['video-editor-row-form']}>
+            <h2>유튜브 영상경로</h2>
             <input
-              type='url'
-              id='sourceUrl'
-              name='sourceUrl'
-              value={formData.sourceUrl}
-              onChange={handleChange}
-              className={styles.input}
-              placeholder='https://youtube.com/watch?v=...'
+              type='text'
+              value={formData.source}
+              onChange={e => handleChange(e)}
+              placeholder='유튜브 영상 경로를 입력해주세요.'
+              className={styles['video-editor__input']}
             />
           </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor='videoUrl' className={styles.label}>
-              영상 URL <span className={styles.required}>*</span>
-            </label>
+        </section>
+        <button className={styles['ai-summary__button']}>유튜브 채널정보 및 동영상 AI 요약하기</button>
+        <section className={styles['video-editor-section']}>
+          <div className={styles['video-editor-row-form']}>
+            <h2>영상 제목</h2>
+            <ul className={styles['video-channel-info']}>
+              <li>채널명 : </li>
+              <li>구독자 수 : </li>
+              <li>핸들 명 : </li>
+              <li>채널 설명: </li>
+            </ul>
+          </div>
+          <div className={styles['video-editor-row-form']}>
+            <h2>영상 제목</h2>
             <input
-              type='url'
-              id='videoUrl'
-              name='videoUrl'
-              value={formData.videoUrl}
-              onChange={handleChange}
-              className={styles.input}
-              placeholder='영상 임베드 URL을 입력하세요'
+              type='text'
+              value={formData.source}
+              onChange={e => handleChange(e)}
+              placeholder='유튜브 채널 홈화면 경로를 입력해주세요.'
+              className={styles['video-editor__input']}
             />
           </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor='thumbnailUrl' className={styles.label}>
-              썸네일 URL
-            </label>
-            <input
-              type='url'
-              id='thumbnailUrl'
-              name='thumbnailUrl'
-              value={formData.thumbnailUrl}
-              onChange={handleChange}
-              className={styles.input}
-              placeholder='썸네일 이미지 URL을 입력하세요'
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor='summaryContent' className={styles.label}>
-              요약 내용 <span className={styles.required}>*</span>
-            </label>
+          <div className={styles['video-editor-row-form']}>
+            <h2>AI 요약 내용</h2>
             <textarea
-              id='summaryContent'
-              name='summaryContent'
+              placeholder={`동영상 주소를 입력 후,AI 요약이 완료되면 내용이 입력되어집니다\n변경할 사항이 있다면 직접 변경해주세요`}
+              className={styles['video-editor__textarea']}
               value={formData.summaryContent}
-              onChange={handleChange}
-              className={styles.textarea}
-              placeholder='영상 요약 내용을 입력하세요'
-              rows={6}
+              onChange={e => handleChange(e)}
+              style={{ height: 240 }}
             />
           </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor='tags' className={styles.label}>
-              태그
-            </label>
+          <div className={styles['video-editor-row-form']}>
+            <h2>{`키워드/태그\n(콤마로 구분)`}</h2>
             <input
               type='text'
-              id='tags'
-              name='tags'
-              value={formData.tags.join(', ')}
-              onChange={handleTagsChange}
-              className={styles.input}
-              placeholder='태그를 쉼표로 구분하여 입력하세요 (예: 상속, 부동산, 계약)'
+              value={formData.tags}
+              onChange={e => handleChange(e)}
+              placeholder='AI요약과 동시에 키워드/태그가 입력되어 집니다. 최대 10개까지 등록 가능합니다.'
+              className={styles['video-editor__input']}
             />
           </div>
-
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor='categoryId' className={styles.label}>
-                카테고리
-              </label>
-              <select
-                id='categoryId'
-                name='categoryId'
-                value={formData.categoryId}
-                onChange={handleChange}
-                className={styles.select}
-              >
-                <option value=''>카테고리 선택</option>
-                <option value='1'>민사</option>
-                <option value='2'>형사</option>
-                <option value='3'>가사</option>
-              </select>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor='subcategoryId' className={styles.label}>
-                서브카테고리
-              </label>
-              <select
-                id='subcategoryId'
-                name='subcategoryId'
-                value={formData.subcategoryId}
-                onChange={handleChange}
-                className={styles.select}
-              >
-                <option value=''>서브카테고리 선택</option>
-                <option value='1'>손해배상</option>
-                <option value='2'>계약</option>
-                <option value='3'>부동산</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </>
   )
 }

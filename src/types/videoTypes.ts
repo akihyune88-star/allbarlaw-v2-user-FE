@@ -60,3 +60,18 @@ export type VideoDetailResponse = VideoCase & {
 export type VideoKeepResponse = {
   isKeep: boolean
 }
+
+export type LawyerVideoCreateRequest = {
+  lawyerId: number
+  subcategoryId: number
+  title: string
+  source: string
+  thumbnail: string
+  summaryContent: string
+  channelName: string
+  subscriberCount: number
+  handleName: string
+  channelThumbnail: string
+  channelDescription: string
+  tags: string[]
+}

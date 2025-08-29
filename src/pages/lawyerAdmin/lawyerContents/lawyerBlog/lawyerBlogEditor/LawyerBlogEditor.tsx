@@ -167,7 +167,7 @@ const LawyerBlogEditor = () => {
         </div>
       </HeaderPortal>
       <div className={styles['lawyer-blog-editor']}>
-        <h1>블로그글 입력</h1>
+        <h1 className={styles['blog-editor-title']}>블로그글 입력</h1>
         <section className={styles['blog-editor-section']}>
           <div className={styles['blog-editor-row-form']}>
             <h2>카테고리</h2>

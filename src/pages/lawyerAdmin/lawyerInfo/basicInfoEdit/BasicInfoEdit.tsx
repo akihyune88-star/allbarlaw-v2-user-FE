@@ -1,5 +1,5 @@
 import styles from './basicInfoEdit.module.scss'
-import { useLawyerDetailForMe } from '@/hooks/queries/useLawyer'
+import { useLawyerDetailForMe, useLawyerBasicInfoEdit } from '@/hooks/queries/useLawyer'
 import { useCategory } from '@/hooks/queries/useCategory'
 import { useBasicInfoForm } from '@/hooks/lawyerAdmin/useBasicInfoForm'
 import { useProfileImageManager } from '@/hooks/lawyerAdmin/useProfileImageManager'
@@ -10,6 +10,7 @@ import { ROUTER } from '@/routes/routerConstant'
 import LawyerProfileImageEdit from '@/container/lawyer/lawyerProfileImageEdit/LawyerProfileImageEdit'
 import LawyerBasicInfoForm from '@/container/lawyer/lawyerBasicInfoForm/LawyerBasicInfoForm'
 import LawyerCategorySelect from '@/container/lawyer/lawyerCategorySelect/LawyerCategorySelect'
+import { LawyerBasicInfoEditRequest } from '@/types/lawyerTypes'
 
 const BasicInfoEdit = () => {
   const navigate = useNavigate()
@@ -32,14 +33,54 @@ const BasicInfoEdit = () => {
 
   const { validateForm, isValid } = useFormValidation()
 
+  // mutation hook 사용
+  const { mutate: updateBasicInfo, isPending } = useLawyerBasicInfoEdit({
+    onSuccess: () => {
+      console.log('기본 정보가 성공적으로 수정되었습니다.')
+
+      navigate(ROUTER.LAWYER_ADMIN_LAWYER_DETAIL)
+    },
+    onError: () => {
+      console.log('기본 정보 수정에 실패했습니다. 다시 시도해주세요.')
+    },
+  })
+
   const handleSave = () => {
     const validationErrors = validateForm(formData)
     setErrors(validationErrors)
 
     if (isValid(validationErrors)) {
-      // TODO: 저장 API 호출
-      console.log('Form Data:', getFormData())
-      console.log('Image Data:', getImageData())
+      const formDataToSubmit = getFormData()
+      const imageDataToSubmit = getImageData()
+
+      // API 요청 데이터 생성
+      const requestData: LawyerBasicInfoEditRequest = {
+        lawyerDescription: formDataToSubmit.greeting,
+        lawyerName: formDataToSubmit.lawyerName,
+        lawyerBirthYear: Number(formDataToSubmit.birthYear ?? '0'),
+        lawyerBirthMonth: Number(formDataToSubmit.birthMonth ?? '0'),
+        lawyerBirthDay: Number(formDataToSubmit.birthDay ?? '0'),
+        lawyerGender: formDataToSubmit.gender === 'male' ? 1 : 2,
+        lawyerPhone: formDataToSubmit.phoneNumber,
+        lawyerTags: formDataToSubmit.tags || [],
+        lawyerLawfirmName: formDataToSubmit.lawfirmName,
+        lawyerLawfirmAddress: formDataToSubmit.address,
+        lawyerLawfirmAddressDetail: formDataToSubmit.addressDetail || '',
+        lawyerLawfirmContact: formDataToSubmit.greeting,
+        lawyerSubcategories: formDataToSubmit.categories.map(cat => ({
+          subcategoryId: cat.subcategoryId ?? 0,
+          subcategoryName:
+            categoryList?.find(category => category.subcategories.find(sub => sub.subcategoryId === cat.subcategoryId))
+              ?.categoryName ?? '',
+        })),
+        lawyerProfileImages: imageDataToSubmit.map((image, index) => ({
+          imageUrl: image.imageUrl,
+          displayOrder: index + 1,
+        })),
+      }
+
+      // API 호출
+      updateBasicInfo({ lawyerId: lawyerBasicInfo?.lawyerId ?? 0, request: requestData })
     }
   }
 
@@ -53,11 +94,11 @@ const BasicInfoEdit = () => {
         <div className={styles.header}>
           <h1 className={styles.header__title}>기본 정보 수정</h1>
           <nav className={styles.header__button}>
-            <button type='button' className={styles.header__button__cancel} onClick={handleCancel}>
+            <button type='button' className={styles.header__button__cancel} onClick={handleCancel} disabled={isPending}>
               취소
             </button>
-            <button type='button' className={styles.header__button__save} onClick={handleSave}>
-              변경완료
+            <button type='button' className={styles.header__button__save} onClick={handleSave} disabled={isPending}>
+              {isPending ? '저장 중...' : '변경완료'}
             </button>
           </nav>
         </div>

@@ -48,9 +48,7 @@ export const useBasicInfoForm = (
       // subcategory ID로 해당하는 category ID 찾기
       const mappedCategories =
         lawyerBasicInfo.subcategories?.map((sub: any) => {
-          const parentCategory = categoryList.find(cat =>
-            cat.subcategories.some(s => s.subcategoryId === sub.id)
-          )
+          const parentCategory = categoryList.find(cat => cat.subcategories.some(s => s.subcategoryId === sub.id))
           return {
             categoryId: parentCategory?.categoryId || 0,
             subcategoryId: sub.id || null,
@@ -72,7 +70,7 @@ export const useBasicInfoForm = (
         officePhone: lawyerBasicInfo.lawfirmContact || '',
         categories: mappedCategories,
       })
-      
+
       setIsDataInitialized(true)
     }
   }, [lawyerBasicInfo, categoryList, isDataInitialized])

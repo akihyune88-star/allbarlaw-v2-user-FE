@@ -8,6 +8,12 @@
   background-color: $color-bg-gray-02;
 }
 
+.blog-editor-title {
+  font-size: 1.25rem;
+  font-weight: $font-weight-extra-bold;
+  color: $color-text-black;
+}
+
 .blog-editor-section {
   background-color: $color-white;
 }
@@ -143,10 +149,6 @@
   cursor: pointer;
   transition: all 0.2s;
 
-  &:hover:not(:disabled) {
-    background-color: darken($color-green-01, 10%);
-  }
-
   &:disabled {
     background-color: $color-text-caption;
     cursor: not-allowed;
@@ -211,10 +213,6 @@
   transition: all 0.2s;
   height: 2.5rem;
   min-width: 4.5rem;
-
-  &:hover:not(:disabled) {
-    background-color: darken($color-green-01, 10%);
-  }
 
   &:active:not(:disabled) {
     transform: translateY(1px);

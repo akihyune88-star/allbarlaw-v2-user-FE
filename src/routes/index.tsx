@@ -55,9 +55,6 @@ import LawyerVideoLayout from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/la
 import LawyerVideoList from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoList/LawyerVideoList'
 import LawyerVideoDetail from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoDetail/LawyerVideoDetail'
 import LawyerVideoEditor from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoEditor/LawyerVideoEditor'
-import LawyerLegalKnowledgeLayout from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeLayout/LawyerLegalKnowledgeLayout'
-import LawyerLegalKnowledgeList from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeList/LawyerLegalKnowledgeList'
-import LawyerLegalKnowledgeDetail from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeDetail/LawyerLegalKnowledgeDetail'
 import LawyerChat from '@/pages/lawyerAdmin/chat/lawyerChat/LawyerChat'
 import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
 import FindId from '@/pages/auth/findId/FindId'
@@ -69,6 +66,9 @@ import LawyerEditLayout from '@/pages/lawyerAdmin/lawyerInfo/lawyerEditLayout/La
 import BasicInfoEdit from '@/pages/lawyerAdmin/lawyerInfo/basicInfoEdit/BasicInfoEdit'
 import LawyerEditActivity from '@/pages/lawyerAdmin/lawyerInfo/lawyerEditActivity/LawyerEditActivity'
 import LawyerEditCareer from '@/pages/lawyerAdmin/lawyerInfo/lawyerEditCareer/LawyerEditCareer'
+import LawyerLegalKnowledgeLayout from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeLayout/LawyerLegalKnowledgeLayout'
+import LawyerLegalKnowledgeList from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeList/LawyerLegalKnowledgeList'
+import LawyerLegalKnowledgeDetail from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeDetail/LawyerLegalKnowledgeDetail'
 
 const router = createBrowserRouter([
   {
@@ -383,11 +383,11 @@ const router = createBrowserRouter([
             path: `${ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_DETAIL}/:videoCaseId`,
             element: <LawyerVideoDetail />,
           },
-          {
-            path: ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_EDIT,
-            element: <LawyerVideoEditor />,
-          },
         ],
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_EDIT,
+        element: <LawyerVideoEditor />,
       },
       {
         path: ROUTER.LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE,

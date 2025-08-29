@@ -41,9 +41,9 @@ export const useFormValidation = () => {
       .map(tag => tag.trim())
       .filter(tag => tag.length > 0)
 
-    if (tagArray.length < 2) {
+    if (tagArray.length < 1) {
       newErrors.tags = '최소 2개 이상의 태그를 입력해주세요.'
-    } else if (tagArray.length > 4) {
+    } else if (tagArray.length > 20) {
       newErrors.tags = '태그는 최대 4개까지 입력 가능합니다.'
     }
 

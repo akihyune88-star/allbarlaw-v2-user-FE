@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import axios from 'axios'
+import instance from '@/lib/axios'
 
 interface UploadOptions {
   folder?: string
@@ -62,7 +63,7 @@ export const useFileUpload = (): UseFileUploadReturn => {
         }
 
         // TODO: 실제 API 엔드포인트로 변경 필요
-        const response = await axios.post<UploadResult>('/api/file/upload', formData, {
+        const response = await instance.post<UploadResult>('/file/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

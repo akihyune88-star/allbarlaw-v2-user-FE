@@ -159,3 +159,56 @@ export type LawyerSignUpResponse = {
   lawyerAccount: string
   message: string
 }
+
+export type LawyerBasicInfoEditRequest = {
+  lawyerDescription: string
+  lawyerName: string
+  lawyerBirthYear: number
+  lawyerBirthMonth: number
+  lawyerBirthDay: number
+  lawyerGender: number
+  lawyerPhone: string
+  lawyerTags: string[]
+  lawyerLawfirmName: string
+  lawyerLawfirmAddress: string
+  lawyerLawfirmAddressDetail: string
+  lawyerLawfirmContact: string
+  lawyerSubcategories: {
+    subcategoryId: number
+    subcategoryName: string
+  }[]
+  lawyerProfileImages: {
+    imageUrl: string
+    displayOrder: number
+  }[]
+}
+
+export type LawyerBasicInfoEditResponse = {
+  lawyerId: number
+  lawyerDescription: string
+  lawyerName: string
+  lawyerBirthYear: number
+  lawyerBirthMonth: number
+  lawyerBirthDay: number
+  lawyerGender: number
+  lawyerPhone: string
+  lawyerTags: {
+    tagId: number
+    tagName: string
+  }[]
+  lawyerLawfirmName: string
+  lawyerLawfirmAddress: string
+  lawyerLawfirmAddressDetail: string
+  lawyerLawfirmContact: string
+  lawyerSubcategories: {
+    subcategoryId: number
+    subcategoryName: string
+  }[]
+
+  lawyerProfileImages: {
+    id: number
+    imageUrl: string
+    displayOrder: number
+    isDefault: boolean
+  }[]
+}
