@@ -24,8 +24,8 @@ const useTabsContext = () => {
 }
 
 // List Component
-const List = ({ children }: { children: React.ReactNode }) => {
-  return <div className={styles['tabs-container']}>{children}</div>
+const List = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  return <div className={`${styles['tabs-container']} ${className}`}>{children}</div>
 }
 
 // Item Component
@@ -47,18 +47,19 @@ const Item = ({ path, children, itemWidth }: { path: string; children: React.Rea
 type TabsProps = {
   children?: React.ReactNode
   items?: MenuItem[]
+  className?: string
   initialPath?: string
   onChange?: (_path: string) => void
 }
 
-const Tabs = ({ children, items, initialPath, onChange }: TabsProps) => {
+const Tabs = ({ children, items, initialPath, onChange, className }: TabsProps) => {
   const location = useLocation()
   const [selectedPath, setSelectedPath] = useState(initialPath || items?.[0]?.path || '')
 
   // URL이 변경될 때마다 selectedPath 업데이트
   useEffect(() => {
     const pathSegments = location.pathname.split('/')
-    
+
     // /search 경로인 경우 특별 처리
     if (location.pathname.startsWith('/search')) {
       // /search -> '/'
@@ -68,7 +69,7 @@ const Tabs = ({ children, items, initialPath, onChange }: TabsProps) => {
       // /search/lawyer -> '/lawyer'
       const searchSubPath = pathSegments.slice(2).join('/') // /search 이후의 경로
       const currentPath = searchSubPath ? `/${searchSubPath}` : '/'
-      
+
       const matchingItem = items?.find(item => item.path === currentPath)
       if (matchingItem) {
         setSelectedPath(matchingItem.path)
@@ -103,7 +104,7 @@ const Tabs = ({ children, items, initialPath, onChange }: TabsProps) => {
   return (
     <TabsContext.Provider value={contextValue}>
       {children || (
-        <List>
+        <List className={className}>
           {items?.map(item => (
             <Item key={item.path} path={item.path} itemWidth={item.itemWidth}>
               {item.name}

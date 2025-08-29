@@ -23,7 +23,14 @@ export const useGetKnowledgeList = (request: KnowledgeListRequest) => {
 // 무한 스크롤용 훅
 export const useInfiniteKnowledgeList = (request: Omit<KnowledgeListRequest, 'cursor' | 'cursorId'>) => {
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: [QUERY_KEY.KNOWLEDGE_LIST, 'infinite', request.subcategoryId, request.orderBy],
+    queryKey: [
+      QUERY_KEY.KNOWLEDGE_LIST,
+      'infinite',
+      request.subcategoryId,
+      request.orderBy,
+      request.search,
+      request.lawyerId,
+    ],
     queryFn: ({ pageParam }) =>
       knowledgeService.getKnowledgeList({
         ...request,

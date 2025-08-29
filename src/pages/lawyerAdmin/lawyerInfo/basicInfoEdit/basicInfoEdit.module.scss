@@ -1,0 +1,46 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: $font-weight-extra-bold;
+  }
+
+  &__button {
+    display: flex;
+    gap: 1rem;
+
+    &__cancel,
+    &__save {
+      padding: 0.875rem 1.375rem;
+      border-radius: 0.5rem;
+      font-weight: $font-weight-semibold;
+      border: none;
+      cursor: pointer;
+    }
+
+    &__cancel {
+      background-color: $color-white;
+      border: 1px solid $color-line-borderbox;
+    }
+
+    &__save {
+      background-color: $color-green-01;
+      color: $color-white;
+    }
+  }
+}
+
+.formContainer {
+  padding-top: 0.5rem;
+}
+
+.formSection {
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

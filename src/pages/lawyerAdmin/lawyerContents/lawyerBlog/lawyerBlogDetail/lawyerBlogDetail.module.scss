@@ -1,0 +1,73 @@
+.headerContent {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerTitle {
+  font-size: 1.5rem;
+  font-weight: $font-weight-extra-bold;
+  color: $color-text-black;
+}
+
+.headerButtonWrapper {
+  display: flex;
+  gap: 0.6875rem;
+
+  button {
+    padding: 0.7188rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+
+  button:last-child {
+    background-color: $color-green-01;
+    color: $color-white;
+    font-weight: $font-weight-semibold;
+  }
+
+  button:first-child {
+    background-color: $color-white;
+    color: $color-text-black;
+    font-weight: $font-weight-semibold;
+    border: 1px solid $color-line-borderbox;
+  }
+}
+
+.lawyer-blog-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lawyer-blog-detail-header {
+  background-color: $color-white;
+  padding: 1.5rem;
+  height: 7.5rem;
+}
+
+.lawyer-blog-detail-contents {
+  width: 100%;
+}
+
+.blog-navigation-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 0;
+
+  .blog-link-btn {
+    padding: 0.7188rem 1.5rem;
+    border-radius: 0.5rem;
+    background-color: $color-green-01;
+
+    color: $color-white;
+    font-weight: $font-weight-semibold;
+    font-size: 0.875rem;
+  }
+
+  .button-wrapper {
+    display: flex;
+    align-self: flex-start;
+    gap: 1.125rem;
+  }
+}

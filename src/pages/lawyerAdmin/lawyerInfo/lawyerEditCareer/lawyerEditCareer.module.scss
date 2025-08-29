@@ -1,0 +1,303 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  height: 4rem;
+  background-color: $color-white;
+  border-bottom: 1px solid $color-line-divider;
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $color-text-black;
+  }
+
+  &__button {
+    display: flex;
+    gap: 0.5rem;
+
+    &__cancel,
+    &__save {
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    &__cancel {
+      background-color: $color-white;
+      color: $color-text-index;
+      border: 1px solid $color-line-borderbox;
+
+      &:hover {
+        background-color: $color-bg-gray-01;
+      }
+    }
+
+    &__save {
+      background-color: $color-green-01;
+      color: $color-white;
+      border: none;
+
+      &:hover {
+        background-color: $color-green-02;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.container {
+  padding: 2rem;
+  background-color: $color-bg-gray-02;
+  min-height: calc(100vh - 4rem);
+}
+
+.wrapper {
+  display: flex;
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.loadingWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+
+  .spinner {
+    font-size: 1rem;
+    color: $color-text-caption;
+  }
+}
+
+// 좌측 패널
+.leftPanel {
+  flex: 0 0 500px;
+  background-color: $color-white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  .tableWrapper {
+    border: 1px solid $color-line-borderbox;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .tableHeader {
+    display: flex;
+    background-color: $color-bg-gray-01;
+    border-bottom: 1px solid $color-line-divider;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: $color-text-index;
+  }
+
+  .headerCell {
+    padding: 0.75rem 1rem;
+    flex: 1;
+
+    &:not(:last-child) {
+      border-right: 1px solid $color-line-divider;
+    }
+  }
+
+  .tableBody {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .tableRow {
+    display: flex;
+    border-bottom: 1px solid $color-line-divider;
+    background-color: $color-white;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: $color-bg-gray-01;
+    }
+
+    &.selected {
+      background-color: rgba($color-green-01, 0.1);
+
+      &:hover {
+        background-color: rgba($color-green-01, 0.15);
+      }
+    }
+
+    &.dragging {
+      opacity: 0.5;
+      background-color: $color-bg-gray-03;
+    }
+  }
+
+  .cell {
+    padding: 0.75rem 1rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+
+    &:not(:last-child) {
+      border-right: 1px solid $color-line-divider;
+    }
+  }
+
+  .categoryName {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    color: $color-text-black;
+  }
+
+  .inlineInput {
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid $color-green-01;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    outline: none;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba($color-green-01, 0.1);
+    }
+  }
+
+  .dragHandle {
+    cursor: grab;
+    color: $color-icon-gray-50;
+    font-size: 1.25rem;
+    user-select: none;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  .deleteButton {
+    background: none;
+    border: none;
+    color: $color-icon-gray-50;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+
+    &:hover {
+      color: $color-error;
+      transform: scale(1.1);
+    }
+  }
+
+  .addButton {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: $color-white;
+    border: 1px dashed $color-line-borderbox;
+    border-radius: 0.5rem;
+    color: $color-text-index;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: $color-bg-gray-01;
+      border-color: $color-green-01;
+      color: $color-green-01;
+    }
+  }
+}
+
+// 우측 패널
+.rightPanel {
+  flex: 1;
+  background-color: $color-white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+
+  .panelHeader {
+    padding: 1.5rem;
+    border-bottom: 1px solid $color-line-divider;
+
+    .title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: $color-text-black;
+      margin: 0;
+    }
+  }
+
+  .editorContent {
+    flex: 1;
+    padding: 1.5rem;
+  }
+
+  .contentTextarea {
+    width: 100%;
+    min-height: 400px;
+    padding: 1rem;
+    border: 1px solid $color-line-borderbox;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    resize: vertical;
+    font-family: inherit;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: $color-green-01;
+      box-shadow: 0 0 0 3px rgba($color-green-01, 0.1);
+    }
+
+    &::placeholder {
+      color: $color-text-caption;
+    }
+  }
+
+  .emptyState {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-text-caption;
+    font-size: 0.875rem;
+    padding: 2rem;
+  }
+}
+
+// 반응형 디자인
+@media (max-width: $breakpoint-desktop) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .leftPanel {
+    flex: none;
+    width: 100%;
+  }
+
+  .rightPanel {
+    min-height: 400px;
+  }
+}

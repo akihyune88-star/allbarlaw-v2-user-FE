@@ -11,9 +11,10 @@ type LawyerVideoProps = {
   videoList: LawyerDetailResponse['videoCases'] | []
   lawyerId: number
   lawyerName: string
+  className?: string
 }
 
-const LawyerVideo = forwardRef<HTMLElement, LawyerVideoProps>(({ videoList = [], lawyerId, lawyerName }, ref) => {
+const LawyerVideo = forwardRef<HTMLElement, LawyerVideoProps>(({ videoList = [], lawyerId, lawyerName, className }, ref) => {
   const navigate = useNavigate()
   const { setSearchLawyerId, setSearchQuery } = useSearchStore()
   const hasVideos = videoList && videoList.length > 0
@@ -25,7 +26,7 @@ const LawyerVideo = forwardRef<HTMLElement, LawyerVideoProps>(({ videoList = [],
   }
 
   return (
-    <section ref={ref} className={styles['lawyer-video']} aria-label='변호사의 영상'>
+    <section ref={ref} className={`${styles['lawyer-video']} ${className || ''}`} aria-label='변호사의 영상'>
       <header className={styles['lawyer-video__header']}>
         <h3 className={styles['lawyer-video__title']}>변호사의 영상</h3>
         {hasVideos && (

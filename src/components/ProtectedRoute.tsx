@@ -10,8 +10,13 @@ interface ProtectedRouteProps {
   requireUserOnly?: boolean // 일반 유저만 접근 가능 (변호사는 접근 불가)
 }
 
-export const ProtectedRoute = ({ children, requireLawyer = false, requireUser = false, requireUserOnly = false }: ProtectedRouteProps) => {
-  const { isLoggedIn, isLawyer, userInfo, isLoading } = useAuth()
+export const ProtectedRoute = ({
+  children,
+  requireLawyer = false,
+  requireUser = false,
+  requireUserOnly = false,
+}: ProtectedRouteProps) => {
+  const { isLoggedIn, isLawyer, isLoading } = useAuth()
   const [shouldRedirect, setShouldRedirect] = useState(false)
 
   // 부드러운 리다이렉트를 위한 useEffect
@@ -25,25 +30,25 @@ export const ProtectedRoute = ({ children, requireLawyer = false, requireUser = 
     return undefined
   }, [requireUser, isLoggedIn])
 
-  // 로딩 중이 아닐 때만 로그 출력 (깜빡거림 방지)
-  if (!isLoading) {
-    console.log('🔒 ProtectedRoute 실행됨!')
-    console.log('ProtectedRoute Debug:', {
-      isLoggedIn,
-      isLawyer,
-      userInfo,
-      requireLawyer,
-      requireUser,
-      isLoading,
-      pathname: window.location.pathname,
-    })
-  }
+  // // 로딩 중이 아닐 때만 로그 출력 (깜빡거림 방지)
+  // if (!isLoading) {
+  //   console.log('🔒 ProtectedRoute 실행됨!')
+  //   console.log('ProtectedRoute Debug:', {
+  //     isLoggedIn,
+  //     isLawyer,
+  //     userInfo,
+  //     requireLawyer,
+  //     requireUser,
+  //     isLoading,
+  //     pathname: window.location.pathname,
+  //   })
+  // }
 
   // 일반 유저만 접근 가능한 페이지인 경우
   if (requireUser) {
     // 로그인하지 않은 경우
     if (!isLoggedIn) {
-      console.log('❌ 로그인하지 않음! 로그인 페이지로 리다이렉트')
+      // console.log('❌ 로그인하지 않음! 로그인 페이지로 리다이렉트')
 
       if (shouldRedirect) {
         return <Navigate to={ROUTER.AUTH} replace />
@@ -85,7 +90,7 @@ export const ProtectedRoute = ({ children, requireLawyer = false, requireUser = 
         </div>
       )
     }
-    
+
     // 변호사는 일반 유저 페이지에 접근 가능 (요구사항: 변호사는 모든 페이지 접근 가능)
     // 일반 유저만 접근 가능한 페이지는 변호사를 차단하지 않음
   }
@@ -97,16 +102,16 @@ export const ProtectedRoute = ({ children, requireLawyer = false, requireUser = 
 
   // 일반 유저만 접근 가능한 페이지 (변호사 접근 불가)
   if (requireUserOnly && isLawyer) {
-    console.log('❌ 변호사는 일반 유저 전용 페이지에 접근할 수 없습니다!')
+    // console.log('❌ 변호사는 일반 유저 전용 페이지에 접근할 수 없습니다!')
     return <Navigate to={ROUTER.LAWYER_ADMIN} replace />
   }
 
   // 변호사 권한이 필요한 페이지인데 변호사가 아닌 경우 (일반 유저는 변호사 어드민 접근 불가)
   if (requireLawyer && !isLawyer) {
-    console.log('❌ 일반 유저는 변호사 어드민 페이지에 접근할 수 없습니다!')
+    // console.log('❌ 일반 유저는 변호사 어드민 페이지에 접근할 수 없습니다!')
     return <Navigate to={ROUTER.MAIN} replace />
   }
 
-  console.log('✅ 접근 허용!')
+  // console.log('✅ 접근 허용!')
   return <>{children}</>
 }

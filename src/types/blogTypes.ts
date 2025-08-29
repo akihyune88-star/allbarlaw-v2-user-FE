@@ -1,3 +1,4 @@
+import { Tag } from './lawyerTypes'
 import { SortType } from './sortTypes'
 
 export type BlogCountRequest = {
@@ -12,6 +13,8 @@ export type BlogListRequest = {
   cursorId?: number
   orderBy?: SortType
   sort?: 'asc' | 'desc'
+  lawyerId?: number
+  search?: string
 }
 
 export type RandomBlogListRequest = {
@@ -56,4 +59,30 @@ export type BlogDetailResponse = BlogCase & {
 
 export type BlogKeepResponse = {
   isKeep: boolean
+}
+
+export type LawyerAdminBlogCreateRequest = {
+  lawyerId: number
+  subcategoryId: number
+  source: string
+  title: string
+  summaryContent: string
+  tags: string[]
+  originalContentLength: number
+  thumbnail: string
+}
+
+export type LawyerAdminBlogCreateResponse = {
+  blogCaseId: number
+  title: string
+  summaryContent: string
+  thumbnail: string
+  lawyerName: string
+  lawfirmName: string
+  lawyerId: number
+  source: string
+  lawyerProfileImage: string
+  tags: Tag[]
+  subcategoryId: number
+  originalContentLength: number
 }

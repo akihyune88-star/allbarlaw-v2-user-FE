@@ -51,4 +51,24 @@ export const ROUTER = {
   // 변호사 관리
   LAWYER_ADMIN_CHAT_LIST: '/lawyer-admin/chat-list',
   LAWYER_ADMIN_CHAT: '/lawyer-admin/chat',
+
+  LAWYER_ADMIN_LAWYER_DETAIL: '/lawyer-admin/lawyer-detail',
+  LAWYER_ADMIN_LAWYER_EDIT: '/lawyer-admin/lawyer-edit',
+  LAWYER_ADMIN_LAWYER_EDIT_BASIC_INFO: '/lawyer-admin/lawyer-edit/basic-info',
+  LAWYER_ADMIN_LAWYER_EDIT_ACTIVITY: '/lawyer-admin/lawyer-edit/activity',
+  LAWYER_ADMIN_LAWYER_EDIT_CAREER: '/lawyer-admin/lawyer-edit/career',
+
+  LAWYER_ADMIN_CONTENT_BLOG: '/lawyer-admin/content/blog',
+  LAWYER_ADMIN_CONTENT_BLOG_LIST: '/lawyer-admin/content/blog/list',
+  LAWYER_ADMIN_CONTENT_BLOG_DETAIL: '/lawyer-admin/content/blog/detail',
+  LAWYER_ADMIN_CONTENT_BLOG_EDIT: '/lawyer-admin/content/blog/edit',
+  
+  LAWYER_ADMIN_CONTENT_VIDEO: '/lawyer-admin/content/video',
+  LAWYER_ADMIN_CONTENT_VIDEO_LIST: '/lawyer-admin/content/video/list',
+  LAWYER_ADMIN_CONTENT_VIDEO_DETAIL: '/lawyer-admin/content/video/detail',
+  LAWYER_ADMIN_CONTENT_VIDEO_EDIT: '/lawyer-admin/content/video/edit',
+
+  LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE: '/lawyer-admin/content/legal-knowledge',
+  LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE_LIST: '/lawyer-admin/content/legal-knowledge/list',
+  LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE_DETAIL: '/lawyer-admin/content/legal-knowledge/detail',
 } as const

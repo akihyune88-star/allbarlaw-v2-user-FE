@@ -41,18 +41,34 @@ import {
   Chat,
   ConsultationContentForm,
   LawyerAdminLayout,
+  LawyerBlogDetail,
+  LawyerBlogEditor,
+  LawyerBlogLayout,
+  LawyerBlogList,
   LawyerChatList,
   LawyerSignupForm,
   LegalTermDetail,
   Mypage,
   RequestBaroTalk,
 } from '@/pages'
+import LawyerVideoLayout from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoLayout/LawyerVideoLayout'
+import LawyerVideoList from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoList/LawyerVideoList'
+import LawyerVideoDetail from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoDetail/LawyerVideoDetail'
+import LawyerVideoEditor from '@/pages/lawyerAdmin/lawyerContents/lawyerVideo/lawyerVideoEditor/LawyerVideoEditor'
 import LawyerChat from '@/pages/lawyerAdmin/chat/lawyerChat/LawyerChat'
 import LawyerDetail from '@/pages/lawyer/lawyerDetail/LawyerDetail'
 import FindId from '@/pages/auth/findId/FindId'
 import ResetPassword from '@/pages/auth/resetPassword/ResetPassword'
 import LawyerFindId from '@/pages/auth/lawyerFindId/LawyerFindId'
 import LawyerResetPassword from '@/pages/auth/lawyerResetPassword/LawyerResetPassword'
+import AdminLawyerDetail from '@/pages/lawyerAdmin/lawyerInfo/adminLawyerDetail/AdminLawyerDetail'
+import LawyerEditLayout from '@/pages/lawyerAdmin/lawyerInfo/lawyerEditLayout/LawyerEditLayout'
+import BasicInfoEdit from '@/pages/lawyerAdmin/lawyerInfo/basicInfoEdit/BasicInfoEdit'
+import LawyerEditActivity from '@/pages/lawyerAdmin/lawyerInfo/lawyerEditActivity/LawyerEditActivity'
+import LawyerEditCareer from '@/pages/lawyerAdmin/lawyerInfo/lawyerEditCareer/LawyerEditCareer'
+import LawyerLegalKnowledgeLayout from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeLayout/LawyerLegalKnowledgeLayout'
+import LawyerLegalKnowledgeList from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeList/LawyerLegalKnowledgeList'
+import LawyerLegalKnowledgeDetail from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeDetail/LawyerLegalKnowledgeDetail'
 
 const router = createBrowserRouter([
   {
@@ -309,7 +325,83 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <div>변호사 관리 메인 페이지</div>,
+        element: <Navigate to={ROUTER.LAWYER_ADMIN_LAWYER_DETAIL} replace />,
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_LAWYER_DETAIL,
+        element: <AdminLawyerDetail />,
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_LAWYER_EDIT,
+        element: <LawyerEditLayout />,
+        children: [
+          {
+            path: '',
+            element: <Navigate to={ROUTER.LAWYER_ADMIN_LAWYER_EDIT_BASIC_INFO} replace />,
+          },
+          {
+            path: ROUTER.LAWYER_ADMIN_LAWYER_EDIT_BASIC_INFO,
+            element: <BasicInfoEdit />,
+          },
+          {
+            path: ROUTER.LAWYER_ADMIN_LAWYER_EDIT_CAREER,
+            element: <LawyerEditCareer />,
+          },
+          {
+            path: ROUTER.LAWYER_ADMIN_LAWYER_EDIT_ACTIVITY,
+            element: <LawyerEditActivity />,
+          },
+        ],
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CONTENT_BLOG,
+        element: <LawyerBlogLayout />,
+        children: [
+          {
+            path: '',
+            element: <LawyerBlogList />,
+          },
+          {
+            path: `${ROUTER.LAWYER_ADMIN_CONTENT_BLOG_DETAIL}/:blogCaseId`,
+            element: <LawyerBlogDetail />,
+          },
+        ],
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CONTENT_BLOG_EDIT,
+        element: <LawyerBlogEditor />,
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CONTENT_VIDEO,
+        element: <LawyerVideoLayout />,
+        children: [
+          {
+            path: '',
+            element: <LawyerVideoList />,
+          },
+          {
+            path: `${ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_DETAIL}/:videoCaseId`,
+            element: <LawyerVideoDetail />,
+          },
+        ],
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_EDIT,
+        element: <LawyerVideoEditor />,
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE,
+        element: <LawyerLegalKnowledgeLayout />,
+        children: [
+          {
+            path: '',
+            element: <LawyerLegalKnowledgeList />,
+          },
+          {
+            path: `${ROUTER.LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE_DETAIL}/:knowledgeId`,
+            element: <LawyerLegalKnowledgeDetail />,
+          },
+        ],
       },
       {
         path: ROUTER.LAWYER_ADMIN_CHAT_LIST,

@@ -10,6 +10,7 @@ interface SideBarProps {
   onMainCategoryClick: (_id: number) => void
   onSubcategoryClick: (_id: number) => void
   alwaysExpanded?: boolean // 항상 펼쳐보기 옵션
+  className?: string
 }
 
 interface CategoryItemProps {
@@ -31,18 +32,21 @@ const CategoryItem = ({
 }: CategoryItemProps) => {
   const shouldShowSubcategories = alwaysExpanded || isActive
 
+  // 현재 카테고리의 서브카테고리가 선택되었는지 확인
+  const hasSelectedSubcategory = category.subcategories.some(sub => sub.subcategoryId === selectedSubcategory)
+
   return (
     <li className={styles['category-list-item']}>
       <div className={styles['category-list-header']}>
         <h3
-          className={`${styles.categoryName} ${isActive ? styles.active : ''}`}
+          className={`${styles.categoryName} ${isActive || hasSelectedSubcategory ? styles.active : ''}`}
           onClick={alwaysExpanded ? undefined : onClick}
           style={{ cursor: alwaysExpanded ? 'default' : 'pointer' }}
         >
           {category.categoryName}
         </h3>
         {isActive && !alwaysExpanded && (
-          <SvgIcon name='arrowSmall' color={COLOR.green_01} size={16} style={{ transform: 'rotate(180deg)' }} />
+          <SvgIcon name='arrowSmall' color={COLOR.green_01} size={16} style={{ transform: 'rotate(90deg)' }} />
         )}
       </div>
       {shouldShowSubcategories && (
@@ -72,9 +76,10 @@ const SideBar = ({
   onMainCategoryClick,
   onSubcategoryClick,
   alwaysExpanded = false,
+  className,
 }: SideBarProps) => {
   return (
-    <nav className={styles.container} aria-label='카테고리 네비게이션'>
+    <nav className={`${styles.container} ${className}`} aria-label='카테고리 네비게이션'>
       <ul className={styles['category-list']}>
         {categories.map(category => (
           <CategoryItem

@@ -5,9 +5,10 @@ import { getBlogDetailText } from '@/utils/blogTextFormatter'
 type BlogDetailContentsProps = {
   summaryContents: string
   tagList: string[] | { id: number; name: string }[]
+  className?: string
 }
 
-const BlogDetailContents = ({ summaryContents, tagList }: BlogDetailContentsProps) => {
+const BlogDetailContents = ({ summaryContents, tagList, className }: BlogDetailContentsProps) => {
   const { summary, lawyerPart } = getBlogDetailText(summaryContents)
 
   // tagList가 객체 배열인지 문자열 배열인지 확인하고 처리
@@ -21,7 +22,7 @@ const BlogDetailContents = ({ summaryContents, tagList }: BlogDetailContentsProp
   })
 
   return (
-    <div className={styles['blog-detail-content']}>
+    <div className={`${styles['blog-detail-content']} ${className}`}>
       <div className={styles['blog-detail-content-wrapper']}>
         <section>
           <h2 style={{ color: COLOR.green_01 }}>AI 요약</h2>
@@ -41,9 +42,7 @@ const BlogDetailContents = ({ summaryContents, tagList }: BlogDetailContentsProp
         </section>
         <section>
           <hr className={styles['line-driver']} style={{ margin: 0 }} />
-          <div className={styles['tag-list']}>
-            {normalizedTags}
-          </div>
+          <div className={styles['tag-list']}>{normalizedTags}</div>
         </section>
       </div>
     </div>

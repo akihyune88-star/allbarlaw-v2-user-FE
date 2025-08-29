@@ -10,6 +10,8 @@
 
   .blog-item {
     // width: 33.875rem;
+    flex: 1; // Fill available space
+    min-width: 0; // Allow shrinking below content width
 
     .blog-content-header {
       display: flex;

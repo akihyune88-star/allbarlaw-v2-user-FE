@@ -4,6 +4,8 @@ import {
   BlogDetailResponse,
   BlogListRequest,
   BlogListResponse,
+  LawyerAdminBlogCreateRequest,
+  LawyerAdminBlogCreateResponse,
   RandomBlogListRequest,
 } from '@/types/blogTypes'
 
@@ -23,7 +25,7 @@ export const blogService = {
   },
 
   getBlogList: async (request: BlogListRequest) => {
-    const { subcategoryId, take, cursor, cursorId, orderBy } = request
+    const { subcategoryId, take, cursor, cursorId, orderBy, lawyerId, search } = request
 
     // 쿼리 파라미터 객체 생성 (값이 있을 때만 포함)
     const params = new URLSearchParams()
@@ -31,6 +33,8 @@ export const blogService = {
     if (cursor !== undefined) params.append('cursor', cursor.toString())
     if (cursorId !== undefined) params.append('cursorId', cursorId.toString())
     if (orderBy !== undefined) params.append('orderBy', orderBy)
+    if (lawyerId !== undefined) params.append('lawyerId', lawyerId.toString())
+    if (search !== undefined) params.append('search', search)
 
     // 쿼리스트링 생성
     const queryString = params.toString()
@@ -70,6 +74,11 @@ export const blogService = {
 
   changeBlogKeep: async (blogCaseId: number) => {
     const response = await instance.put(`/blog-case/${blogCaseId}/keep`)
+    return response.data
+  },
+
+  createLawyerAdminBlog: async (request: LawyerAdminBlogCreateRequest) => {
+    const response = await instance.post<LawyerAdminBlogCreateResponse>(`/blog-case`, request)
     return response.data
   },
 }

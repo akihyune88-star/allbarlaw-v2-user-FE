@@ -3,6 +3,9 @@ import {
   Lawyer,
   LawyerActiveRequest,
   LawyerActiveResponse,
+  LawyerBasicInfoEditRequest,
+  LawyerBasicInfoEditResponse,
+  LawyerCareer,
   LawyerDetailResponse,
   LawyerKeepResponse,
   LawyerListRequest,
@@ -65,7 +68,7 @@ export const lawyerService = {
         nextCursorId: 0,
         hasNextPage: false,
       } as LawyerListResponse
-    } catch (error) {
+    } catch {
       // 에러 발생 시에도 빈 배열 반환하여 UI가 깨지지 않도록 함
       return {
         data: [],
@@ -78,6 +81,11 @@ export const lawyerService = {
 
   getLawyerDetail: async (lawyerId: number) => {
     const response = await instance.get<LawyerDetailResponse>(`/lawyer/detail/${lawyerId}`)
+    return response.data
+  },
+
+  getLawyerDetailForMe: async () => {
+    const response = await instance.get<LawyerDetailResponse>(`/lawyer/me/detail`)
     return response.data
   },
 
@@ -121,6 +129,28 @@ export const lawyerService = {
 
   signUpLawyer: async (request: LawyerSignUpRequest) => {
     const response = await instance.post<LawyerSignUpResponse>(`/lawyer/signup`, request)
+    return response.data
+  },
+
+  // 변호사 경력 조회
+  getLawyerCareer: async (lawyerId: number) => {
+    const response = await instance.get<LawyerCareer[]>(`/lawyer/${lawyerId}/career`)
+    return response.data
+  },
+
+  // 변호사 경력 업데이트
+  updateLawyerCareer: async (careerData: LawyerCareer[]) => {
+    const response = await instance.put<LawyerCareer[]>(`/lawyer/me/career`, careerData)
+    return response.data
+  },
+
+  getLawyerBasicInfo: async (lawyerId: number) => {
+    const response = await instance.get<LawyerBasicInfoEditResponse>(`/lawyer/profile/${lawyerId}/basic-info`)
+    return response.data
+  },
+
+  updateLaywerBasic: async (lawyerId: number, request: LawyerBasicInfoEditRequest) => {
+    const response = await instance.put<LawyerBasicInfoEditResponse>(`/lawyer/profile/${lawyerId}/basic-info`, request)
     return response.data
   },
 }

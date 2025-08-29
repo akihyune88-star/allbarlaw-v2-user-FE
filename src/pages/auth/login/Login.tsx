@@ -13,6 +13,8 @@ import { loginSchema, type LoginFormData, defaultValues } from './loginSchema'
 import LabelInput from '@/components/labelInput/LabelInput'
 import { useLogin, useLawyerLogin } from '@/hooks/queries/useLogin'
 
+import { getLawyerIdFromToken } from '@/utils/tokenUtils'
+
 type AuthActionType = 'ID_FIND' | 'PASSWORD_RESET' | 'SIGNUP'
 
 const Login = () => {
@@ -63,9 +65,15 @@ const Login = () => {
   })
 
   const { mutate: lawyerLogin, isPending: isLawyerLoginPending } = useLawyerLogin({
-    onSuccess: () => {
+    onSuccess: accessToken => {
       // 변호사 로그인 시 관리 페이지로
-      navigate(ROUTER.LAWYER_ADMIN)
+      const lawyerId = getLawyerIdFromToken(accessToken)
+
+      navigate(ROUTER.LAWYER_ADMIN_LAWYER_DETAIL, {
+        state: {
+          lawyerId,
+        },
+      })
     },
     onError: message => {
       setErrorMessage(message)

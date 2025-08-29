@@ -7,7 +7,10 @@ import {
   LawyerListRequest,
   LawyerSignUpRequest,
   RandomLawyerListRequest,
+  LawyerCareer,
+  LawyerBasicInfoEditRequest,
 } from '@/types/lawyerTypes'
+import { queryClient } from '@/lib/queryClient'
 
 export const useLawyerList = (request: LawyerListRequest) => {
   return useQuery({
@@ -71,15 +74,24 @@ export const useRandomLawyerList = (request: RandomLawyerListRequest) => {
   }
 }
 
-export const useLawyerDetail = (lawyerId: number) => {
+export const useLawyerDetail = (lawyerId: number, options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: [QUERY_KEY.LAWYER_DETAIL, lawyerId],
     queryFn: () => lawyerService.getLawyerDetail(lawyerId),
+    enabled: options?.enabled !== false,
   })
 }
 
 // useLawyer는 useLawyerDetail의 별칭
 export const useLawyer = useLawyerDetail
+
+export const useLawyerDetailForMe = (options?: { enabled?: boolean }) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_DETAIL, 'me'],
+    queryFn: () => lawyerService.getLawyerDetailForMe(),
+    enabled: options?.enabled !== false,
+  })
+}
 
 // 복수의 변호사 정보를 조회하는 훅
 export const useLawyers = (lawyerIds: number[]) => {
@@ -87,10 +99,10 @@ export const useLawyers = (lawyerIds: number[]) => {
     queryKey: [QUERY_KEY.LAWYER_DETAIL, 'multiple', lawyerIds],
     queryFn: async () => {
       if (!lawyerIds || lawyerIds.length === 0) return []
-      
+
       const promises = lawyerIds.map(id => lawyerService.getLawyerDetail(id))
       const results = await Promise.allSettled(promises)
-      
+
       return results
         .filter((result): result is PromiseFulfilledResult<any> => result.status === 'fulfilled')
         .map(result => result.value)
@@ -125,7 +137,6 @@ export const useLawyerActive = (request: LawyerActiveRequest) => {
   })
 }
 
-
 export const useLawyerSignUp = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
   return useMutation({
     mutationFn: (request: LawyerSignUpRequest) => lawyerService.signUpLawyer(request),
@@ -134,6 +145,61 @@ export const useLawyerSignUp = ({ onSuccess, onError }: { onSuccess: () => void;
     },
     onError: () => {
       onError()
+    },
+  })
+}
+
+export const useLawyerBasicInfo = (lawyerId: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_ADMIN_BASIC_INFO, lawyerId],
+    queryFn: () => lawyerService.getLawyerBasicInfo(lawyerId),
+  })
+}
+
+export const useLawyerBasicInfoEdit = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
+  return useMutation({
+    mutationFn: ({ lawyerId, request }: { lawyerId: number; request: LawyerBasicInfoEditRequest }) =>
+      lawyerService.updateLaywerBasic(lawyerId, request),
+    onSuccess: (data, variables) => {
+      // 즉시 캐시 업데이트로 깜빡임 방지
+      queryClient.setQueryData([QUERY_KEY.LAWYER_ADMIN_BASIC_INFO, variables.lawyerId], data)
+      // 백그라운드에서 실제 데이터 동기화
+      queryClient.invalidateQueries({ 
+        queryKey: [QUERY_KEY.LAWYER_ADMIN_BASIC_INFO], 
+        refetchType: 'inactive' // 비활성 쿼리만 refetch
+      })
+      onSuccess()
+    },
+    onError: () => {
+      onError()
+    },
+  })
+}
+
+// 변호사 경력 조회 훅
+export const useLawyerCareer = (lawyerId?: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_DETAIL, 'career', lawyerId],
+    queryFn: () => lawyerService.getLawyerCareer(lawyerId!),
+    enabled: !!lawyerId,
+  })
+}
+
+// 변호사 경력 업데이트 훅
+export const useUpdateLawyerCareer = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void
+  onError?: (error: any) => void
+}) => {
+  return useMutation({
+    mutationFn: (careerData: LawyerCareer[]) => lawyerService.updateLawyerCareer(careerData),
+    onSuccess: () => {
+      onSuccess?.()
+    },
+    onError: error => {
+      onError?.(error)
     },
   })
 }

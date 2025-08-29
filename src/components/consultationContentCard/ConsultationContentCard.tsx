@@ -35,8 +35,8 @@ const ConsultationContentCard = ({
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
   return (
-    <div className={styles['consultation-content-card']}>
-      <Card className={`${styles['card-container']} ${className || ''}`} shadow={false} border={false}>
+    <div className={`${styles['consultation-content-card']} ${className || ''}`}>
+      <Card className={`${styles['card-container']}`} shadow={false} border={false}>
         <Card.Header className={styles['card-header']}>
           <h4>{title}</h4>
           <div className={styles['card-header-meta']}>
