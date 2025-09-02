@@ -7,9 +7,9 @@ import {
   LawyerListRequest,
   LawyerSignUpRequest,
   RandomLawyerListRequest,
-  LawyerCareer,
   LawyerBasicInfoEditRequest,
   LawyerCareerUpdateRequest,
+  LawyerActivityUpdateRequest,
 } from '@/types/lawyerTypes'
 import { queryClient } from '@/lib/queryClient'
 
@@ -203,6 +203,27 @@ export const useUpdateLawyerCareer = ({
     },
     onError: error => {
       onError?.(error)
+    },
+  })
+}
+
+export const useLawyerActivity = (lawyerId: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_DETAIL, 'activity', lawyerId],
+    queryFn: () => lawyerService.getLawyerActivity(lawyerId),
+  })
+}
+
+export const useLawyerActivityUpdate = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
+  return useMutation({
+    mutationFn: ({ lawyerId, activityData }: { lawyerId: number; activityData: LawyerActivityUpdateRequest }) =>
+      lawyerService.updateLawyerActivity(lawyerId, activityData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_DETAIL, 'activity'] })
+      onSuccess?.()
+    },
+    onError: () => {
+      onError()
     },
   })
 }

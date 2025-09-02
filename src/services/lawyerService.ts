@@ -4,6 +4,7 @@ import {
   LawyerActiveRequest,
   LawyerActiveResponse,
   LawyerActivityResponse,
+  LawyerActivityUpdateRequest,
   LawyerAdminActivity,
   LawyerBasicInfoEditRequest,
   LawyerBasicInfoEditResponse,
@@ -165,8 +166,8 @@ export const lawyerService = {
     return response.data
   },
 
-  updateLawyerActivity: async (lawyerId: number, activityData: LawyerAdminActivity[]) => {
-    const response = await instance.put<LawyerAdminActivity[]>(`/lawyer/profile/${lawyerId}/activity`, {
+  updateLawyerActivity: async (lawyerId: number, activityData: LawyerActivityUpdateRequest) => {
+    const response = await instance.put<LawyerActivityResponse>(`/lawyer/profile/${lawyerId}/activity`, {
       lawyerActivities: activityData,
     })
     return response.data

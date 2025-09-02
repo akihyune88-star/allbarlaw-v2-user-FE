@@ -231,7 +231,11 @@ export type LawyerAdminActivity = {
   lawyerActivityDisplayOrder: number
 }
 
-export type LawyerAdminActivityResponse = {}
+export type LawyerActivityUpdateRequest = {
+  lawyerActivityCategoryName: string
+  lawyerActivityContent: string
+  lawyerActivityDisplayOrder: number
+}[]
 
 export type LawyerActivityResponse = {
   lawyerActivities: LawyerAdminActivity[]
