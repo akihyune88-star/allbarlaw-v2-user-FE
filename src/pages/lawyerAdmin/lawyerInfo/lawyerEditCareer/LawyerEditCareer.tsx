@@ -17,6 +17,9 @@ import { ROUTER } from '@/routes/routerConstant'
 import { useLawyerCareer, useUpdateLawyerCareer } from '@/hooks/queries/useLawyer'
 import { LawyerCareer } from '@/types/lawyerTypes'
 import styles from './lawyerEditCareer.module.scss'
+import SvgIcon from '@/components/SvgIcon'
+import { getLawyerIdFromToken } from '@/utils/tokenUtils'
+import { LOCAL } from '@/constants/local'
 
 interface CareerItem {
   id: string
@@ -61,10 +64,22 @@ const SortableItem = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={`${styles.tableRow} ${isSelected ? styles.selected : ''} ${isDragging ? styles.dragging : ''}`}
+      className={`${styles.categoryCard}  ${isDragging ? styles.dragging : ''}`}
       onClick={() => onClick(career)}
     >
-      <div className={styles.cell}>
+      <div
+        className={`${styles.categoryCard__content} ${isSelected ? styles.selected : ''} ${
+          isEditing ? styles.editing : ''
+        }`}
+        onDoubleClick={
+          !isEditing
+            ? e => {
+                e.stopPropagation()
+                onCategoryDoubleClick(career)
+              }
+            : undefined
+        }
+      >
         {isEditing ? (
           <input
             type='text'
@@ -77,37 +92,27 @@ const SortableItem = ({
             }}
             onClick={e => e.stopPropagation()}
             autoFocus
-            className={styles.inlineInput}
+            className={styles.categoryInput}
           />
         ) : (
-          <span
-            onDoubleClick={e => {
-              e.stopPropagation()
-              onCategoryDoubleClick(career)
-            }}
-            className={styles.categoryName}
-            title='더블클릭하여 편집'
-          >
-            {career.lawyerCareerCategoryName}
+          <span className={styles.categoryName} title='더블클릭하여 편집'>
+            {career.lawyerCareerCategoryName || '\u00A0'}
           </span>
         )}
+        <div className={styles.categoryActions}>
+          <button
+            className={styles.deleteButton}
+            onClick={e => {
+              e.stopPropagation()
+              onDelete(career.id)
+            }}
+            aria-label='삭제'
+          >
+            ×
+          </button>
+        </div>
       </div>
-      <div className={styles.cell} style={{ width: '60px' }}>
-        <span {...attributes} {...listeners} className={styles.dragHandle}>
-          ⋮⋮
-        </span>
-      </div>
-      <div className={styles.cell} style={{ width: '60px' }}>
-        <button
-          className={styles.deleteButton}
-          onClick={e => {
-            e.stopPropagation()
-            onDelete(career.id)
-          }}
-        >
-          ✕
-        </button>
-      </div>
+      <SvgIcon {...attributes} {...listeners} name='drag' className={styles.dragHandle} aria-label='드래그' />
     </div>
   )
 }
@@ -116,12 +121,9 @@ export interface LawyerEditCareerRef {
   getFormData: () => LawyerCareer[]
 }
 
-interface LawyerEditCareerProps {
-  lawyerId?: string
-}
-
-const LawyerEditCareer = forwardRef<LawyerEditCareerRef, LawyerEditCareerProps>(({ lawyerId }, ref) => {
+const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
   const navigate = useNavigate()
+  const lawyerId = getLawyerIdFromToken(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN) || '')
   const { data: careerDataFromAPI, isLoading } = useLawyerCareer(Number(lawyerId))
 
   const [careerData, setCareerData] = useState<CareerItem[]>([])
@@ -141,12 +143,15 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, LawyerEditCareerProps>(
   // API 데이터로 초기화
   useEffect(() => {
     if (careerDataFromAPI && !isInitialized) {
-      const dataArray = Array.isArray(careerDataFromAPI) ? careerDataFromAPI : []
+      // careerDataFromAPI.lawyerCareers로 접근해야 합니다
+      const dataArray = careerDataFromAPI.lawyerCareers || []
 
       if (dataArray.length > 0) {
-        const initialData = dataArray.map((item: LawyerCareer, index: number) => ({
-          ...item,
-          id: `api-${index}`,
+        const initialData = dataArray.map((item: any, index: number) => ({
+          id: `api-${item.lawyerCareerId || index}`,
+          lawyerCareerCategoryName: item.lawyerCareerCategoryName || '',
+          lawyerCareerContent: item.lawyerCareerContent || '',
+          lawyerCareerDisplayOrder: item.lawyerCareerDisplayOrder || index + 1,
         }))
         setCareerData(initialData)
       } else {
@@ -242,9 +247,7 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, LawyerEditCareerProps>(
   }
 
   const { mutate: updateCareer, isPending: isSaving } = useUpdateLawyerCareer({
-    onSuccess: () => {
-      navigate(ROUTER.LAWYER_ADMIN_LAWYER_DETAIL)
-    },
+    onSuccess: () => {},
     onError: error => {
       console.error('경력 저장 중 오류 발생:', error)
       alert('경력 정보 저장에 실패했습니다.')
@@ -253,7 +256,7 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, LawyerEditCareerProps>(
 
   const handleSave = () => {
     const formData = careerData.map(({ id, ...rest }) => rest)
-    updateCareer(formData)
+    updateCareer({ lawyerId: Number(lawyerId), careerData: formData })
   }
 
   const handleCancel = () => {
@@ -291,75 +294,61 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, LawyerEditCareerProps>(
         </div>
       </HeaderPortal>
 
-      <section className={styles.container}>
-        <div className={styles.wrapper}>
-          {/* 좌측: 카테고리 리스트 */}
-          <article className={styles.leftPanel}>
-            <div className={styles.tableWrapper}>
-              <div className={styles.tableHeader}>
-                <div className={styles.headerCell}>이력 분류</div>
-                <div className={styles.headerCell} style={{ width: '60px' }}>
-                  이동
-                </div>
-                <div className={styles.headerCell} style={{ width: '60px' }}>
-                  삭제
-                </div>
+      <section className={styles['lawyer-edit-career']}>
+        <article className={styles.panel_container}>
+          <h3 className={styles.panel_container__title}>이력 분류를 선택하세요.</h3>
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={careerData.map(item => item.id)} strategy={verticalListSortingStrategy}>
+              <div className={styles.categoryList}>
+                {careerData.map(career => (
+                  <SortableItem
+                    key={career.id}
+                    career={career}
+                    isSelected={selectedCareer?.id === career.id}
+                    isEditing={editingCategoryId === career.id}
+                    editingCategoryName={editingCategoryName}
+                    onCategoryDoubleClick={handleCategoryDoubleClick}
+                    onCategoryNameSave={handleCategoryNameSave}
+                    onCategoryNameChange={setEditingCategoryName}
+                    onCategoryEditCancel={() => {
+                      setEditingCategoryId(null)
+                      setEditingCategoryName('')
+                    }}
+                    onDelete={handleDelete}
+                    onClick={handleCareerClick}
+                  />
+                ))}
               </div>
+            </SortableContext>
+          </DndContext>
 
-              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                <SortableContext items={careerData.map(item => item.id)} strategy={verticalListSortingStrategy}>
-                  <div className={styles.tableBody}>
-                    {careerData.map(career => (
-                      <SortableItem
-                        key={career.id}
-                        career={career}
-                        isSelected={selectedCareer?.id === career.id}
-                        isEditing={editingCategoryId === career.id}
-                        editingCategoryName={editingCategoryName}
-                        onCategoryDoubleClick={handleCategoryDoubleClick}
-                        onCategoryNameSave={handleCategoryNameSave}
-                        onCategoryNameChange={setEditingCategoryName}
-                        onCategoryEditCancel={() => {
-                          setEditingCategoryId(null)
-                          setEditingCategoryName('')
-                        }}
-                        onDelete={handleDelete}
-                        onClick={handleCareerClick}
-                      />
-                    ))}
-                  </div>
-                </SortableContext>
-              </DndContext>
-            </div>
+          <button className={styles.addButton} onClick={handleAdd}>
+            이력 분류 추가
+          </button>
+        </article>
 
-            <button className={styles.addButton} onClick={handleAdd}>
-              + 추가
-            </button>
-          </article>
+        {/* 우측: 내용 편집 */}
+        <article className={styles.panel_container} style={{ maxHeight: 312 }}>
+          <div className={styles.panel_container__title}>
+            이력 분류 {selectedCareer ? `> ${selectedCareer.lawyerCareerCategoryName}` : ''}
+          </div>
 
-          {/* 우측: 내용 편집 */}
-          <article className={styles.rightPanel}>
-            <div className={styles.panelHeader}>
-              <h3 className={styles.title}>
-                {selectedCareer ? <>이력분류 &gt; {selectedCareer.lawyerCareerCategoryName}</> : '이력 내용'}
-              </h3>
-            </div>
-
+          <div className={styles.editorContent}>
             {selectedCareer ? (
-              <div className={styles.editorContent}>
-                <textarea
-                  value={contentValue}
-                  onChange={e => setContentValue(e.target.value)}
-                  onBlur={handleContentBlur}
-                  placeholder={`이력사항을 연도별로 입력해 주세요.\n※ 예시 - 2021 ~ 2025 : 법률사무소 대표 변호사`}
-                  className={styles.contentTextarea}
-                />
-              </div>
+              <textarea
+                value={contentValue}
+                onChange={e => setContentValue(e.target.value)}
+                onBlur={handleContentBlur}
+                placeholder='1줄씩 입력 바랍니다.'
+                className={styles.contentTextarea}
+              />
             ) : (
-              <div className={styles.emptyState}>좌측에서 카테고리를 선택하거나 추가해주세요.</div>
+              <div className={styles.emptyContent}>
+                <span className={styles.emptyContent__text}>카테고리를 선택해주세요.</span>
+              </div>
             )}
-          </article>
-        </div>
+          </div>
+        </article>
       </section>
     </>
   )

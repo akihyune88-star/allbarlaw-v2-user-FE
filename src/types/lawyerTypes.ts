@@ -212,3 +212,14 @@ export type LawyerBasicInfoEditResponse = {
     isDefault: boolean
   }[]
 }
+
+export type LawyerCarrer = {
+  lawyerCareerId: number
+  lawyerCareerCategoryName: string
+  lawyerCareerContent: string
+  lawyerCareerDisplayOrder: number
+}
+
+export type LawyerCareerResponse = {
+  lawyerCareers: LawyerCarrer[]
+}

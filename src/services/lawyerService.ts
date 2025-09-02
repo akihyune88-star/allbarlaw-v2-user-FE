@@ -6,6 +6,7 @@ import {
   LawyerBasicInfoEditRequest,
   LawyerBasicInfoEditResponse,
   LawyerCareer,
+  LawyerCareerResponse,
   LawyerDetailResponse,
   LawyerKeepResponse,
   LawyerListRequest,
@@ -132,18 +133,6 @@ export const lawyerService = {
     return response.data
   },
 
-  // 변호사 경력 조회
-  getLawyerCareer: async (lawyerId: number) => {
-    const response = await instance.get<LawyerCareer[]>(`/lawyer/${lawyerId}/career`)
-    return response.data
-  },
-
-  // 변호사 경력 업데이트
-  updateLawyerCareer: async (careerData: LawyerCareer[]) => {
-    const response = await instance.put<LawyerCareer[]>(`/lawyer/me/career`, careerData)
-    return response.data
-  },
-
   getLawyerBasicInfo: async (lawyerId: number) => {
     const response = await instance.get<LawyerBasicInfoEditResponse>(`/lawyer/profile/${lawyerId}/basic-info`)
     return response.data
@@ -151,6 +140,20 @@ export const lawyerService = {
 
   updateLaywerBasic: async (lawyerId: number, request: LawyerBasicInfoEditRequest) => {
     const response = await instance.put<LawyerBasicInfoEditResponse>(`/lawyer/profile/${lawyerId}/basic-info`, request)
+    return response.data
+  },
+
+  // 변호사 경력 조회
+  getLawyerCareer: async (lawyerId: number) => {
+    const response = await instance.get<LawyerCareerResponse>(`/lawyer/profile/${lawyerId}/career`)
+    return response.data
+  },
+
+  // 변호사 경력 업데이트
+  updateLawyerCareer: async (lawyerId: number, careerData: LawyerCareer[]) => {
+    const response = await instance.put<LawyerCareer[]>(`/lawyer/profile/${lawyerId}/career`, {
+      lawyerCareers: careerData,
+    })
     return response.data
   },
 }
