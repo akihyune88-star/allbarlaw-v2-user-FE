@@ -5,6 +5,7 @@
   border-bottom: 1px solid $color-line-divider;
 
   @media (max-width: $breakpoint-desktop) {
+    border-top: none;
     border-bottom: none;
   }
 }

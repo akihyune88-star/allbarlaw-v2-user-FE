@@ -38,11 +38,13 @@ import naver from '@/assets/svgs/naver.svg?react'
 import clip from '@/assets/svgs/clip.svg?react'
 import user from '@/assets/svgs/user.svg?react'
 import human from '@/assets/svgs/human.svg?react'
+import pcLogoLanding from '@/assets/svgs/pc-logo-horizon-landing.svg?react'
 import drag from '@/assets/svgs/drag.svg?react'
 
 export {
   react,
   loginRound,
+  pcLogoLanding,
   search,
   mobileLogo,
   pcLogoHorizon,
@@ -72,7 +74,6 @@ export {
   activeBookMark,
   activeTotalMenu,
   playButtonArrow,
-  drag,
   pause,
   blog,
   checkRoundLine,
@@ -82,4 +83,5 @@ export {
   clip,
   user,
   human,
+  drag,
 }

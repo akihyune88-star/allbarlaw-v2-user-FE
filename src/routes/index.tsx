@@ -310,10 +310,14 @@ const router = createBrowserRouter([
         element: <MobileMenuList />,
       },
       {
-        path: ROUTER.ABOUT,
+        path: ROUTER.ABOUT_MOBILE,
         element: <AboutAllbarlaw />,
       },
     ],
+  },
+  {
+    path: ROUTER.ABOUT,
+    element: <AboutAllbarlaw />,
   },
   {
     path: ROUTER.LAWYER_ADMIN,
