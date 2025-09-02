@@ -3,13 +3,15 @@ import styles from './heroHeader.module.scss'
 import { ROUTER } from '@/routes/routerConstant'
 import { useNavigate } from 'react-router-dom'
 import { MouseEvent } from 'react'
-import { LOCAL } from '@/constants/local'
+import { useAuth } from '@/contexts/AuthContext'
+import landingHero from '@/assets/imgs/landing-hero.webp'
+import landingHeroMobile from '@/assets/imgs/landing-hero-mobile.webp'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const HeroHeader = () => {
   const navigate = useNavigate()
-
-  // 토큰 존재 여부로 로그인 상태 확인
-  const isLoggedIn = !!(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN))
+  const { isLoggedIn } = useAuth()
+  const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const linkList = [
     {
@@ -75,6 +77,13 @@ const HeroHeader = () => {
             )}
           </nav>
         </header>
+        <figure className={styles['hero-header-image-container']}>
+          <img
+            src={isMobile ? landingHeroMobile : landingHero}
+            alt='hero-header-image'
+            className={styles['hero-header-image']}
+          />
+        </figure>
       </section>
     </>
   )
