@@ -1,4 +1,141 @@
+.legal-resource-highlight-wrapper {
+  width: 100vw;
+  height: 48.5rem;
+  margin-left: calc(-50vw + 50%);
+  background-color: $color-bg-gray-03;
+}
+
 .legal-resource-highlight {
-  width: 100%;
+  width: 80rem;
   height: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 3rem 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.625rem;
+
+  @media (max-width: $breakpoint-desktop) {
+    width: 100%;
+    padding: 2rem 1.25rem;
+  }
+
+  &-subtitle {
+    font-size: 1.5rem;
+    font-weight: $font-weight-extra-bold;
+    color: $color-green-01;
+  }
+
+  &-title {
+    font-size: 3rem;
+    font-weight: $font-weight-extra-bold;
+    color: $color-text-black;
+  }
+
+  &-animation {
+    height: 100%;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &-item {
+      position: absolute;
+      animation: floating 3s ease-in-out infinite;
+
+      &:nth-child(1) {
+        animation-delay: 0s;
+      }
+
+      &:nth-child(2) {
+        animation-delay: 0.8s;
+      }
+
+      &:nth-child(3) {
+        animation-delay: 1.5s;
+      }
+
+      &:nth-child(4) {
+        animation-delay: 2.3s;
+      }
+
+      img {
+        width: auto;
+        height: auto;
+        display: block;
+        position: relative;
+        z-index: 1;
+      }
+
+      p {
+        position: absolute;
+        top: 4rem;
+        right: -2rem;
+        background-color: rgba($color-white, 0.8);
+        border: 1px solid $color-line-borderbox;
+        border-radius: 1.25rem;
+        padding: 0.5625rem 1.3125rem;
+        font-size: 1.25rem;
+        font-weight: $font-weight-semibold;
+        color: $color-text-black;
+        margin: 0;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        z-index: 2;
+      }
+
+      // 특정 아이템 위치 조정
+      &:nth-child(2) p,  // 지식인
+      &:nth-child(3) p {
+        // 변호사
+        top: 3.5rem;
+        right: -2rem;
+      }
+
+      &:nth-child(4) p {
+        // 글
+        top: 3rem;
+        right: -1.5rem;
+      }
+    }
+
+    @keyframes floating {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    &-content {
+      text-align: center;
+
+      p {
+        margin: 0;
+      }
+
+      p:first-child {
+        font-size: 1.5rem;
+        font-weight: $font-weight-extra-bold;
+        color: $color-text-black;
+
+        strong {
+          font-size: 3.5rem;
+        }
+      }
+
+      p:last-child {
+        font-size: 2.25rem;
+        font-weight: $font-weight-semibold;
+        line-height: 2.25rem;
+
+        color: $color-text-index;
+        margin-top: 0.625rem;
+      }
+    }
+  }
 }
