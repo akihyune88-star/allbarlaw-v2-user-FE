@@ -28,7 +28,7 @@ const LegalResourceHighlight = () => {
       itemName: '글',
       imgPath: post,
       position: { bottom: '1%', right: '25%' },
-      mobilePosition: { bottom: '1%', right: '3%' },
+      mobilePosition: { bottom: '10%', right: '3%' },
     },
   ]
 
@@ -42,7 +42,13 @@ const LegalResourceHighlight = () => {
             const currentPosition = isMobile ? item.mobilePosition : item.position
 
             return (
-              <div key={index} className={styles['legal-resource-highlight-animation-item']} style={currentPosition}>
+              <div
+                key={index}
+                className={`${styles['legal-resource-highlight-animation-item']} ${
+                  item.itemName === '글' ? styles['post-item'] : ''
+                }`}
+                style={currentPosition}
+              >
                 <img src={item.imgPath} alt={item.itemName} />
                 <p>{item.itemName}</p>
               </div>

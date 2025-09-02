@@ -99,6 +99,17 @@
         top: 3rem;
         right: -1.5rem;
       }
+
+      // 글 아이템만 모바일에서 이미지 크기 조정
+      &.post-item {
+        @media (max-width: $breakpoint-desktop) {
+          img {
+            width: 6.25rem;
+            height: 6.25rem;
+            object-fit: contain;
+          }
+        }
+      }
     }
 
     @keyframes floating {
