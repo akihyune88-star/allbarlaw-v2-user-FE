@@ -69,7 +69,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1.6875rem 3.375rem; // 세로 27px, 가로 54px
-    margin-top: 3rem;
+    margin-top: 3.3125rem;
 
     @media (max-width: $breakpoint-desktop) {
       gap: 2rem 1rem;

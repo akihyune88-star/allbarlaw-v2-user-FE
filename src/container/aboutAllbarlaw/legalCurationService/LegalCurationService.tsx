@@ -1,6 +1,5 @@
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import styles from './legalCurationService.module.scss'
-import CategorySelector from '@/components/categorySelector/CategorySelector'
 import { useCategory } from '@/hooks/queries/useCategory'
 import { useNavigate } from 'react-router-dom'
 
