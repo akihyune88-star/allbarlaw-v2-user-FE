@@ -16,13 +16,13 @@ const LegalResourceHighlight = () => {
       itemName: '지식인',
       imgPath: knowledge,
       position: { top: '15%', right: '20%' },
-      mobilePosition: { top: '18%', right: '5%' },
+      mobilePosition: { top: '18%', right: '-5%' },
     },
     {
       itemName: '변호사',
       imgPath: lawyer,
       position: { bottom: '15%', left: '15%' },
-      mobilePosition: { bottom: '10%', left: '-2%' },
+      mobilePosition: { bottom: '10%', left: '2%' },
     },
     {
       itemName: '글',

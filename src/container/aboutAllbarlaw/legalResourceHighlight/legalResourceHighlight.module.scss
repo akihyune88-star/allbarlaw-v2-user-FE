@@ -84,14 +84,27 @@
         white-space: nowrap;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         z-index: 2;
+
+        @media (max-width: $breakpoint-desktop) {
+          padding: 0;
+          width: 3.875rem;
+          height: 2.25rem;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
       }
 
       // 특정 아이템 위치 조정
       &:nth-child(2) p,  // 지식인
       &:nth-child(3) p {
-        // 변호사
         top: 3.5rem;
         right: -2rem;
+
+        @media (max-width: $breakpoint-desktop) {
+          right: 0.5rem;
+        }
       }
 
       &:nth-child(4) p {
