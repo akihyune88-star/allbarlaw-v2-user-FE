@@ -15,7 +15,7 @@ import HeaderPortal from '@/components/headerPortal/HeaderPortal'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useLawyerCareer, useUpdateLawyerCareer } from '@/hooks/queries/useLawyer'
-import { LawyerCareer } from '@/types/lawyerTypes'
+import { LawyerCareerUpdateRequest } from '@/types/lawyerTypes'
 import styles from './lawyerEditCareer.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { getLawyerIdFromToken } from '@/utils/tokenUtils'
@@ -118,7 +118,7 @@ const SortableItem = ({
 }
 
 export interface LawyerEditCareerRef {
-  getFormData: () => LawyerCareer[]
+  getFormData: () => LawyerCareerUpdateRequest
 }
 
 const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
@@ -255,7 +255,11 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
   })
 
   const handleSave = () => {
-    const formData = careerData.map(({ id, ...rest }) => rest)
+    const formData: LawyerCareerUpdateRequest = careerData.map(item => ({
+      lawyerCareerCategoryName: item.lawyerCareerCategoryName,
+      lawyerCareerContent: item.lawyerCareerContent,
+      lawyerCareerDisplayOrder: item.lawyerCareerDisplayOrder,
+    }))
     updateCareer({ lawyerId: Number(lawyerId), careerData: formData })
   }
 
@@ -265,7 +269,11 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
 
   // ref를 통해 상위 컴포넌트에 데이터 전달
   useImperativeHandle(ref, () => ({
-    getFormData: () => careerData.map(({ id, ...rest }) => rest),
+    getFormData: () => careerData.map(item => ({
+      lawyerCareerCategoryName: item.lawyerCareerCategoryName,
+      lawyerCareerContent: item.lawyerCareerContent,
+      lawyerCareerDisplayOrder: item.lawyerCareerDisplayOrder,
+    })),
   }))
 
   if (isLoading) {

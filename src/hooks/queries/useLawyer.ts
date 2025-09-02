@@ -9,6 +9,7 @@ import {
   RandomLawyerListRequest,
   LawyerCareer,
   LawyerBasicInfoEditRequest,
+  LawyerCareerUpdateRequest,
 } from '@/types/lawyerTypes'
 import { queryClient } from '@/lib/queryClient'
 
@@ -194,7 +195,7 @@ export const useUpdateLawyerCareer = ({
   onError?: (error: any) => void
 }) => {
   return useMutation({
-    mutationFn: ({ lawyerId, careerData }: { lawyerId: number; careerData: LawyerCareer[] }) =>
+    mutationFn: ({ lawyerId, careerData }: { lawyerId: number; careerData: LawyerCareerUpdateRequest }) =>
       lawyerService.updateLawyerCareer(lawyerId, careerData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_DETAIL, 'career'] })

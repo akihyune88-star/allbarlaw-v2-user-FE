@@ -3,10 +3,13 @@ import {
   Lawyer,
   LawyerActiveRequest,
   LawyerActiveResponse,
+  LawyerActivityResponse,
+  LawyerAdminActivity,
   LawyerBasicInfoEditRequest,
   LawyerBasicInfoEditResponse,
   LawyerCareer,
   LawyerCareerResponse,
+  LawyerCareerUpdateRequest,
   LawyerDetailResponse,
   LawyerKeepResponse,
   LawyerListRequest,
@@ -150,9 +153,21 @@ export const lawyerService = {
   },
 
   // 변호사 경력 업데이트
-  updateLawyerCareer: async (lawyerId: number, careerData: LawyerCareer[]) => {
-    const response = await instance.put<LawyerCareer[]>(`/lawyer/profile/${lawyerId}/career`, {
+  updateLawyerCareer: async (lawyerId: number, careerData: LawyerCareerUpdateRequest) => {
+    const response = await instance.put<LawyerCareerResponse>(`/lawyer/profile/${lawyerId}/career`, {
       lawyerCareers: careerData,
+    })
+    return response.data
+  },
+
+  getLawyerActivity: async (lawyerId: number) => {
+    const response = await instance.get<LawyerActivityResponse>(`/lawyer/profile/${lawyerId}/activity`)
+    return response.data
+  },
+
+  updateLawyerActivity: async (lawyerId: number, activityData: LawyerAdminActivity[]) => {
+    const response = await instance.put<LawyerAdminActivity[]>(`/lawyer/profile/${lawyerId}/activity`, {
+      lawyerActivities: activityData,
     })
     return response.data
   },
