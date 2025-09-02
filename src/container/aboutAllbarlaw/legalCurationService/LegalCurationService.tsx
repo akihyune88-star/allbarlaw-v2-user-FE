@@ -1,8 +1,18 @@
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import styles from './legalCurationService.module.scss'
+import CategorySelector from '@/components/categorySelector/CategorySelector'
+import { useCategory } from '@/hooks/queries/useCategory'
+import { useNavigate } from 'react-router-dom'
 
 const LegalCurationService = () => {
+  const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
+
+  const { data: categoryList } = useCategory()
+
+  const handleCategoryClick = (categoryId: number) => {
+    navigate(`/${categoryId}`)
+  }
 
   return (
     <section className={styles['legal-curation-service']}>
@@ -22,6 +32,18 @@ const LegalCurationService = () => {
             <strong>지금, 법률의 새로운 탐색을 시작해 보세요.</strong>
           </p>
         </div>
+      </article>
+      <article className={styles['legal-curation-service-image']}>
+        {categoryList?.map(category => (
+          <button
+            key={category.categoryId}
+            className={styles['legal-curation-service-image-item']}
+            onClick={() => handleCategoryClick(category.subcategories[0].subcategoryId)}
+          >
+            <img src={category.clickedImageUrl} alt={category.categoryName} />
+            <span>{category.categoryName}</span>
+          </button>
+        ))}
       </article>
     </section>
   )

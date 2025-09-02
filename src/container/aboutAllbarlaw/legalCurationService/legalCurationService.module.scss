@@ -63,4 +63,58 @@
       }
     }
   }
+
+  &-image {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.6875rem 3.375rem; // 세로 27px, 가로 54px
+    margin-top: 3rem;
+
+    @media (max-width: $breakpoint-desktop) {
+      gap: 2rem 1rem;
+      margin-top: 2rem;
+    }
+
+    &-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      gap: 1rem;
+
+      width: 5.875rem;
+      height: 7.0625rem;
+      padding-top: 1.25rem;
+
+      background-color: $color-bg-gray-03;
+
+      img {
+        width: 2rem;
+        height: 2rem;
+        object-fit: contain;
+      }
+
+      span {
+        font-size: 0.75rem;
+        font-weight: $font-weight-regular;
+        color: $color-text-index;
+      }
+
+      @media (max-width: $breakpoint-desktop) {
+        width: 3.375rem;
+        height: 5.25rem;
+
+        padding-top: 0.9375rem;
+        justify-content: space-between;
+
+        background-color: transparent;
+
+        img {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+      }
+    }
+  }
 }
