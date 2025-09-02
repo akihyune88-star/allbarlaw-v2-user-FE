@@ -1,0 +1,66 @@
+.legal-curation-service {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  padding: 10.625rem 0;
+
+  @media (max-width: $breakpoint-desktop) {
+    padding: 2.125rem 1.25rem;
+  }
+
+  &-title {
+    font-size: 1.5rem;
+    font-weight: $font-weight-extra-bold;
+    color: $color-green-01;
+
+    margin-bottom: 1.125rem;
+
+    @media (max-width: $breakpoint-desktop) {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  &-article {
+    display: flex;
+    flex-direction: row;
+    gap: 7.9375rem;
+
+    white-space: pre-line;
+
+    @media (max-width: $breakpoint-desktop) {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    &-right {
+      font-size: 3rem;
+      font-weight: $font-weight-extra-bold;
+      line-height: 3.75rem;
+      color: $color-text-black;
+
+      @media (max-width: $breakpoint-desktop) {
+        font-size: 1.5rem;
+        line-height: 2rem;
+      }
+    }
+
+    &-right-description {
+      font-size: 1.25rem;
+      font-weight: $font-weight-semibold;
+      line-height: 2rem;
+      color: $color-text-black;
+
+      strong {
+        font-weight: $font-weight-extra-bold;
+      }
+
+      @media (max-width: $breakpoint-desktop) {
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+    }
+  }
+}

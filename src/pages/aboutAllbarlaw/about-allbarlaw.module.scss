@@ -6,5 +6,9 @@
 
   .inner-container {
     width: 80rem;
+
+    @media (max-width: $breakpoint-desktop) {
+      width: 100%;
+    }
   }
 }
