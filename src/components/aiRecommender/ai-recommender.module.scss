@@ -27,6 +27,8 @@
       color: $color-text-index;
       transition: all 0.2s ease;
 
+      line-height: 2;
+
       &:hover {
         color: $color-icon-darkgreen;
         text-decoration: underline;
