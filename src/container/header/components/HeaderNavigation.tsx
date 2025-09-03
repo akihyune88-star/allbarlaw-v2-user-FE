@@ -1,11 +1,11 @@
 import styles from '@/container/header/header.module.scss'
-import SvgIcon from '@/components/SvgIcon'
 import { MENU_LIST } from '@/constants/topMenu'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useAuth } from '@/contexts/AuthContext'
 import { useGetBaroTalkChatList } from '@/hooks/queries/useBaroTalk'
 import { useState } from 'react'
+import allbarlawLogo from '@/assets/imgs/allbarlaw-logo.png'
 
 const HeaderNavigation = () => {
   const navigate = useNavigate()
@@ -71,7 +71,13 @@ const HeaderNavigation = () => {
 
   return (
     <div className={styles['navigation-container']}>
-      <SvgIcon name='pcLogoHorizon' className={styles['header-logo']} onClick={() => navigate(ROUTER.MAIN)} />
+      {/* <SvgIcon name='pcLogoHorizon' className={styles['header-logo']} onClick={() => navigate(ROUTER.MAIN)} /> */}
+      <img
+        src={allbarlawLogo}
+        alt='allbarlaw-logo'
+        className={styles['header-logo']}
+        onClick={() => navigate(ROUTER.MAIN)}
+      />
       <div className={styles['header-menu-list']}>
         {filteredMenuList.map(item => (
           <button

@@ -9,4 +9,6 @@ import post from './post.webp'
 import knowledge from './knowledge.webp'
 import video from './video.webp'
 
+import allbarlawLogo from './allbarlaw-logo.webp'
+
 export { guideBanner, blog, youtube, instagram, lawyerAdminLogo, lawyer, post, knowledge, video }
