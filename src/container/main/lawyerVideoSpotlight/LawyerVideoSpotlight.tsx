@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { useGetVideoCount } from '@/hooks/queries/useGetVideoCount'
 import styles from './lawyer-video-spotlight.module.scss'
 import { useRandomVideoList } from '@/hooks/queries/useRandomVideoList'
 import VideoThumbnail from '@/components/video/VideoThumbnail'
@@ -9,6 +8,7 @@ import PlayButton from '@/components/playButton/PlayButton'
 import { COLOR } from '@/styles/color'
 import { useNavigationHistory } from '@/hooks'
 import SvgIcon from '@/components/SvgIcon'
+import { useGetVideoCount } from '@/hooks/queries/useVideo'
 
 const LawyerVideoSpotlightHeader = ({
   onNext,
@@ -45,9 +45,9 @@ const LawyerVideoSpotlightHeader = ({
         </div>
       </div>
       {!isMobile ? (
-        <PlayButton 
-          iconColor={COLOR.text_black} 
-          onNext={onNext} 
+        <PlayButton
+          iconColor={COLOR.text_black}
+          onNext={onNext}
           onPrev={onPrev}
           onToggle={onToggle}
           isPlaying={isPlaying}
