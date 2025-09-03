@@ -40,9 +40,11 @@ import user from '@/assets/svgs/user.svg?react'
 import human from '@/assets/svgs/human.svg?react'
 import pcLogoLanding from '@/assets/svgs/pc-logo-horizon-landing.svg?react'
 import drag from '@/assets/svgs/drag.svg?react'
+import play from '@/assets/svgs/play.svg?react'
 
 export {
   react,
+  play,
   loginRound,
   pcLogoLanding,
   search,

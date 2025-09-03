@@ -6,10 +6,18 @@ type PlayButtonProps = {
   onNext?: () => void
   onPrev?: () => void
   onToggle?: () => void
+  isPlaying?: boolean
   iconColor?: string
 }
 
-const PlayButton = ({ className, onNext, onPrev, onToggle, iconColor = '#fff' }: PlayButtonProps) => {
+const PlayButton = ({
+  className,
+  onNext,
+  onPrev,
+  onToggle,
+  isPlaying = false,
+  iconColor = '#fff',
+}: PlayButtonProps) => {
   const disabledColor = '#ccc'
 
   return (
@@ -18,7 +26,7 @@ const PlayButton = ({ className, onNext, onPrev, onToggle, iconColor = '#fff' }:
         <SvgIcon name='playButtonArrow' size={16} color={!onPrev ? disabledColor : iconColor} />
       </button>
       <button onClick={onToggle}>
-        <SvgIcon name={'pause'} size={16} color={iconColor} />
+        <SvgIcon name={isPlaying ? 'pause' : 'play'} size={24} color={iconColor} />
       </button>
       <button onClick={onNext} disabled={!onNext}>
         <SvgIcon

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useBlogCount } from '@/hooks/queries/useBlogCount'
 import styles from './blog-feed-container.module.scss'
 import BlogItem from '@/components/blogItem/BlogItem'
@@ -15,10 +15,14 @@ import SvgIcon from '@/components/SvgIcon'
 const BlogFeedHeader = ({
   onNext,
   onPrev,
+  onToggle,
+  isPlaying,
   refetch,
 }: {
   onNext?: () => void
   onPrev?: () => void
+  onToggle?: () => void
+  isPlaying?: boolean
   refetch?: () => void
 }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
@@ -42,7 +46,13 @@ const BlogFeedHeader = ({
         </div>
       </div>
       {!isMobile ? (
-        <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} />
+        <PlayButton
+          iconColor={COLOR.text_black}
+          onNext={onNext}
+          onPrev={onPrev}
+          onToggle={onToggle}
+          isPlaying={isPlaying}
+        />
       ) : (
         <SvgIcon name='refresh' size={16} onClick={refetch} style={{ cursor: 'pointer' }} />
       )}
@@ -53,6 +63,8 @@ const BlogFeedHeader = ({
 const BlogFeedContainer = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
+  const [isPlaying, setIsPlaying] = useState(true)
+  const intervalRef = useRef<number | null>(null)
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 
@@ -68,19 +80,44 @@ const BlogFeedContainer = () => {
     navigate(`/${subcategoryId}/blog/${blogId}`)
   }
 
+  const handleTogglePlay = () => {
+    setIsPlaying(prev => !prev)
+  }
+
+  const goToNext = () => {
+    if (hasNextPage) {
+      const currentIds = blogList.map(blog => blog.blogCaseId)
+      handleNext(currentIds)
+    }
+  }
+
+  useEffect(() => {
+    if (isPlaying && !isMobile) {
+      intervalRef.current = window.setInterval(() => {
+        goToNext()
+      }, 3000)
+    } else {
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current)
+        intervalRef.current = null
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current)
+      }
+    }
+  }, [isPlaying, hasNextPage, blogList, isMobile])
+
   return (
     <section className={styles.container}>
       <BlogFeedHeader
         refetch={refetch}
-        onNext={
-          hasNextPage
-            ? () => {
-                const currentIds = blogList.map(blog => blog.blogCaseId)
-                handleNext(currentIds)
-              }
-            : undefined
-        }
+        onNext={hasNextPage ? goToNext : undefined}
         onPrev={canGoPrev ? handlePrev : undefined}
+        onToggle={handleTogglePlay}
+        isPlaying={isPlaying}
       />
       <div className={styles['blog-list-container']}>
         <div className={`${styles['main-blog-item']} ${isMobile ? styles.hidden : ''}`}>
