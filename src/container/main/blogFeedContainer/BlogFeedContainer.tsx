@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useBlogCount } from '@/hooks/queries/useBlogCount'
 import styles from './blog-feed-container.module.scss'
 import BlogItem from '@/components/blogItem/BlogItem'
 import Article from '@/components/article/Article'
@@ -11,6 +10,7 @@ import { COLOR } from '@/styles/color'
 import { useRandomBlogList } from '@/hooks/queries/useRandomBlogList'
 import { useNavigationHistory } from '@/hooks'
 import SvgIcon from '@/components/SvgIcon'
+import { useBlogCount } from '@/hooks/queries/useBlog'
 
 const BlogFeedHeader = ({
   onNext,

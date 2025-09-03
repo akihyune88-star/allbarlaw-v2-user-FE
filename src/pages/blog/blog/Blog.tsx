@@ -11,7 +11,7 @@ import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 const BlogLayout = () => {
   const navigate = useNavigate()
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
-  const [sortCase, setSortCase] = useState<string>('all')
+  const [sortCase, setSortCase] = useState<string>('viewCount')
 
   const { blogList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteBlogList({
     subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,

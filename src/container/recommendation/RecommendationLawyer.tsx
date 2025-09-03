@@ -23,7 +23,7 @@ const RecommendationLawyer = ({
   dividerPadding,
 }: RecommendationLawyerProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const chunkSize = isMobile ? 4 : 3
+  const chunkSize = isMobile ? 4 : 5
   const navigate = useNavigate()
   const { data: recommendationLawyer } = useRecommendationLawyer(take)
   const { visibleItems, rotateNext } = useChunkedRotate(recommendationLawyer ?? [], chunkSize)

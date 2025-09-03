@@ -72,14 +72,9 @@
     padding: 0;
     border: none;
     background: none;
-    cursor: pointer;
+    // cursor: default;
     min-width: 72px;
     text-align: center;
-
-    &.active {
-      --button-text-color: #{$color-text-black};
-      font-weight: $font-weight-extra-bold;
-    }
   }
 
   .sort-case {

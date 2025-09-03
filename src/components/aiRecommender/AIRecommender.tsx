@@ -83,7 +83,7 @@ export const LawyerItem = ({
   divider?: boolean
 }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const CHUNK_SIZE = isMobile ? 4 : 3
+  const CHUNK_SIZE = isMobile ? 4 : 5
   const navigate = useNavigate()
   const { visibleItems: visibleLawyers, rotateNext } = useChunkedRotate(lawyerList, CHUNK_SIZE)
 

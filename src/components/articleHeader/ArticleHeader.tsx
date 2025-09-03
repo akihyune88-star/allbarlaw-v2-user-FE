@@ -59,9 +59,7 @@ const ArticleHeader = ({
     if (isMobile) {
       return (
         <nav className={styles['nav-list']} aria-label='블로그 정렬'>
-          <button className={`${styles.allButton} ${activeKey === '전체' ? styles.active : ''}`}>
-            전체 {totalBlogCount?.toLocaleString()}개
-          </button>
+          <span className={`${styles.allButton}`}>전체 {totalBlogCount?.toLocaleString()}개</span>
           <ul className={styles['sort-case']}>
             {SORT_CASE.map((item: SortItem) => {
               if (item.name === '전체') {
@@ -89,6 +87,7 @@ const ArticleHeader = ({
                 key={item.key}
                 onClick={() => handleSortCase(item.key)}
                 className={activeKey === item.key ? styles.active : ''}
+                style={{ cursor: item.name === '전체' ? 'default' : 'pointer' }}
               >
                 {item.name === '전체' ? `${item.name} ${totalBlogCount?.toLocaleString()}개` : item.name}
               </li>
