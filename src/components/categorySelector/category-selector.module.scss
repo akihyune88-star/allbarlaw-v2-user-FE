@@ -137,6 +137,8 @@
   text-align: center;
   border-radius: 0;
 
+  word-break: keep-all;
+
   // 모든 버튼에 아래쪽, 오른쪽 테두리 기본 적용
   border-bottom: 1px solid #dee2e6;
   border-right: 1px solid #dee2e6;
