@@ -10,6 +10,7 @@ import { COLOR } from '@/styles/color'
 import { LOCAL } from '@/constants/local'
 import { ROUTER } from '@/routes/routerConstant'
 import { useNavigate } from 'react-router-dom'
+import { useSearchStore } from '@/stores/searchStore'
 
 type LawyerVerticalProps = {
   lawyerId: number
@@ -52,9 +53,16 @@ const LawyerVertical = ({
   lawyerId,
 }: LawyerVerticalProps) => {
   const navigate = useNavigate()
+  const { setSearchQuery } = useSearchStore()
+
   const handleBaroTalk = () => {
     sessionStorage.setItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString())
     navigate(ROUTER.REQUEST_BARO_TALK)
+  }
+
+  const handleTagClick = (tag: TagType) => {
+    setSearchQuery(tag.name)
+    navigate(`/search/lawyer?tag=${tag.name}`)
   }
 
   return (
@@ -121,7 +129,7 @@ const LawyerVertical = ({
           {tags && (
             <div className={styles['tag-list']}>
               {tags.map(tagItem => (
-                <Tag tag={tagItem.name} key={tagItem.id} />
+                <Tag tag={tagItem.name} key={tagItem.id} onClick={() => handleTagClick(tagItem)} />
               ))}
             </div>
           )}
