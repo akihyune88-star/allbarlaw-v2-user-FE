@@ -55,20 +55,13 @@ const BlogDetailSideBar = ({ showLoading, lawyer, recommendationLegalTerm }: Blo
           <section className={styles['recommend-section']}>
             <AIRecommender />
             <div style={{ height: 16 }} />
-            <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
+
+            {recommendationLegalTerm && recommendationLegalTerm.length > 0 && (
+              <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
+            )}
           </section>
         )}
       </div>
-
-      {!showLoading && (
-        <div className={styles['sidebar-mobile-wrapper']}>
-          <div className={styles['lawyer-section']}>
-            {/* <LawyerItem lawyerList={recommendLawyerList} divider /> */}
-          </div>
-
-          <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
-        </div>
-      )}
     </aside>
   )
 }
