@@ -21,7 +21,7 @@ export const useGetVideoCount = (request: VideoCountRequest) => {
   const { subcategoryId, recentDays } = request
 
   return useQuery({
-    queryKey: [QUERY_KEY.BLOG_COUNT, subcategoryId, recentDays],
+    queryKey: [QUERY_KEY.VIDEO_COUNT, subcategoryId, recentDays],
     queryFn: () => videoService.getVideoCount(subcategoryId!, recentDays),
     enabled: subcategoryId !== undefined,
     staleTime: 1000 * 60 * 10,

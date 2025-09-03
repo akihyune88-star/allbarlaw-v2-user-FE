@@ -7,6 +7,11 @@ import {
 } from '@/types/knowledgeType'
 
 export const knowledgeService = {
+  getKnowledgeCount: async (subcategoryId: number, recentDays: number | 'all'): Promise<number> => {
+    const response = await instance.get<number>(`/knowledge/${subcategoryId}/${recentDays}/count`)
+    return response.data
+  },
+
   getKnowledgeList: async (request: KnowledgeListRequest) => {
     const { subcategoryId, take, cursor, cursorId, orderBy, search, lawyerId } = request
 

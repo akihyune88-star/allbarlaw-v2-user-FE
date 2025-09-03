@@ -10,7 +10,7 @@ const RecentActiveLawyer = () => {
     take: 20,
   })
 
-  const { visibleItems, rotateNext } = useChunkedRotate<LawyerActiveResponse['data'][number]>(lawyerActive ?? [], 3)
+  const { visibleItems, rotateNext } = useChunkedRotate<LawyerActiveResponse['data'][number]>(lawyerActive ?? [], 5)
 
   return (
     <div className={styles['recent-active-lawyer-container']}>

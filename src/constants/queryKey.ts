@@ -1,12 +1,19 @@
 export const QUERY_KEY = {
   CATEGORY: 'category',
+
+  // 블로그
   BLOG_COUNT: 'blogCount',
   BLOG_LIST: 'blogList',
   RANDOM_BLOG_LIST: 'randomBlogList',
   BLOG_DETAIL: 'blogDetail',
+
+  // 비디오
   VIDEO_COUNT: 'videoCount',
   VIDEO_LIST: 'videoList',
   RANDOM_VIDEO_LIST: 'randomVideoList',
+
+  // 법률 지식인
+  KNOWLEDGE_COUNT: 'knowledgeCount',
   KNOWLEDGE_LIST: 'knowledgeList',
   KNOWLEDGE_DETAIL: 'knowledgeDetail',
   BANNER: 'banner',
