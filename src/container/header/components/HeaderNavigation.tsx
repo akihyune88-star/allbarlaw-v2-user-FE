@@ -71,10 +71,7 @@ const HeaderNavigation = () => {
 
   return (
     <div className={styles['navigation-container']}>
-      <div className={styles['category']}>
-        <SvgIcon name='menu' />
-        <span>카테고리</span>
-      </div>
+      <SvgIcon name='pcLogoHorizon' className={styles['header-logo']} onClick={() => navigate(ROUTER.MAIN)} />
       <div className={styles['header-menu-list']}>
         {filteredMenuList.map(item => (
           <button

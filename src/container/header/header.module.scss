@@ -73,20 +73,20 @@
   }
 
   .header-top {
+    width: 100%;
     display: flex;
     align-items: center;
     position: relative;
-    justify-content: space-between;
+    justify-content: flex-end;
   }
 
   .header-logo {
     cursor: pointer;
+    margin-bottom: 1.875rem;
   }
 
   .search-form {
     width: 26.25rem; /* 420px */
-    top: 0.3125rem; /* 5px */
-    left: 35%;
   }
 
   .main-navigation {
