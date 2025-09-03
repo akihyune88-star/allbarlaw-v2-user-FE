@@ -26,6 +26,10 @@ const LegalTermKnowledgeList = ({
     navigate(`/search/legal-knowledge`)
   }
 
+  const handleKnowledgeDetail = (knowledgeId: number) => {
+    navigate(`/search/legal-knowledge/${knowledgeId}`)
+  }
+
   return (
     <div className={styles.container}>
       <header className={`${styles['list-header']} ${styles['knowledge']}`}>
@@ -52,6 +56,7 @@ const LegalTermKnowledgeList = ({
                 lawyerList={knowledge.lawyers}
                 isLastAnswer={true}
                 knowledgeKeep={knowledge.isKeep}
+                onClick={() => handleKnowledgeDetail(knowledge.knowledgeId)}
               />
               {index !== knowledgeList.length - 1 && <Divider padding={0} />}
             </Fragment>

@@ -16,6 +16,10 @@ const LegalTermBlogList = ({ blogList, termsName }: { blogList: BlogCase[]; term
     navigate(`/search/blog`)
   }
 
+  const handleBlogDetail = (blogCaseId: number) => {
+    navigate(`/search/blog/${blogCaseId}`)
+  }
+
   return (
     <div className={styles.container}>
       <header className={`${styles['list-header']} ${styles['blog']}`}>
@@ -31,7 +35,9 @@ const LegalTermBlogList = ({ blogList, termsName }: { blogList: BlogCase[]; term
         {blogList.length === 0 ? (
           <EmptyState message='등록된 블로그 글이 없습니다.' />
         ) : (
-          blogList.map(blog => <BlogItem key={blog.blogCaseId} item={blog} />)
+          blogList.map(blog => (
+            <BlogItem key={blog.blogCaseId} item={blog} onClick={() => handleBlogDetail(blog.blogCaseId)} />
+          ))
         )}
       </section>
     </div>
