@@ -38,21 +38,16 @@ const SubcategoryLawfirmLayout = () => {
     lawfirmIds,
   })
 
-  const handleLawfirmItemClick = (lawfirmId: number) => navigate(`/${subcategoryId}/law-firm/${lawfirmId}`)
-
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
-        <LawfirmList
-          lawfirmList={lawfirmList}
-          isLoading={isLoading}
-          isFetchingNextPage={isFetchingNextPage}
-          onClickItem={handleLawfirmItemClick}
-        />
+        <LawfirmList lawfirmList={lawfirmList} isLoading={isLoading} isFetchingNextPage={isFetchingNextPage} />
       </section>
       <aside className='aside' style={{ width: '250px', flexShrink: 0 }}>
         <LawfirmFilter filter={filter} setFilter={setFilter} />
-        <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
+        {recommendationLegalTerm && recommendationLegalTerm.length > 0 && (
+          <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
+        )}
       </aside>
     </main>
   )
