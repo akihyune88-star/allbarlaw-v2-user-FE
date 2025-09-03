@@ -64,7 +64,6 @@ const LawyerHorizon = ({
     navigate(`/search/lawyer?tag=${tag.name}`)
   }
 
-  console.log(socialLink)
   return (
     <div
       className={`${styles['lawyer-horizon']} ${styles[size]} ${selected ? styles['selected'] : ''} ${className}`}

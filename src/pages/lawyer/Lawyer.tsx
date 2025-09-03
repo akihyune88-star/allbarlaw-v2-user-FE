@@ -22,7 +22,7 @@ const LawyerLayout = () => {
 
   return (
     <main className='sub-main-container'>
-      <section className='contents-section'>
+      <section className='contents-section' style={{ width: 798 }}>
         <LawyerList
           lawyerList={lawyerList}
           isLoading={isLoading}
