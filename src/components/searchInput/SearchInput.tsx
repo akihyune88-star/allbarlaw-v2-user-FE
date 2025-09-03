@@ -20,15 +20,15 @@ const SearchInput: React.FC<SearchInputProps> = ({
   const navigate = useNavigate()
   const location = useLocation()
   const [searchParams] = useSearchParams()
-  
+
   // zustand store에서 검색어와 변호사 ID 가져오기
-  const { 
-    searchQuery: storeQuery, 
+  const {
+    searchQuery: storeQuery,
     setSearchQuery: setStoreQuery,
     searchLawyerId: storeLawyerId,
-    setSearchLawyerId: setStoreLawyerId 
+    setSearchLawyerId: setStoreLawyerId,
   } = useSearchStore()
-  
+
   // 로컬 상태 - store 값으로 초기화
   const [searchValue, setSearchValue] = useState(storeQuery)
 
@@ -36,13 +36,13 @@ const SearchInput: React.FC<SearchInputProps> = ({
   useEffect(() => {
     const urlQuery = searchParams.get('q') || searchParams.get('query') || ''
     const urlLawyerId = searchParams.get('lawyerId')
-    
+
     // 검색어 동기화
     if (urlQuery && urlQuery !== storeQuery) {
       setStoreQuery(urlQuery)
       setSearchValue(urlQuery)
     }
-    
+
     // 변호사 ID 동기화
     if (urlLawyerId) {
       const lawyerId = parseInt(urlLawyerId)
@@ -64,7 +64,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
     if (searchValue.trim()) {
       // store에 저장
       setStoreQuery(searchValue.trim())
-      
+
       if (onSearch) {
         onSearch(searchValue.trim())
       } else {
@@ -118,7 +118,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
       value={searchValue}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
-      icon={<SvgIcon name='search' style={{ marginRight: 13 }} onClick={handleSearch} />}
+      icon={<SvgIcon name='search' onClick={handleSearch} style={{ cursor: 'pointer' }} />}
       className={className}
     />
   )
