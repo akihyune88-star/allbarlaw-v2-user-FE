@@ -122,6 +122,8 @@ export const useLawyerKeep = ({
   return useMutation({
     mutationFn: (lawyerId: number) => lawyerService.changeLawyerKeep(lawyerId),
     onSuccess: (data: LawyerKeepResponse, _lawyerId: number) => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_LAWYER_LIST] })
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_PAGE_COUNT] })
       onSuccess(data)
     },
     onError: () => {

@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
 import { BlogListRequest } from '@/types/blogTypes'
 import { mypageService } from '@/services/mypageServices'
@@ -8,6 +8,13 @@ import { LawyerListRequest } from '@/types/lawyerTypes'
 import { LegalTermListRequest } from '@/types/legalTermTypes'
 import { ChangeConsultationContentRequest, MyConsultationListRequest } from '@/types/mypageTypes'
 import { ChatRoomStatus } from '@/types/baroTalkTypes'
+
+export const useGetMypageCount = ({ year, month }: { year: number; month: number }) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.MY_PAGE_COUNT, year, month],
+    queryFn: () => mypageService.getMypageCount({ year, month }),
+  })
+}
 
 // 무한 스크롤용 훅
 export const useInfiniteMyBlogList = (request?: Omit<BlogListRequest, 'cursor' | 'cursorId'>) => {

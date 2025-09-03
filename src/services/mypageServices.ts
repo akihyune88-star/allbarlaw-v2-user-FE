@@ -12,6 +12,11 @@ import {
 import { VideoListRequest } from '@/types/videoTypes'
 
 export const mypageService = {
+  getMypageCount: async ({ year, month }: { year: number; month: number }) => {
+    const response = await instance.get(`/mypage/counts?year=${year}&month=${month}`)
+    return response.data
+  },
+
   getMyBlogList: async (request: BlogListRequest) => {
     console.log(request, 'request')
     const { take, cursor, cursorId, sort } = request

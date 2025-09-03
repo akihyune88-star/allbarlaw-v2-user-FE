@@ -101,6 +101,7 @@ export const useKnowledgeKeep = ({
       })
 
       onSuccess(data)
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_PAGE_COUNT] })
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_CONSULTATION_LIST] })
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_LEGAL_KNOWLEDGE_LIST] })
     },

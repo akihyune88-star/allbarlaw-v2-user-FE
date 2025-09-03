@@ -21,3 +21,12 @@ export type ChangeConsultationContentRequest = {
   knowledgeTitle: string
   summaryContent: string
 }
+
+export type MypageCountResponse = {
+  blogCaseCount: number
+  videoCaseCount: number
+  lawyerCount: number
+  knowledgeCount: number
+  legalTermCount: number
+  consultationRequestCount: number
+}
