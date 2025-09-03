@@ -31,23 +31,22 @@ const LegalTermDetail = () => {
   const navigate = useNavigate()
   const { setSearchQuery } = useSearchStore()
   const isMobile = useMediaQuery('(min-width: 80rem)')
-  const { data: legalTermDetail, isLoading } = useLegalTermDetail(Number(termId))
+  const { data: legalTermDetail } = useLegalTermDetail(Number(termId))
   const { data: popularLegalTermList } = usePopularLegalTermList()
   const { data: recentRegisteredLegalTermList } = useRecentRegisteredLegalTermList()
-  console.log(11, legalTermDetail)
 
-  if (isLoading) {
-    return (
-      <main className={`sub-main-container ${styles.container}`}>
-        <div className={styles['loading-container']}>
-          <div className={styles['loading-spinner']}>
-            <div className={styles['spinner']}></div>
-            <p>법률 용어 정보를 불러오는 중입니다...</p>
-          </div>
-        </div>
-      </main>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <main className={`sub-main-container ${styles.container}`}>
+  //       <div className={styles['loading-container']}>
+  //         <div className={styles['loading-spinner']}>
+  //           <div className={styles['spinner']}></div>
+  //           <p>법률 용어 정보를 불러오는 중입니다...</p>
+  //         </div>
+  //       </div>
+  //     </main>
+  //   )
+  // }
 
   const similarTermsClick = (terms: LegalTermItem) => {
     setSearchQuery(terms.koreanName)
@@ -83,18 +82,20 @@ const LegalTermDetail = () => {
         </div>
       </div>
       <div className='aside' style={{ width: 250, flexShrink: 0 }}>
-        <ContentsRecommender
-          title='유사한 법률 용어'
-          contents={
-            <div className={styles['tag-list']}>
-              {legalTermDetail?.similarTerms?.map(term => (
-                <span key={term.legalTermId} onClick={() => similarTermsClick(term)} style={{ cursor: 'pointer' }}>
-                  #{term.koreanName}
-                </span>
-              ))}
-            </div>
-          }
-        />
+        {legalTermDetail?.similarTerms && legalTermDetail?.similarTerms?.length > 0 && (
+          <ContentsRecommender
+            title='유사한 법률 용어'
+            contents={
+              <div className={styles['tag-list']}>
+                {legalTermDetail?.similarTerms?.map(term => (
+                  <span key={term.legalTermId} onClick={() => similarTermsClick(term)} style={{ cursor: 'pointer' }}>
+                    #{term.koreanName}
+                  </span>
+                ))}
+              </div>
+            }
+          />
+        )}
         <LegalItemWidget title='많이 찾는 용어' legalTermList={popularLegalTermList || []} />
         <LegalItemWidget title='최근 등록된 용어' legalTermList={recentRegisteredLegalTermList || []} />
       </div>
