@@ -29,14 +29,23 @@ const MyBlogList = ({ sort }: { sort: 'asc' | 'desc' }) => {
     navigate(`/${blog.subcategoryId}/blog/${blog.blogCaseId}`)
   }
 
+  const isEmptyBlogList = blogList.length === 0
+
   return (
-    <div className={styles.myBlogList}>
-      {blogList.map((blog, idx) => (
-        <React.Fragment key={blog.blogCaseId}>
-          <BlogItem type='regular' item={blog} summaryButton={true} onClick={() => handleBlogDetail(blog)} />
-          {idx !== blogList.length - 1 && <Divider className={styles.divider} />}
-        </React.Fragment>
-      ))}
+    <div
+      className={styles.myBlogList}
+      style={{ backgroundColor: isEmptyBlogList ? 'transparent' : 'white', padding: isEmptyBlogList ? '0' : '1.5rem' }}
+    >
+      {isEmptyBlogList ? (
+        <div className={styles.emptyMessage}>등록된 “블로그 글” Keep이 없습니다.</div>
+      ) : (
+        blogList.map((blog, idx) => (
+          <React.Fragment key={blog.blogCaseId}>
+            <BlogItem type='regular' item={blog} summaryButton={true} onClick={() => handleBlogDetail(blog)} />
+            {idx !== blogList.length - 1 && <Divider className={styles.divider} />}
+          </React.Fragment>
+        ))
+      )}
     </div>
   )
 }

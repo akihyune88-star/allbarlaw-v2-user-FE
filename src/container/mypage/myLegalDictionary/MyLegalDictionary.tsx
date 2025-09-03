@@ -5,11 +5,10 @@ import { useNavigate } from 'react-router-dom'
 
 const MyLegalDictionary = ({ sort }: { sort: 'asc' | 'desc' }) => {
   const navigate = useNavigate()
-  const { legalDictionaryList, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useInfiniteMyLegalDictionaryList({
-      take: 10,
-      sort: sort,
-    })
+  const { legalDictionaryList, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteMyLegalDictionaryList({
+    take: 10,
+    sort: sort,
+  })
 
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
@@ -24,7 +23,7 @@ const MyLegalDictionary = ({ sort }: { sort: 'asc' | 'desc' }) => {
   return (
     <div className={styles.myLegalDictionary}>
       {legalDictionaryList.length === 0 ? (
-        <div className={styles.emptyMessage}>등록된 Keep이 없습니다.</div>
+        <div className={styles.emptyMessage}>등록된 “법률 사전” Keep이 없습니다.</div>
       ) : (
         // 법률 사전 목록 렌더링
         <>

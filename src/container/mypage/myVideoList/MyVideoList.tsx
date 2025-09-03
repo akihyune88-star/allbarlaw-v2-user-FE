@@ -17,8 +17,6 @@ const MyVideoList = ({ sort }: { sort: 'asc' | 'desc' }) => {
     sort: sort,
   })
 
-  console.log(videoList)
-
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
     isFetchingNextPage,
@@ -29,9 +27,19 @@ const MyVideoList = ({ sort }: { sort: 'asc' | 'desc' }) => {
     navigate(`/${video.subcategoryId}/video/${video.videoCaseId}`)
   }
 
+  const isEmptyVideoList = videoList.length === 0
+
   return (
-    <div className={styles.myVideoList}>
-      {!isMobile ? (
+    <div
+      className={styles.myVideoList}
+      style={{
+        backgroundColor: isEmptyVideoList ? 'transparent' : 'white',
+        padding: isEmptyVideoList ? '0' : '1.5rem',
+      }}
+    >
+      {isEmptyVideoList ? (
+        <div className={styles.emptyMessage}>등록된 “변호사의 영상” Keep이 없습니다.</div>
+      ) : !isMobile ? (
         videoList.map((video, idx) => (
           <>
             <VideoHorizon
