@@ -22,6 +22,7 @@ export const ROUTER = {
 
   SUPPORT: '/support',
   ABOUT: '/about',
+  ABOUT_MOBILE: '/about-mobile',
 
   // baroTalk
   BARO_TALK: '/baro-talk',
@@ -62,7 +63,7 @@ export const ROUTER = {
   LAWYER_ADMIN_CONTENT_BLOG_LIST: '/lawyer-admin/content/blog/list',
   LAWYER_ADMIN_CONTENT_BLOG_DETAIL: '/lawyer-admin/content/blog/detail',
   LAWYER_ADMIN_CONTENT_BLOG_EDIT: '/lawyer-admin/content/blog/edit',
-  
+
   LAWYER_ADMIN_CONTENT_VIDEO: '/lawyer-admin/content/video',
   LAWYER_ADMIN_CONTENT_VIDEO_LIST: '/lawyer-admin/content/video/list',
   LAWYER_ADMIN_CONTENT_VIDEO_DETAIL: '/lawyer-admin/content/video/detail',

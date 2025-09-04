@@ -14,9 +14,15 @@ import Modal, { AlertModal } from '@/components/modal/Modal'
 import { KnowledgeItem } from '@/types/knowledgeType'
 import { useNavigate } from 'react-router-dom'
 
-const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
-  const [year, setYear] = useState(2025)
-  const [month, setMonth] = useState(8)
+interface MyChatListProps {
+  sort: 'asc' | 'desc'
+  year: number
+  month: number
+  onYearChange: (_year: number) => void
+  onMonthChange: (_month: number) => void
+}
+
+const MyChatList = ({ sort, year, month, onYearChange, onMonthChange }: MyChatListProps) => {
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState('')
   const [editModalOpen, setEditModalOpen] = useState(false)
@@ -57,8 +63,8 @@ const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
     },
   })
 
-  const handleYearChange = (year: number) => setYear(year)
-  const handleMonthChange = (month: number) => setMonth(month)
+  const handleYearChange = (year: number) => onYearChange(year)
+  const handleMonthChange = (month: number) => onMonthChange(month)
 
   const getStatus = (status: ChatRoomStatus) => {
     switch (status) {
@@ -134,7 +140,10 @@ const MyChatList = ({ sort }: { sort: 'asc' | 'desc' }) => {
         </aside>
         <div className={styles['myChatList-main']}>
           {consultationList.length === 0 ? (
-            <div className={styles['myChatList-empty']}>
+            <div
+              className={styles['myChatList-empty']}
+              style={{ backgroundColor: consultationList.length === 0 ? 'transparent' : 'white' }}
+            >
               <div className={styles['myChatList-empty-content']}>
                 <h3 className={styles['myChatList-empty-title']}>상담 내역이 없습니다</h3>
                 <p className={styles['myChatList-empty-description']}>

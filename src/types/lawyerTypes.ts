@@ -64,6 +64,7 @@ type LawyerStatistics = {
 }
 
 export type LawyerCareer = {
+  lawyerCareerId?: number
   lawyerCareerCategoryName: string
   lawyerCareerContent: string
   lawyerCareerDisplayOrder: number
@@ -211,4 +212,31 @@ export type LawyerBasicInfoEditResponse = {
     displayOrder: number
     isDefault: boolean
   }[]
+}
+
+export type LawyerCareerResponse = {
+  lawyerCareers: LawyerCareer[]
+}
+
+export type LawyerCareerUpdateRequest = {
+  lawyerCareerCategoryName: string
+  lawyerCareerContent: string
+  lawyerCareerDisplayOrder: number
+}[]
+
+export type LawyerAdminActivity = {
+  lawyerActivityId: number
+  lawyerActivityCategoryName: string
+  lawyerActivityContent: string
+  lawyerActivityDisplayOrder: number
+}
+
+export type LawyerActivityUpdateRequest = {
+  lawyerActivityCategoryName: string
+  lawyerActivityContent: string
+  lawyerActivityDisplayOrder: number
+}[]
+
+export type LawyerActivityResponse = {
+  lawyerActivities: LawyerAdminActivity[]
 }

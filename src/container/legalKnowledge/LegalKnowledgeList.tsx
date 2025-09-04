@@ -5,10 +5,11 @@ import Button from '@/components/button/Button'
 import styles from '@/container/legalKnowledge/legal-knowledge-list.module.scss'
 import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeItem'
 import Divider from '@/components/divider/Divider'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { KnowledgeItem } from '@/types/knowledgeType'
+import { useKnowledgeCount } from '@/hooks/queries/useKnowledge'
 
 interface LegalKnowledgeListProps {
   knowledgeList: KnowledgeItem[]
@@ -33,6 +34,16 @@ const LegalKnowledgeList = ({
 }: LegalKnowledgeListProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+
+  const { data: totalKnowledgeCount } = useKnowledgeCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : 'all',
+    recentDays: 'all',
+  })
+  const { data: recentMonthKnowledgeCount } = useKnowledgeCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : 'all',
+    recentDays: 30,
+  })
 
   // 무한스크롤 적용
   useInfiniteScroll({
@@ -66,8 +77,8 @@ const LegalKnowledgeList = ({
         }
         onClick={handleSortCase}
         activeKey={sortCase}
-        totalBlogCount={2147}
-        recentBlogCount={4142}
+        totalBlogCount={totalKnowledgeCount || 0}
+        recentBlogCount={recentMonthKnowledgeCount || 0}
       />
       {!isMobile && <Divider padding={24} />}
       <section className={styles['legal-knowledge-list']}>

@@ -2,7 +2,6 @@ import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import styles from './lawyer-list.module.scss'
 import React from 'react'
-import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Button from '@/components/button/Button'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
@@ -11,6 +10,7 @@ import { Lawyer } from '@/types/lawyerTypes'
 import { LOCAL } from '@/constants/local'
 import { ROUTER } from '@/routes/routerConstant'
 import { useNavigate } from 'react-router-dom'
+import SvgIcon from '@/components/SvgIcon'
 
 interface LawyerListProps {
   lawyerList: Lawyer[]
@@ -25,7 +25,6 @@ interface LawyerListProps {
 
 const LawyerList = ({
   lawyerList,
-  isLoading,
   hasNextPage,
   isFetchingNextPage,
   fetchNextPage,
@@ -69,33 +68,22 @@ const LawyerList = ({
         />
       </header>
       <section className={styles['lawyer-list-wrapper']}>
-        {isLoading ? (
-          <div className={styles['loading-state']}>
-            <p>변호사 목록을 불러오고 있습니다...</p>
-          </div>
-        ) : lawyerList.length === 0 ? (
+        {lawyerList.length === 0 ? (
           <div className={styles['empty-state']}>
+            <SvgIcon name='user' size={48} color='#e6e6e6' />
             <p>현재 등록된 변호사가 없습니다.</p>
             <p>다른 분야를 선택해보세요.</p>
           </div>
         ) : (
-          lawyerList.map((lawyer, index) => {
-            // null/undefined 체크
-            if (!lawyer || !lawyer.lawyerId) {
-              console.error('❌ 잘못된 변호사 데이터:', lawyer)
-              return null
-            }
-            
-            const isLastItem = index === lawyerList.length - 1 && !hasNextPage
-
+          lawyerList.map(lawyer => {
             return (
               <React.Fragment key={lawyer.lawyerId}>
                 <LawyerHorizon
                   lawyerId={lawyer.lawyerId}
+                  className={styles['lawyer-list-item']}
                   onClick={() => handleLawyerDetail(lawyer.lawyerId)}
                   tags={lawyer.tags}
                   isBaroTalk={true}
-                  className={styles['lawyer-list-item']}
                   name={lawyer.lawyerName || '이름 없음'}
                   lawfirm={lawyer.lawfirmName || '소속 없음'}
                   profileImage={lawyer.lawyerProfileImage}
@@ -120,7 +108,6 @@ const LawyerList = ({
                   }
                   size='small'
                 />
-                {!isLastItem && <Divider padding={16} />}
               </React.Fragment>
             )
           })

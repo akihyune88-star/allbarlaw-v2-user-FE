@@ -2,6 +2,7 @@ import SvgIcon from '@/components/SvgIcon'
 import { COLOR } from '@/styles/color'
 import { KeyOfIcon } from '@/types/svg'
 import styles from './mypageHeader.module.scss'
+import { useGetMypageCount } from '@/hooks/queries/useMypage'
 
 interface MypageHeaderProps {
   tabs: string[]
@@ -9,9 +10,19 @@ interface MypageHeaderProps {
   currentTab: string
   sortOrder?: 'asc' | 'desc'
   onSortChange?: (_sortOrder: 'asc' | 'desc') => void
+  year: number
+  month: number
 }
 
-const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange }: MypageHeaderProps) => {
+const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange, year, month }: MypageHeaderProps) => {
+  const { data: mypageCount } = useGetMypageCount({ year, month })
+
+  const totalKeepCount = mypageCount
+    ? Object.entries(mypageCount)
+        .filter(([key]) => key !== 'consultationRequestCount')
+        .reduce((sum, [, value]) => sum + ((value as number) || 0), 0)
+    : 0
+
   const getTabInfo = (tab: string): { name: string; icon: KeyOfIcon } => {
     switch (tab) {
       case 'keepList':
@@ -57,7 +68,13 @@ const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange }:
 
         {onSortChange && (
           <div className={styles.sortWrapper}>
-            <span>전체 2,147개</span>
+            <span>
+              전체{' '}
+              {currentTab === 'keepList'
+                ? totalKeepCount.toLocaleString()
+                : mypageCount?.consultationRequestCount.toLocaleString()}
+              개
+            </span>
             <div className={styles.sortButtonWrapper}>
               <button
                 onClick={() => onSortChange('desc')}

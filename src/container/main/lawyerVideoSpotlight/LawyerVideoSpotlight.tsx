@@ -1,4 +1,4 @@
-import { useGetVideoCount } from '@/hooks/queries/useGetVideoCount'
+import { useState, useEffect, useRef } from 'react'
 import styles from './lawyer-video-spotlight.module.scss'
 import { useRandomVideoList } from '@/hooks/queries/useRandomVideoList'
 import VideoThumbnail from '@/components/video/VideoThumbnail'
@@ -8,14 +8,19 @@ import PlayButton from '@/components/playButton/PlayButton'
 import { COLOR } from '@/styles/color'
 import { useNavigationHistory } from '@/hooks'
 import SvgIcon from '@/components/SvgIcon'
+import { useGetVideoCount } from '@/hooks/queries/useVideo'
 
 const LawyerVideoSpotlightHeader = ({
   onNext,
   onPrev,
+  onToggle,
+  isPlaying,
   refetch,
 }: {
   onNext?: () => void
   onPrev?: () => void
+  onToggle?: () => void
+  isPlaying?: boolean
   refetch?: () => void
 }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
@@ -40,7 +45,13 @@ const LawyerVideoSpotlightHeader = ({
         </div>
       </div>
       {!isMobile ? (
-        <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} />
+        <PlayButton
+          iconColor={COLOR.text_black}
+          onNext={onNext}
+          onPrev={onPrev}
+          onToggle={onToggle}
+          isPlaying={isPlaying}
+        />
       ) : (
         <SvgIcon name='refresh' size={16} onClick={refetch} style={{ cursor: 'pointer' }} />
       )}
@@ -50,6 +61,9 @@ const LawyerVideoSpotlightHeader = ({
 
 const LawyerVideoSpotlight = () => {
   const navigate = useNavigate()
+  const [isPlaying, setIsPlaying] = useState(true)
+  const intervalRef = useRef<number | null>(null)
+  const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 
@@ -64,6 +78,29 @@ const LawyerVideoSpotlight = () => {
     handleNext(currentIds)
   }
 
+  const handleTogglePlay = () => {
+    setIsPlaying(prev => !prev)
+  }
+
+  useEffect(() => {
+    if (isPlaying && !isMobile) {
+      intervalRef.current = window.setInterval(() => {
+        handleNextClick()
+      }, 3000)
+    } else {
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current)
+        intervalRef.current = null
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current)
+      }
+    }
+  }, [isPlaying, hasNextPage, videoList, isMobile])
+
   const handleVideoClick = (subcategoryId: number, videoId: number) => {
     navigate(`/${subcategoryId}/video/${videoId}`)
   }
@@ -73,6 +110,8 @@ const LawyerVideoSpotlight = () => {
       <LawyerVideoSpotlightHeader
         onNext={hasNextPage ? handleNextClick : undefined}
         onPrev={canGoPrev ? handlePrev : undefined}
+        onToggle={handleTogglePlay}
+        isPlaying={isPlaying}
         refetch={refetch}
       />
       <div className={styles['video-grid-container']}>

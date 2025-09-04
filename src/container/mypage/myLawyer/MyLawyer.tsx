@@ -23,10 +23,12 @@ const MyLawyer = ({ sort }: { sort: 'asc' | 'desc' }) => {
     navigate(`/search/lawyer/${lawyer.lawyerId}`)
   }
 
+  const isEmptyLawyerList = lawyerList.length === 0
+
   return (
-    <div className={styles.myLawyer}>
+    <div className={styles.myLawyer} style={{ backgroundColor: isEmptyLawyerList ? 'transparent' : 'white' }}>
       {lawyerList.length === 0 ? (
-        <div className={styles.emptyMessage}>등록된 Keep이 없습니다.</div>
+        <div className={styles.emptyMessage}>등록된 “변호사” Keep이 없습니다.</div>
       ) : (
         <div>
           {lawyerList.map((lawyer, index) => (

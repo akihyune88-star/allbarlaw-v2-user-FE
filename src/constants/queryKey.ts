@@ -1,12 +1,19 @@
 export const QUERY_KEY = {
   CATEGORY: 'category',
+
+  // 블로그
   BLOG_COUNT: 'blogCount',
   BLOG_LIST: 'blogList',
   RANDOM_BLOG_LIST: 'randomBlogList',
   BLOG_DETAIL: 'blogDetail',
+
+  // 비디오
   VIDEO_COUNT: 'videoCount',
   VIDEO_LIST: 'videoList',
   RANDOM_VIDEO_LIST: 'randomVideoList',
+
+  // 법률 지식인
+  KNOWLEDGE_COUNT: 'knowledgeCount',
   KNOWLEDGE_LIST: 'knowledgeList',
   KNOWLEDGE_DETAIL: 'knowledgeDetail',
   BANNER: 'banner',
@@ -37,6 +44,7 @@ export const QUERY_KEY = {
   LEGAL_TERM_DETAIL: 'legalTermDetail',
 
   //마이페이지
+  MY_PAGE_COUNT: 'myPageCount',
   MY_BLOG_LIST: 'myBlogList',
   MY_VIDEO_LIST: 'myVideoList',
   MY_LEGAL_KNOWLEDGE_LIST: 'myLegalKnowledgeList',

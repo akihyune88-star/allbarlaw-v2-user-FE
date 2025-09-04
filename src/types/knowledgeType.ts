@@ -54,6 +54,7 @@ export type KnowledgeDetailResponse = {
     lawyerDescription: string
     lawyerProfileImage: string
     content: string
+    lastMessageAt: string
   }[]
 }
 

@@ -7,8 +7,9 @@ import {
   LawyerListRequest,
   LawyerSignUpRequest,
   RandomLawyerListRequest,
-  LawyerCareer,
   LawyerBasicInfoEditRequest,
+  LawyerCareerUpdateRequest,
+  LawyerActivityUpdateRequest,
 } from '@/types/lawyerTypes'
 import { queryClient } from '@/lib/queryClient'
 
@@ -121,6 +122,8 @@ export const useLawyerKeep = ({
   return useMutation({
     mutationFn: (lawyerId: number) => lawyerService.changeLawyerKeep(lawyerId),
     onSuccess: (data: LawyerKeepResponse, _lawyerId: number) => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_LAWYER_LIST] })
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_PAGE_COUNT] })
       onSuccess(data)
     },
     onError: () => {
@@ -164,9 +167,9 @@ export const useLawyerBasicInfoEdit = ({ onSuccess, onError }: { onSuccess: () =
       // 즉시 캐시 업데이트로 깜빡임 방지
       queryClient.setQueryData([QUERY_KEY.LAWYER_ADMIN_BASIC_INFO, variables.lawyerId], data)
       // 백그라운드에서 실제 데이터 동기화
-      queryClient.invalidateQueries({ 
-        queryKey: [QUERY_KEY.LAWYER_ADMIN_BASIC_INFO], 
-        refetchType: 'inactive' // 비활성 쿼리만 refetch
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.LAWYER_ADMIN_BASIC_INFO],
+        refetchType: 'inactive', // 비활성 쿼리만 refetch
       })
       onSuccess()
     },
@@ -194,12 +197,35 @@ export const useUpdateLawyerCareer = ({
   onError?: (error: any) => void
 }) => {
   return useMutation({
-    mutationFn: (careerData: LawyerCareer[]) => lawyerService.updateLawyerCareer(careerData),
+    mutationFn: ({ lawyerId, careerData }: { lawyerId: number; careerData: LawyerCareerUpdateRequest }) =>
+      lawyerService.updateLawyerCareer(lawyerId, careerData),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_DETAIL, 'career'] })
       onSuccess?.()
     },
     onError: error => {
       onError?.(error)
+    },
+  })
+}
+
+export const useLawyerActivity = (lawyerId: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_DETAIL, 'activity', lawyerId],
+    queryFn: () => lawyerService.getLawyerActivity(lawyerId),
+  })
+}
+
+export const useLawyerActivityUpdate = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
+  return useMutation({
+    mutationFn: ({ lawyerId, activityData }: { lawyerId: number; activityData: LawyerActivityUpdateRequest }) =>
+      lawyerService.updateLawyerActivity(lawyerId, activityData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_DETAIL, 'activity'] })
+      onSuccess?.()
+    },
+    onError: () => {
+      onError()
     },
   })
 }

@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react'
 import PlayButton from '@/components/playButton/PlayButton'
 import styles from './lawyer-advertisement-list.module.scss'
 import { COLOR } from '@/styles/color'
@@ -16,10 +17,14 @@ import { ROUTER } from '@/routes/routerConstant'
 const LawyerAdvertisementListHeader = ({
   onNext,
   onPrev,
+  onToggle,
+  isPlaying,
   refetch,
 }: {
   onNext?: () => void
   onPrev?: () => void
+  onToggle?: () => void
+  isPlaying?: boolean
   refetch?: () => void
 }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
@@ -30,7 +35,13 @@ const LawyerAdvertisementListHeader = ({
         <span className={styles['sub-title']}>전체 753명의 전문 변호사가 함께 합니다.</span>
       </div>
       {!isMobile ? (
-        <PlayButton iconColor={COLOR.text_black} onNext={onNext} onPrev={onPrev} />
+        <PlayButton 
+          iconColor={COLOR.text_black} 
+          onNext={onNext} 
+          onPrev={onPrev}
+          onToggle={onToggle}
+          isPlaying={isPlaying}
+        />
       ) : (
         <SvgIcon name='refresh' size={16} onClick={refetch} style={{ cursor: 'pointer' }} />
       )}
@@ -41,6 +52,8 @@ const LawyerAdvertisementListHeader = ({
 const LawyerAdvertisementList = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
+  const [isPlaying, setIsPlaying] = useState(true)
+  const intervalRef = useRef<number | null>(null)
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 
@@ -57,6 +70,29 @@ const LawyerAdvertisementList = () => {
     }
   }
 
+  const handleTogglePlay = () => {
+    setIsPlaying(prev => !prev)
+  }
+
+  useEffect(() => {
+    if (isPlaying && !isMobile) {
+      intervalRef.current = window.setInterval(() => {
+        handleClickNext()
+      }, 3000)
+    } else {
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current)
+        intervalRef.current = null
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current)
+      }
+    }
+  }, [isPlaying, hasNextPage, lawyerList, isMobile])
+
   const handleLawyerClick = (lawyer: Lawyer) => {
     navigate(`/search/lawyer/${lawyer.lawyerId}?q=${lawyer.lawyerName}`)
   }
@@ -71,6 +107,8 @@ const LawyerAdvertisementList = () => {
       <LawyerAdvertisementListHeader
         onNext={hasNextPage ? handleClickNext : undefined}
         onPrev={canGoPrev ? handlePrev : undefined}
+        onToggle={handleTogglePlay}
+        isPlaying={isPlaying}
         refetch={refetch}
       />
 

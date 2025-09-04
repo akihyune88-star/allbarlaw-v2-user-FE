@@ -56,7 +56,7 @@ const LegalKnowledgeDetail = () => {
     navigate(ROUTER.REQUEST_BARO_TALK)
   }
 
-  const mockLawyerList = generateRandomLawyers(3)
+  const mockLawyerList = generateRandomLawyers(5)
 
   const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
     knowledgeIds: [Number(knowledgeId)],

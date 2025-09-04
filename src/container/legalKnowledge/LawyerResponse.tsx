@@ -8,15 +8,17 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { LOCAL } from '@/constants/local'
 import { ROUTER } from '@/routes/routerConstant'
 import { useNavigate } from 'react-router-dom'
+import { getRelativeTimeString } from '@/utils/date'
 
 type LawyerResponseProps = {
   lawyers: {
     lawyerId: number
     lawyerName: string
-    lawfirmName: string
     lawyerDescription: string
     lawyerProfileImage: string
     content: string
+    lastMessageAt: string
+    lawfirmName: string
   }[]
   className?: string
 }
@@ -86,7 +88,7 @@ const LawyerResponse = ({ lawyers, className }: LawyerResponseProps) => {
           </Card.Content>
           <Card.Footer className={styles.footer}>
             <span className={styles['answer-date']}>
-              <strong>3시간전</strong>
+              <strong>{lawyer.lastMessageAt ? getRelativeTimeString(lawyer.lastMessageAt) : ''}</strong>
               <span>답변</span>
             </span>
             <button className={styles.button} style={{ alignItems: 'flex-end' }} onClick={handleReportModalOpen}>

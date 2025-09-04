@@ -4,6 +4,16 @@
   border-radius: 0.5rem;
 }
 
+.emptyMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  color: $color-text-caption;
+  font-size: 1rem;
+  min-height: 200px;
+}
+
 .divider {
   @media (max-width: 80rem) {
     display: none;

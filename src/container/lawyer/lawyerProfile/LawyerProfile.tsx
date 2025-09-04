@@ -9,6 +9,7 @@ import { setTemporaryItem } from '@/utils/temporaryStorage'
 import { LOCAL } from '@/constants/local'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
+import { useSearchStore } from '@/stores/searchStore'
 
 type LawyerProfileProps = {
   discription: string
@@ -32,6 +33,7 @@ const LawyerProfile = ({
   const [isOpen, setIsOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
   const navigate = useNavigate()
+  const { setSearchQuery } = useSearchStore()
 
   const handleBaroTalk = (e: React.MouseEvent) => {
     e.stopPropagation() // 이벤트 버블링 방지
@@ -44,6 +46,11 @@ const LawyerProfile = ({
   const handleOpenContactModal = () => {
     setModalMessage(formatPhoneNumber(lawfirmContact))
     setIsOpen(true)
+  }
+
+  const handleTagClick = (tag: string) => {
+    setSearchQuery(tag)
+    navigate(`/search/lawyer?q=${tag}`)
   }
 
   return (
@@ -88,7 +95,12 @@ const LawyerProfile = ({
           <Divider padding={14} />
           <nav className={styles['tags']} aria-label='전문 분야'>
             {tags.map(tag => (
-              <Tag key={tag.id} tag={tag.name} className={styles['tags__item']} />
+              <Tag
+                key={tag.id}
+                tag={tag.name}
+                className={styles['tags__item']}
+                onClick={() => handleTagClick(tag.name)}
+              />
             ))}
           </nav>
         </div>

@@ -30,24 +30,36 @@ const MyLegalKnowledgeList = ({ sort }: { sort: 'asc' | 'desc' }) => {
     navigate(`/${knowledge.subcategoryId}/legal-knowledge/${knowledge.knowledgeId}`)
   }
 
+  const isEmptyKnowledgeList = knowledgeList.length === 0
+
   return (
-    <div className={styles.myLegalKnowledgeList}>
-      {knowledgeList.map((knowledge, idx) => (
-        <>
-          <LegalKnowledgeItem
-            knowledgeId={knowledge.knowledgeId}
-            knowledgeKeep={knowledge.isKeep}
-            key={knowledge.knowledgeId}
-            title={knowledge.knowledgeTitle}
-            description={knowledge.summaryContent}
-            time={new Date(knowledge.lastMessageAt)}
-            lawyerList={knowledge.lawyers || []}
-            isLastAnswer={true}
-            onClick={() => handleKnowledgeDetail(knowledge)}
-          />
-          {!isMobile && idx !== knowledgeList.length - 1 && <Divider padding={24} />}
-        </>
-      ))}
+    <div
+      className={styles.myLegalKnowledgeList}
+      style={{
+        backgroundColor: isEmptyKnowledgeList ? 'transparent' : 'white',
+        padding: isEmptyKnowledgeList ? '0' : '1.5rem',
+      }}
+    >
+      {isEmptyKnowledgeList ? (
+        <div className={styles.emptyMessage}>등록된 “법률 지식인” Keep이 없습니다.</div>
+      ) : (
+        knowledgeList.map((knowledge, idx) => (
+          <>
+            <LegalKnowledgeItem
+              knowledgeId={knowledge.knowledgeId}
+              knowledgeKeep={knowledge.isKeep}
+              key={knowledge.knowledgeId}
+              title={knowledge.knowledgeTitle}
+              description={knowledge.summaryContent}
+              time={new Date(knowledge.lastMessageAt)}
+              lawyerList={knowledge.lawyers || []}
+              isLastAnswer={true}
+              onClick={() => handleKnowledgeDetail(knowledge)}
+            />
+            {!isMobile && idx !== knowledgeList.length - 1 && <Divider padding={24} />}
+          </>
+        ))
+      )}
     </div>
   )
 }

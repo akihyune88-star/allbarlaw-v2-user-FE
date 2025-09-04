@@ -6,6 +6,8 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { Fragment } from 'react'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { VideoCase } from '@/types/videoTypes'
+import { useGetVideoCount } from '@/hooks/queries/useVideo'
+import { useParams } from 'react-router-dom'
 
 interface VideoListProps {
   videoList: VideoCase[]
@@ -29,6 +31,17 @@ const VideoList = ({
   onClickItem,
 }: VideoListProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+
+  const { data: totalVideoCount } = useGetVideoCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
+    recentDays: 'all',
+  })
+
+  const { data: recentMonthVideoCount } = useGetVideoCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
+    recentDays: 30,
+  })
 
   // 무한스크롤 적용
   useInfiniteScroll({
@@ -51,8 +64,8 @@ const VideoList = ({
         title={`변호사의 영상을 보고\n내 법률 문제의 해결방법을 찾으세요`}
         onClick={handleSortCase}
         activeKey={sortCase}
-        totalBlogCount={2147}
-        recentBlogCount={4142}
+        totalBlogCount={totalVideoCount}
+        recentBlogCount={recentMonthVideoCount}
       />
       {!isMobile && <Divider padding={24} />}
       <section className={styles['video-list-section']}>

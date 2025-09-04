@@ -34,7 +34,6 @@ const LegalTermDetail = () => {
   const { data: legalTermDetail, isLoading } = useLegalTermDetail(Number(termId))
   const { data: popularLegalTermList } = usePopularLegalTermList()
   const { data: recentRegisteredLegalTermList } = useRecentRegisteredLegalTermList()
-  console.log(11, legalTermDetail)
 
   if (isLoading) {
     return (
@@ -83,18 +82,20 @@ const LegalTermDetail = () => {
         </div>
       </div>
       <div className='aside' style={{ width: 250, flexShrink: 0 }}>
-        <ContentsRecommender
-          title='유사한 법률 용어'
-          contents={
-            <div className={styles['tag-list']}>
-              {legalTermDetail?.similarTerms?.map(term => (
-                <span key={term.legalTermId} onClick={() => similarTermsClick(term)} style={{ cursor: 'pointer' }}>
-                  #{term.koreanName}
-                </span>
-              ))}
-            </div>
-          }
-        />
+        {legalTermDetail?.similarTerms && legalTermDetail?.similarTerms?.length > 0 && (
+          <ContentsRecommender
+            title='유사한 법률 용어'
+            contents={
+              <div className={styles['tag-list']}>
+                {legalTermDetail?.similarTerms?.map(term => (
+                  <span key={term.legalTermId} onClick={() => similarTermsClick(term)} style={{ cursor: 'pointer' }}>
+                    #{term.koreanName}
+                  </span>
+                ))}
+              </div>
+            }
+          />
+        )}
         <LegalItemWidget title='많이 찾는 용어' legalTermList={popularLegalTermList || []} />
         <LegalItemWidget title='최근 등록된 용어' legalTermList={recentRegisteredLegalTermList || []} />
       </div>

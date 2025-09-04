@@ -5,6 +5,7 @@
   border-bottom: 1px solid $color-line-divider;
 
   @media (max-width: $breakpoint-desktop) {
+    border-top: none;
     border-bottom: none;
   }
 }
@@ -72,20 +73,23 @@
   }
 
   .header-top {
+    width: 100%;
     display: flex;
     align-items: center;
     position: relative;
-    justify-content: space-between;
+    justify-content: flex-end;
   }
 
   .header-logo {
     cursor: pointer;
+    width: 9.375rem;
+    height: auto;
+
+    margin-bottom: 5rem;
   }
 
   .search-form {
     width: 26.25rem; /* 420px */
-    top: 0.3125rem; /* 5px */
-    left: 35%;
   }
 
   .main-navigation {

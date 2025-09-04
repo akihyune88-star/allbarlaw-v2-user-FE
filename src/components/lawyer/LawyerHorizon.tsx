@@ -9,6 +9,7 @@ import { LOCAL } from '@/constants/local'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { setTemporaryItem } from '@/utils/temporaryStorage'
+import { useSearchStore } from '@/stores/searchStore'
 
 type LawyerHorizonProps = {
   name: string
@@ -44,12 +45,23 @@ const LawyerHorizon = ({
   socialLink,
 }: LawyerHorizonProps) => {
   const navigate = useNavigate()
+  const { setSearchQuery } = useSearchStore()
+
   const handleBaroTalk = (e: React.MouseEvent) => {
     e.stopPropagation() // 이벤트 버블링 방지
     if (lawyerId) {
       setTemporaryItem(LOCAL.CHAT_SELECTED_LAWYER_ID, lawyerId.toString(), 30) // 30분 유효
       navigate(ROUTER.REQUEST_BARO_TALK)
     }
+  }
+
+  const handleSocialLinkClick = (url: string) => {
+    window.open(url, '_blank')
+  }
+
+  const handleTagClick = (tag: TagType) => {
+    setSearchQuery(tag.name)
+    navigate(`/search/lawyer?tag=${tag.name}`)
   }
 
   return (
@@ -78,16 +90,31 @@ const LawyerHorizon = ({
         {tags && tags.length > 0 && (
           <div className={styles['tags']}>
             {tags.map((tag, index) => (
-              <Tag key={index} tag={tag.name} />
+              <Tag key={index} tag={tag.name} onClick={() => handleTagClick(tag)} />
             ))}
           </div>
         )}
 
         {socialLink && (
           <div className={styles['social-link']}>
-            <img src={blog} alt='블로그' className={styles['social-link-img']} />
-            <img src={youtube} alt='유튜브' className={styles['social-link-img']} />
-            <img src={instagram} alt='인스타그램' className={styles['social-link-img']} />
+            <img
+              src={blog}
+              alt='블로그'
+              className={styles['social-link-img']}
+              onClick={() => handleSocialLinkClick(socialLink.find(link => link.type === 'naver')?.link ?? '')}
+            />
+            <img
+              src={youtube}
+              alt='유튜브'
+              className={styles['social-link-img']}
+              onClick={() => handleSocialLinkClick(socialLink.find(link => link.type === 'youtube')?.link ?? '')}
+            />
+            <img
+              src={instagram}
+              alt='인스타그램'
+              className={styles['social-link-img']}
+              onClick={() => handleSocialLinkClick(socialLink.find(link => link.type === 'instagram')?.link ?? '')}
+            />
           </div>
         )}
         {buttonComponent && buttonComponent}

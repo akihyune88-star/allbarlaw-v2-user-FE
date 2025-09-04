@@ -15,7 +15,7 @@ type LegalKnowledgeDetailSideBarProps = {
 
 const LegalKnowledgeDetailSideBar = ({ recommendLawyerList }: LegalKnowledgeDetailSideBarProps) => {
   console.log(recommendLawyerList)
-  const mockLawyerList = generateRandomLawyers(3)
+  const mockLawyerList = generateRandomLawyers(5)
   return (
     <aside className={styles['legal-knowledge-detail-sidebar']}>
       <section>

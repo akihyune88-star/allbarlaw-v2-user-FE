@@ -25,7 +25,7 @@ const LegalTermReportModal = ({ isOpen, onClose }: LegalTermReportModalProps) =>
       </Modal.Header>
       <Modal.Body className={styles.body}>
         <span>용어명</span>
-        <input placeholder='용어를 작성해주세요'></input>
+        <input placeholder='용어를 작성해주세요' style={{ outline: 'none' }} />
       </Modal.Body>
       <Modal.Footer className={styles.footer}>
         <button className={`${styles.btn} ${styles.cancel}`} onClick={onClose}>

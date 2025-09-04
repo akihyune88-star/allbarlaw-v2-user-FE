@@ -1,7 +1,7 @@
 import Article from '@/components/article/Article'
 import ArticleHeader from '@/components/articleHeader/ArticleHeader'
 import styles from '@/container/subMain/total/total-blog-list.module.scss'
-import { useBlogCount } from '@/hooks/queries/useBlogCount'
+import { useBlogCount } from '@/hooks/queries/useBlog'
 import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 import { useCategoryInfo } from '@/hooks/useCategoryInfo'
 import { useMediaQuery } from '@/hooks/useMediaQuery'

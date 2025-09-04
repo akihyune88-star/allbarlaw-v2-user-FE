@@ -12,7 +12,7 @@ import styles from './legal-knowledge.module.scss'
 const LegalKnowledgeLayout = () => {
   const navigate = useNavigate()
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
-  const [sortCase, setSortCase] = useState<string>('all')
+  const [sortCase, setSortCase] = useState<string>('viewCount')
 
   const { knowledgeList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteKnowledgeList({
     subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
@@ -62,7 +62,9 @@ const LegalKnowledgeLayout = () => {
           </div>
         </section>
         <section>
-          <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
+          {recommendationLegalTerm && recommendationLegalTerm.length > 0 && (
+            <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
+          )}
         </section>
       </aside>
     </main>

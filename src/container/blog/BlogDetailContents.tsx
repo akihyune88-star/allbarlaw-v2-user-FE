@@ -1,6 +1,8 @@
 import styles from '@/container/blog/blog-detail.contents.module.scss'
+import { useSearchStore } from '@/stores/searchStore'
 import { COLOR } from '@/styles/color'
 import { getBlogDetailText } from '@/utils/blogTextFormatter'
+import { useNavigate } from 'react-router-dom'
 
 type BlogDetailContentsProps = {
   summaryContents: string
@@ -9,14 +11,29 @@ type BlogDetailContentsProps = {
 }
 
 const BlogDetailContents = ({ summaryContents, tagList, className }: BlogDetailContentsProps) => {
+  const navigate = useNavigate()
   const { summary, lawyerPart } = getBlogDetailText(summaryContents)
+  const { setSearchQuery } = useSearchStore()
+
+  const handleTagSearch = (tagName: string) => {
+    setSearchQuery(tagName)
+    navigate(`/search?q=${tagName}`)
+  }
 
   // tagList가 객체 배열인지 문자열 배열인지 확인하고 처리
   const normalizedTags = tagList.map((tag, index) => {
     if (typeof tag === 'string') {
-      return <span key={index}>#{tag}</span>
+      return (
+        <span key={index} onClick={() => handleTagSearch(tag)} style={{ cursor: 'pointer' }}>
+          #{tag}
+        </span>
+      )
     } else if (tag && typeof tag === 'object' && 'name' in tag) {
-      return <span key={tag.id || index}>#{tag.name}</span>
+      return (
+        <span key={tag.id || index} onClick={() => handleTagSearch(tag.name)} style={{ cursor: 'pointer' }}>
+          #{tag.name}
+        </span>
+      )
     }
     return null
   })

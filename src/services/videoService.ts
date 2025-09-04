@@ -5,6 +5,7 @@ import {
   VideoListRequest,
   VideoListResponse,
   RandomVideoListRequest,
+  LawyerVideoCreateRequest,
 } from '@/types/videoTypes'
 
 export const videoService = {
@@ -62,6 +63,11 @@ export const videoService = {
 
   changeVideoKeep: async (videoCaseId: number) => {
     const response = await instance.put(`/video-case/${videoCaseId}/keep`)
+    return response.data
+  },
+
+  createLawyerAdminVideo: async (request: LawyerVideoCreateRequest) => {
+    const response = await instance.post(`/video-case`, request)
     return response.data
   },
 }

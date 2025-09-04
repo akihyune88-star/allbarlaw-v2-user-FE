@@ -31,7 +31,7 @@ const LawyerAdminLayout = () => {
         navigate(ROUTER.LAWYER_ADMIN_CONTENT_VIDEO)
         break
       case 5:
-        navigate(ROUTER.LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE)
+        navigate(ROUTER.LAWYER_ADMIN_CHAT_LIST)
         break
     }
   }

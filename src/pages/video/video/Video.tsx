@@ -11,7 +11,7 @@ import styles from './video.module.scss'
 const VideoLayout = () => {
   const navigate = useNavigate()
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
-  const [sortCase, setSortCase] = useState<string>('all')
+  const [sortCase, setSortCase] = useState<string>('viewCount')
 
   const { videoList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteVideoList({
     subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,

@@ -108,7 +108,7 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
           onChange={e => setLocalSearchValue(e.target.value)}
           onFocus={() => setIsDropdownOpen(true)}
           onKeyDown={handleKeyDown}
-          icon={<SvgIcon name='search' style={{ marginRight: 13 }} onClick={handleSearch} />}
+          icon={<SvgIcon name='search' onClick={handleSearch} />}
         />
 
         {isDropdownOpen && recentSearches && recentSearches.length > 0 && (

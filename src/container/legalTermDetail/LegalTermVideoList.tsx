@@ -21,6 +21,10 @@ const LegalTermVideoList = ({ videoList, termsName }: { videoList: VideoCase[]; 
     navigate(`/search/video`)
   }
 
+  const handleVideoDetail = (videoCaseId: number) => {
+    navigate(`/search/video/${videoCaseId}`)
+  }
+
   return (
     <div className={styles.container}>
       <header className={`${styles['list-header']} ${styles['video']}`}>
@@ -44,6 +48,7 @@ const LegalTermVideoList = ({ videoList, termsName }: { videoList: VideoCase[]; 
                 videoUrl={video.thumbnail}
                 isShowTitle={false}
                 description={video.summaryContent}
+                onClick={() => handleVideoDetail(video.videoCaseId)}
               />
             ) : (
               <Fragment key={video.videoCaseId}>
@@ -58,6 +63,7 @@ const LegalTermVideoList = ({ videoList, termsName }: { videoList: VideoCase[]; 
                   lawfirmName={video.lawfirmName}
                   channelName={video.channelName}
                   channelThumbnail={video.channelThumbnail}
+                  onClick={() => handleVideoDetail(video.videoCaseId)}
                 />
                 {index !== videoList.length - 1 && <Divider padding={24} />}
               </Fragment>

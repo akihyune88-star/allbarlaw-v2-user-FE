@@ -6,6 +6,8 @@ import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { BlogCase } from '@/types/blogTypes'
+import { useBlogCount } from '@/hooks/queries/useBlog'
+import { useParams } from 'react-router-dom'
 
 interface BlogListProps {
   blogList: BlogCase[]
@@ -29,6 +31,17 @@ const BlogList = ({
   onClickItem,
 }: BlogListProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+
+  const { data: totalBlogCount } = useBlogCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : 'all',
+    recentDays: 'all',
+  })
+
+  const { data: recentMonthCount } = useBlogCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : 'all',
+    recentDays: 30,
+  })
 
   // 무한스크롤 적용 (부모에서 전달된 페이징 제어 사용)
   useInfiniteScroll({
@@ -43,8 +56,8 @@ const BlogList = ({
         title={`변호사가 작성한 글 안에서\n 내 문제의 해결방법을 찾으세요.`}
         onClick={onChangeSort}
         activeKey={sortCase}
-        totalBlogCount={2147}
-        recentBlogCount={4142}
+        totalBlogCount={totalBlogCount}
+        recentBlogCount={recentMonthCount}
       />
       <section className={styles['blog-list']} aria-label='블로그 목록'>
         {!isMobile && <Divider />}
