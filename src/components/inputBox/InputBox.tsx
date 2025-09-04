@@ -29,7 +29,6 @@ const InputBox = ({
   disabled = false,
   className = '',
   style,
-  onIconClick,
 }: InputBoxProps) => {
   return (
     <div className={`${styles['input-container']} ${className}`} style={style}>

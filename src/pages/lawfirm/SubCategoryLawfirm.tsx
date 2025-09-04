@@ -1,7 +1,7 @@
 import LawfirmFilter from '@/container/lawfirm/lawfirmFilter/LawfirmFilter'
 import LawfirmList from '@/container/lawfirm/LawfirmList'
 import { useInfiniteLawfirmList } from '@/hooks/queries/useGetLawfirmList'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { useMemo, useState } from 'react'
 import { SortType } from '@/types/sortTypes'
@@ -9,7 +9,6 @@ import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 
 const SubcategoryLawfirmLayout = () => {
-  const navigate = useNavigate()
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const [filter, setFilter] = useState<{
     orderBy: SortType
