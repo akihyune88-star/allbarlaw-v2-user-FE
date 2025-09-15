@@ -16,13 +16,13 @@ export const useSearchStore = create<SearchState>()(
     set => ({
       searchQuery: '',
       searchLawyerId: undefined,
-      
+
       setSearchQuery: (query: string) => {
         set({ searchQuery: query })
         // sessionStorage에도 저장
         sessionStorage.setItem('searchQuery', query)
       },
-      
+
       setSearchLawyerId: (lawyerId: number | undefined) => {
         set({ searchLawyerId: lawyerId })
         // sessionStorage에 저장
@@ -32,17 +32,17 @@ export const useSearchStore = create<SearchState>()(
           sessionStorage.removeItem('searchLawyerId')
         }
       },
-      
+
       clearSearchQuery: () => {
         set({ searchQuery: '' })
         sessionStorage.removeItem('searchQuery')
       },
-      
+
       clearSearchLawyerId: () => {
         set({ searchLawyerId: undefined })
         sessionStorage.removeItem('searchLawyerId')
       },
-      
+
       clearAll: () => {
         set({ searchQuery: '', searchLawyerId: undefined })
         sessionStorage.removeItem('searchQuery')
@@ -50,25 +50,20 @@ export const useSearchStore = create<SearchState>()(
       },
     }),
     {
-      name: 'search-storage', // localStorage key
+      name: 'search-storage', // sessionStorage key
       storage: {
         getItem: name => {
-          // sessionStorage 우선, 없으면 localStorage
+          // sessionStorage만 사용
           const sessionValue = sessionStorage.getItem(name)
-          if (sessionValue) return JSON.parse(sessionValue)
-          
-          const localValue = localStorage.getItem(name)
-          return localValue ? JSON.parse(localValue) : null
+          return sessionValue ? JSON.parse(sessionValue) : null
         },
         setItem: (name, value) => {
-          // 두 스토리지 모두에 저장
+          // sessionStorage에만 저장
           const stringValue = JSON.stringify(value)
           sessionStorage.setItem(name, stringValue)
-          localStorage.setItem(name, stringValue)
         },
         removeItem: name => {
           sessionStorage.removeItem(name)
-          localStorage.removeItem(name)
         },
       },
     }
