@@ -1,4 +1,9 @@
-import { BlogAiSummaryRequest, BlogAiSummaryResponse, VideoAiSummaryResponse } from '@/types/aiSummaryTypes'
+import {
+  BlogAiSummaryRequest,
+  BlogAiSummaryResponse,
+  KnowledgeAiTitleResponse,
+  VideoAiSummaryResponse,
+} from '@/types/aiSummaryTypes'
 import axios from 'axios'
 
 export const aiSummaryService = {
@@ -23,6 +28,14 @@ export const aiSummaryService = {
     const urlPath = `${import.meta.env.VITE_AI_SUMMARY_SERVER_API}/latest/summary/youtube?${params.toString()}`
 
     const response = await axios.get<VideoAiSummaryResponse>(urlPath)
+    return response.data
+  },
+  generateKnowledgeAiTitle: async (request: { text: string }) => {
+    const { text } = request
+
+    const urlPath = `${import.meta.env.VITE_AI_SUMMARY_SERVER_API}/latest/knowledge/generate/title`
+
+    const response = await axios.post<KnowledgeAiTitleResponse>(urlPath, { text })
     return response.data
   },
 }

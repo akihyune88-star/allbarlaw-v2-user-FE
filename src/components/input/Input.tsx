@@ -9,6 +9,7 @@ interface ConsultationInputProps {
   style?: React.CSSProperties
   textAreaStyle?: React.CSSProperties
   className?: string
+  disabled?: boolean
   value?: string
   onChange?: (_e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
@@ -18,6 +19,7 @@ const Input = ({
   headerChildren,
   footerChildren,
   placeholder,
+  disabled,
   style,
   className,
   value,
@@ -31,7 +33,7 @@ const Input = ({
         {headerChildren}
       </header>
       <div className={styles['input-container']} style={textAreaStyle}>
-        <textarea placeholder={placeholder} value={value} onChange={onChange} />
+        <textarea placeholder={placeholder} value={value} onChange={onChange} disabled={disabled} />
       </div>
       {footerChildren && <footer className={styles['footer']}>{footerChildren}</footer>}
     </div>

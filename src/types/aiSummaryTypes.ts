@@ -14,3 +14,8 @@ export type VideoAiSummaryResponse = {
   text: string
   tags: string[]
 }
+
+export type KnowledgeAiTitleResponse = {
+  title: string
+  tags: string[]
+}

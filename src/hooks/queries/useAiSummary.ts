@@ -1,5 +1,5 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { BlogAiSummaryRequest } from '@/types/aiSummaryTypes'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { BlogAiSummaryRequest, KnowledgeAiTitleResponse } from '@/types/aiSummaryTypes'
 import { aiSummaryService } from '@/services/aiSummaryService'
 import { QUERY_KEY } from '@/constants/queryKey'
 
@@ -52,5 +52,23 @@ export const useVideoAiSummary = (
     staleTime: 5 * 60 * 1000, // 5분간 fresh 상태 유지
     gcTime: 10 * 60 * 1000, // 10분간 캐시 유지
     ...options,
+  })
+}
+
+export const useKnowledgeAiTitle = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: KnowledgeAiTitleResponse) => void
+  onError: (_error: any) => void
+}) => {
+  return useMutation({
+    mutationFn: (request: { text: string }) => aiSummaryService.generateKnowledgeAiTitle(request),
+    onSuccess: data => {
+      onSuccess(data)
+    },
+    onError: error => {
+      onError(error)
+    },
   })
 }

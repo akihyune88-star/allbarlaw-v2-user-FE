@@ -68,6 +68,21 @@
   font-size: 14px;
   font-weight: $font-weight-semibold;
   color: $color-text-index;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    background-color: $color-bg-gray-01;
+    border-color: $color-green-01;
+  }
+
+  &:disabled {
+    background-color: $color-bg-gray-01;
+    color: $color-text-caption;
+    border-color: $color-line-divider;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 }
 
 @media (max-width: $breakpoint-desktop) {

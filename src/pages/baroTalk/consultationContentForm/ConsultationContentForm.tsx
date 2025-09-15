@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useBaroTalkStore } from '@/store/baroTalkStore'
 import { LOCAL } from '@/constants/local'
+import { useKnowledgeAiTitle } from '@/hooks/queries/useAiSummary'
 
 const ConsultationContentForm = () => {
   const navigate = useNavigate()
@@ -35,6 +36,15 @@ const ConsultationContentForm = () => {
     navigate(ROUTER.MAIN)
   }
 
+  const { mutate: generateKnowledgeAiTitle, isPending } = useKnowledgeAiTitle({
+    onSuccess: data => {
+      setTitleLocal(data.title)
+    },
+    onError: error => {
+      console.error(error)
+    },
+  })
+
   const handleNext = () => {
     setTitle(title)
     setDescription(description)
@@ -47,6 +57,10 @@ const ConsultationContentForm = () => {
 
   const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setDescriptionLocal(e.target.value)
+  }
+
+  const handleAiTitle = () => {
+    generateKnowledgeAiTitle({ text: description })
   }
 
   return (
@@ -68,10 +82,19 @@ const ConsultationContentForm = () => {
           <Input
             title='제목'
             placeholder='AI를 이용하여 제목을 작성 할 수 있습니다.'
-            headerChildren={<button className={styles['ai-button']}>AI 자동 제목 만들기</button>}
+            headerChildren={
+              <button
+                className={styles['ai-button']}
+                onClick={handleAiTitle}
+                disabled={isPending || !description.trim()}
+              >
+                AI 자동 제목 만들기
+              </button>
+            }
             className={styles['input-wrapper-title']}
-            value={title}
+            value={isPending ? 'AI 제목 생성중입니다...' : title}
             onChange={handleTitleChange}
+            disabled={isPending}
           />
         </div>
         <ProgressButton
