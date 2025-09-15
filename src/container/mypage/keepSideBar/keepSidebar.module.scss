@@ -15,6 +15,10 @@
   border-bottom: 1px solid $color-line-divider;
   border-right: 1px solid $color-line-divider;
 
+  font-size: 0.875rem;
+  font-weight: $font-weight-semibold;
+  color: $color-text-index;
+
   &:hover {
     background-color: rgba($color-white, 0.5);
   }
@@ -25,6 +29,11 @@
 
   &:first-child {
     border-top: 1px solid $color-line-divider;
+  }
+
+  .count {
+    color: $color-text-caption;
+    margin-left: 0.625rem;
   }
 }
 

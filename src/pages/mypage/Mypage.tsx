@@ -35,7 +35,7 @@ const Mypage = () => {
       />
       <section>
         {tab === TABS[0] ? (
-          <KeepList sortOrder={sortOrder} />
+          <KeepList sortOrder={sortOrder} year={year} month={month} />
         ) : (
           <ChatList sort={sortOrder} year={year} month={month} onYearChange={setYear} onMonthChange={setMonth} />
         )}
