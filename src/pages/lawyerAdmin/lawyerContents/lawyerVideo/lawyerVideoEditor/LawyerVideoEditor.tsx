@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import HeaderPortal from '@/components/headerPortal/HeaderPortal'
 import { ROUTER } from '@/routes/routerConstant'
 import { useCategory } from '@/hooks/queries/useCategory'
-import { useVideoCreate, useGetYoutubeChannelInfo } from '@/hooks/queries/useVideo'
+import { useVideoCreate, useGetYoutubeChannelInfo, useGetYoutubeVideoInfo } from '@/hooks/queries/useVideo'
+import { useVideoAiSummary } from '@/hooks/queries/useAiSummary'
 import { LawyerVideoCreateRequest } from '@/types/videoTypes'
 import { getLawyerIdFromToken } from '@/utils/tokenUtils'
 import { LOCAL } from '@/constants/local'
 import { useToast } from '@/hooks/useToast'
+import { useEffect } from 'react'
 
 const LawyerVideoEditor = () => {
   const navigate = useNavigate()
@@ -41,10 +43,11 @@ const LawyerVideoEditor = () => {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [categoryError, setCategoryError] = useState<string>('')
+  const [shouldFetchSummary, setShouldFetchSummary] = useState<boolean>(false)
 
   // 유튜브 URL 정규식
   const youtubeChannelRegex =
-    /^(https?:\/\/)?(www\.)?(youtube\.com\/(c\/|channel\/|user\/|@)[a-zA-Z0-9_-]+|youtube\.com\/[a-zA-Z0-9_-]+)$/
+    /^(https?:\/\/)?(www\.)?(youtube\.com\/(c\/|channel\/|user\/|@)[^\s\/]+|youtube\.com\/[^\s\/]+)$/
   const youtubeVideoRegex =
     /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)[a-zA-Z0-9_-]{11}(\S*)$/
 
@@ -141,17 +144,67 @@ const LawyerVideoEditor = () => {
     onError: () => {},
   })
 
+  // YouTube 비디오 정보 API 호출
+  const { mutate: getYoutubeVideoInfo, isPending: isLoadingVideoInfo } = useGetYoutubeVideoInfo({
+    onSuccess: data => {
+      setFormData(prev => ({
+        ...prev,
+        title: data.title || prev.title,
+        thumbnail: data.thumbnail || prev.thumbnail,
+      }))
+    },
+    onError: () => {
+      showToast('유튜브 영상 정보를 가져오는데 실패했습니다.', 'error')
+      setShouldFetchSummary(false)
+    },
+  })
+
+  // AI 요약 API 호출
+  const {
+    data: videoAiSummary,
+    isLoading: isLoadingAiSummary,
+    isError: isAiSummaryError,
+  } = useVideoAiSummary(
+    { url: formData.videoUrl },
+    {
+      enabled: shouldFetchSummary && !!formData.videoUrl,
+    }
+  )
+
+  // AI 요약 성공 시 처리
+  useEffect(() => {
+    if (videoAiSummary && shouldFetchSummary) {
+      if (videoAiSummary.text) {
+        setFormData(prev => ({
+          ...prev,
+          summaryContent: videoAiSummary.text,
+        }))
+      }
+      if (videoAiSummary.tags) {
+        const tagsWithoutHash = videoAiSummary.tags.map((tag: string) => tag.replace(/^#/, ''))
+        setFormData(prev => ({
+          ...prev,
+          tags: tagsWithoutHash.join(', '),
+        }))
+      }
+      setShouldFetchSummary(false)
+      showToast('AI 요약이 완료되었습니다. 내용을 확인하고 필요시 수정해주세요.', 'success')
+    }
+  }, [videoAiSummary, shouldFetchSummary, showToast])
+
+  // AI 요약 에러 처리
+  useEffect(() => {
+    if (isAiSummaryError && shouldFetchSummary) {
+      showToast('AI 요약에 실패했습니다. 다시 시도해주세요.', 'error')
+      setShouldFetchSummary(false)
+    }
+  }, [isAiSummaryError, shouldFetchSummary, showToast])
+
   // AI 요약하기 버튼 클릭 시
   const handleAISummary = () => {
     // 유튜브 URL 유효성 검사
     let hasError = false
     const newErrors: Record<string, string> = {}
-
-    // 채널 URL 검사 (선택사항이지만 입력했다면 검증)
-    if (formData.channelUrl && !youtubeChannelRegex.test(formData.channelUrl)) {
-      newErrors.channelUrl = '올바른 유튜브 채널 URL을 입력해주세요.'
-      hasError = true
-    }
 
     // 영상 URL 검사 (필수)
     if (!formData.videoUrl) {
@@ -165,13 +218,19 @@ const LawyerVideoEditor = () => {
     // 에러가 있으면 중단
     if (hasError) {
       setErrors(newErrors)
-      setTouched({ channelUrl: true, videoUrl: true })
+      setTouched({ videoUrl: true })
       showToast('유튜브 URL을 확인해주세요.', 'error')
       return
     }
 
     // 에러 클리어
     setErrors({})
+
+    // 1. YouTube 비디오 정보 가져오기
+    getYoutubeVideoInfo({ videoUrl: formData.videoUrl })
+
+    // 2. AI 요약 트리거
+    setShouldFetchSummary(true)
   }
 
   const handleYoutubeChannelInfo = () => getYoutubeChannelInfo({ channelUrl: formData.channelUrl || '' })
@@ -259,9 +318,7 @@ const LawyerVideoEditor = () => {
     createVideo(requestData)
   }
 
-  const handleCancel = () => {
-    navigate(ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_LIST)
-  }
+  const handleCancel = () => navigate(ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_LIST)
 
   return (
     <>
@@ -328,12 +385,16 @@ const LawyerVideoEditor = () => {
                 className={`${styles['video-editor__input']} ${errors.videoUrl ? styles['error'] : ''}`}
               />
 
-              <span className={styles['error-message']}>{errors.channelUrl || ' '}</span>
+              <span className={styles['error-message']}>{errors.videoUrl || ' '}</span>
             </div>
           </div>
         </section>
-        <button className={styles['ai-summary__button']} onClick={handleAISummary} disabled={isLoadingChannel}>
-          {isLoadingChannel ? '채널 정보 불러오는 중...' : '유튜브 동영상 AI 요약하기'}
+        <button
+          className={styles['ai-summary__button']}
+          onClick={handleAISummary}
+          disabled={isLoadingVideoInfo || isLoadingAiSummary}
+        >
+          {isLoadingVideoInfo || isLoadingAiSummary ? 'AI 요약 중...' : '유튜브 동영상 AI 요약하기'}
         </button>
         <section className={styles['video-editor-section']}>
           <div className={styles['video-editor-row-form']}>
@@ -348,7 +409,7 @@ const LawyerVideoEditor = () => {
                 placeholder='유튜브 채널 홈화면 경로를 입력해주세요.'
                 className={`${styles['video-editor__input']} ${errors.channelUrl ? styles['error'] : ''}`}
               />
-              <span className={styles['error-message']}>{errors.videoUrl || ' '}</span>
+              <span className={styles['error-message']}>{errors.channelUrl || ' '}</span>
               <button
                 className={styles['ai-summary__button']}
                 onClick={handleYoutubeChannelInfo}

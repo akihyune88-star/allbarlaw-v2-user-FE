@@ -9,3 +9,8 @@ export type BlogAiSummaryResponse = {
   thumbnail: string
   title: string
 }
+
+export type VideoAiSummaryResponse = {
+  text: string
+  tags: string[]
+}

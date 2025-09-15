@@ -83,3 +83,8 @@ export type YoutubeChannelInfoResponse = {
   subscriberCount: number
   channelThumbnail: string
 }
+
+export type YoutubeVideoInfoResponse = {
+  thumbnail: string
+  title: string
+}

@@ -72,4 +72,5 @@ export const QUERY_KEY = {
 
   // AI
   BLOG_AI_SUMMARY: 'blogAiSummary',
+  VIDEO_AI_SUMMARY: 'videoAiSummary',
 } as const

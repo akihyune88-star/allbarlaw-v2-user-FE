@@ -1,4 +1,4 @@
-import { BlogAiSummaryRequest, BlogAiSummaryResponse } from '@/types/aiSummaryTypes'
+import { BlogAiSummaryRequest, BlogAiSummaryResponse, VideoAiSummaryResponse } from '@/types/aiSummaryTypes'
 import axios from 'axios'
 
 export const aiSummaryService = {
@@ -12,6 +12,17 @@ export const aiSummaryService = {
     const urlPath = `${import.meta.env.VITE_AI_SUMMARY_SERVER_API}/latest/summary/blog?${params.toString()}`
 
     const response = await axios.get<BlogAiSummaryResponse>(urlPath)
+    return response.data
+  },
+  getVideoAiSummary: async (request: { url: string }) => {
+    const { url } = request
+
+    const params = new URLSearchParams()
+    if (url) params.append('url', url)
+
+    const urlPath = `${import.meta.env.VITE_AI_SUMMARY_SERVER_API}/latest/summary/youtube?${params.toString()}`
+
+    const response = await axios.get<VideoAiSummaryResponse>(urlPath)
     return response.data
   },
 }
