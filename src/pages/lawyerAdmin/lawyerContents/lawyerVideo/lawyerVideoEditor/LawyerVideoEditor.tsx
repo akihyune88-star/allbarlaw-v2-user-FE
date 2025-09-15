@@ -47,7 +47,7 @@ const LawyerVideoEditor = () => {
 
   // 유튜브 URL 정규식
   const youtubeChannelRegex =
-    /^(https?:\/\/)?(www\.)?(youtube\.com\/(c\/|channel\/|user\/|@)[^\s\/]+|youtube\.com\/[^\s\/]+)$/
+    /^(https?:\/\/)?(www\.)?(youtube\.com\/(c\/|channel\/|user\/|@)[^\s/]+|youtube\.com\/[^\s/]+)$/
   const youtubeVideoRegex =
     /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)[a-zA-Z0-9_-]{11}(\S*)$/
 
