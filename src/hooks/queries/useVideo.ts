@@ -1,6 +1,6 @@
 import { QUERY_KEY } from '@/constants/queryKey'
 import { videoService } from '@/services/videoService'
-import { LawyerVideoCreateRequest, VideoCountRequest } from '@/types/videoTypes'
+import { LawyerVideoCreateRequest, VideoCountRequest, YoutubeChannelInfoResponse } from '@/types/videoTypes'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useVideoCreate = ({ onSuccess, onError }: { onSuccess: () => void; onError: (error: any) => void }) => {
@@ -26,5 +26,23 @@ export const useGetVideoCount = (request: VideoCountRequest) => {
     enabled: subcategoryId !== undefined,
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 30,
+  })
+}
+
+export const useGetYoutubeChannelInfo = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: YoutubeChannelInfoResponse) => void
+  onError: (_error: any) => void
+}) => {
+  return useMutation({
+    mutationFn: (request: { channelUrl: string }) => videoService.getYoutubeChannelInfo(request),
+    onSuccess: data => {
+      onSuccess(data)
+    },
+    onError: error => {
+      onError(error)
+    },
   })
 }

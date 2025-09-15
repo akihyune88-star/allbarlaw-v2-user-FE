@@ -11,6 +11,7 @@ export const QUERY_KEY = {
   VIDEO_COUNT: 'videoCount',
   VIDEO_LIST: 'videoList',
   RANDOM_VIDEO_LIST: 'randomVideoList',
+  YOUTUBE_CHANNEL_INFO: 'youtubeChannelInfo',
 
   // 법률 지식인
   KNOWLEDGE_COUNT: 'knowledgeCount',
