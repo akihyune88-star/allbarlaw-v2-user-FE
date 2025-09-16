@@ -24,7 +24,7 @@
 .category-group {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  // align-items: center;
 
   &:last-child {
     margin-bottom: 0;
@@ -35,8 +35,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  justify-content: center;
-  padding: 0 10px;
+  // justify-content: center;
+  padding: 0 50px;
 }
 
 .icon-wrapper {
