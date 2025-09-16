@@ -75,3 +75,16 @@ export type LawyerVideoCreateRequest = {
   channelDescription: string
   tags: string[]
 }
+
+export type YoutubeChannelInfoResponse = {
+  channelName: string
+  channelDescription: string
+  handleName: string
+  subscriberCount: number
+  channelThumbnail: string
+}
+
+export type YoutubeVideoInfoResponse = {
+  thumbnail: string
+  title: string
+}

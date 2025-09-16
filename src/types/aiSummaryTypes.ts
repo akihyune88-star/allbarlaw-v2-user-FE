@@ -9,3 +9,13 @@ export type BlogAiSummaryResponse = {
   thumbnail: string
   title: string
 }
+
+export type VideoAiSummaryResponse = {
+  text: string
+  tags: string[]
+}
+
+export type KnowledgeAiTitleResponse = {
+  title: string
+  tags: string[]
+}

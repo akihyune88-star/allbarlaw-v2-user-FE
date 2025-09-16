@@ -70,7 +70,13 @@ const LawyerVertical = ({
       {type === 2 ? (
         <ImageSlider
           images={profileImage as string[]}
-          sliderSettings={{ arrows: false, infinite: false }}
+          sliderSettings={{
+            arrows: false,
+            infinite: true,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            pauseOnHover: true
+          }}
           width={profileImageWidth}
           height={profileImageHeight}
           customDots={true}

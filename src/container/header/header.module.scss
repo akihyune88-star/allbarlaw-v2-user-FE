@@ -86,6 +86,7 @@
     height: auto;
 
     margin-bottom: 5rem;
+    z-index: 10;
   }
 
   .search-form {
@@ -103,6 +104,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  .header-logo {
+    cursor: pointer;
+    width: 9.375rem;
+    height: auto;
+    display: block;
+  }
 
   .category {
     display: flex;

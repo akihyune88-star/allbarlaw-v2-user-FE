@@ -6,11 +6,14 @@ import MyVideoList from '../myVideoList/MyVideoList'
 import MyLegalDictionary from '../myLegalDictionary/MyLegalDictionary'
 import MyLawyer from '../myLawyer/MyLawyer'
 import MyLegalKnowledgeList from '../myLegalKnowledgeList/MyLegalKnowledgeList'
+import { useGetMypageCount } from '@/hooks/queries/useMypage'
 
 const buttonList = ['법률정보의 글', '변호사의 영상', '법률 지식인', '변호사', '법률 사전']
 
-const KeepList = ({ sortOrder }: { sortOrder: 'asc' | 'desc' }) => {
+const KeepList = ({ sortOrder, year, month }: { sortOrder: 'asc' | 'desc'; year: number; month: number }) => {
   const [activeButton, setActiveButton] = useState(buttonList[0])
+
+  const { data: mypageCount } = useGetMypageCount({ year, month })
 
   const renderContent = () => {
     switch (activeButton) {
@@ -31,7 +34,12 @@ const KeepList = ({ sortOrder }: { sortOrder: 'asc' | 'desc' }) => {
 
   return (
     <main className={`${styles.keepList} gray-content-container`}>
-      <KeepSidebar buttonList={buttonList} activeButton={activeButton} setActiveButton={setActiveButton} />
+      <KeepSidebar
+        buttonList={buttonList}
+        activeButton={activeButton}
+        setActiveButton={setActiveButton}
+        count={mypageCount}
+      />
       <section className={styles.keepListContent}>
         <div className={styles.keepListBody}>{renderContent()}</div>
       </section>

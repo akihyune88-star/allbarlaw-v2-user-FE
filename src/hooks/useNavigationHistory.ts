@@ -30,6 +30,11 @@ export const useNavigationHistory = () => {
 
   const canGoPrev = currentHistoryIndex > 0
 
+  const reset = useCallback(() => {
+    setExcludeIdsHistory([[]])
+    setCurrentHistoryIndex(0)
+  }, [])
+
   return {
     currentExcludeIds,
     handleNext,
@@ -37,5 +42,6 @@ export const useNavigationHistory = () => {
     canGoPrev,
     currentHistoryIndex,
     historyLength: excludeIdsHistory.length,
+    reset,
   }
 }

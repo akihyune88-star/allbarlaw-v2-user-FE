@@ -6,6 +6,8 @@ import {
   VideoListResponse,
   RandomVideoListRequest,
   LawyerVideoCreateRequest,
+  YoutubeChannelInfoResponse,
+  YoutubeVideoInfoResponse,
 } from '@/types/videoTypes'
 
 export const videoService = {
@@ -68,6 +70,14 @@ export const videoService = {
 
   createLawyerAdminVideo: async (request: LawyerVideoCreateRequest) => {
     const response = await instance.post(`/video-case`, request)
+    return response.data
+  },
+  getYoutubeChannelInfo: async (request: { channelUrl: string }) => {
+    const response = await instance.post<YoutubeChannelInfoResponse>(`/video-case/youtube/channel/fetch`, request)
+    return response.data
+  },
+  getYoutubeVideoInfo: async (request: { videoUrl: string }) => {
+    const response = await instance.post<YoutubeVideoInfoResponse>(`/video-case/youtube/video/fetch`, request)
     return response.data
   },
 }

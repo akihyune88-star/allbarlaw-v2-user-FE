@@ -4,7 +4,7 @@ import SvgIcon from '@/components/SvgIcon'
 import { SOCIAL_LINK_LIST } from '@/constants/lawyer'
 import { LOCAL } from '@/constants/local'
 import styles from '@/container/subMain/total/total-lawyer.module.scss'
-import { useRandomLawyerList } from '@/hooks/queries/useLawyer'
+import { useLawyerCount, useRandomLawyerList } from '@/hooks/queries/useLawyer'
 // import { useLawyerList } from '@/hooks/queries/useLawyer'
 import { useCategoryInfo } from '@/hooks/useCategoryInfo'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -35,12 +35,17 @@ const TotalLawyer = () => {
     navigate(ROUTER.REQUEST_BARO_TALK)
   }
 
+  const { data: lawyerCount } = useLawyerCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : 'all',
+    recentDays: 'all',
+  })
+
   return (
     <div className={styles['container']}>
       <header className={styles['header']}>
         <h2 className={styles['header-title']}>{categoryInfo?.subcategory.subcategoryName} 분야 전문 변호사</h2>
         <div className={styles['header-description']}>
-          <span>전체 753명의 전문 변호사가 함께 합니다. </span>
+          <span>전체 {lawyerCount?.toLocaleString()}명의 전문 변호사가 함께 합니다. </span>
           <button className='total-view-button' onClick={handleTotalLawyerClick}>
             <span>전체보기</span>
             <SvgIcon name='arrowSmall' size={16} style={{ transform: 'rotate(135deg)' }} />

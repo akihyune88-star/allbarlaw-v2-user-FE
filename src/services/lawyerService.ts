@@ -9,6 +9,7 @@ import {
   LawyerBasicInfoEditResponse,
   LawyerCareerResponse,
   LawyerCareerUpdateRequest,
+  LawyerCountRequest,
   LawyerDetailResponse,
   LawyerKeepResponse,
   LawyerListRequest,
@@ -168,6 +169,11 @@ export const lawyerService = {
     const response = await instance.put<LawyerActivityResponse>(`/lawyer/profile/${lawyerId}/activity`, {
       lawyerActivities: activityData,
     })
+    return response.data
+  },
+  getLawyerCount: async (request: LawyerCountRequest) => {
+    const { subcategoryId, recentDays } = request
+    const response = await instance.get<number>(`/lawyer/${subcategoryId}/${recentDays}/count`)
     return response.data
   },
 }

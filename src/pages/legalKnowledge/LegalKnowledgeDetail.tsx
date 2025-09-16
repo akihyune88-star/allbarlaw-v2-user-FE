@@ -91,7 +91,7 @@ const LegalKnowledgeDetail = () => {
                   title='최근 답변이 많은 변호사입니다.'
                   contents={
                     <div className={styles['lawyer-list']}>
-                      {mockLawyerList.map(lawyer => (
+                      {data?.lawyers.map(lawyer => (
                         <LawyerHorizon
                           key={lawyer.lawyerId}
                           lawyerId={lawyer.lawyerId}
@@ -124,7 +124,9 @@ const LegalKnowledgeDetail = () => {
                 <RecentActiveLawyer />
               </div>
             </div>
-            <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
+            {recommendationLegalTerm && recommendationLegalTerm.length > 0 && (
+              <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
+            )}
           </section>
         )}
       </div>

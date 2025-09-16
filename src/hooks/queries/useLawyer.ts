@@ -10,6 +10,7 @@ import {
   LawyerBasicInfoEditRequest,
   LawyerCareerUpdateRequest,
   LawyerActivityUpdateRequest,
+  LawyerCountRequest,
 } from '@/types/lawyerTypes'
 import { queryClient } from '@/lib/queryClient'
 
@@ -227,5 +228,12 @@ export const useLawyerActivityUpdate = ({ onSuccess, onError }: { onSuccess: () 
     onError: () => {
       onError()
     },
+  })
+}
+
+export const useLawyerCount = (request: LawyerCountRequest) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_COUNT, request.subcategoryId, request.recentDays],
+    queryFn: () => lawyerService.getLawyerCount(request),
   })
 }

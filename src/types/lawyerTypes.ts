@@ -240,3 +240,8 @@ export type LawyerActivityUpdateRequest = {
 export type LawyerActivityResponse = {
   lawyerActivities: LawyerAdminActivity[]
 }
+
+export type LawyerCountRequest = {
+  subcategoryId: number | 'all'
+  recentDays: 'all' | number
+}
