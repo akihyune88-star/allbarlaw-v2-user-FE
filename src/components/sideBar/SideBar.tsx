@@ -57,6 +57,7 @@ const CategoryItem = ({
               className={styles['subcategory-item']}
               style={{
                 backgroundColor: selectedSubcategory === subcategory.subcategoryId ? COLOR.bg_gray_02 : 'transparent',
+                cursor: 'pointer',
               }}
               onClick={() => onSubcategoryClick(subcategory.subcategoryId)}
             >

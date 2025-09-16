@@ -27,6 +27,7 @@ const LawyerResponse = ({ lawyers, className }: LawyerResponseProps) => {
   const [_isReportModalOpen, setIsReportModalOpen] = useState(false)
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
+  console.log(lawyers)
 
   const handleReportModalOpen = () => {
     setIsReportModalOpen(true)
