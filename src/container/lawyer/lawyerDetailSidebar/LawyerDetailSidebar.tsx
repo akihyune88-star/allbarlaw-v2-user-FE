@@ -66,7 +66,7 @@ const LawyerDetailSidebar = ({
         isKeep={isKeep}
         isShare={true}
       />
-      <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
+      {recommendationLegalTerm.length > 0 && <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />}
     </div>
   )
 }
