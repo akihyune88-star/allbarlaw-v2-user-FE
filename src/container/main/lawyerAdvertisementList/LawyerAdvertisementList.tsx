@@ -60,7 +60,7 @@ const LawyerAdvertisementList = () => {
   const [isPlaying, setIsPlaying] = useState(true)
   const intervalRef = useRef<number | null>(null)
 
-  const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
+  const { currentExcludeIds, handleNext, handlePrev, canGoPrev, reset } = useNavigationHistory()
 
   const { lawyerList, hasNextPage, refetch } = useRandomLawyerList({
     subcategoryId: 'all',
@@ -69,7 +69,11 @@ const LawyerAdvertisementList = () => {
   })
 
   const handleClickNext = () => {
-    if (lawyerList && lawyerList.length > 0) {
+    if (!hasNextPage) {
+      // 더 이상 불러올 변호사가 없으면 처음부터 다시 시작
+      reset()
+      refetch()
+    } else if (lawyerList && lawyerList.length > 0) {
       const currentIds = lawyerList.map(lawyer => lawyer.lawyerId)
       handleNext(currentIds)
     }

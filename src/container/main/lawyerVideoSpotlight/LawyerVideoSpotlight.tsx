@@ -65,7 +65,7 @@ const LawyerVideoSpotlight = () => {
   const intervalRef = useRef<number | null>(null)
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
-  const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
+  const { currentExcludeIds, handleNext, handlePrev, canGoPrev, reset } = useNavigationHistory()
 
   const { videoList, hasNextPage, refetch } = useRandomVideoList({
     subcategoryId: 'all',
@@ -74,8 +74,14 @@ const LawyerVideoSpotlight = () => {
   })
 
   const handleNextClick = () => {
-    const currentIds = videoList.map(video => video.videoCaseId)
-    handleNext(currentIds)
+    if (!hasNextPage) {
+      // 더 이상 불러올 영상이 없으면 처음부터 다시 시작
+      reset()
+      refetch()
+    } else if (videoList && videoList.length > 0) {
+      const currentIds = videoList.map(video => video.videoCaseId)
+      handleNext(currentIds)
+    }
   }
 
   const handleTogglePlay = () => {
