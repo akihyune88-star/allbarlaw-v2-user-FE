@@ -20,7 +20,7 @@ type LawyerHorizonProps = {
   socialLink?: SocialLink[]
   size?: 'x-small' | 'small' | 'large'
   className?: string
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent) => void
   selected?: boolean
   buttonComponent?: React.ReactNode
   ad?: boolean

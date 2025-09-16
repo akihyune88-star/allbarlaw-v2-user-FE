@@ -47,7 +47,7 @@ const TotalSearchLawyerList = ({ searchResults, query: _query }: TotalSearchLawy
               lawfirm={lawyer.lawfirmName}
               description={lawyer.lawyerDescription}
               className={styles['lawyer-list-item']}
-              onClick={(e) => handleClickLawyerPage(e, lawyer.lawyerId)}
+              onClick={e => handleClickLawyerPage(e, lawyer.lawyerId)}
               buttonComponent={
                 <div className={styles['button-container']}>
                   <button onClick={e => handleClickLawyerPage(e, lawyer.lawyerId)}>변호사페이지</button>
