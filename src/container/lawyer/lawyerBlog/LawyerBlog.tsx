@@ -26,6 +26,10 @@ const LawyerBlog = forwardRef<HTMLElement, LawyerBlogProps>(({ blogList = [], la
     navigate(`/search/blog`)
   }
 
+  const handleBlogDetail = (blogCaseId: number) => {
+    navigate(`/search/blog/${blogCaseId}`)
+  }
+
   return (
     <section ref={ref} className={styles['lawyer-blog']} aria-label='법률정보의 글'>
       <header className={styles['lawyer-blog__header']}>
@@ -47,7 +51,7 @@ const LawyerBlog = forwardRef<HTMLElement, LawyerBlogProps>(({ blogList = [], la
         <ul className={styles['lawyer-blog__list']} role='list'>
           {blogList.map((blog, index) => (
             <li key={blog.blogCaseId + index}>
-              <BlogItem item={blog} type='small' />
+              <BlogItem item={blog} type='small' onClick={() => handleBlogDetail(blog.blogCaseId)} />
               {index !== blogList.length - 1 && <Divider padding={12} className={styles['lawyer-blog__divider']} />}
             </li>
           ))}

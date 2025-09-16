@@ -38,6 +38,8 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  white-space: pre-line;
+  word-break: keep-all;
 
   li {
     font-size: 0.875rem;

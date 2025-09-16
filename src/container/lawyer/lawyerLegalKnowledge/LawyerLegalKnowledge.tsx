@@ -26,6 +26,10 @@ const LawyerLegalKnowledge = forwardRef<HTMLElement, LawyerLegalKnowledgeProps>(
       navigate(`/search/legal-knowledge`)
     }
 
+    const handleKnowledgeDetail = (knowledgeId: number) => {
+      navigate(`/search/legal-knowledge/${knowledgeId}`)
+    }
+
     return (
       <section ref={ref} className={styles['lawyer-legal-knowledge']} aria-label='변호사의 법률 지식'>
         <header className={styles['lawyer-legal-knowledge__header']}>
@@ -53,6 +57,7 @@ const LawyerLegalKnowledge = forwardRef<HTMLElement, LawyerLegalKnowledgeProps>(
                   title={knowledge.knowledgeTitle}
                   description={knowledge.summaryContent}
                   isLastAnswer={false}
+                  onClick={() => handleKnowledgeDetail(knowledge.knowledgeId)}
                 />
                 {index !== knowledgeList.length - 1 && (
                   <Divider padding={24} className={styles['lawyer-legal-knowledge__divider']} />
