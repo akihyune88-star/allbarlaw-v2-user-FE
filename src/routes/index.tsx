@@ -69,6 +69,7 @@ import LawyerEditCareer from '@/pages/lawyerAdmin/lawyerInfo/lawyerEditCareer/La
 import LawyerLegalKnowledgeLayout from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeLayout/LawyerLegalKnowledgeLayout'
 import LawyerLegalKnowledgeList from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeList/LawyerLegalKnowledgeList'
 import LawyerLegalKnowledgeDetail from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeDetail/LawyerLegalKnowledgeDetail'
+import { COLOR } from '@/styles/color'
 
 const router = createBrowserRouter([
   {
@@ -269,7 +270,11 @@ const router = createBrowserRouter([
           },
           {
             path: '/search/lawyer/:lawyerId',
-            element: <LawyerDetail />,
+            element: (
+              <div style={{ padding: 24, backgroundColor: COLOR.bg_gray_02 }}>
+                <LawyerDetail />
+              </div>
+            ),
           },
           {
             path: ROUTER.FAQ,
