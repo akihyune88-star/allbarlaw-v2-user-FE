@@ -9,8 +9,9 @@ import { SortType } from '@/types/sortTypes'
 import { Lawyer } from '@/types/lawyerTypes'
 import { LOCAL } from '@/constants/local'
 import { ROUTER } from '@/routes/routerConstant'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import SvgIcon from '@/components/SvgIcon'
+import { useLawyerCount } from '@/hooks/queries/useLawyer'
 
 interface LawyerListProps {
   lawyerList: Lawyer[]
@@ -34,6 +35,7 @@ const LawyerList = ({
 }: LawyerListProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
 
   useInfiniteScroll({
     hasNextPage: hasNextPage ?? false,
@@ -55,6 +57,16 @@ const LawyerList = ({
     navigate(ROUTER.REQUEST_BARO_TALK)
   }
 
+  const { data: lawyerTotalCount } = useLawyerCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : 'all',
+    recentDays: 'all',
+  })
+
+  const { data: lawyerRecentCount } = useLawyerCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : 'all',
+    recentDays: 30,
+  })
+
   return (
     <div className={styles.container}>
       <header className={styles['header-wrapper']}>
@@ -63,8 +75,8 @@ const LawyerList = ({
           채팅상담을 남겨 주시면 24시간내에 답변 드립니다.`}
           onClick={handleSortCase}
           activeKey={sortCase}
-          totalBlogCount={2147}
-          recentBlogCount={4142}
+          totalBlogCount={lawyerTotalCount}
+          recentBlogCount={lawyerRecentCount}
         />
       </header>
       <section className={styles['lawyer-list-wrapper']}>

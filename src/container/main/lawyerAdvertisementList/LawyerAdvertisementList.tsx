@@ -6,7 +6,7 @@ import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { SOCIAL_LINK_LIST } from '@/constants/lawyer'
 import LawyerVertical from '@/components/lawyer/LawyerVertical'
-import { useRandomLawyerList } from '@/hooks/queries/useLawyer'
+import { useLawyerCount, useRandomLawyerList } from '@/hooks/queries/useLawyer'
 import { useNavigationHistory } from '@/hooks'
 import { Lawyer } from '@/types/lawyerTypes'
 import SvgIcon from '@/components/SvgIcon'
@@ -28,16 +28,21 @@ const LawyerAdvertisementListHeader = ({
   refetch?: () => void
 }) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
+
+  const { data: lawyerCount } = useLawyerCount({
+    subcategoryId: 'all',
+    recentDays: 'all',
+  })
   return (
     <header className={styles['lawyer-advertisement-list-header']}>
       <div className={styles['text-wrapper']}>
         <h4 className={styles['title']}>함께 시작하는 전문 변호사</h4>
-        <span className={styles['sub-title']}>전체 753명의 전문 변호사가 함께 합니다.</span>
+        <span className={styles['sub-title']}>전체 {lawyerCount?.toLocaleString()}명의 전문 변호사가 함께 합니다.</span>
       </div>
       {!isMobile ? (
-        <PlayButton 
-          iconColor={COLOR.text_black} 
-          onNext={onNext} 
+        <PlayButton
+          iconColor={COLOR.text_black}
+          onNext={onNext}
           onPrev={onPrev}
           onToggle={onToggle}
           isPlaying={isPlaying}
