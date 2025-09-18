@@ -1,5 +1,7 @@
+import { useNavigate } from 'react-router-dom'
 import styles from './chatHeader.module.scss'
 import SvgIcon from '@/components/SvgIcon'
+import { ROUTER } from '@/routes/routerConstant'
 
 interface ChatHeaderProps {
   isActive: boolean
@@ -15,6 +17,7 @@ interface ChatHeaderProps {
   lawfirmName?: string
   lawyerName?: string
   lawyerProfileImage?: string
+  lawyerId?: number
   // 유저 정보 (변호사가 볼 때)
   userId?: number
   userName?: string
@@ -23,7 +26,8 @@ interface ChatHeaderProps {
 const ChatHeader = ({
   // lawfirmName,
   lawyerName,
-  // lawyerProfileImage,
+  lawyerProfileImage,
+  lawyerId,
   isActive = false,
   count,
   className,
@@ -33,22 +37,32 @@ const ChatHeader = ({
   userId,
   userName,
 }: ChatHeaderProps) => {
+  const navigate = useNavigate()
+
   const handleEndChat = () => {
     if (onEndChat) {
       onEndChat()
     }
   }
 
+  const handleLawyerInfo = () => {
+    if (lawyerId) {
+      // 새 창으로 변호사 상세 페이지 열기
+      const lawyerDetailUrl = `${window.location.origin}${ROUTER.SEARCH_MAIN}/lawyer/${lawyerId}`
+      window.open(lawyerDetailUrl, '_blank', 'width=1300,height=800,scrollbars=yes')
+    }
+  }
+
   return (
     <header className={`${styles['chat-header']} ${className}`}>
-      {/* 뒤로가기 버튼 */}
+      {/* 모바일용 뒤로가기 버튼 */}
       {onBack && (
         <button className={styles['back-button']} onClick={onBack} aria-label='뒤로가기'>
           <SvgIcon name='arrowSmall' size={24} style={{ transform: 'rotate(45deg)' }} />
         </button>
       )}
 
-      {/* 중앙: 변호사/유저 정보 */}
+      {/* 모바일용 중앙: 변호사/유저 정보 */}
       <div className={styles['header-center']}>
         {!isLawyer ? (
           // 유저가 보는 화면 - 변호사 정보 표시
@@ -65,16 +79,42 @@ const ChatHeader = ({
         )}
       </div>
 
-      {/* 오른쪽: 정보 버튼 (모바일) / 기존 섹션 (데스크탑) */}
-      <div className={styles['header-actions']}>
+      {/* 모바일용 오른쪽: 정보 버튼 - 제거됨 */}
+      <div className={styles['header-actions']}>{/* 햄버거 메뉴 제거 */}</div>
+
+      {/* PC용 왼쪽 섹션 */}
+      <section className={styles['header-left']}>
+        {/* PC용 변호사/유저 정보 */}
+        <div className={styles['header-user-info']}>
+          {!isLawyer ? (
+            // 유저가 보는 화면 - 변호사 정보 표시
+            <>
+              {lawyerProfileImage && (
+                <img src={lawyerProfileImage} alt={`${lawyerName} 변호사`} className={styles['profile-image']} />
+              )}
+              <div className={styles['lawyer-name-badge-wrap']}>
+                <span className={styles['lawyer-name']}>{lawyerName} 변호사</span>
+                {isActive && <span className={styles['badge']} />}
+              </div>
+            </>
+          ) : (
+            // 변호사가 보는 화면 - 유저 정보 표시
+            <div className={styles['lawyer-name-badge-wrap']}>
+              <span className={styles['lawyer-name']}>{userName ? `${userName} 님` : `사용자 ${userId}`}</span>
+              {isActive && <span className={styles['badge']} />}
+            </div>
+          )}
+        </div>
+        {/* 변호사 정보 버튼 - 이름 오른쪽에 배치 */}
         {!isLawyer && (
-          <button className={styles['info-button-mobile']} aria-label='변호사 정보'>
-            <SvgIcon name='menu' size={20} />
+          <button className={styles['lawyer-info-button']} onClick={handleLawyerInfo}>
+            변호사 정보
           </button>
         )}
-      </div>
+      </section>
 
-      <section className={styles['header-left']}>
+      {/* PC용 오른쪽 섹션 */}
+      <section className={styles['header-right']}>
         {!isLawyer && (
           <div className={styles['chat-info']}>
             <span className={styles['chat-info-title']}>채팅 상담</span>

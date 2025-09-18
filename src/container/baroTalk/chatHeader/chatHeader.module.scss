@@ -1,13 +1,17 @@
 .chat-header {
   background-color: $color-white;
-  padding: 1.5625rem 2.125rem;
+  padding: 1.5625rem 2.125rem; // 25px 34px
+  height: 6.125rem; // 98px
   border-radius: 0.5rem 0.5rem 0 0;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   position: relative;
+  gap: 0.625rem; // 10px
 }
 
-// 모바일용 새로운 요소들
+// 모바일용 요소들 (기본적으로 숨김)
 .header-center {
   display: none;
 }
@@ -33,6 +37,60 @@
   }
 }
 
+// PC용 레이아웃
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; // 12px
+  flex: 1;
+}
+
+.header-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; // 12px
+
+  // 프로필 이미지 추가
+  .profile-image {
+    width: 3rem; // 48px
+    height: 3rem; // 48px
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: $color-bg-gray-01;
+  }
+}
+
+// 변호사 정보 버튼
+.lawyer-info-button {
+  padding: 0.375rem 0.75rem; // 6px 12px
+  background: $color-white;
+  border: 1px solid $color-line-borderbox;
+  border-radius: 1.25rem; // 20px
+  color: $color-text-caption;
+  font-size: 0.8125rem; // 13px
+  font-weight: $font-weight-regular;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: $color-green-01;
+    color: $color-green-01;
+  }
+}
+
+// 중앙 섹션 - 제거 (이제 사용하지 않음)
+.header-center-pc {
+  display: none;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-shrink: 0;
+}
+
 @media (max-width: $breakpoint-desktop) {
   .chat-header {
     height: 52px;
@@ -50,38 +108,45 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     border-bottom: 1px solid $color-line-divider;
   }
-  
+
   // 모바일에서만 보이는 요소들
   .header-center {
     display: flex;
     align-items: center;
-    
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
     .lawyer-name-badge-wrap {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
+      position: relative;
+      display: inline-block;
     }
-    
+
     .lawyer-name {
+      display: inline-block;
       font-size: 0.9375rem;
       font-weight: 600;
       color: $color-text-black;
     }
-    
+
     .badge {
+      position: absolute;
+      top: 0;
+      right: -10px;
       width: 6px;
       height: 6px;
       background: $color-green-01;
       border-radius: 50%;
-      margin: 0;
     }
   }
-  
+
   .header-actions {
     display: flex;
     align-items: center;
+    min-width: 32px; // 뒤로가기 버튼과 같은 너비로 대칭 유지
   }
-  
+
   .info-button-mobile {
     display: flex;
     align-items: center;
@@ -98,67 +163,66 @@
     align-items: center;
     justify-content: center;
     min-width: 32px;
+    position: relative;
+    z-index: 1;
   }
-  
-  .header-right {
-    display: none;
-  }
-  
-  .header-left {
+
+  // PC용 요소들을 모바일에서 숨김
+  .header-left,
+  .header-right,
+  .header-center-pc {
     display: none !important;
   }
-  
+
   .chat-end-button {
     display: none;
   }
 }
 
-
 .lawyer-name-badge-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  max-width: 150px;
+  position: relative;
+  display: inline-block;
+  width: 130px; // 고정 너비
 }
 
 .lawyer-name {
-  font-size: 0.9375rem;
+  display: inline;
+  font-size: 1rem; // 16px
   font-weight: $font-weight-semibold;
+  color: $color-text-black;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
+// 활성 상태 배지 (녹색 점) - 텍스트 오른쪽 위
 .badge {
-  width: 8px;
-  height: 8px;
+  display: inline-block;
+  width: 0.5rem; // 8px
+  height: 0.5rem; // 8px
   background: $color-green-01;
   border-radius: 50%;
-  flex-shrink: 0;
-  margin-top: -10px;
-  margin-left: -5px;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
+  margin-left: 0.25rem; // 4px
+  vertical-align: super;
+  font-size: 0.5rem;
 }
 
 .chat-info {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.25rem; // 4px
+  padding-right: 1rem;
 
   .chat-info-title {
-    font-size: 0.75rem;
-    font-weight: $font-weight-semibold;
+    font-size: 0.75rem; // 12px
+    font-weight: $font-weight-medium;
     color: $color-text-caption;
+    line-height: 1.2;
   }
 
   .chat-info-count {
-    font-size: 0.8125rem;
+    font-size: 0.8125rem; // 13px
+    font-weight: $font-weight-regular;
+    color: $color-text-black;
+    line-height: 1.4;
   }
 }
 
