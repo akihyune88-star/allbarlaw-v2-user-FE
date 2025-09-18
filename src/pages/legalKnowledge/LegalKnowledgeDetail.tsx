@@ -10,7 +10,7 @@ import LawyerResponse from '@/container/legalKnowledge/LawyerResponse'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import { getRelativeTimeString } from '@/utils/date'
-import { generateRandomLawyers } from '@/utils/mockDataGenerator'
+// import { generateRandomLawyers } from '@/utils/mockDataGenerator'
 import { useState } from 'react'
 import { useKnowledgeKeep } from '@/hooks/queries/useGetKnowledgeList'
 import { copyUrlToClipboard } from '@/utils/clipboard'
@@ -56,7 +56,7 @@ const LegalKnowledgeDetail = () => {
     navigate(ROUTER.REQUEST_BARO_TALK)
   }
 
-  const mockLawyerList = generateRandomLawyers(5)
+  // const mockLawyerList = generateRandomLawyers(5)
 
   const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
     knowledgeIds: [Number(knowledgeId)],
