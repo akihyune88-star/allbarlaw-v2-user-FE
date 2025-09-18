@@ -79,8 +79,14 @@ const ChatHeader = ({
         )}
       </div>
 
-      {/* 모바일용 오른쪽: 정보 버튼 - 제거됨 */}
-      <div className={styles['header-actions']}>{/* 햄버거 메뉴 제거 */}</div>
+      {/* 모바일용 오른쪽: 변호사 정보 버튼 */}
+      <div className={styles['header-actions']}>
+        {!isLawyer && (
+          <button className={styles['lawyer-info-button-mobile']} onClick={handleLawyerInfo}>
+            변호사 정보
+          </button>
+        )}
+      </div>
 
       {/* PC용 왼쪽 섹션 */}
       <section className={styles['header-left']}>

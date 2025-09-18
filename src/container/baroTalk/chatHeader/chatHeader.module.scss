@@ -115,47 +115,60 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 100%;
+    pointer-events: none; // 클릭 이벤트 통과
 
     .lawyer-name-badge-wrap {
       position: relative;
       display: inline-block;
+      pointer-events: auto; // 클릭 가능하도록 복원
     }
 
     .lawyer-name {
-      display: inline-block;
+      display: inline;
       font-size: 0.9375rem;
       font-weight: 600;
       color: $color-text-black;
     }
 
     .badge {
-      position: absolute;
-      top: 0;
-      right: -10px;
+      display: inline-block;
       width: 6px;
       height: 6px;
       background: $color-green-01;
       border-radius: 50%;
+      margin-left: 4px;
+      vertical-align: super;
+      font-size: 0.5rem;
     }
   }
 
   .header-actions {
     display: flex;
     align-items: center;
-    min-width: 32px; // 뒤로가기 버튼과 같은 너비로 대칭 유지
+    min-width: auto; // 버튼 크기에 맞게 조정
   }
 
-  .info-button-mobile {
+  .lawyer-info-button-mobile {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
-    border: none;
-    padding: 0.25rem;
+    padding: 0.25rem 0.625rem; // 4px 10px
+    background: $color-white;
+    border: 1px solid $color-line-borderbox;
+    border-radius: 1rem; // 16px
+    color: $color-text-caption;
+    font-size: 0.75rem; // 12px
+    font-weight: $font-weight-regular;
     cursor: pointer;
-    color: $color-text-black;
+    white-space: nowrap;
+  }
+
+  .info-button-mobile {
+    display: none;
   }
 
   .back-button {
@@ -182,7 +195,6 @@
 .lawyer-name-badge-wrap {
   position: relative;
   display: inline-block;
-  width: 130px; // 고정 너비
 }
 
 .lawyer-name {
