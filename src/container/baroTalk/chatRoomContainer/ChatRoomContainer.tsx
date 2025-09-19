@@ -17,7 +17,14 @@ interface ChatRoomContainerProps {
   isMobile?: boolean
 }
 
-const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId, onBack, isMobile }: ChatRoomContainerProps) => {
+const ChatRoomContainer = ({
+  chatRoomId,
+  userLeft,
+  clientName,
+  clientId,
+  onBack,
+  isMobile,
+}: ChatRoomContainerProps) => {
   // Zustand 상태 구독
   const messages = useMessages()
   const chatStatus = useChatStatus()
@@ -84,6 +91,7 @@ const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId, onBack,
     },
     [sendMessage, roomInfo]
   )
+  console.log('roomInfo', roomInfo)
 
   return (
     <section className={`contents-section ${styles['chat-content']}`}>
@@ -97,6 +105,7 @@ const ChatRoomContainer = ({ chatRoomId, userLeft, clientName, clientId, onBack,
         lawyerName={(roomInfo as any)?.chatRoomLawyer?.lawyerName || ''}
         lawfirmName={(roomInfo as any)?.chatRoomLawyer?.lawfirmName || ''}
         lawyerProfileImage={(roomInfo as any)?.chatRoomLawyer?.lawyerProfileImage || 'https://picsum.photos/200/300'}
+        lawyerId={(roomInfo as any)?.chatRoomLawyer?.lawyerId}
         // 유저 정보 (변호사가 볼 때)
         userId={clientId || (roomInfo as any)?.chatRoomUserId || 0}
         userName={clientName}
