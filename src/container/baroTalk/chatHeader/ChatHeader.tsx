@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import styles from './chatHeader.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { ROUTER } from '@/routes/routerConstant'
@@ -37,8 +36,6 @@ const ChatHeader = ({
   userId,
   userName,
 }: ChatHeaderProps) => {
-  const navigate = useNavigate()
-
   const handleEndChat = () => {
     if (onEndChat) {
       onEndChat()
