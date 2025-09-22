@@ -20,10 +20,15 @@
   color: $color-text-black;
 }
 
+.input-wrapper {
+  width: 100%;
+  position: relative;
+}
+
 .input {
   width: 100%;
   background-color: $color-bg-gray-03;
-  padding: 0.875rem 0 0.875rem 1.5rem;
+  padding: 0.875rem 3rem 0.875rem 1.5rem; // 오른쪽에 버튼 공간 확보
 
   border: 1px solid $color-line-borderbox;
   border-radius: 0.5rem;
@@ -32,6 +37,33 @@
 
   &::placeholder {
     color: $color-text-caption;
+  }
+}
+
+// 비밀번호가 아닌 경우 패딩 조정
+.input-wrapper:not(:has(.password-toggle)) .input {
+  padding: 0.875rem 0 0.875rem 1.5rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:focus {
+    outline: none;
   }
 }
 

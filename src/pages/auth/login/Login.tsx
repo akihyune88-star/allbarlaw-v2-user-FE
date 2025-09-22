@@ -152,13 +152,11 @@ const Login = () => {
               isError={!!errors.id}
               message={errors.id?.message}
               onKeyDown={e => {
-                // 한글 입력 방지
                 if (e.nativeEvent.isComposing) {
                   e.preventDefault()
                 }
               }}
               onChange={e => {
-                // 한글 및 허용되지 않는 문자 제거
                 const value = e.target.value.replace(/[^a-zA-Z0-9_-]/g, '')
                 setValue('id', value)
               }}
