@@ -61,9 +61,11 @@ const LawyerCategorySelect = ({
                     </option>
                   ))}
                 </select>
-                <button type='button' className={styles.removeButton} onClick={() => onRemoveCategory(index)}>
-                  삭제
-                </button>
+                {categories.length > 1 && (
+                  <button type='button' className={styles.removeButton} onClick={() => onRemoveCategory(index)}>
+                    삭제
+                  </button>
+                )}
                 {isLastItem && categories.length < 20 && (
                   <button type='button' className={styles.addButton} onClick={onAddCategory}>
                     분야추가
@@ -73,6 +75,11 @@ const LawyerCategorySelect = ({
             )
           })}
         </div>
+        {categories.length === 0 && (
+          <button type='button' className={styles.addButton} onClick={onAddCategory}>
+            분야추가
+          </button>
+        )}
         {errors.categories && <div className={styles.error}>{errors.categories}</div>}
         <div className={styles.helperText}>최소 1개 이상의 주요분야를 선택해주세요.</div>
       </div>

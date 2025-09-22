@@ -76,6 +76,7 @@ const Login = () => {
       })
     },
     onError: message => {
+      console.log('message', message)
       setErrorMessage(message)
     },
   })
