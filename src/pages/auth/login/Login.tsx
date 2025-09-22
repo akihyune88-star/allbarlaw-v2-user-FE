@@ -147,10 +147,21 @@ const Login = () => {
           <div className={styles['login-form-input-container']}>
             <LabelInput
               label='아이디'
-              placeholder='이메일 주소를 입력해주세요'
+              placeholder='아이디를 입력해주세요'
               {...register('id')}
               isError={!!errors.id}
               message={errors.id?.message}
+              onKeyDown={(e) => {
+                // 한글 입력 방지
+                if (e.nativeEvent.isComposing) {
+                  e.preventDefault()
+                }
+              }}
+              onChange={(e) => {
+                // 한글 및 허용되지 않는 문자 제거
+                const value = e.target.value.replace(/[^영문a-zA-Z0-9_-]/g, '')
+                setValue('id', value)
+              }}
             />
             <LabelInput
               label='비밀번호'
