@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { getRelativeTimeString } from '@/utils/date'
 
 type LawyerResponseProps = {
+  isBaroTalk: boolean
   lawyers: {
     lawyerId: number
     lawyerName: string
@@ -23,11 +24,10 @@ type LawyerResponseProps = {
   className?: string
 }
 
-const LawyerResponse = ({ lawyers, className }: LawyerResponseProps) => {
+const LawyerResponse = ({ lawyers, className, isBaroTalk }: LawyerResponseProps) => {
   const [_isReportModalOpen, setIsReportModalOpen] = useState(false)
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)')
-  console.log(lawyers)
 
   const handleReportModalOpen = () => {
     setIsReportModalOpen(true)
@@ -71,14 +71,14 @@ const LawyerResponse = ({ lawyers, className }: LawyerResponseProps) => {
                 )}
               </div>
               <p className={styles['info-description']}>{lawyer.lawyerDescription}</p>
-              {!isMobile && (
+              {!isMobile && isBaroTalk && (
                 <button className={styles['barotalk-btn']} onClick={() => handleBaroTalk(lawyer.lawyerId)}>
                   바로톡
                 </button>
               )}
             </div>
           </Card.Header>
-          {isMobile && (
+          {!isMobile && !isBaroTalk && (
             <button className={styles['mobile-barotalk-btn']} onClick={() => handleBaroTalk(lawyer.lawyerId)}>
               바로톡
             </button>

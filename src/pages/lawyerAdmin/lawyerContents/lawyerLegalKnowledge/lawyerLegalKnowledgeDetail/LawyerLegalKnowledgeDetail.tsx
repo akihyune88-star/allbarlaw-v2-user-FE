@@ -33,14 +33,15 @@ const LawyerLegalKnowledgeDetail = () => {
       </HeaderPortal>
       <div className={styles['legal-knowledge-detail']}>
         <DetailHeader title={data?.knowledgeTitle || ''} className={styles['detail-header']} />
-
         <ConsultationContentCard
           content={data?.knowledgeDescription}
           tags={data?.tags}
           lastAnswerTime={data?.lastMessageAt ? getRelativeTimeString(data.lastMessageAt) : ''}
           className={styles['consultation-content-card']}
         />
-        {data?.lawyers && <LawyerResponse lawyers={data?.lawyers} className={styles['lawyer-response']} />}
+        {data?.lawyers && (
+          <LawyerResponse lawyers={data?.lawyers} className={styles['lawyer-response']} isBaroTalk={false} />
+        )}
       </div>
     </>
   )
