@@ -34,7 +34,7 @@ interface SortableItemProps {
   isSelected: boolean
   isEditing: boolean
   editingCategoryName: string
-  onCategoryDoubleClick: (career: CareerItem) => void
+  onCategoryClick: (career: CareerItem) => void
   onCategoryNameSave: (id: string) => void
   onCategoryNameChange: (value: string) => void
   onCategoryEditCancel: () => void
@@ -47,7 +47,7 @@ const SortableItem = ({
   isSelected,
   isEditing,
   editingCategoryName,
-  onCategoryDoubleClick,
+  onCategoryClick,
   onCategoryNameSave,
   onCategoryNameChange,
   onCategoryEditCancel,
@@ -72,14 +72,6 @@ const SortableItem = ({
         className={`${styles.categoryCard__content} ${isSelected ? styles.selected : ''} ${
           isEditing ? styles.editing : ''
         }`}
-        onClick={
-          !isEditing
-            ? e => {
-                e.stopPropagation()
-                onCategoryDoubleClick(career)
-              }
-            : undefined
-        }
       >
         {isEditing ? (
           <input
@@ -96,7 +88,14 @@ const SortableItem = ({
             className={styles.categoryInput}
           />
         ) : (
-          <span className={styles.categoryName} title='클릭하여 편집'>
+          <span
+            className={styles.categoryName}
+            title='클릭하여 편집'
+            onClick={e => {
+              e.stopPropagation()
+              onCategoryClick(career)
+            }}
+          >
             {career.lawyerCareerCategoryName || '\u00A0'}
           </span>
         )}
@@ -176,8 +175,8 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
     setContentValue(career.lawyerCareerContent)
   }
 
-  // 카테고리 이름 더블클릭 시 편집 모드
-  const handleCategoryDoubleClick = (career: CareerItem) => {
+  // 카테고리 이름 클릭 시 편집 모드
+  const handleCategoryClick = (career: CareerItem) => {
     setEditingCategoryId(career.id)
     setEditingCategoryName(career.lawyerCareerCategoryName)
   }
@@ -344,7 +343,7 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
                     isSelected={selectedCareer?.id === career.id}
                     isEditing={editingCategoryId === career.id}
                     editingCategoryName={editingCategoryName}
-                    onCategoryDoubleClick={handleCategoryDoubleClick}
+                    onCategoryClick={handleCategoryClick}
                     onCategoryNameSave={handleCategoryNameSave}
                     onCategoryNameChange={setEditingCategoryName}
                     onCategoryEditCancel={() => {
