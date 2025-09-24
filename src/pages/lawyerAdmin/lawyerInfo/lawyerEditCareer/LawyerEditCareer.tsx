@@ -71,7 +71,7 @@ const SortableItem = ({
         className={`${styles.categoryCard__content} ${isSelected ? styles.selected : ''} ${
           isEditing ? styles.editing : ''
         }`}
-        onDoubleClick={
+        onClick={
           !isEditing
             ? e => {
                 e.stopPropagation()
@@ -95,7 +95,7 @@ const SortableItem = ({
             className={styles.categoryInput}
           />
         ) : (
-          <span className={styles.categoryName} title='더블클릭하여 편집'>
+          <span className={styles.categoryName} title='클릭하여 편집'>
             {career.lawyerCareerCategoryName || '\u00A0'}
           </span>
         )}
