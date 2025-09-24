@@ -114,3 +114,53 @@
     background-color: #45a049;
   }
 }
+
+.confirmButtons {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.cancelButton {
+  flex: 1;
+  padding: 10px 20px;
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+
+  &:hover {
+    background-color: #d5d5d5;
+  }
+
+  &:active {
+    background-color: #c0c0c0;
+  }
+}
+
+.confirmButton {
+  flex: 1;
+  padding: 10px 20px;
+  background-color: #59c47c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+
+  &:hover {
+    background-color: #4caf50;
+  }
+
+  &:active {
+    background-color: #45a049;
+  }
+}

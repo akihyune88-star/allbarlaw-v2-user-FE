@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
+import { useState, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react'
 import {
   DndContext,
   closestCenter,
@@ -20,6 +20,7 @@ import styles from './lawyerEditActivity.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { getLawyerIdFromToken } from '@/utils/tokenUtils'
 import { LOCAL } from '@/constants/local'
+import { useFormChange } from '@/contexts/FormChangeContext'
 
 interface ActivityItem {
   id: string
@@ -125,9 +126,11 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
   const navigate = useNavigate()
   const lawyerId = getLawyerIdFromToken(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN) || '')
   const { data: activityDataFromAPI, isLoading } = useLawyerActivity(Number(lawyerId))
+  const { setHasUnsavedChanges } = useFormChange()
 
   const [activityData, setActivityData] = useState<ActivityItem[]>([])
   const [isInitialized, setIsInitialized] = useState(false)
+  const [originalData, setOriginalData] = useState<ActivityItem[]>([])
   const [selectedActivity, setSelectedActivity] = useState<ActivityItem | null>(null)
   const [contentValue, setContentValue] = useState('')
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null)
@@ -154,12 +157,15 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
           lawyerActivityDisplayOrder: item.lawyerActivityDisplayOrder || index + 1,
         }))
         setActivityData(initialData)
+        setOriginalData(initialData)
       } else {
         setActivityData([])
+        setOriginalData([])
       }
       setIsInitialized(true)
     } else if (!activityDataFromAPI && !isLoading && !isInitialized) {
       setActivityData([])
+      setOriginalData([])
       setIsInitialized(true)
     }
   }, [activityDataFromAPI, isLoading, isInitialized])
@@ -175,6 +181,26 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
     setEditingCategoryId(activity.id)
     setEditingCategoryName(activity.lawyerActivityCategoryName)
   }
+
+  // 데이터 비교 함수
+  const compareData = useCallback((data1: ActivityItem[], data2: ActivityItem[]) => {
+    if (data1.length !== data2.length) return false
+
+    return data1.every((item1, index) => {
+      const item2 = data2[index]
+      return (
+        item1.lawyerActivityCategoryName === item2.lawyerActivityCategoryName &&
+        item1.lawyerActivityContent === item2.lawyerActivityContent &&
+        item1.lawyerActivityDisplayOrder === item2.lawyerActivityDisplayOrder
+      )
+    })
+  }, [])
+
+  // 변경사항 감지
+  useEffect(() => {
+    const hasChanges = !compareData(activityData, originalData)
+    setHasUnsavedChanges(hasChanges)
+  }, [activityData, originalData, compareData, setHasUnsavedChanges])
 
   // 카테고리 이름 저장
   const handleCategoryNameSave = (id: string) => {
@@ -247,7 +273,10 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
   }
 
   const { mutate: updateActivity, isPending: isSaving } = useLawyerActivityUpdate({
-    onSuccess: () => {},
+    onSuccess: () => {
+      setOriginalData([...activityData])
+      setHasUnsavedChanges(false)
+    },
     onError: () => {
       console.error('활동 저장 중 오류 발생')
       alert('활동 정보 저장에 실패했습니다.')
