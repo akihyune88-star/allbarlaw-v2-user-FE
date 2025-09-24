@@ -24,7 +24,7 @@ const LawyerLegalKnowledgeDetail = () => {
     <>
       <HeaderPortal>
         <div className={styles.headerContent}>
-          <h1 className={styles.headerTitle}>{lawyerName} 변호사를 선택한 법률 지식인 목록입니다. </h1>
+          <h1 className={styles.headerTitle}>{lawyerName} 변호사님을 선택한 법률 지식인 목록입니다. </h1>
         </div>
       </HeaderPortal>
       <div className={styles['legal-knowledge-detail']}>

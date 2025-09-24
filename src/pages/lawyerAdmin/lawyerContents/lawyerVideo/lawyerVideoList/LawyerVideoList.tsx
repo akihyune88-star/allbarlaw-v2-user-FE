@@ -124,7 +124,7 @@ const LawyerVideoList = () => {
     <>
       <HeaderPortal>
         <div className={styles.headerContent}>
-          <h1 className={styles.headerTitle}>{lawyerBasicInfo?.lawyerName}변호사님이 등록한 영상입니다.</h1>
+          <h1 className={styles.headerTitle}>{lawyerBasicInfo?.lawyerName}변호사님이 등록한 법률영상입니다.</h1>
           <div className={styles.headerButtonWrapper}>
             <button type='button' onClick={handleExcelUpload}>
               영상 등록(Excel)
@@ -166,11 +166,7 @@ const LawyerVideoList = () => {
           ) : (
             <div className={styles['video-list-empty']}>
               <p>등록된 영상이 없습니다.</p>
-              <button 
-                type='button' 
-                className={styles['video-list-empty-button']}
-                onClick={handleDirectUpload}
-              >
+              <button type='button' className={styles['video-list-empty-button']} onClick={handleDirectUpload}>
                 영상 등록하기
               </button>
             </div>

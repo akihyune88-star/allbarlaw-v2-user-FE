@@ -85,7 +85,7 @@ const LawyerVideoDetail = () => {
     <>
       <HeaderPortal>
         <div className={styles.headerContent}>
-          <h1 className={styles.headerTitle}>{lawyerBasicInfo?.lawyerName}변호사님이 등록한 영상입니다.</h1>
+          <h1 className={styles.headerTitle}>{lawyerBasicInfo?.lawyerName}변호사님이 등록한 법률영상입니다.</h1>
           <div className={styles.headerButtonWrapper}>
             <button type='button' onClick={handleExcelUpload}>
               영상 등록(Excel)
