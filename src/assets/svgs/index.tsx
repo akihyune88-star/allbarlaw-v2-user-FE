@@ -41,8 +41,12 @@ import human from '@/assets/svgs/human.svg?react'
 import pcLogoLanding from '@/assets/svgs/pc-logo-horizon-landing.svg?react'
 import drag from '@/assets/svgs/drag.svg?react'
 import play from '@/assets/svgs/play.svg?react'
+import eyeOff from '@/assets/svgs/eye-off.svg?react'
+import eye from '@/assets/svgs/eye.svg?react'
 
 export {
+  eyeOff,
+  eye,
   react,
   play,
   loginRound,

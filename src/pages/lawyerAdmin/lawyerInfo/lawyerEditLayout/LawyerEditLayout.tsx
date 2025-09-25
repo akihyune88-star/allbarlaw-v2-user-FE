@@ -17,7 +17,7 @@ const LawyerEditLayoutContent = () => {
   const location = useLocation()
   const { hasUnsavedChanges, setHasUnsavedChanges } = useFormChange()
   const [showConfirmModal, setShowConfirmModal] = useState(false)
-  const [pendingLocation, setPendingLocation] = useState<any>(null)
+  const [_pendingLocation, setPendingLocation] = useState<any>(null)
   const [selectedTabPath, setSelectedTabPath] = useState<string>('')
 
   // 초기 탭 설정

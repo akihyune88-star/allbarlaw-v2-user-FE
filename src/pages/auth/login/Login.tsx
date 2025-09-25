@@ -76,6 +76,7 @@ const Login = () => {
       })
     },
     onError: message => {
+      console.log('message', message)
       setErrorMessage(message)
     },
   })
@@ -146,10 +147,19 @@ const Login = () => {
           <div className={styles['login-form-input-container']}>
             <LabelInput
               label='아이디'
-              placeholder='이메일 주소를 입력해주세요'
+              placeholder='아이디를 입력해주세요'
               {...register('id')}
               isError={!!errors.id}
               message={errors.id?.message}
+              onKeyDown={e => {
+                if (e.nativeEvent.isComposing) {
+                  e.preventDefault()
+                }
+              }}
+              onChange={e => {
+                const value = e.target.value.replace(/[^a-zA-Z0-9_-]/g, '')
+                setValue('id', value)
+              }}
             />
             <LabelInput
               label='비밀번호'
