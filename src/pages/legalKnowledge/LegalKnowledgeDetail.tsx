@@ -84,7 +84,7 @@ const LegalKnowledgeDetail = () => {
                 onSave={handleSave}
                 isKeep={isKeep}
               />
-              {data?.lawyers && <LawyerResponse lawyers={data?.lawyers} />}
+              {data?.lawyers && <LawyerResponse lawyers={data?.lawyers} isBaroTalk={true} />}
               {isMobile && (
                 <ContentsRecommender
                   isRefresh={true}

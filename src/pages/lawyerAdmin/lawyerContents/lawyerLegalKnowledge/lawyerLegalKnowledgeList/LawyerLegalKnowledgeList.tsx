@@ -32,8 +32,6 @@ const LegalKnowledgeListHeader = ({
   onSearch,
 }: LegalKnowledgeListHeaderProps) => {
   const [searchInput, setSearchInput] = useState(search)
-  const { data: lawyerDetailForMe } = useLawyerDetailForMe()
-  const lawyerName = lawyerDetailForMe?.lawyerName || ''
 
   const handleSearch = () => {
     onSearch(searchInput)
