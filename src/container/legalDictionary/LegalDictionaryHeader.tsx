@@ -129,10 +129,10 @@ const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
         )}
       </div>
 
-      <button className={styles.button} style={{ alignItems: 'flex-end' }} onClick={modalOpen}>
+      {/* <button className={styles.button} style={{ alignItems: 'flex-end' }} onClick={modalOpen}>
         <SvgIcon name='error' />
         오류 신고
-      </button>
+      </button> */}
     </div>
   )
 }
@@ -182,10 +182,10 @@ const LegalDictionaryHeader = () => {
           <h1 className={styles.title}>법률 용어 백과사전</h1>
           <div className={styles['button-wrapper']}>
             <button className={styles.button}>히스토리</button>
-            <button className={styles.button} onClick={handleModalOpen}>
+            {/* <button className={styles.button} onClick={handleModalOpen}>
               <SvgIcon name='error' />
               오류 신고
-            </button>
+            </button> */}
           </div>
         </div>
         <SearchInputBox modalOpen={handleModalOpen} />
