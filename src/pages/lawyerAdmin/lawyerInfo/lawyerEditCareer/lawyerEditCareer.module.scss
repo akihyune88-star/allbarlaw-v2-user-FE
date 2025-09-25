@@ -2,54 +2,34 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1.5rem;
-  height: 4rem;
-  background-color: $color-white;
-  border-bottom: 1px solid $color-line-divider;
+  width: 100%;
 
   &__title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: $color-text-black;
+    font-size: 1.5rem;
+    font-weight: $font-weight-extra-bold;
   }
 
   &__button {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
 
     &__cancel,
     &__save {
-      padding: 0.5rem 1.25rem;
-      border-radius: 0.375rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: all 0.2s;
+      padding: 0.875rem 1.375rem;
+      border-radius: 0.5rem;
+      font-weight: $font-weight-semibold;
+      border: none;
       cursor: pointer;
     }
 
     &__cancel {
       background-color: $color-white;
-      color: $color-text-index;
       border: 1px solid $color-line-borderbox;
-
-      &:hover {
-        background-color: $color-bg-gray-01;
-      }
     }
 
     &__save {
       background-color: $color-green-01;
       color: $color-white;
-      border: none;
-
-      &:hover {
-        background-color: $color-green-02;
-      }
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
     }
   }
 }
@@ -274,7 +254,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   &__text {
     font-size: 0.875rem;
     color: $color-text-caption;

@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
+import { useState, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react'
 import {
   DndContext,
   closestCenter,
@@ -20,6 +20,7 @@ import styles from './lawyerEditCareer.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { getLawyerIdFromToken } from '@/utils/tokenUtils'
 import { LOCAL } from '@/constants/local'
+import { useFormChange } from '@/contexts/FormChangeContext'
 
 interface CareerItem {
   id: string
@@ -33,7 +34,7 @@ interface SortableItemProps {
   isSelected: boolean
   isEditing: boolean
   editingCategoryName: string
-  onCategoryDoubleClick: (career: CareerItem) => void
+  onCategoryClick: (career: CareerItem) => void
   onCategoryNameSave: (id: string) => void
   onCategoryNameChange: (value: string) => void
   onCategoryEditCancel: () => void
@@ -46,7 +47,7 @@ const SortableItem = ({
   isSelected,
   isEditing,
   editingCategoryName,
-  onCategoryDoubleClick,
+  onCategoryClick,
   onCategoryNameSave,
   onCategoryNameChange,
   onCategoryEditCancel,
@@ -71,14 +72,6 @@ const SortableItem = ({
         className={`${styles.categoryCard__content} ${isSelected ? styles.selected : ''} ${
           isEditing ? styles.editing : ''
         }`}
-        onDoubleClick={
-          !isEditing
-            ? e => {
-                e.stopPropagation()
-                onCategoryDoubleClick(career)
-              }
-            : undefined
-        }
       >
         {isEditing ? (
           <input
@@ -95,7 +88,14 @@ const SortableItem = ({
             className={styles.categoryInput}
           />
         ) : (
-          <span className={styles.categoryName} title='더블클릭하여 편집'>
+          <span
+            className={styles.categoryName}
+            title='클릭하여 편집'
+            onClick={e => {
+              e.stopPropagation()
+              onCategoryClick(career)
+            }}
+          >
             {career.lawyerCareerCategoryName || '\u00A0'}
           </span>
         )}
@@ -125,9 +125,11 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
   const navigate = useNavigate()
   const lawyerId = getLawyerIdFromToken(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN) || '')
   const { data: careerDataFromAPI, isLoading } = useLawyerCareer(Number(lawyerId))
+  const { setHasUnsavedChanges } = useFormChange()
 
   const [careerData, setCareerData] = useState<CareerItem[]>([])
   const [isInitialized, setIsInitialized] = useState(false)
+  const [originalData, setOriginalData] = useState<CareerItem[]>([])
   const [selectedCareer, setSelectedCareer] = useState<CareerItem | null>(null)
   const [contentValue, setContentValue] = useState('')
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null)
@@ -154,12 +156,15 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
           lawyerCareerDisplayOrder: item.lawyerCareerDisplayOrder || index + 1,
         }))
         setCareerData(initialData)
+        setOriginalData(initialData)
       } else {
         setCareerData([])
+        setOriginalData([])
       }
       setIsInitialized(true)
     } else if (!careerDataFromAPI && !isLoading && !isInitialized) {
       setCareerData([])
+      setOriginalData([])
       setIsInitialized(true)
     }
   }, [careerDataFromAPI, isLoading, isInitialized])
@@ -170,11 +175,31 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
     setContentValue(career.lawyerCareerContent)
   }
 
-  // 카테고리 이름 더블클릭 시 편집 모드
-  const handleCategoryDoubleClick = (career: CareerItem) => {
+  // 카테고리 이름 클릭 시 편집 모드
+  const handleCategoryClick = (career: CareerItem) => {
     setEditingCategoryId(career.id)
     setEditingCategoryName(career.lawyerCareerCategoryName)
   }
+
+  // 데이터 비교 함수
+  const compareData = useCallback((data1: CareerItem[], data2: CareerItem[]) => {
+    if (data1.length !== data2.length) return false
+
+    return data1.every((item1, index) => {
+      const item2 = data2[index]
+      return (
+        item1.lawyerCareerCategoryName === item2.lawyerCareerCategoryName &&
+        item1.lawyerCareerContent === item2.lawyerCareerContent &&
+        item1.lawyerCareerDisplayOrder === item2.lawyerCareerDisplayOrder
+      )
+    })
+  }, [])
+
+  // 변경사항 감지
+  useEffect(() => {
+    const hasChanges = !compareData(careerData, originalData)
+    setHasUnsavedChanges(hasChanges)
+  }, [careerData, originalData, compareData, setHasUnsavedChanges])
 
   // 카테고리 이름 저장
   const handleCategoryNameSave = (id: string) => {
@@ -247,7 +272,10 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
   }
 
   const { mutate: updateCareer, isPending: isSaving } = useUpdateLawyerCareer({
-    onSuccess: () => {},
+    onSuccess: () => {
+      setOriginalData([...careerData])
+      setHasUnsavedChanges(false)
+    },
     onError: error => {
       console.error('경력 저장 중 오류 발생:', error)
       alert('경력 정보 저장에 실패했습니다.')
@@ -315,7 +343,7 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
                     isSelected={selectedCareer?.id === career.id}
                     isEditing={editingCategoryId === career.id}
                     editingCategoryName={editingCategoryName}
-                    onCategoryDoubleClick={handleCategoryDoubleClick}
+                    onCategoryClick={handleCategoryClick}
                     onCategoryNameSave={handleCategoryNameSave}
                     onCategoryNameChange={setEditingCategoryName}
                     onCategoryEditCancel={() => {

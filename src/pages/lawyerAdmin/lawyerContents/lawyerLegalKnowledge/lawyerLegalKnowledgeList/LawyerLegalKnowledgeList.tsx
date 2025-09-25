@@ -32,6 +32,8 @@ const LegalKnowledgeListHeader = ({
   onSearch,
 }: LegalKnowledgeListHeaderProps) => {
   const [searchInput, setSearchInput] = useState(search)
+  const { data: lawyerDetailForMe } = useLawyerDetailForMe()
+  const lawyerName = lawyerDetailForMe?.lawyerName || ''
 
   const handleSearch = () => {
     onSearch(searchInput)
@@ -52,7 +54,7 @@ const LegalKnowledgeListHeader = ({
   return (
     <header className={styles['legal-knowledge-list-header']}>
       <div className={styles['legal-knowledge-list-header-top']}>
-        <h2 className={styles['legal-knowledge-list-header-title']}>법률 지식인</h2>
+        <h2 className={styles['legal-knowledge-list-header-title']}>법률 지식인 목록</h2>
       </div>
       <div className={styles['legal-knowledge-list-header-bottom']}>
         <div className={styles['legal-knowledge-list-header-left']}>
