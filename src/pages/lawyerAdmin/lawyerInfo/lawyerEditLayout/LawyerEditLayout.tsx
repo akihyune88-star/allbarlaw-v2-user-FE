@@ -1,6 +1,6 @@
 import Tabs from '@/components/tabs/Tabs'
 import { ROUTER } from '@/routes/routerConstant'
-import { Outlet, useNavigate, useLocation, unstable_useBlocker as useBlocker } from 'react-router-dom'
+import { Outlet, useNavigate, useLocation, useBlocker, Location } from 'react-router-dom'
 import styles from './lawyerEditLayout.module.scss'
 import { FormChangeProvider, useFormChange } from '@/contexts/FormChangeContext'
 import { ConfirmModal } from '@/components/modal/ConfirmModal'
@@ -23,9 +23,7 @@ const LawyerEditLayoutContent = () => {
   // 초기 탭 설정
   useEffect(() => {
     const pathname = location.pathname
-    const matchingItem = SEARCH_TAB_LIST.find(item =>
-      pathname === item.path || pathname.startsWith(item.path + '/')
-    )
+    const matchingItem = SEARCH_TAB_LIST.find(item => pathname === item.path || pathname.startsWith(item.path + '/'))
 
     if (matchingItem) {
       setSelectedTabPath(matchingItem.path)
@@ -35,11 +33,11 @@ const LawyerEditLayoutContent = () => {
   // React Router v6의 useBlocker 사용
   const blocker = useBlocker(
     useCallback(
-      ({ currentLocation, nextLocation }) => {
+      ({ currentLocation, nextLocation }: { currentLocation: Location; nextLocation: Location }) => {
         // 변경사항이 있고, 다른 탭으로 이동하려고 할 때만 차단
         if (hasUnsavedChanges && currentLocation.pathname !== nextLocation.pathname) {
-          const isTabNavigation = SEARCH_TAB_LIST.some(tab =>
-            nextLocation.pathname === tab.path || nextLocation.pathname.startsWith(tab.path + '/')
+          const isTabNavigation = SEARCH_TAB_LIST.some(
+            tab => nextLocation.pathname === tab.path || nextLocation.pathname.startsWith(tab.path + '/')
           )
 
           if (isTabNavigation) {

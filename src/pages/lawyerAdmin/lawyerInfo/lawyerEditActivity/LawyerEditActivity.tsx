@@ -34,7 +34,7 @@ interface SortableItemProps {
   isSelected: boolean
   isEditing: boolean
   editingCategoryName: string
-  onCategoryDoubleClick: (activity: ActivityItem) => void
+  onCategoryClick: (activity: ActivityItem) => void
   onCategoryNameSave: (id: string) => void
   onCategoryNameChange: (value: string) => void
   onCategoryEditCancel: () => void
@@ -47,7 +47,7 @@ const SortableItem = ({
   isSelected,
   isEditing,
   editingCategoryName,
-  onCategoryDoubleClick,
+  onCategoryClick,
   onCategoryNameSave,
   onCategoryNameChange,
   onCategoryEditCancel,
@@ -72,14 +72,6 @@ const SortableItem = ({
         className={`${styles.categoryCard__content} ${isSelected ? styles.selected : ''} ${
           isEditing ? styles.editing : ''
         }`}
-        onDoubleClick={
-          !isEditing
-            ? e => {
-                e.stopPropagation()
-                onCategoryDoubleClick(activity)
-              }
-            : undefined
-        }
       >
         {isEditing ? (
           <input
@@ -96,7 +88,14 @@ const SortableItem = ({
             className={styles.categoryInput}
           />
         ) : (
-          <span className={styles.categoryName} title='더블클릭하여 편집'>
+          <span
+            className={styles.categoryName}
+            title='클릭하여 편집'
+            onClick={e => {
+              e.stopPropagation()
+              onCategoryClick(activity)
+            }}
+          >
             {activity.lawyerActivityCategoryName || '\u00A0'}
           </span>
         )}
@@ -176,8 +175,8 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
     setContentValue(activity.lawyerActivityContent)
   }
 
-  // 카테고리 이름 더블클릭 시 편집 모드
-  const handleCategoryDoubleClick = (activity: ActivityItem) => {
+  // 카테고리 이름 클릭 시 편집 모드
+  const handleCategoryClick = (activity: ActivityItem) => {
     setEditingCategoryId(activity.id)
     setEditingCategoryName(activity.lawyerActivityCategoryName)
   }
@@ -344,7 +343,7 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
                     isSelected={selectedActivity?.id === activity.id}
                     isEditing={editingCategoryId === activity.id}
                     editingCategoryName={editingCategoryName}
-                    onCategoryDoubleClick={handleCategoryDoubleClick}
+                    onCategoryClick={handleCategoryClick}
                     onCategoryNameSave={handleCategoryNameSave}
                     onCategoryNameChange={setEditingCategoryName}
                     onCategoryEditCancel={() => {
