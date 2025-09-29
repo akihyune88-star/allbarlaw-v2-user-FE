@@ -12,9 +12,9 @@ const SubcategoryLawfirmLayout = () => {
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const [filter, setFilter] = useState<{
     orderBy: SortType
-    recentDays: string
+    recentDays: 'all' | '7' | '30'
   }>({
-    orderBy: 'createdAt',
+    orderBy: 'all',
     recentDays: 'all',
   })
 

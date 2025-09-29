@@ -8,12 +8,12 @@ import FilterSection from '@/components/filterSection/FilterSection'
 type LawfirmFilterProps = {
   filter: {
     orderBy: SortType
-    recentDays: string
+    recentDays: 'all' | '7' | '30'
   }
   setFilter: React.Dispatch<
     React.SetStateAction<{
       orderBy: SortType
-      recentDays: string
+      recentDays: 'all' | '7' | '30'
     }>
   >
 }
@@ -24,7 +24,7 @@ const LawfirmFilter = ({ filter, setFilter }: LawfirmFilterProps) => {
   }
 
   const handleRecentDaysChange = (sortType: string) => {
-    setFilter(prev => ({ ...prev, recentDays: sortType }))
+    setFilter(prev => ({ ...prev, recentDays: sortType as 'all' | '7' | '30' }))
   }
 
   const handleReset = () => {

@@ -21,3 +21,8 @@
     color: $color-icon-darkgreen;
   }
 }
+
+.active-tag {
+  border-color: $color-green-01 !important;
+  color: $color-green-01 !important;
+}
