@@ -59,9 +59,10 @@ const LawyerHorizon = ({
     window.open(url, '_blank')
   }
 
-  const handleTagClick = (tag: TagType) => {
+  const handleTagClick = (e: React.MouseEvent, tag: TagType) => {
+    e.stopPropagation()
     setSearchQuery(tag.name)
-    navigate(`/search/lawyer?tag=${tag.name}`)
+    navigate(`/search?q=${tag.name}`)
   }
 
   return (
@@ -90,7 +91,7 @@ const LawyerHorizon = ({
         {tags && tags.length > 0 && (
           <div className={styles['tags']}>
             {tags.map((tag, index) => (
-              <Tag key={index} tag={tag.name} onClick={() => handleTagClick(tag)} />
+              <Tag key={index} tag={tag.name} onClick={e => handleTagClick(e, tag)} />
             ))}
           </div>
         )}

@@ -1,8 +1,9 @@
 import styles from '@/components/tag/tag.module.scss'
+import React from 'react'
 
 type TagProps = {
   tag: string
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent) => void
   className?: string
 }
 
