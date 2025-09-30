@@ -6,6 +6,9 @@ export const lawyerSignupSchema = z
     id: z
       .string()
       .min(1, { message: '아이디는 필수입력 입니다.' })
+      .regex(/^[a-zA-Z0-9]+$/, {
+        message: '아이디는 영문과 숫자만 입력 가능합니다.',
+      })
       .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])/, {
         message: '아이디는 영문과 숫자를 모두 포함해야 합니다.',
       }),

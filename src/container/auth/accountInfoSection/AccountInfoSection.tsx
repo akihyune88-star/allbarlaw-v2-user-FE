@@ -47,7 +47,15 @@ function AccountInfoSection<T extends { id: string; password: string; confirmPas
   })
 
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
+    let value = e.target.value
+
+    // 한글 제거 (영문과 숫자만 허용)
+    const filteredValue = value.replace(/[^a-zA-Z0-9]/g, '')
+
+    if (value !== filteredValue) {
+      e.target.value = filteredValue
+      value = filteredValue
+    }
 
     setIdMessage(undefined)
     setIsIdError(false)
@@ -100,7 +108,7 @@ function AccountInfoSection<T extends { id: string; password: string; confirmPas
       <LabelInput
         label='비밀번호'
         type='password'
-        placeholder='8자 이상 입력해주세요'
+        placeholder='8~16자 영문 소문자/숫자/특수문자만 가능합니다.'
         {...register('password' as Path<T>)}
         isError={!!errors.password}
         message={getPasswordMessage()}
