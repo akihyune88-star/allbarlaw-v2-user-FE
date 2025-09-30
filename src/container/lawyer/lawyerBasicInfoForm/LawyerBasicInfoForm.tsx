@@ -1,5 +1,6 @@
 import styles from './lawyerBasicInfoForm.module.scss'
 import { BasicInfoFormData } from '@/hooks/lawyerAdmin/useBasicInfoForm'
+import TagInput from '@/components/tag/TagInput'
 
 interface LawyerBasicInfoFormProps {
   formData: BasicInfoFormData
@@ -160,21 +161,19 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
           </label>
         </div>
         <div className={styles.inputCol}>
-          <input
-            className={styles.input}
-            type='text'
-            placeholder='자신있는 분야, 관련 키워드를 입력해주세요. 검색에 노출됩니다 (콤마로 구분)'
-            value={formData.tags}
-            onChange={e => onInputChange('tags', e.target.value)}
-            style={{ borderColor: errors.tags ? '#ff4d4f' : undefined }}
+          <TagInput
+            tags={formData.tags}
+            onChange={tags => onInputChange('tags', tags)}
+            placeholder='자신있는 분야, 관련 키워드를 입력해주세요'
+            maxTags={20}
+            disabled={false}
+            isLoading={false}
           />
           <div className={styles.errorWrapper}>
             {errors.tags ? (
               <span className={styles.error}>{errors.tags}</span>
             ) : (
-              <span className={styles.helperText}>
-                2개이상의 태그를 입력해주세요. 콤마를 이용하여 구분할 수 있습니다.
-              </span>
+              <span className={styles.helperText}>2개이상의 태그를 입력해주세요. 검색에 노출됩니다.</span>
             )}
           </div>
         </div>

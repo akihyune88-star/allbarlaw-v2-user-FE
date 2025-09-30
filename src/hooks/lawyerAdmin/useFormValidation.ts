@@ -35,16 +35,11 @@ export const useFormValidation = () => {
       newErrors.phoneNumber = '올바른 휴대폰 번호 형식이 아닙니다.'
     }
 
-    // 태그 검사 (최소 2개, 최대 4개)
-    const tagArray = formData.tags
-      .split(',')
-      .map(tag => tag.trim())
-      .filter(tag => tag.length > 0)
-
-    if (tagArray.length < 1) {
+    // 태그 검사 (최소 2개, 최대 20개)
+    if (formData.tags.length < 2) {
       newErrors.tags = '최소 2개 이상의 태그를 입력해주세요.'
-    } else if (tagArray.length > 20) {
-      newErrors.tags = '태그는 최대 4개까지 입력 가능합니다.'
+    } else if (formData.tags.length > 20) {
+      newErrors.tags = '태그는 최대 20개까지 입력 가능합니다.'
     }
 
     if (!formData.lawfirmName.trim()) {

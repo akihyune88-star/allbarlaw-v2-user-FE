@@ -10,7 +10,7 @@ export interface BasicInfoFormData {
   birthDay: number | undefined
   gender: string
   phoneNumber: string
-  tags: string
+  tags: string[]
   lawfirmName: string
   address: string
   addressDetail: string
@@ -26,7 +26,7 @@ const initialFormData: BasicInfoFormData = {
   birthDay: undefined,
   gender: '',
   phoneNumber: '',
-  tags: '',
+  tags: [],
   lawfirmName: '',
   address: '',
   addressDetail: '',
@@ -63,7 +63,7 @@ export const useBasicInfoForm = (
         birthDay: lawyerBasicInfo.lawyerBirthDay || undefined,
         gender: lawyerBasicInfo.lawyerGender === 1 ? 'male' : lawyerBasicInfo.lawyerGender === 2 ? 'female' : '',
         phoneNumber: lawyerBasicInfo.lawyerPhone || '',
-        tags: lawyerBasicInfo.lawyerTags?.map(tag => tag.tagName).join(', ') || '',
+        tags: lawyerBasicInfo.lawyerTags?.map(tag => tag.tagName) || [],
         lawfirmName: lawyerBasicInfo.lawyerLawfirmName || '',
         address: lawyerBasicInfo.lawyerLawfirmAddress || '',
         addressDetail: lawyerBasicInfo.lawyerLawfirmAddressDetail || '',

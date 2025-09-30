@@ -50,6 +50,7 @@ const TagInput: React.FC<TagInputProps> = ({
 
   const getPlaceholder = () => {
     if (isLoading) return 'AI 요약중입니다...'
+    if (tags.length > 0) return `(${tags.length}/${maxTags})`
     return `${placeholder} (${tags.length}/${maxTags})`
   }
 
