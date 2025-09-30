@@ -145,13 +145,7 @@ const LawyerBlogEditor = () => {
 
   // 모든 필수 필드가 입력되었는지 확인
   const isFormValid = () => {
-    return !!(
-      selectedSubcategoryId &&
-      blogUrl &&
-      blogTitle &&
-      blogContent &&
-      blogKeywords.length > 0
-    )
+    return !!(selectedSubcategoryId && blogUrl && blogTitle && blogContent && blogKeywords.length > 0)
   }
 
   return (
@@ -250,7 +244,7 @@ const LawyerBlogEditor = () => {
             />
           </div>
           <div className={styles['blog-editor-row-form']}>
-            <h2>{`키워드/태그`}</h2>
+            <h2>{`키워드/태그\n(최대 10개)`}</h2>
             <div style={{ width: '100%', margin: '1rem' }}>
               <TagInput
                 tags={blogKeywords}

@@ -11,6 +11,7 @@ import { getLawyerIdFromToken } from '@/utils/tokenUtils'
 import { LOCAL } from '@/constants/local'
 import { useToast } from '@/hooks/useToast'
 import { useEffect } from 'react'
+import TagInput from '@/components/tag/TagInput'
 
 const LawyerVideoEditor = () => {
   const navigate = useNavigate()
@@ -29,7 +30,6 @@ const LawyerVideoEditor = () => {
     videoUrl: '', // 유튜브 영상 경로
     title: '', // 영상 제목
     summaryContent: '', // AI 요약 내용
-    tags: '', // 키워드/태그 (콤마로 구분된 문자열)
     thumbnail: '', // 썸네일 URL
     // 채널 정보
     channelName: '',
@@ -38,6 +38,9 @@ const LawyerVideoEditor = () => {
     channelDescription: '',
     channelThumbnail: '',
   })
+
+  // 태그는 별도 state로 관리 (배열)
+  const [tags, setTags] = useState<string[]>([])
 
   // 유효성 검사 에러 상태
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -83,17 +86,6 @@ const LawyerVideoEditor = () => {
           error = 'AI 요약 내용은 필수입니다.'
         } else if (stringValue.length < 10) {
           error = '요약 내용은 최소 10자 이상이어야 합니다.'
-        }
-        break
-      case 'tags':
-        if (stringValue) {
-          const tagArray = stringValue
-            .split(',')
-            .map(tag => tag.trim())
-            .filter(tag => tag)
-          if (tagArray.length > 10) {
-            error = '태그는 최대 10개까지만 입력 가능합니다.'
-          }
         }
         break
     }
@@ -182,10 +174,7 @@ const LawyerVideoEditor = () => {
       }
       if (videoAiSummary.tags) {
         const tagsWithoutHash = videoAiSummary.tags.map((tag: string) => tag.replace(/^#/, ''))
-        setFormData(prev => ({
-          ...prev,
-          tags: tagsWithoutHash.join(', '),
-        }))
+        setTags(tagsWithoutHash)
       }
       setShouldFetchSummary(false)
       showToast('AI 요약이 완료되었습니다. 내용을 확인하고 필요시 수정해주세요.', 'success')
@@ -265,7 +254,6 @@ const LawyerVideoEditor = () => {
       videoUrl: true,
       title: true,
       summaryContent: true,
-      tags: true,
     }
     setTouched(allTouched)
 
@@ -307,18 +295,24 @@ const LawyerVideoEditor = () => {
       handleName: formData.handleName,
       channelThumbnail: formData.channelThumbnail,
       channelDescription: formData.channelDescription,
-      tags: formData.tags
-        ? formData.tags
-            .split(',')
-            .map(tag => tag.trim())
-            .filter(tag => tag)
-        : [],
+      tags: tags,
     }
 
     createVideo(requestData)
   }
 
   const handleCancel = () => navigate(ROUTER.LAWYER_ADMIN_CONTENT_VIDEO_LIST)
+
+  // 모든 필수 필드가 입력되었는지 확인
+  const isFormValid = () => {
+    return !!(
+      selectedSubcategoryId &&
+      formData.videoUrl &&
+      formData.title &&
+      formData.summaryContent &&
+      tags.length > 0
+    )
+  }
 
   return (
     <>
@@ -329,7 +323,7 @@ const LawyerVideoEditor = () => {
             <button type='button' className={styles['header-button-cancel']} onClick={handleCancel}>
               취소
             </button>
-            <button type='button' className={styles['header-button-save']} onClick={handleSave} disabled={isPending}>
+            <button type='button' className={styles['header-button-save']} onClick={handleSave} disabled={isPending || !isFormValid()}>
               {isPending ? '저장 중...' : '저장'}
             </button>
           </nav>
@@ -392,7 +386,7 @@ const LawyerVideoEditor = () => {
         <button
           className={styles['ai-summary__button']}
           onClick={handleAISummary}
-          disabled={isLoadingVideoInfo || isLoadingAiSummary}
+          disabled={!formData.videoUrl || isLoadingVideoInfo || isLoadingAiSummary}
         >
           {isLoadingVideoInfo || isLoadingAiSummary ? 'AI 요약 중...' : '유튜브 동영상 AI 요약하기'}
         </button>
@@ -438,8 +432,9 @@ const LawyerVideoEditor = () => {
                 value={formData.title}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                placeholder='영상 제목을 입력해주세요.'
+                placeholder={isLoadingVideoInfo || isLoadingAiSummary ? 'AI 요약중입니다...' : '영상 제목을 입력해주세요.'}
                 className={`${styles['video-editor__input']} ${errors.title ? styles['error'] : ''}`}
+                disabled={isLoadingVideoInfo || isLoadingAiSummary}
               />
               <span className={styles['error-message']}>{errors.title || ' '}</span>
             </div>
@@ -449,29 +444,28 @@ const LawyerVideoEditor = () => {
             <div>
               <textarea
                 name='summaryContent'
-                placeholder={`동영상 주소를 입력 후,AI 요약이 완료되면 내용이 입력되어집니다\n변경할 사항이 있다면 직접 변경해주세요`}
+                placeholder={isLoadingVideoInfo || isLoadingAiSummary ? 'AI 요약중입니다...' : `동영상 주소를 입력 후,AI 요약이 완료되면 내용이 입력되어집니다\n변경할 사항이 있다면 직접 변경해주세요`}
                 className={`${styles['video-editor__textarea']} ${errors.summaryContent ? styles['error'] : ''}`}
                 value={formData.summaryContent}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 style={{ height: 240 }}
+                disabled={isLoadingVideoInfo || isLoadingAiSummary}
               />
               <span className={styles['error-message']}>{errors.summaryContent || ' '}</span>
             </div>
           </div>
           <div className={styles['video-editor-row-form']}>
-            <h2>{`키워드/태그\n(콤마로 구분)`}</h2>
-            <div>
-              <input
-                type='text'
-                name='tags'
-                value={formData.tags}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder='AI요약과 동시에 키워드/태그가 입력되어 집니다. 최대 10개까지 등록 가능합니다.'
-                className={`${styles['video-editor__input']} ${errors.tags ? styles['error'] : ''}`}
+            <h2>{`키워드/태그\n(최대 10개)`}</h2>
+            <div style={{ width: '100%', marginTop: '1rem' }}>
+              <TagInput
+                tags={tags}
+                onChange={setTags}
+                placeholder='키워드를 입력하고 엔터를 누르세요'
+                maxTags={10}
+                disabled={false}
+                isLoading={isLoadingVideoInfo || isLoadingAiSummary}
               />
-              <span className={styles['error-message']}>{errors.tags || ' '}</span>
             </div>
           </div>
         </section>
