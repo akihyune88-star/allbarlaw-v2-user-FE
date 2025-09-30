@@ -33,11 +33,12 @@ const BasicInfoEdit = () => {
     handleRemoveCategory,
     handleCategoryChange,
     getFormData,
+    hasChanges,
   } = useBasicInfoForm(lawyerBasicInfo, categoryList)
 
   const { profileImages, handleImageDelete, handleImageUpload, getImageData } = useProfileImageManager(lawyerBasicInfo)
 
-  const { validateForm, isValid } = useFormValidation()
+  const { validateForm, isValid, isFormComplete } = useFormValidation()
 
   // mutation hook 사용
   const { mutate: updateBasicInfo, isPending } = useLawyerBasicInfoEdit({
@@ -103,7 +104,12 @@ const BasicInfoEdit = () => {
             <button type='button' className={styles.header__button__cancel} onClick={handleCancel} disabled={isPending}>
               취소
             </button>
-            <button type='button' className={styles.header__button__save} onClick={handleSave} disabled={isPending}>
+            <button
+              type='button'
+              className={styles.header__button__save}
+              onClick={handleSave}
+              disabled={isPending || !isFormComplete(formData) || !hasChanges()}
+            >
               {isPending ? '저장 중...' : '변경완료'}
             </button>
           </nav>
