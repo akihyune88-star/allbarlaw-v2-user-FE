@@ -21,7 +21,6 @@ function EmailInputSection<T extends { email: string } & FieldValues>({
   const debounceTimer = useRef<ReturnType<typeof setTimeout>>(null)
   const [emailMessage, setEmailMessage] = useState<string | undefined>(undefined)
   const [isEmailError, setIsEmailError] = useState(false)
-  const [koreanErrorMessage, setKoreanErrorMessage] = useState<string | undefined>(undefined)
 
   const { mutate: checkEmail } = useEmailCheck({
     onSuccess: data => {
