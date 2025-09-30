@@ -52,7 +52,9 @@ const SearchVideo = () => {
       <aside className='aside'>
         <RecommendationLawyer />
         <section>
-          <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
+          {recommendationLegalTerm && recommendationLegalTerm.length > 0 && (
+            <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
+          )}
         </section>
       </aside>
     </main>

@@ -4,6 +4,7 @@ import { LawyerActiveResponse } from '@/types/lawyerTypes'
 import styles from './recentActiveLawyer.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { useChunkedRotate } from '@/hooks/useChunkedRotate'
+import { useNavigate } from 'react-router-dom'
 
 const RecentActiveLawyer = () => {
   const { data: lawyerActive } = useLawyerActive({
@@ -11,6 +12,12 @@ const RecentActiveLawyer = () => {
   })
 
   const { visibleItems, rotateNext } = useChunkedRotate<LawyerActiveResponse['data'][number]>(lawyerActive ?? [], 5)
+
+  const navigate = useNavigate()
+
+  const handleLawyerClick = (lawyerId: number) => {
+    navigate(`/search/lawyer/${lawyerId}`)
+  }
 
   return (
     <div className={styles['recent-active-lawyer-container']}>
@@ -34,6 +41,7 @@ const RecentActiveLawyer = () => {
             profileImage={lawyer.lawyerProfileImage}
             description={lawyer.lawyerDescription}
             size='x-small'
+            onClick={() => handleLawyerClick(lawyer.lawyerId)}
           />
         ))}
       </section>
