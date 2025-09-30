@@ -23,17 +23,22 @@ const PlayButton = ({
   return (
     <div className={`${styles['play-button']} ${className}`}>
       <button onClick={onPrev} disabled={!onPrev}>
-        <SvgIcon name='playButtonArrow' size={16} color={!onPrev ? disabledColor : iconColor} />
+        <SvgIcon
+          name='playButtonArrow'
+          size={16}
+          color={!onPrev ? disabledColor : iconColor}
+          style={{ cursor: 'pointer' }}
+        />
       </button>
       <button onClick={onToggle}>
-        <SvgIcon name={isPlaying ? 'pause' : 'play'} size={24} color={iconColor} />
+        <SvgIcon name={isPlaying ? 'pause' : 'play'} size={24} color={iconColor} style={{ cursor: 'pointer' }} />
       </button>
       <button onClick={onNext} disabled={!onNext}>
         <SvgIcon
           name='playButtonArrow'
           size={16}
           color={!onNext ? disabledColor : iconColor}
-          style={{ transform: 'rotate(90deg)' }}
+          style={{ transform: 'rotate(90deg)', cursor: 'pointer' }}
         />
       </button>
     </div>

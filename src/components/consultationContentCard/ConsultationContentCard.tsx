@@ -49,7 +49,12 @@ const ConsultationContentCard = ({
             </Button>
             <Button variant='save' onClick={onSave}>
               저장
-              <SvgIcon name={isSaved ? 'bookMarkStrong' : 'save'} size={16} fill={isKeep ? COLOR.green_01 : 'none'} />
+              <SvgIcon
+                name={isSaved ? 'bookMarkStrong' : 'save'}
+                size={16}
+                fill={isKeep ? COLOR.green_01 : 'none'}
+                style={{ cursor: 'pointer' }}
+              />
             </Button>
           </div>
         </Card.Header>

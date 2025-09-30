@@ -36,7 +36,7 @@ const MobileMenuList = () => {
               <span className={styles['icon-span']}>상담</span>
             </button>
             <button onClick={handleMyPage}>
-              <SvgIcon name='bookMark' size={24} />
+              <SvgIcon name='bookMark' size={24} style={{ cursor: 'pointer' }} />
               <span className={styles['icon-span']}>찜리스트</span>
             </button>
           </div>
