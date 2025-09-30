@@ -14,6 +14,50 @@ function LawyerCertification<
   T extends { lawyerName: string; lawyerContact: string; lawyerExam: string } & FieldValues
 >({ register, errors }: LawyerCertificationProps<T>) {
   const [phoneNumber, setPhoneNumber] = useState('')
+  const [lawyerName, setLawyerName] = useState('')
+  const [nameErrorMessage, setNameErrorMessage] = useState<string | undefined>(undefined)
+
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+
+    // 영문, 숫자, 특수문자가 포함되어 있는지 확인
+    const hasNonKorean = /[a-zA-Z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value)
+
+    if (hasNonKorean) {
+      // 한글과 공백만 남기고 제거
+      const filteredValue = value.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣ\s]/g, '')
+      e.target.value = filteredValue
+      setLawyerName(filteredValue)
+
+      setNameErrorMessage('이름은 한글만 입력 가능합니다.')
+
+      // 3초 후 에러 메시지 제거
+      setTimeout(() => {
+        setNameErrorMessage(undefined)
+      }, 3000)
+
+      // react-hook-form에 필터링된 값 전달
+      const { onChange } = register('lawyerName' as Path<T>)
+      onChange({
+        target: {
+          name: 'lawyerName',
+          value: filteredValue,
+        },
+      } as any)
+    } else {
+      setNameErrorMessage(undefined)
+      setLawyerName(value)
+
+      // react-hook-form에 값 전달
+      const { onChange } = register('lawyerName' as Path<T>)
+      onChange({
+        target: {
+          name: 'lawyerName',
+          value: value,
+        },
+      } as any)
+    }
+  }
 
   const formatPhoneNumber = (value: string) => {
     // 숫자만 추출
@@ -72,8 +116,10 @@ function LawyerCertification<
           label='이름'
           placeholder='이름을 입력하세요'
           {...register('lawyerName' as Path<T>)}
-          isError={!!errors.lawyerName}
-          message={(errors.lawyerName as any)?.message}
+          value={lawyerName}
+          onChange={handleNameChange}
+          isError={!!errors.lawyerName || !!nameErrorMessage}
+          message={(errors.lawyerName as any)?.message || nameErrorMessage}
         />
         <LabelInput
           label='연락처'
