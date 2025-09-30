@@ -8,7 +8,11 @@ import { useDeleteRecentSearch, useRecentSearches } from '@/hooks/queries/useLeg
 import { LegalTermItem } from '@/types/legalTermTypes'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-const SearchInputBox = ({ modalOpen }: { modalOpen: () => void }) => {
+interface SearchInputBoxProps {
+  modalOpen?: () => void
+}
+
+const SearchInputBox = ({ modalOpen: _modalOpen }: SearchInputBoxProps) => {
   const { setSearchValue, setSelectedConsonant } = useLegalDictionaryStore()
   const { data: recentSearches } = useRecentSearches()
   const [localSearchValue, setLocalSearchValue] = useState('')
