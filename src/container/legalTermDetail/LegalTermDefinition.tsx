@@ -66,10 +66,10 @@ const LegalTermDefinition = ({
         <div className={styles['button-wrapper']}>
           <Button variant='share' onClick={handleShare}>
             공유
-            <SvgIcon name='share' size={16} />
+            <SvgIcon name='share' size={16} style={{ cursor: 'pointer' }} />
           </Button>
           <Button variant='save' onClick={handleKeep}>
-            저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.green_01 : 'none'} />
+            저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.green_01 : 'none'} style={{ cursor: 'pointer' }} />
           </Button>
         </div>
       </footer>

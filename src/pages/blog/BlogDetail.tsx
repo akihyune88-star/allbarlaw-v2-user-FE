@@ -37,10 +37,11 @@ const BlogNavigationBar = ({ isKeep, onSave, onShare, onBlogLink }: BlogNavigati
       <div className={styles['button-wrapper']}>
         <Button variant='share' onClick={onShare}>
           공유
-          <SvgIcon name='share' size={16} />
+          <SvgIcon name='share' size={16} style={{ cursor: 'pointer' }} />
         </Button>
         <Button variant='save' onClick={onSave}>
-          저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.icon_darkgreen : 'none'} />
+          저장{' '}
+          <SvgIcon name='save' size={16} fill={isKeep ? COLOR.icon_darkgreen : 'none'} style={{ cursor: 'pointer' }} />
         </Button>
       </div>
     </div>

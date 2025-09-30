@@ -19,12 +19,12 @@ const DetailHeader = ({ title, onShare, onSave, isKeep, className }: DetailHeade
         {onShare && (
           <Button variant='share' onClick={onShare}>
             공유
-            <SvgIcon name='share' size={16} />
+            <SvgIcon name='share' size={16} style={{ cursor: 'pointer' }} />
           </Button>
         )}
         {onSave && (
           <Button variant='save' onClick={onSave}>
-            저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.green_01 : 'none'} />
+            저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.green_01 : 'none'} style={{ cursor: 'pointer' }} />
           </Button>
         )}
       </div>
