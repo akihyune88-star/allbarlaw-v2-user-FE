@@ -9,7 +9,6 @@ interface LawyerCareerProps {
 }
 
 const LawyerCareer = forwardRef<HTMLElement, LawyerCareerProps>(({ careerHistory = [], activities = [] }, ref) => {
-  console.log(careerHistory, activities)
   const renderSection = (
     items: LawyerDetailResponse['careers'] | LawyerDetailResponse['activities'],
     emptyMessage: string

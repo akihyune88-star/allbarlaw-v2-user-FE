@@ -21,6 +21,8 @@ import SvgIcon from '@/components/SvgIcon'
 import { getLawyerIdFromToken } from '@/utils/tokenUtils'
 import { LOCAL } from '@/constants/local'
 import { useFormChange } from '@/contexts/FormChangeContext'
+import { useToast } from '@/hooks/useToast'
+import { ToastContainer } from '@/components/toast/Toast'
 
 interface CareerItem {
   id: string
@@ -126,6 +128,7 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
   const lawyerId = getLawyerIdFromToken(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN) || '')
   const { data: careerDataFromAPI, isLoading } = useLawyerCareer(Number(lawyerId))
   const { setHasUnsavedChanges } = useFormChange()
+  const { toasts, removeToast, success, error } = useToast()
 
   const [careerData, setCareerData] = useState<CareerItem[]>([])
   const [isInitialized, setIsInitialized] = useState(false)
@@ -275,10 +278,10 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
     onSuccess: () => {
       setOriginalData([...careerData])
       setHasUnsavedChanges(false)
+      success('이력사항이 성공적으로 저장되었습니다.')
     },
-    onError: error => {
-      console.error('경력 저장 중 오류 발생:', error)
-      alert('경력 정보 저장에 실패했습니다.')
+    onError: () => {
+      error('이력사항 저장에 실패했습니다. 다시 시도해주세요.')
     },
   })
 
@@ -316,6 +319,8 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
 
   return (
     <>
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
+
       <HeaderPortal>
         <div className={styles.header}>
           <h1 className={styles.header__title}>이력사항 관리</h1>
