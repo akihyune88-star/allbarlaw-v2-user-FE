@@ -33,7 +33,10 @@ export const lawyerSignupSchema = z
     lawyerExam: z.string().min(1, { message: '출신시험을 선택해주세요.' }),
 
     // 이메일
-    email: z.string().email({ message: '이메일 형식에 맞지 않습니다.' }),
+    email: z
+      .string()
+      .min(1, { message: '이메일은 영문으로 등록 가능합니다.' })
+      .email({ message: '이메일 형식에 맞지 않습니다.' }),
 
     // 약관동의
     agreeToTerms: z.boolean().refine(val => val === true, { message: '서비스 이용약관에 동의해주세요.' }),
