@@ -20,6 +20,8 @@ import RecommendationLawyer from '@/container/recommendation/RecommendationLawye
 import { setTemporaryItem } from '@/utils/temporaryStorage'
 import { LOCAL } from '@/constants/local'
 import { ROUTER } from '@/routes/routerConstant'
+import { useAuth } from '@/contexts/AuthContext'
+import ConfirmModal from '@/components/modal/ConfirmModal'
 
 type BlogNavigationBarProps = {
   isKeep: boolean
@@ -54,9 +56,11 @@ const BlogDetail = ({ className }: { className?: string }) => {
   const { showLoading, setShowLoading } = useDelayedLoading({ delay: 3000 })
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
   const [isKeep, setIsKeep] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
   const navigate = useNavigate()
 
-  console.log('data', data)
+  const { isLoggedIn } = useAuth()
+
   // blogCaseId가 변경될 때마다 로딩 다시 시작
   useEffect(() => {
     setShowLoading(true)
@@ -98,11 +102,22 @@ const BlogDetail = ({ className }: { className?: string }) => {
   }
 
   const handleSave = () => {
+    // 로그인 체크
+    if (!isLoggedIn) {
+      setShowLoginModal(true)
+      return
+    }
+
     if (data?.blogCaseId) {
       // 낙관적 업데이트: 즉시 UI 변경
       setIsKeep(prevState => !prevState)
       changeBlogKeep(data.blogCaseId)
     }
+  }
+
+  const handleLoginConfirm = () => {
+    setShowLoginModal(false)
+    navigate(ROUTER.AUTH)
   }
 
   const handleLawyerClick = (lawyerId: number) => {
@@ -128,6 +143,16 @@ const BlogDetail = ({ className }: { className?: string }) => {
   return (
     <div className={`detail-container ${className}`}>
       <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
+
+      <ConfirmModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onConfirm={handleLoginConfirm}
+        message='로그인 후 이용할 수 있습니다.'
+        confirmText='확인'
+        cancelText='취소'
+      />
+
       <div className={'detail-body'}>
         <div>
           {showLoading ? (

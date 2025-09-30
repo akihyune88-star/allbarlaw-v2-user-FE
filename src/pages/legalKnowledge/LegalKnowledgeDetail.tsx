@@ -20,6 +20,8 @@ import Divider from '@/components/divider/Divider'
 import RecentActiveLawyer from '@/container/lawyer/recentActiveLawyer/RecentActiveLawyer'
 import { ROUTER } from '@/routes/routerConstant'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/contexts/AuthContext'
+import ConfirmModal from '@/components/modal/ConfirmModal'
 
 const LegalKnowledgeDetail = () => {
   const { knowledgeId } = useParams<{ knowledgeId: string }>()
@@ -31,6 +33,9 @@ const LegalKnowledgeDetail = () => {
   const { data } = useGetKnowledgeDetail({ knowledgeId: Number(knowledgeId) })
 
   const [isKeep, setIsKeep] = useState(data?.isKeep ?? false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
+
+  const { isLoggedIn } = useAuth()
 
   const { mutate: changeKnowledgeKeep } = useKnowledgeKeep({
     onSuccess: data => {
@@ -46,10 +51,21 @@ const LegalKnowledgeDetail = () => {
   }
 
   const handleSave = () => {
+    // 로그인 체크
+    if (!isLoggedIn) {
+      setShowLoginModal(true)
+      return
+    }
+
     if (knowledgeId) {
       setIsKeep(prevState => !prevState)
       changeKnowledgeKeep(Number(knowledgeId))
     }
+  }
+
+  const handleLoginConfirm = () => {
+    setShowLoginModal(false)
+    navigate(ROUTER.AUTH)
   }
 
   const handleRequestConsultation = () => {
@@ -70,6 +86,16 @@ const LegalKnowledgeDetail = () => {
         onShare={isMobile ? handleShare : undefined}
         isKeep={isKeep}
       />
+
+      <ConfirmModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onConfirm={handleLoginConfirm}
+        message='로그인 후 이용할 수 있습니다.'
+        confirmText='확인'
+        cancelText='취소'
+      />
+
       <div className={`detail-body ${styles['detail-body-gap']}`}>
         <div className={styles['detail-content-container']}>
           {showLoading ? (
