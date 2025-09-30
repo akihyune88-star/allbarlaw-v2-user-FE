@@ -1,8 +1,14 @@
 import { useRecentSearches } from '@/hooks/queries/useLegalTerm'
 import styles from './recent-searches.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 const RecentSearches = () => {
   const { data: recentSearches } = useRecentSearches()
+  const navigate = useNavigate()
+
+  const handleItemClick = (legalTermId: number) => {
+    navigate(`/legal-dictionary/${legalTermId}`)
+  }
 
   return (
     <div className={styles.container}>
@@ -17,7 +23,11 @@ const RecentSearches = () => {
           </div>
         ) : (
           recentSearches.map(item => (
-            <span key={item.legalTermId}>
+            <span
+              key={item.legalTermId}
+              onClick={() => handleItemClick(item.legalTermId)}
+              style={{ cursor: 'pointer' }}
+            >
               {item.koreanName} [{item.chineseName}]
             </span>
           ))

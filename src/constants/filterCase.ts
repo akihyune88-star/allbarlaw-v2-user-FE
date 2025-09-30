@@ -6,7 +6,7 @@ type FilterCase = {
 export const LAWFIRM_SORT_FILTER_CASE: FilterCase[] = [
   {
     filterName: '전체',
-    sortType: 'createdAt',
+    sortType: 'all',
   },
   {
     filterName: '인기 로펌',

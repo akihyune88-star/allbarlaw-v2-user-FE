@@ -1,8 +1,6 @@
-// import { useNavigate } from 'react-router-dom'
 import styles from './searchLawyerResult.module.scss'
 import { Lawyer } from '@/types/lawyerTypes'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
-import Divider from '@/components/divider/Divider'
 import Tag from '@/components/tag/Tag'
 import { useNavigate } from 'react-router-dom'
 
@@ -35,30 +33,28 @@ const SearchLawyerResult = ({ searchResults, isLoading }: SearchLawyerResultProp
   }
 
   return (
-    <div>
-      {searchResults.map((lawyer, index) => (
-        <>
-          <LawyerHorizon
-            onClick={() => handleClickLawyerDetail(lawyer.lawyerId)}
-            tags={lawyer.tags}
-            lawyerId={lawyer.lawyerId}
-            isBaroTalk={true}
-            name={lawyer.lawyerName}
-            lawfirm={lawyer.lawfirmName}
-            profileImage={lawyer.lawyerProfileImage}
-            description={lawyer.lawyerDescription}
-            className={styles['lawyer-list-item']}
-            ad={true}
-            buttonComponent={
-              <div className={styles['button-wrapper']}>
-                {lawyer.tags?.map(tag => (
-                  <Tag key={tag.id} tag={tag.name} />
-                ))}
-              </div>
-            }
-          />
-          {index !== searchResults.length - 1 && <Divider padding={16} />}
-        </>
+    <div className={styles['lawyer-list-wrapper']}>
+      {searchResults.map(lawyer => (
+        <LawyerHorizon
+          key={lawyer.lawyerId}
+          onClick={() => handleClickLawyerDetail(lawyer.lawyerId)}
+          tags={lawyer.tags}
+          lawyerId={lawyer.lawyerId}
+          isBaroTalk={true}
+          name={lawyer.lawyerName}
+          lawfirm={lawyer.lawfirmName}
+          profileImage={lawyer.lawyerProfileImage}
+          description={lawyer.lawyerDescription}
+          className={styles['lawyer-list-item']}
+          ad={true}
+          buttonComponent={
+            <div className={styles['button-wrapper']}>
+              {lawyer.tags?.map(tag => (
+                <Tag key={tag.id} tag={tag.name} />
+              ))}
+            </div>
+          }
+        />
       ))}
     </div>
   )

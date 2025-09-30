@@ -55,7 +55,7 @@ const BlogItem = ({
           <h3>{item.title}</h3>
           {isLoggedIn && !isMobile && isShowKeep && (
             <button onClick={e => handleBlogKeep(e)} className={styles['blog-item-keep-btn']}>
-              <SvgIcon name='bookMark' fill={isKeep ? COLOR.green_01 : 'none'} />
+              <SvgIcon name='bookMark' fill={isKeep ? COLOR.green_01 : 'none'} style={{ cursor: 'pointer' }} />
             </button>
           )}
         </div>
@@ -66,7 +66,11 @@ const BlogItem = ({
             <span className={styles.lawfirm}>[{item.lawfirmName}]</span>
             {isLoggedIn && isMobile && isShowKeep && (
               <button onClick={e => handleBlogKeep(e)} className={styles['blog-item-keep-btn']}>
-                <SvgIcon name='bookMark' fill={isKeep ? COLOR.green_01 : 'none'} style={{ marginLeft: 'auto' }} />
+                <SvgIcon
+                  name='bookMark'
+                  fill={isKeep ? COLOR.green_01 : 'none'}
+                  style={{ marginLeft: 'auto', cursor: 'pointer' }}
+                />
               </button>
             )}
           </div>

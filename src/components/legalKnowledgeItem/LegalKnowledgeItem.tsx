@@ -106,7 +106,7 @@ const LegalKnowledgeItem = ({
             </span>
             {isLoggedIn && isShowKeep && (
               <button className={styles['bookmark-icon']} onClick={handleKnowledgeKeep}>
-                <SvgIcon name='bookMark' fill={isKeep ? COLOR.green_01 : 'none'} />
+                <SvgIcon name='bookMark' fill={isKeep ? COLOR.green_01 : 'none'} style={{ cursor: 'pointer' }} />
               </button>
             )}
           </div>
@@ -151,7 +151,7 @@ const LegalKnowledgeItem = ({
           </span>
           {isLoggedIn && isShowKeep && (
             <button className={styles['bookmark-icon']} onClick={handleKnowledgeKeep}>
-              <SvgIcon name='bookMark' fill={isKeep ? COLOR.green_01 : 'none'} />
+              <SvgIcon name='bookMark' fill={isKeep ? COLOR.green_01 : 'none'} style={{ cursor: 'pointer' }} />
             </button>
           )}
         </div>

@@ -76,7 +76,7 @@ const VideoHorizon = ({
           <h1>{title}</h1>
           {isLoggedIn && isKeep !== undefined && (
             <button className={styles['bookmark-icon']} onClick={handleVideoKeep}>
-              <SvgIcon name='bookMark' size={16} fill={like ? COLOR.green_01 : 'none'} />
+              <SvgIcon name='bookMark' size={16} fill={like ? COLOR.green_01 : 'none'} style={{ cursor: 'pointer' }} />
             </button>
           )}
         </header>
