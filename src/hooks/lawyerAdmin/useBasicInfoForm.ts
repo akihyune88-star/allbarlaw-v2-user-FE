@@ -10,7 +10,7 @@ export interface BasicInfoFormData {
   birthDay: number | undefined
   gender: string
   phoneNumber: string
-  tags: string
+  tags: string[]
   lawfirmName: string
   address: string
   addressDetail: string
@@ -26,7 +26,7 @@ const initialFormData: BasicInfoFormData = {
   birthDay: undefined,
   gender: '',
   phoneNumber: '',
-  tags: '',
+  tags: [],
   lawfirmName: '',
   address: '',
   addressDetail: '',
@@ -39,6 +39,7 @@ export const useBasicInfoForm = (
   categoryList: CategoryList | undefined
 ) => {
   const [formData, setFormData] = useState<BasicInfoFormData>(initialFormData)
+  const [initialData, setInitialData] = useState<BasicInfoFormData>(initialFormData)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isDataInitialized, setIsDataInitialized] = useState(false)
 
@@ -55,7 +56,7 @@ export const useBasicInfoForm = (
           }
         }) || []
 
-      setFormData({
+      const loadedData = {
         greeting: lawyerBasicInfo.lawyerDescription || '',
         lawyerName: lawyerBasicInfo.lawyerName || '',
         birthYear: lawyerBasicInfo.lawyerBirthYear || undefined,
@@ -63,14 +64,16 @@ export const useBasicInfoForm = (
         birthDay: lawyerBasicInfo.lawyerBirthDay || undefined,
         gender: lawyerBasicInfo.lawyerGender === 1 ? 'male' : lawyerBasicInfo.lawyerGender === 2 ? 'female' : '',
         phoneNumber: lawyerBasicInfo.lawyerPhone || '',
-        tags: lawyerBasicInfo.lawyerTags?.map(tag => tag.tagName).join(', ') || '',
+        tags: lawyerBasicInfo.lawyerTags?.map(tag => tag.tagName) || [],
         lawfirmName: lawyerBasicInfo.lawyerLawfirmName || '',
         address: lawyerBasicInfo.lawyerLawfirmAddress || '',
         addressDetail: lawyerBasicInfo.lawyerLawfirmAddressDetail || '',
         officePhone: lawyerBasicInfo.lawyerLawfirmContact || '',
         categories: mappedCategories,
-      })
+      }
 
+      setFormData(loadedData)
+      setInitialData(loadedData)
       setIsDataInitialized(true)
     }
   }, [lawyerBasicInfo, categoryList, isDataInitialized])
@@ -132,11 +135,45 @@ export const useBasicInfoForm = (
   const getFormData = () => {
     return {
       ...formData,
-      tags: formData.tags
-        .split(',')
-        .map(tag => tag.trim())
-        .filter(tag => tag.length > 0),
+      tags: formData.tags, // 이미 배열이므로 그대로 반환
     }
+  }
+
+  // 초기 데이터와 현재 데이터 비교 함수
+  const hasChanges = (): boolean => {
+    // 배열 비교를 위한 헬퍼 함수
+    const arraysEqual = (a: any[], b: any[]): boolean => {
+      if (a.length !== b.length) return false
+      return a.every((val, index) => {
+        if (typeof val === 'object' && val !== null) {
+          return JSON.stringify(val) === JSON.stringify(b[index])
+        }
+        return val === b[index]
+      })
+    }
+
+    // 카테고리 비교
+    const categoriesChanged = !arraysEqual(formData.categories, initialData.categories)
+
+    // 태그 비교
+    const tagsChanged = !arraysEqual(formData.tags, initialData.tags)
+
+    // 다른 필드들 비교
+    return (
+      formData.greeting !== initialData.greeting ||
+      formData.lawyerName !== initialData.lawyerName ||
+      formData.birthYear !== initialData.birthYear ||
+      formData.birthMonth !== initialData.birthMonth ||
+      formData.birthDay !== initialData.birthDay ||
+      formData.gender !== initialData.gender ||
+      formData.phoneNumber !== initialData.phoneNumber ||
+      formData.lawfirmName !== initialData.lawfirmName ||
+      formData.address !== initialData.address ||
+      formData.addressDetail !== initialData.addressDetail ||
+      formData.officePhone !== initialData.officePhone ||
+      categoriesChanged ||
+      tagsChanged
+    )
   }
 
   return {
@@ -148,5 +185,6 @@ export const useBasicInfoForm = (
     handleRemoveCategory,
     handleCategoryChange,
     getFormData,
+    hasChanges,
   }
 }

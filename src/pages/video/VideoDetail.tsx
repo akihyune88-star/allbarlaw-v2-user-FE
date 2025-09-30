@@ -19,6 +19,9 @@ import { useRecommendationLegalTerm, useRecommendationVideo } from '@/hooks/quer
 import RecommendationLawyer from '@/container/recommendation/RecommendationLawyer'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import AiVideoCarousel from '@/container/recommendation/aiVideoCarousel/AiVideoCarousel'
+import { useAuth } from '@/contexts/AuthContext'
+import ConfirmModal from '@/components/modal/ConfirmModal'
+import { ROUTER } from '@/routes/routerConstant'
 
 const VideoDetail = () => {
   const { videoId } = useParams<{ videoId: string }>()
@@ -28,6 +31,9 @@ const VideoDetail = () => {
   const { showLoading, setShowLoading } = useDelayedLoading({ delay: 3000 })
   const { data } = useGetVideoDetail({ videoCaseId: Number(videoId) })
   const [isKeep, setIsKeep] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
+
+  const { isLoggedIn } = useAuth()
 
   // videoId가 변경될 때마다 로딩 다시 시작
   useEffect(() => {
@@ -69,11 +75,22 @@ const VideoDetail = () => {
   }
 
   const handleSave = () => {
+    // 로그인 체크
+    if (!isLoggedIn) {
+      setShowLoginModal(true)
+      return
+    }
+
     if (data?.videoCaseId) {
       // 낙관적 업데이트: 즉시 UI 변경
       setIsKeep(prevState => !prevState)
       changeVideoKeep(data.videoCaseId)
     }
+  }
+
+  const handleLoginConfirm = () => {
+    setShowLoginModal(false)
+    navigate(ROUTER.AUTH)
   }
 
   const { data: recommendationLegalTerm } = useRecommendationLegalTerm({
@@ -92,6 +109,16 @@ const VideoDetail = () => {
   return (
     <div className={'detail-container'}>
       <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
+
+      <ConfirmModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onConfirm={handleLoginConfirm}
+        message='로그인 후 이용할 수 있습니다.'
+        confirmText='확인'
+        cancelText='취소'
+      />
+
       <div className={'detail-body'}>
         <div>
           {showLoading ? (

@@ -45,7 +45,7 @@ const ConsultationContentCard = ({
             </span>
             <Button variant='share' onClick={onShare}>
               공유
-              <SvgIcon name='share' size={16} />
+              <SvgIcon name='share' size={16} style={{ cursor: 'pointer' }} />
             </Button>
             <Button variant='save' onClick={onSave}>
               저장

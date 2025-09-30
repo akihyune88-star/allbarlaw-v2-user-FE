@@ -34,11 +34,7 @@ const LabelInput = ({ label, isError, message, children, type, ...rest }: LabelI
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
               >
-                <SvgIcon
-                  name={showPassword ? 'eye' : 'eyeOff'}
-                  size={20}
-                  color={COLOR.icon_gray_50}
-                />
+                <SvgIcon name={showPassword ? 'eye' : 'eyeOff'} size={20} color={COLOR.icon_gray_50} />
               </button>
             )}
           </div>

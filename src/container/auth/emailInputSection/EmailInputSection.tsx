@@ -42,7 +42,16 @@ function EmailInputSection<T extends { email: string } & FieldValues>({
   })
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
+    let value = e.target.value
+
+    // 한글 제거 (영문, 숫자, 이메일 특수문자만 허용)
+    const filteredValue = value.replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+
+    if (value !== filteredValue) {
+      e.target.value = filteredValue
+      value = filteredValue
+    }
+
     setEmailMessage(undefined)
     setIsEmailError(false)
     onEmailError?.(false)

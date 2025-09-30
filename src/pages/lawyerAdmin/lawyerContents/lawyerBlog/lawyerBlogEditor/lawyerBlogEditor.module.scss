@@ -66,6 +66,12 @@
     color: $color-text-caption;
     font-size: 0.875rem;
   }
+
+  &:disabled {
+    background-color: $color-bg-gray-02;
+    color: $color-text-caption;
+    cursor: not-allowed;
+  }
 }
 
 .blog-editor__textarea {
@@ -94,6 +100,12 @@
   &::placeholder {
     color: $color-text-caption;
     font-size: 0.875rem;
+  }
+
+  &:disabled {
+    background-color: $color-bg-gray-02;
+    color: $color-text-caption;
+    cursor: not-allowed;
   }
 }
 

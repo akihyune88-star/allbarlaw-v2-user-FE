@@ -7,6 +7,7 @@ import { useLawyerAdminBlogCreate } from '@/hooks/queries/useBlog'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useLawyerDetailForMe } from '@/hooks/queries/useLawyer'
+import TagInput from '@/components/tag/TagInput'
 
 const LawyerBlogEditor = () => {
   const navigate = useNavigate()
@@ -17,7 +18,7 @@ const LawyerBlogEditor = () => {
   const [blogUrl, setBlogUrl] = useState<string>('')
   const [blogTitle, setBlogTitle] = useState<string>('')
   const [blogContent, setBlogContent] = useState<string>('')
-  const [blogKeywords, setBlogKeywords] = useState<string>('')
+  const [blogKeywords, setBlogKeywords] = useState<string[]>([])
   const [shouldFetchSummary, setShouldFetchSummary] = useState<boolean>(false)
   const [thumbnail, setThumbnail] = useState<string>('')
 
@@ -47,7 +48,7 @@ const LawyerBlogEditor = () => {
       if (blogAiSummary.text) setBlogContent(blogAiSummary.text)
       if (blogAiSummary.tags) {
         const tagsWithoutHash = blogAiSummary.tags.map((tag: string) => tag.replace(/^#/, ''))
-        setBlogKeywords(tagsWithoutHash.join(', '))
+        setBlogKeywords(tagsWithoutHash)
       }
       if (blogAiSummary.thumbnail) setThumbnail(blogAiSummary.thumbnail)
       setShouldFetchSummary(false)
@@ -104,12 +105,8 @@ const LawyerBlogEditor = () => {
       return
     }
 
-    // 태그 배열로 변환 (콤마로 구분)
-    const tags = blogKeywords
-      .split(',')
-      .map(tag => tag.trim())
-      .filter(tag => tag.length > 0)
-      .slice(0, 10) // 최대 10개까지
+    // 태그 배열 사용 (이미 배열 형태)
+    const tags = blogKeywords.slice(0, 10) // 최대 10개까지
 
     // 변호사 ID 확인
     if (!lawyerDetailForMe?.lawyerId) {
@@ -146,6 +143,11 @@ const LawyerBlogEditor = () => {
     }
   }
 
+  // 모든 필수 필드가 입력되었는지 확인
+  const isFormValid = () => {
+    return !!(selectedSubcategoryId && blogUrl && blogTitle && blogContent && blogKeywords.length > 0)
+  }
+
   return (
     <>
       <HeaderPortal>
@@ -159,7 +161,7 @@ const LawyerBlogEditor = () => {
               type='button'
               className={styles['header-button-save']}
               onClick={handleSave}
-              disabled={isCreatingBlog}
+              disabled={isCreatingBlog || !isFormValid()}
             >
               {isCreatingBlog ? '저장 중...' : '저장'}
             </button>
@@ -221,29 +223,38 @@ const LawyerBlogEditor = () => {
               type='text'
               value={blogTitle}
               onChange={e => setBlogTitle(e.target.value)}
-              placeholder='제목을 입력해주세요.'
+              placeholder={isLoadingSummary ? 'AI 요약중입니다...' : '제목을 입력해주세요.'}
               className={styles['blog-editor__input']}
+              disabled={isLoadingSummary}
             />
           </div>
           <div className={styles['blog-editor-row-form']}>
             <h2>AI 요약 내용</h2>
             <textarea
-              placeholder={`블로그 주소를 입력 후,AI 요약이 완료되면 내용이 입력되어집니다\n변경할 사항이 있다면 직접 변경해주세요`}
+              placeholder={
+                isLoadingSummary
+                  ? 'AI 요약중입니다...'
+                  : `블로그 주소를 입력 후,AI 요약이 완료되면 내용이 입력되어집니다\n변경할 사항이 있다면 직접 변경해주세요`
+              }
               className={styles['blog-editor__textarea']}
               value={blogContent}
               onChange={e => setBlogContent(e.target.value)}
               style={{ height: 240 }}
+              disabled={isLoadingSummary}
             />
           </div>
           <div className={styles['blog-editor-row-form']}>
-            <h2>{`키워드/태그\n(콤마로 구분)`}</h2>
-            <input
-              type='text'
-              value={blogKeywords}
-              onChange={e => setBlogKeywords(e.target.value)}
-              placeholder='AI요약과 동시에 키워드/태그가 입력되어 집니다. 최대 10개까지 등록 가능합니다.'
-              className={styles['blog-editor__input']}
-            />
+            <h2>{`키워드/태그\n(최대 10개)`}</h2>
+            <div style={{ width: '100%', margin: '1rem' }}>
+              <TagInput
+                tags={blogKeywords}
+                onChange={setBlogKeywords}
+                placeholder='키워드를 입력하고 엔터를 누르세요'
+                maxTags={10}
+                disabled={false}
+                isLoading={isLoadingSummary}
+              />
+            </div>
           </div>
         </section>
       </div>

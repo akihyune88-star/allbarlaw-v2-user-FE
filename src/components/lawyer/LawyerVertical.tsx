@@ -75,7 +75,7 @@ const LawyerVertical = ({
             infinite: true,
             autoplay: true,
             autoplaySpeed: 3000,
-            pauseOnHover: true
+            pauseOnHover: true,
           }}
           width={profileImageWidth}
           height={profileImageHeight}
@@ -91,10 +91,11 @@ const LawyerVertical = ({
           <div className={styles['button-wrapper']}>
             <Button variant='share' onClick={shareHandler}>
               공유
-              <SvgIcon name='share' size={16} />
+              <SvgIcon name='share' size={16} style={{ cursor: 'pointer' }} />
             </Button>
             <Button variant='save' onClick={saveHandler}>
-              저장 <SvgIcon name='save' size={16} fill={isKeep ? COLOR.green_01 : 'none'} />
+              저장{' '}
+              <SvgIcon name='save' size={16} fill={isKeep ? COLOR.green_01 : 'none'} style={{ cursor: 'pointer' }} />
             </Button>
           </div>
         )}

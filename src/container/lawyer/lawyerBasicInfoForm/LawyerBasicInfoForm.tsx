@@ -1,5 +1,6 @@
 import styles from './lawyerBasicInfoForm.module.scss'
 import { BasicInfoFormData } from '@/hooks/lawyerAdmin/useBasicInfoForm'
+import TagInput from '@/components/tag/TagInput'
 
 interface LawyerBasicInfoFormProps {
   formData: BasicInfoFormData
@@ -43,7 +44,13 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             placeholder='이름을 입력해주세요'
             value={formData.lawyerName}
             onChange={e => onInputChange('lawyerName', e.target.value)}
-            style={{ borderColor: errors.lawyerName ? '#ff4d4f' : undefined, width: 340 }}
+            style={{
+              borderColor: errors.lawyerName ? '#ff4d4f' : undefined,
+              width: 340,
+              backgroundColor: '#f5f5f5',
+              cursor: 'not-allowed',
+            }}
+            disabled
           />
           <div className={styles.errorWrapper}>
             {errors.lawyerName && <span className={styles.error}>{errors.lawyerName}</span>}
@@ -62,7 +69,13 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
               className={styles.select}
               value={formData.birthYear || ''}
               onChange={e => onInputChange('birthYear', e.target.value ? Number(e.target.value) : undefined)}
-              style={{ borderColor: errors.birthYear ? '#ff4d4f' : undefined, width: 172 }}
+              style={{
+                borderColor: errors.birthYear ? '#ff4d4f' : undefined,
+                width: 172,
+                backgroundColor: '#f5f5f5',
+                cursor: 'not-allowed',
+              }}
+              disabled
             >
               <option value=''>연도 선택</option>
               {Array.from({ length: 50 }, (_, i) => 2024 - i).map(year => (
@@ -75,7 +88,13 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
               className={styles.select}
               value={formData.birthMonth || ''}
               onChange={e => onInputChange('birthMonth', e.target.value ? Number(e.target.value) : undefined)}
-              style={{ borderColor: errors.birthMonth ? '#ff4d4f' : undefined, width: 108 }}
+              style={{
+                borderColor: errors.birthMonth ? '#ff4d4f' : undefined,
+                width: 108,
+                backgroundColor: '#f5f5f5',
+                cursor: 'not-allowed',
+              }}
+              disabled
             >
               <option value=''>월</option>
               {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
@@ -88,7 +107,13 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
               className={styles.select}
               value={formData.birthDay || ''}
               onChange={e => onInputChange('birthDay', e.target.value ? Number(e.target.value) : undefined)}
-              style={{ borderColor: errors.birthDay ? '#ff4d4f' : undefined, width: 108 }}
+              style={{
+                borderColor: errors.birthDay ? '#ff4d4f' : undefined,
+                width: 108,
+                backgroundColor: '#f5f5f5',
+                cursor: 'not-allowed',
+              }}
+              disabled
             >
               <option value=''>일</option>
               {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
@@ -101,18 +126,20 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
               <label>
                 <input
                   type='radio'
-                  value='M'
-                  checked={formData.gender === 'M'}
+                  value='male'
+                  checked={formData.gender === 'male'}
                   onChange={e => onInputChange('gender', e.target.value)}
+                  disabled
                 />
                 남자
               </label>
               <label>
                 <input
                   type='radio'
-                  value='F'
-                  checked={formData.gender === 'F'}
+                  value='female'
+                  checked={formData.gender === 'female'}
                   onChange={e => onInputChange('gender', e.target.value)}
+                  disabled
                 />
                 여자
               </label>
@@ -160,21 +187,19 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
           </label>
         </div>
         <div className={styles.inputCol}>
-          <input
-            className={styles.input}
-            type='text'
-            placeholder='자신있는 분야, 관련 키워드를 입력해주세요. 검색에 노출됩니다 (콤마로 구분)'
-            value={formData.tags}
-            onChange={e => onInputChange('tags', e.target.value)}
-            style={{ borderColor: errors.tags ? '#ff4d4f' : undefined }}
+          <TagInput
+            tags={formData.tags}
+            onChange={tags => onInputChange('tags', tags)}
+            placeholder='자신있는 분야, 관련 키워드를 입력 후 엔터를 눌러주세요'
+            maxTags={20}
+            disabled={false}
+            isLoading={false}
           />
           <div className={styles.errorWrapper}>
             {errors.tags ? (
               <span className={styles.error}>{errors.tags}</span>
             ) : (
-              <span className={styles.helperText}>
-                2개이상의 태그를 입력해주세요. 콤마를 이용하여 구분할 수 있습니다.
-              </span>
+              <span className={styles.helperText}>2개이상의 태그를 입력해주세요. 검색에 노출됩니다.</span>
             )}
           </div>
         </div>

@@ -168,6 +168,7 @@ export const useLawyerBasicInfoEdit = ({ onSuccess, onError }: { onSuccess: () =
       // 즉시 캐시 업데이트로 깜빡임 방지
       queryClient.setQueryData([QUERY_KEY.LAWYER_ADMIN_BASIC_INFO, variables.lawyerId], data)
       // 백그라운드에서 실제 데이터 동기화
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_DETAIL] })
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.LAWYER_ADMIN_BASIC_INFO],
         refetchType: 'inactive', // 비활성 쿼리만 refetch
@@ -201,7 +202,7 @@ export const useUpdateLawyerCareer = ({
     mutationFn: ({ lawyerId, careerData }: { lawyerId: number; careerData: LawyerCareerUpdateRequest }) =>
       lawyerService.updateLawyerCareer(lawyerId, careerData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_DETAIL, 'career'] })
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_DETAIL] })
       onSuccess?.()
     },
     onError: error => {
@@ -222,7 +223,7 @@ export const useLawyerActivityUpdate = ({ onSuccess, onError }: { onSuccess: () 
     mutationFn: ({ lawyerId, activityData }: { lawyerId: number; activityData: LawyerActivityUpdateRequest }) =>
       lawyerService.updateLawyerActivity(lawyerId, activityData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_DETAIL, 'activity'] })
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_DETAIL] })
       onSuccess?.()
     },
     onError: () => {
