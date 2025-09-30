@@ -143,6 +143,17 @@ const LawyerBlogEditor = () => {
     }
   }
 
+  // 모든 필수 필드가 입력되었는지 확인
+  const isFormValid = () => {
+    return !!(
+      selectedSubcategoryId &&
+      blogUrl &&
+      blogTitle &&
+      blogContent &&
+      blogKeywords.length > 0
+    )
+  }
+
   return (
     <>
       <HeaderPortal>
@@ -156,7 +167,7 @@ const LawyerBlogEditor = () => {
               type='button'
               className={styles['header-button-save']}
               onClick={handleSave}
-              disabled={isCreatingBlog}
+              disabled={isCreatingBlog || !isFormValid()}
             >
               {isCreatingBlog ? '저장 중...' : '저장'}
             </button>
