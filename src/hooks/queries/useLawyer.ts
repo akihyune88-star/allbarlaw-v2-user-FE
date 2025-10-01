@@ -13,6 +13,8 @@ import {
   LawyerCountRequest,
 } from '@/types/lawyerTypes'
 import { queryClient } from '@/lib/queryClient'
+import { AxiosError, isAxiosError } from 'axios'
+import { errorHandler, getErrorMessage } from '@/utils/errorHandler'
 
 export const useLawyerList = (request: LawyerListRequest) => {
   return useQuery({
@@ -141,14 +143,23 @@ export const useLawyerActive = (request: LawyerActiveRequest) => {
   })
 }
 
-export const useLawyerSignUp = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
+export const useLawyerSignUp = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void
+  onError: (_errorMessage: string) => void
+}) => {
   return useMutation({
     mutationFn: (request: LawyerSignUpRequest) => lawyerService.signUpLawyer(request),
     onSuccess: () => {
       onSuccess()
     },
-    onError: () => {
-      onError()
+    onError: (error: Error) => {
+      if (isAxiosError(error)) {
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        onError?.(errorMessage)
+      }
     },
   })
 }

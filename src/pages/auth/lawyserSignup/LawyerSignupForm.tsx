@@ -43,8 +43,8 @@ const LawyerSignupForm = () => {
         navigate(ROUTER.MAIN)
       }, 2000)
     },
-    onError: () => {
-      setAlertMessage('회원가입에 실패했습니다.\n다시 시도해주세요.')
+    onError: errorMessage => {
+      setAlertMessage(`${errorMessage}\n다시 시도해주세요.`)
       setAlertOpen(true)
     },
   })
