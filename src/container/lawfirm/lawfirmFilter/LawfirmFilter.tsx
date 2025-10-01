@@ -7,12 +7,12 @@ import FilterSection from '@/components/filterSection/FilterSection'
 
 type LawfirmFilterProps = {
   filter: {
-    orderBy: SortType
+    orderBy?: SortType
     recentDays: 'all' | '7' | '30'
   }
   setFilter: React.Dispatch<
     React.SetStateAction<{
-      orderBy: SortType
+      orderBy?: SortType
       recentDays: 'all' | '7' | '30'
     }>
   >
@@ -20,7 +20,11 @@ type LawfirmFilterProps = {
 
 const LawfirmFilter = ({ filter, setFilter }: LawfirmFilterProps) => {
   const handleOrderByChange = (sortType: string) => {
-    setFilter(prev => ({ ...prev, orderBy: sortType as SortType }))
+    // 정렬 필터에서 '전체'를 선택하면 orderBy를 undefined로 설정
+    setFilter(prev => ({
+      ...prev,
+      orderBy: sortType === 'all' ? undefined : sortType as SortType
+    }))
   }
 
   const handleRecentDaysChange = (sortType: string) => {

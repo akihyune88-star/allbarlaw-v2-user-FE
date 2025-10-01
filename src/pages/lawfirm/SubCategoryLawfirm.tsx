@@ -11,10 +11,10 @@ import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 const SubcategoryLawfirmLayout = () => {
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const [filter, setFilter] = useState<{
-    orderBy: SortType
+    orderBy?: SortType
     recentDays: 'all' | '7' | '30'
   }>({
-    orderBy: 'all',
+    orderBy: undefined,
     recentDays: 'all',
   })
 
