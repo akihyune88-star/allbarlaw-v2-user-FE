@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react'
+import React, { useState, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react'
 import {
   DndContext,
   closestCenter,
@@ -26,6 +26,7 @@ interface ActivityItem {
   id: string
   lawyerActivityCategoryName: string
   lawyerActivityContent: string
+  lawyerActivityContentArray?: string[] // 각 줄을 배열로 관리
   lawyerActivityDisplayOrder: number
 }
 
@@ -34,12 +35,12 @@ interface SortableItemProps {
   isSelected: boolean
   isEditing: boolean
   editingCategoryName: string
-  onCategoryClick: (activity: ActivityItem) => void
-  onCategoryNameSave: (id: string) => void
-  onCategoryNameChange: (value: string) => void
+  onCategoryClick: (_activity: ActivityItem) => void
+  onCategoryNameSave: (_id: string) => void
+  onCategoryNameChange: (_value: string) => void
   onCategoryEditCancel: () => void
-  onDelete: (id: string) => void
-  onClick: (activity: ActivityItem) => void
+  onDelete: (_id: string) => void
+  onClick: (_activity: ActivityItem) => void
 }
 
 const SortableItem = ({
@@ -131,7 +132,7 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
   const [isInitialized, setIsInitialized] = useState(false)
   const [originalData, setOriginalData] = useState<ActivityItem[]>([])
   const [selectedActivity, setSelectedActivity] = useState<ActivityItem | null>(null)
-  const [contentValue, setContentValue] = useState('')
+  const [contentArray, setContentArray] = useState<string[]>([])
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null)
   const [editingCategoryName, setEditingCategoryName] = useState('')
 
@@ -172,7 +173,11 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
   // 카테고리 선택
   const handleActivityClick = (activity: ActivityItem) => {
     setSelectedActivity(activity)
-    setContentValue(activity.lawyerActivityContent)
+    // Content를 줄 단위로 분리하여 배열로 설정
+    const contentLines = activity.lawyerActivityContent
+      ? activity.lawyerActivityContent.split('\n').filter(line => line.trim() !== '')
+      : []
+    setContentArray(contentLines)
   }
 
   // 카테고리 이름 클릭 시 편집 모드
@@ -213,6 +218,49 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
     setEditingCategoryName('')
   }
 
+  // 개별 내용 아이템 변경 핸들러
+  const handleContentItemChange = (index: number, value: string) => {
+    const newContentArray = [...contentArray]
+    newContentArray[index] = value
+    setContentArray(newContentArray)
+  }
+
+  // 엔터 키 입력 시 새 항목 추가
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === 'Enter' && contentArray[index].trim()) {
+      e.preventDefault()
+      const newContentArray = [...contentArray]
+      newContentArray.splice(index + 1, 0, '')
+      setContentArray(newContentArray)
+
+      // 다음 인풋으로 포커스 이동
+      setTimeout(() => {
+        const inputs = document.querySelectorAll(`.${styles.contentInput}`)
+        if (inputs[index + 1]) {
+          ;(inputs[index + 1] as HTMLInputElement).focus()
+        }
+      }, 0)
+    }
+  }
+
+  // 내용 아이템 추가
+  const handleAddContentItem = () => {
+    setContentArray(prev => [...prev, ''])
+    // 새로 추가된 인풋으로 포커스 이동
+    setTimeout(() => {
+      const inputs = document.querySelectorAll(`.${styles.contentInput}`)
+      if (inputs[inputs.length - 1]) {
+        ;(inputs[inputs.length - 1] as HTMLInputElement).focus()
+      }
+    }, 0)
+  }
+
+  // 내용 아이템 삭제
+  const handleRemoveContentItem = (index: number) => {
+    const newContentArray = contentArray.filter((_, i) => i !== index)
+    setContentArray(newContentArray)
+  }
+
   // 카테고리 추가
   const handleAdd = () => {
     const newItem: ActivityItem = {
@@ -223,7 +271,7 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
     }
     setActivityData(prev => [...prev, newItem])
     setSelectedActivity(newItem)
-    setContentValue('')
+    setContentArray([])
   }
 
   // 카테고리 삭제
@@ -238,7 +286,7 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
 
     if (selectedActivity?.id === id) {
       setSelectedActivity(null)
-      setContentValue('')
+      setContentArray([])
     }
   }
 
@@ -261,15 +309,16 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
     }
   }
 
-  // 내용 저장
-  const handleContentBlur = () => {
-    if (selectedActivity && contentValue !== selectedActivity.lawyerActivityContent) {
+  // contentArray가 변경될 때 selectedActivity 업데이트
+  useEffect(() => {
+    if (selectedActivity) {
+      const updatedContent = contentArray.join('\n')
       setActivityData(prev =>
-        prev.map(item => (item.id === selectedActivity.id ? { ...item, lawyerActivityContent: contentValue } : item))
+        prev.map(item => (item.id === selectedActivity.id ? { ...item, lawyerActivityContent: updatedContent } : item))
       )
-      setSelectedActivity({ ...selectedActivity, lawyerActivityContent: contentValue })
+      setSelectedActivity(prev => (prev ? { ...prev, lawyerActivityContent: updatedContent } : null))
     }
-  }
+  }, [contentArray])
 
   const { mutate: updateActivity, isPending: isSaving } = useLawyerActivityUpdate({
     onSuccess: () => {
@@ -297,11 +346,12 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
 
   // ref를 통해 상위 컴포넌트에 데이터 전달
   useImperativeHandle(ref, () => ({
-    getFormData: () => activityData.map(item => ({
-      lawyerActivityCategoryName: item.lawyerActivityCategoryName,
-      lawyerActivityContent: item.lawyerActivityContent,
-      lawyerActivityDisplayOrder: item.lawyerActivityDisplayOrder,
-    })),
+    getFormData: () =>
+      activityData.map(item => ({
+        lawyerActivityCategoryName: item.lawyerActivityCategoryName,
+        lawyerActivityContent: item.lawyerActivityContent,
+        lawyerActivityDisplayOrder: item.lawyerActivityDisplayOrder,
+      })),
   }))
 
   if (isLoading) {
@@ -364,20 +414,48 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
         </article>
 
         {/* 우측: 내용 편집 */}
-        <article className={styles.panel_container} style={{ maxHeight: 312 }}>
+        <article className={styles.panel_container}>
           <div className={styles.panel_container__title}>
             활동 분류 {selectedActivity ? `> ${selectedActivity.lawyerActivityCategoryName}` : ''}
           </div>
 
           <div className={styles.editorContent}>
             {selectedActivity ? (
-              <textarea
-                value={contentValue}
-                onChange={e => setContentValue(e.target.value)}
-                onBlur={handleContentBlur}
-                placeholder='1줄씩 입력 바랍니다.'
-                className={styles.contentTextarea}
-              />
+              <div className={styles.contentInputContainer}>
+                {contentArray.length === 0 ? (
+                  <div className={styles.emptyContent}>
+                    <div className={styles.emptyContent__text}>
+                      활동사항을 입력해 주세요.
+                      <br />
+                      아래 버튼을 눌러 항목을 추가하세요.
+                    </div>
+                  </div>
+                ) : (
+                  contentArray.map((content, index) => (
+                    <div key={index} className={styles.contentInputWrapper}>
+                      <input
+                        type='text'
+                        className={styles.contentInput}
+                        value={content}
+                        onChange={e => handleContentItemChange(index, e.target.value)}
+                        onKeyPress={e => handleKeyPress(e, index)}
+                        placeholder='활동사항을 입력해 주세요 (예: 대한변호사협회 이사)'
+                        autoFocus={index === contentArray.length - 1}
+                      />
+                      <button
+                        className={styles.contentInputDelete}
+                        onClick={() => handleRemoveContentItem(index)}
+                        aria-label='삭제'
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))
+                )}
+                <button className={styles.addItemButton} onClick={handleAddContentItem}>
+                  + 항목 추가
+                </button>
+              </div>
             ) : (
               <div className={styles.emptyContent}>
                 <span className={styles.emptyContent__text}>카테고리를 선택해주세요.</span>
