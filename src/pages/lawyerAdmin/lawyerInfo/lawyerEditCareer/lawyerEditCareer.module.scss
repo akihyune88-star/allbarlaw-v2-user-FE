@@ -37,6 +37,7 @@
 .lawyer-edit-career {
   background-color: $color-bg-gray-02;
   display: flex;
+  align-items: flex-start; // 상단 정렬로 변경
   gap: 1rem;
 
   padding-top: 0.5rem;
@@ -227,8 +228,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  max-height: 14rem;
-  overflow-y: auto;
   padding: 0.25rem;
 }
 

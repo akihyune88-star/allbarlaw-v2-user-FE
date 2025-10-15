@@ -21,6 +21,8 @@ import SvgIcon from '@/components/SvgIcon'
 import { getLawyerIdFromToken } from '@/utils/tokenUtils'
 import { LOCAL } from '@/constants/local'
 import { useFormChange } from '@/contexts/FormChangeContext'
+import { useToast } from '@/hooks/useToast'
+import { ToastContainer } from '@/components/toast/Toast'
 
 interface ActivityItem {
   id: string
@@ -127,6 +129,7 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
   const lawyerId = getLawyerIdFromToken(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN) || '')
   const { data: activityDataFromAPI, isLoading } = useLawyerActivity(Number(lawyerId))
   const { setHasUnsavedChanges } = useFormChange()
+  const { toasts, removeToast, success, error } = useToast()
 
   const [activityData, setActivityData] = useState<ActivityItem[]>([])
   const [isInitialized, setIsInitialized] = useState(false)
@@ -324,10 +327,10 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
     onSuccess: () => {
       setOriginalData([...activityData])
       setHasUnsavedChanges(false)
+      success('활동사항이 성공적으로 저장되었습니다.')
     },
     onError: () => {
-      console.error('활동 저장 중 오류 발생')
-      alert('활동 정보 저장에 실패했습니다.')
+      error('활동사항 저장에 실패했습니다. 다시 시도해주세요.')
     },
   })
 
@@ -366,6 +369,8 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
 
   return (
     <>
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
+
       <HeaderPortal>
         <div className={styles.header}>
           <h1 className={styles.header__title}>활동사항 관리</h1>
