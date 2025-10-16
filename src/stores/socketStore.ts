@@ -45,7 +45,7 @@ interface SocketActions {
   addMessage: (_message: ChatMessage) => void
   updateMessage: (_messageId: number, _updates: Partial<ChatMessage>) => void
   updateMessageByTempId: (_tempId: string, _updates: Partial<ChatMessage>) => void
-  markMessagesAsRead: (_messageIds: number[]) => void 
+  markMessagesAsRead: (_messageIds: number[]) => void
   setChatStatus: (_status: ChatRoomStatus) => void
   setRoomInfo: (_roomInfo: any) => void
 
@@ -136,26 +136,20 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
 
   updateMessage: (messageId, updates) => {
     set(state => ({
-      messages: state.messages.map(msg =>
-        msg.chatMessageId === messageId ? { ...msg, ...updates } : msg
-      ),
+      messages: state.messages.map(msg => (msg.chatMessageId === messageId ? { ...msg, ...updates } : msg)),
     }))
   },
 
   updateMessageByTempId: (tempId, updates) => {
     set(state => ({
-      messages: state.messages.map(msg =>
-        msg.tempId === tempId ? { ...msg, ...updates } : msg
-      ),
+      messages: state.messages.map(msg => (msg.tempId === tempId ? { ...msg, ...updates } : msg)),
     }))
   },
 
   markMessagesAsRead: messageIds => {
     set(state => ({
       messages: state.messages.map(msg =>
-        messageIds.includes(msg.chatMessageId)
-          ? { ...msg, chatMessageIsRead: true }
-          : msg
+        messageIds.includes(msg.chatMessageId) ? { ...msg, chatMessageIsRead: true } : msg
       ),
     }))
   },

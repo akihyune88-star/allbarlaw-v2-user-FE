@@ -11,6 +11,7 @@ import {
   SendMessageSuccessData,
   SendMessageErrorData,
   UserLeftData,
+  ChatRoomStatus,
 } from '@/types/baroTalkTypes'
 import {
   useSocket,
@@ -29,7 +30,7 @@ import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
 
 interface UseChatSocketProps {
   chatRoomId: number | null
-  setChatStatus: (_status: any) => void
+  setChatStatus: (_status: ChatRoomStatus) => void
 }
 
 export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps) => {
@@ -69,7 +70,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
   // 소켓 연결
   useEffect(() => {
-    if (!userId || !chatRoomId) {
+    if (!userId) {
       return
     }
 
@@ -82,7 +83,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     // 🆕 배포환경 디버깅을 위한 로그
     console.log('🔍 [SOCKET] 소켓 연결 시도:', {
       userId,
-      chatRoomId,
+      chatRoomId: chatRoomId || 'null (채팅방 미선택)',
       serverUrl: import.meta.env.VITE_SERVER_API + '/chat',
       token: localStorage.getItem('accessToken') ? '토큰 존재' : '토큰 없음',
       sessionToken: sessionStorage.getItem('accessToken') ? '세션토큰 존재' : '세션토큰 없음',
@@ -98,10 +99,20 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     setSocket(newSocket)
     joinRoomAttemptedRef.current = false
 
+    // 🔍 모든 소켓 이벤트 로깅
+    newSocket.onAny((eventName, ...args) => {
+      console.log(`📡 [SOCKET EVENT] ${eventName}`, args)
+    })
+
+    // 🔍 등록된 이벤트 리스너 목록 출력
     newSocket.on('connect', () => {
       console.log('✅ [SOCKET] 소켓 연결 성공')
       setConnected(true)
       socketConnectedRef.current = true
+
+      // @ts-ignore - 내부 API 접근
+      const callbacks = newSocket._callbacks || {}
+      console.log('📋 [SOCKET] 등록된 이벤트 리스너:', Object.keys(callbacks))
 
       // 소켓 연결 후 즉시 방 입장 시도
       if (chatRoomId) {
@@ -132,6 +143,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     return () => {
       console.log('🧹 [SOCKET] useEffect cleanup - 소켓 연결 해제')
+      newSocket.offAny() // 모든 이벤트 리스너 제거
       newSocket.disconnect()
       socketConnectedRef.current = false
       joinRoomAttemptedRef.current = false
@@ -142,7 +154,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       })
       timeoutRefs.current.clear()
     }
-  }, [userId, chatRoomId, setSocket, setConnected])
+  }, [userId, setSocket, setConnected])
 
   // 읽음 처리 함수 (이벤트 리스너보다 먼저 정의)
   const markAsRead = useCallback(
@@ -425,6 +437,39 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       console.error('채팅방 퇴장 실패:', error.message)
     }
 
+    // 사용자 상태 구독 응답 처리
+    const handleUserStatusResponse = (data: any) => {
+      console.log('👤 [SOCKET] 사용자 상태 응답:', data)
+      // socketStore의 userStatuses 업데이트 로직 추가 가능
+    }
+
+    // 배치 사용자 상태 응답 처리
+    const handleBatchUserStatusResponse = (data: any) => {
+      console.log('👥 [SOCKET] 배치 사용자 상태 응답:', data)
+      // socketStore의 userStatuses 업데이트 로직 추가 가능
+    }
+
+    // 사용자 상태 변경 이벤트 처리
+    const handleUserStatusChanged = (data: any) => {
+      console.log('🔄 [SOCKET] 사용자 상태 변경:', data)
+      // socketStore의 userStatuses 업데이트 로직 추가 가능
+    }
+
+    // 채팅방 상태 변경 이벤트 처리
+    const handleChatRoomStatusChanged = (data: {
+      chatRoomId: number
+      chatRoomStatus: ChatRoomStatus
+      timestamp: string
+    }) => {
+      console.log('🔄 [SOCKET] 채팅방 상태 변경 이벤트:', data)
+
+      // 현재 채팅방의 상태 변경인지 확인
+      if (data.chatRoomId === chatRoomId) {
+        setChatStatus(data.chatRoomStatus)
+        console.log(`✅ [SOCKET] 채팅방 ${data.chatRoomId} 상태가 ${data.chatRoomStatus}로 변경됨`)
+      }
+    }
+
     // 이벤트 리스너 등록
     socket.on('joinRoomSuccess', handleJoinRoomSuccess)
     socket.on('joinRoomError', handleJoinRoomError)
@@ -436,6 +481,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     socket.on('userLeft', handleUserLeft)
     socket.on('leaveRoomSuccess', handleLeaveRoomSuccess)
     socket.on('leaveRoomError', handleLeaveRoomError)
+
+    // 사용자 상태 관련 이벤트
+    socket.on('userStatusResponse', handleUserStatusResponse)
+    socket.on('batchUserStatusResponse', handleBatchUserStatusResponse)
+    socket.on('userStatusChanged', handleUserStatusChanged)
+
+    // 채팅방 상태 변경 이벤트
+    socket.on('chatRoomStatusChanged', handleChatRoomStatusChanged)
 
     // 다른 가능한 나가기 이벤트 이름들도 리스닝
     socket.on('user_left', handleUserLeft)
@@ -456,6 +509,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       socket.off('userLeft', handleUserLeft)
       socket.off('leaveRoomSuccess', handleLeaveRoomSuccess)
       socket.off('leaveRoomError', handleLeaveRoomError)
+
+      // 사용자 상태 관련 이벤트 정리
+      socket.off('userStatusResponse', handleUserStatusResponse)
+      socket.off('batchUserStatusResponse', handleBatchUserStatusResponse)
+      socket.off('userStatusChanged', handleUserStatusChanged)
+
+      // 채팅방 상태 변경 이벤트 정리
+      socket.off('chatRoomStatusChanged', handleChatRoomStatusChanged)
 
       // 추가된 이벤트 리스너들도 정리
       socket.off('user_left')

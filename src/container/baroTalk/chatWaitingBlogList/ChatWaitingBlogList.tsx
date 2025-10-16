@@ -4,7 +4,7 @@ import { useGetBlogList } from '@/hooks/queries/useGetBlogList'
 import Divider from '@/components/divider/Divider'
 import { ChatRoomStatus, UpdateChatRoomStatusResponse } from '@/types/baroTalkTypes'
 import { useUpdateChatRoomStatus, useLeaveChatRoom } from '@/hooks/queries/useBaroTalk'
-import { useSetChatStatus, useSetChatRoomId } from '@/stores/socketStore'
+import { useSetChatStatus, useSetChatRoomId, useSocket } from '@/stores/socketStore'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import React from 'react'
@@ -13,19 +13,10 @@ type ChatWaitingBlogListProps = {
   chatStatus: ChatRoomStatus
   chatRoomId: number | null
   messagesLength: number
-  leaveRoom?: () => void
   isLawyer?: boolean
 }
 
-const ChatWaitingBlogList = ({
-  chatStatus,
-  chatRoomId,
-  messagesLength,
-  leaveRoom,
-  isLawyer,
-}: ChatWaitingBlogListProps) => {
-  console.log('chatStatus', chatStatus)
-
+const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength, isLawyer }: ChatWaitingBlogListProps) => {
   const { blogList } = useGetBlogList({
     subcategoryId: 'all',
     take: 4,
@@ -34,6 +25,7 @@ const ChatWaitingBlogList = ({
   // 🟢 Zustand 스토어 사용
   const setChatStatus = useSetChatStatus()
   const setChatRoomId = useSetChatRoomId()
+  const socket = useSocket()
   const navigate = useNavigate()
   const { userKeyId } = useAuth()
 
@@ -46,8 +38,8 @@ const ChatWaitingBlogList = ({
   const { mutate: leaveChatRoom } = useLeaveChatRoom({
     onSuccess: () => {
       // REST API 성공 후 WebSocket으로도 나가기 처리
-      if (leaveRoom) {
-        leaveRoom()
+      if (socket && chatRoomId) {
+        socket.emit('leaveRoom', { chatRoomId })
       }
       setChatRoomId(null)
 
@@ -106,7 +98,7 @@ const ChatWaitingBlogList = ({
   return (
     <main className={styles.chatWaitingBlogList}>
       <header className={styles.chatWaitingBlogList__header}>
-        {chatStatus === 'CONSULTING' || messagesLength > 1 ? (
+        {chatStatus === 'CONSULTING' ? (
           <div className={styles.chatWaitingBlogList__header__startChat}>
             <span>채팅을 시작 하시겠습니까? </span>
             <div className={styles.chatWaitingBlogList__header__startChat__button}>

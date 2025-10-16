@@ -3,10 +3,9 @@ import ChatBody from '@/container/baroTalk/chatBody/ChatBody'
 import styles from './chatRoomContainer.module.scss'
 import { useCallback } from 'react'
 import { useLeaveChatRoom } from '@/hooks/queries/useBaroTalk'
-import { useMessages, useChatStatus, useRoomInfo, useSetChatRoomId, useSetChatStatus } from '@/stores/socketStore'
-import { useChatSocket } from '@/hooks/useChatSocket'
+import { useMessages, useChatStatus, useRoomInfo, useSetChatRoomId, useSocket, useIsConnected } from '@/stores/socketStore'
 import { useAuth } from '@/contexts/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 interface ChatRoomContainerProps {
   chatRoomId: number | null
@@ -29,21 +28,20 @@ const ChatRoomContainer = ({
   const messages = useMessages()
   const chatStatus = useChatStatus()
   const roomInfo = useRoomInfo()
+  const socket = useSocket()
+  const isConnected = useIsConnected()
   const setChatRoomId = useSetChatRoomId()
-  const setChatStatus = useSetChatStatus()
   const { userKeyId } = useAuth()
   const navigate = useNavigate()
-
-  // 커스텀 훅 사용
-  const { isConnected, sendMessage, leaveRoom, isLawyer } = useChatSocket({
-    chatRoomId,
-    setChatStatus,
-  })
+  const location = useLocation()
+  const isLawyer = location.pathname.includes('lawyer-admin')
 
   const { mutate: leaveChatRoom } = useLeaveChatRoom({
     onSuccess: _data => {
       // 서버가 WebSocket 이벤트를 보내지 않는 경우를 대비해 WebSocket leaveRoom도 호출
-      leaveRoom()
+      if (socket && chatRoomId) {
+        socket.emit('leaveRoom', { chatRoomId })
+      }
       setChatRoomId(null)
 
       // 변호사인 경우 변호사 채팅 목록으로 이동
@@ -84,13 +82,7 @@ const ChatRoomContainer = ({
     leaveChatRoom(leaveRequest)
   }, [chatRoomId, isLawyer, userKeyId, leaveChatRoom])
 
-  // 메시지 전송 핸들러
-  const handleSendMessage = useCallback(
-    (content: string) => {
-      sendMessage(content, roomInfo)
-    },
-    [sendMessage, roomInfo]
-  )
+  // 메시지 전송 핸들러 - ChatBody에서 직접 처리하도록 변경
   console.log('roomInfo', roomInfo)
 
   return (
@@ -112,13 +104,8 @@ const ChatRoomContainer = ({
       />
       <ChatBody
         chatRoomId={chatRoomId}
-        chatStatus={chatStatus}
-        messages={messages}
-        onSendMessage={handleSendMessage}
-        isConnected={isConnected}
         type={isLawyer ? 'LAWYER' : 'USER'}
         userLeft={userLeft || false}
-        leaveRoom={leaveRoom}
         isLawyer={isLawyer}
       />
     </section>

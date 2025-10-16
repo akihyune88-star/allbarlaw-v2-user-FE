@@ -4,34 +4,31 @@ import styles from './chatBody.module.scss'
 import ChatWaitingBlogList from '../chatWaitingBlogList/ChatWaitingBlogList'
 import InputBox from '@/components/inputBox/InputBox'
 import SvgIcon from '@/components/SvgIcon'
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useState, useCallback } from 'react'
 import { ChatMessage, ChatRoomStatus } from '@/types/baroTalkTypes'
 import { formatTimeAgo } from '@/utils/date'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useMessages, useChatStatus, useSocket, useIsConnected, useRoomInfo, useAddMessage } from '@/stores/socketStore'
+import { useAuth } from '@/contexts/AuthContext'
 
 type ChatBodyProps = {
-  chatStatus: ChatRoomStatus
-  type?: 'USER' | 'LAWYER'
-  messages: ChatMessage[]
-  onSendMessage: (_content: string) => void
-  isConnected: boolean
   chatRoomId: number | null
+  type?: 'USER' | 'LAWYER'
   userLeft: boolean
-  leaveRoom?: () => void
   isLawyer?: boolean
 }
 
-const ChatBody = ({
-  chatStatus,
-  messages,
-  onSendMessage,
-  isConnected,
-  type = 'USER',
-  chatRoomId,
-  userLeft,
-  leaveRoom,
-  isLawyer,
-}: ChatBodyProps) => {
+const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyProps) => {
+  // Zustand 전역 상태 구독
+  const messages = useMessages()
+  const chatStatus = useChatStatus()
+  const socket = useSocket()
+  const isConnected = useIsConnected()
+  const roomInfo = useRoomInfo()
+  const addMessage = useAddMessage()
+  const { getUserIdFromToken } = useAuth()
+  const userId = getUserIdFromToken()
+
   const [message, setMessage] = useState('')
   const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -41,21 +38,51 @@ const ChatBody = ({
     setMessage(e.target.value)
   }
 
-  const handleSendMessage = () => {
-    if (message.trim() && isConnected) {
-      onSendMessage(message.trim())
-      setMessage('')
+  const handleSendMessage = useCallback(() => {
+    if (!message.trim() || !isConnected || !socket || !chatRoomId) {
+      return
     }
-  }
+
+    const tempId = `temp_${Date.now()}_${Math.random()}`
+
+    // 임시 메시지를 먼저 UI에 표시
+    const tempMessage: ChatMessage = {
+      chatMessageId: Date.now(),
+      chatMessageContent: message.trim(),
+      chatMessageSenderType: isLawyer ? 'LAWYER' : 'USER',
+      chatMessageSenderId: userId || 0,
+      chatMessageReceiverId: isLawyer
+        ? (roomInfo as any)?.chatRoomUserId || 0
+        : (roomInfo as any)?.chatRoomLawyerId || 0,
+      chatMessageReceiverType: isLawyer ? 'USER' : 'LAWYER',
+      chatMessageIsRead: false,
+      chatMessageCreatedAt: new Date().toISOString(),
+      tempId,
+      status: 'sending',
+    }
+
+    addMessage(tempMessage)
+
+    // 서버로 메시지 전송
+    socket.emit('sendMessage', {
+      chatRoomId,
+      content: message.trim(),
+      receiverId: isLawyer ? (roomInfo as any)?.chatRoomUserId || 0 : (roomInfo as any)?.chatRoomLawyerId || 0,
+      receiverType: isLawyer ? 'USER' : 'LAWYER',
+      tempId,
+    })
+
+    setMessage('')
+  }, [message, isConnected, socket, chatRoomId, isLawyer, userId, roomInfo, addMessage])
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     console.log('키 눌림:', e.key, 'Shift:', e.shiftKey, 'Composing:', e.nativeEvent.isComposing)
-    
+
     // 한글 입력 중(조합 중)일 때는 엔터키 이벤트 무시
     if (e.nativeEvent.isComposing) {
       return
     }
-    
+
     if (e.key === 'Enter' && !e.shiftKey) {
       console.log('엔터키 감지, 메시지 전송 시도')
       e.preventDefault()
@@ -100,11 +127,10 @@ const ChatBody = ({
   )
 
   const renderWaitingChat = () => (
-    <ChatWaitingBlogList 
-      chatStatus={chatStatus} 
-      chatRoomId={chatRoomId} 
-      messagesLength={messages.length} 
-      leaveRoom={leaveRoom}
+    <ChatWaitingBlogList
+      chatStatus={chatStatus}
+      chatRoomId={chatRoomId}
+      messagesLength={messages.length}
       isLawyer={isLawyer}
     />
   )
