@@ -1,5 +1,5 @@
 import styles from './lawyer-detail.module.scss'
-import LawyerAchievements from '@/container/lawyer/lawyerAchievements/LawyerAchievements'
+// import LawyerAchievements from '@/container/lawyer/lawyerAchievements/LawyerAchievements'
 import LawyerActivity from '@/container/lawyer/lawyerActivity/LawyerActivity'
 import LawyerBlog from '@/container/lawyer/lawyerBlog/LawyerBlog'
 import LawyerCareer from '@/container/lawyer/lawyerCareer/LawyerCareer'
@@ -57,7 +57,7 @@ const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
           tags={lawyerDetail?.tags ?? []}
         />
         <LawyerActivity statistics={lawyerDetail?.statistics ?? null} createdAt={lawyerDetail?.createdAt ?? ''} />
-        <LawyerAchievements achievements={lawyerDetail?.achievements ?? []} />
+        {/* <LawyerAchievements achievements={lawyerDetail?.achievements ?? []} /> */}
         <section className={styles['lawyer-detail__button-container']}>
           <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(careerRef)}>
             이력사항 및 활동사항
