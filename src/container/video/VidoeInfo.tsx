@@ -30,7 +30,13 @@ const VidoeInfo = ({
     if (isNaN(numCount) || numCount <= 0) {
       return '0'
     }
-    return numCount.toLocaleString()
+
+    if (numCount < 1000) {
+      return numCount.toLocaleString()
+    }
+
+    const manCount = numCount / 10000
+    return `${manCount.toFixed(1)}만`
   }
 
   return (
