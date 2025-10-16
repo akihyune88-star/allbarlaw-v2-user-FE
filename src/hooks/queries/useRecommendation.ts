@@ -42,6 +42,7 @@ export const useRecommendationVideo = (request: RecommendationContentRequest) =>
     queryFn: () => recommendationService.getRecommendationVideo(request),
     select: data => data.data,
     placeholderData: previousData => previousData,
+    enabled: !!request.subcategoryId,
   })
 }
 

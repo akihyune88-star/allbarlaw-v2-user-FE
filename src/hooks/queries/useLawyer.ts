@@ -13,8 +13,8 @@ import {
   LawyerCountRequest,
 } from '@/types/lawyerTypes'
 import { queryClient } from '@/lib/queryClient'
-import { AxiosError, isAxiosError } from 'axios'
-import { errorHandler, getErrorMessage } from '@/utils/errorHandler'
+import { isAxiosError } from 'axios'
+import { getErrorMessage } from '@/utils/errorHandler'
 
 export const useLawyerList = (request: LawyerListRequest) => {
   return useQuery({

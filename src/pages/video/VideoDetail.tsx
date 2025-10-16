@@ -22,6 +22,7 @@ import AiVideoCarousel from '@/container/recommendation/aiVideoCarousel/AiVideoC
 import { useAuth } from '@/contexts/AuthContext'
 import ConfirmModal from '@/components/modal/ConfirmModal'
 import { ROUTER } from '@/routes/routerConstant'
+import { useRandomVideoList } from '@/hooks/queries/useRandomVideoList'
 
 const VideoDetail = () => {
   const { videoId } = useParams<{ videoId: string }>()
@@ -97,9 +98,14 @@ const VideoDetail = () => {
     videoCaseIds: [data?.videoCaseId || 0],
   })
 
-  const { data: recommendationVideo } = useRecommendationVideo({
-    subcategoryId: data?.subcategoryId || 'all',
-    take: 3,
+  // const { data: recommendationVideo } = useRecommendationVideo({
+  //   subcategoryId: data?.subcategoryId || 0,
+  //   take: 3,
+  // })
+
+  const { videoList: recommendationVideo } = useRandomVideoList({
+    subcategoryId: data?.subcategoryId || 0,
+    take: 9,
   })
 
   const handleLawyerClick = (lawyerId: number) => {
