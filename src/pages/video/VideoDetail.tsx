@@ -172,7 +172,9 @@ const VideoDetail = () => {
                     />
                     <AiVideoCarousel subcategoryId={data?.subcategoryId || 'all'} take={3} />
                     <RecommendationLawyer />
-                    <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
+                    {recommendationLegalTerm && recommendationLegalTerm.length > 0 && (
+                      <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
+                    )}
                   </div>
                 )}
               </div>
