@@ -27,6 +27,9 @@ import {
   useSocketStore,
 } from '@/stores/socketStore'
 import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
+import { useQueryClient } from '@tanstack/react-query'
+import { QUERY_KEY } from '@/constants/queryKey'
+import { BaroTalkChatListResponse } from '@/types/baroTalkTypes'
 
 interface UseChatSocketProps {
   chatRoomId: number | null
@@ -37,6 +40,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   const { getUserIdFromToken } = useAuth()
   const location = useLocation()
   const isLawyer = location.pathname.includes('lawyer-admin')
+  const queryClient = useQueryClient()
 
   // Zustand 상태
   const socket = useSocket()
@@ -450,9 +454,66 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     }
 
     // 사용자 상태 변경 이벤트 처리
-    const handleUserStatusChanged = (data: any) => {
+    const handleUserStatusChanged = (data: Array<{ userType: string; userId: number; userActivate: boolean }>) => {
       console.log('🔄 [SOCKET] 사용자 상태 변경:', data)
-      // socketStore의 userStatuses 업데이트 로직 추가 가능
+
+      // 변호사 상태 변경만 처리
+      const lawyerStatusUpdates = data.filter(item => item.userType === 'LAWYER')
+
+      if (lawyerStatusUpdates.length > 0) {
+        console.log('🔍 [SOCKET] 변호사 상태 업데이트 대상:', lawyerStatusUpdates)
+
+        // 모든 가능한 쿼리 키로 캐시 업데이트 시도
+        const queryCache = queryClient.getQueryCache()
+        const allQueries = queryCache.getAll()
+
+        console.log('🔍 [SOCKET] 전체 쿼리 목록:', allQueries.map(q => q.queryKey))
+
+        // BARO_TALK_CHAT_LIST 쿼리 찾기
+        const chatListQueries = allQueries.filter(q =>
+          Array.isArray(q.queryKey) && q.queryKey[0] === QUERY_KEY.BARO_TALK_CHAT_LIST
+        )
+
+        console.log('🔍 [SOCKET] 채팅 리스트 쿼리:', chatListQueries.map(q => q.queryKey))
+
+        chatListQueries.forEach(query => {
+          queryClient.setQueryData(query.queryKey, (oldData: any) => {
+            if (!oldData) {
+              console.log('⚠️ [SOCKET] oldData가 없음')
+              return oldData
+            }
+
+            console.log('🔍 [SOCKET] oldData 구조:', oldData)
+
+            const newData = {
+              ...oldData,
+              pages: oldData.pages.map((page: BaroTalkChatListResponse) => ({
+                ...page,
+                chatRooms: page.chatRooms.map(room => {
+                  // 해당 변호사 ID와 일치하는 채팅방 찾기
+                  const statusUpdate = lawyerStatusUpdates.find(update => update.userId === room.chatRoomLawyer.lawyerId)
+
+                  if (statusUpdate) {
+                    const newStatus = statusUpdate.userActivate ? 'online' : 'offline'
+                    console.log(
+                      `✅ [SOCKET] 변호사 ${room.chatRoomLawyer.lawyerId} 상태 업데이트: ${room.partnerOnlineStatus} → ${newStatus}`
+                    )
+                    return {
+                      ...room,
+                      partnerOnlineStatus: newStatus as 'online' | 'offline' | 'away',
+                    }
+                  }
+
+                  return room
+                }),
+              })),
+            }
+
+            console.log('🔍 [SOCKET] newData 구조:', newData)
+            return newData
+          })
+        })
+      }
     }
 
     // 채팅방 상태 변경 이벤트 처리
