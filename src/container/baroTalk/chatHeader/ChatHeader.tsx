@@ -127,7 +127,7 @@ const ChatHeader = ({
           </div>
         )}
         <button className={styles['chat-end-button']} onClick={handleEndChat}>
-          상담 끝내기
+          신고 하기
         </button>
       </section>
     </header>

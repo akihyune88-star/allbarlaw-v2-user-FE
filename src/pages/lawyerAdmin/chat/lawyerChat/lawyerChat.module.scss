@@ -4,6 +4,7 @@
   background-color: $color-bg-gray-03;
   height: calc(100vh - 5.25rem - 44px); // 헤더와 푸터 높이 제외
   padding: 1.5rem;
+  overflow: hidden; // 바깥 영역 스크롤 제거
 }
 
 .connectionStatusWrapper {

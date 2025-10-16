@@ -160,60 +160,62 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
           <p>변호사와 1:1 상담을 진행할 수 있습니다.</p>
         </div>
       )}
-      <div className={styles.chatBody}>
-        {messages.length === 0 ? (
-          <div className={styles['empty-messages']}>
-            <p>아직 메시지가 없습니다.</p>
-            <p>첫 번째 메시지를 보내보세요!</p>
-          </div>
-        ) : (
-          messages.map(msg => {
-            // 🆕 시스템 메시지 체크 (senderId가 0이고 특정 내용을 포함하는 경우)
-            const isSystemMessage =
-              msg.chatMessageSenderId === 0 &&
-              (msg.chatMessageContent.includes('상담을 종료했습니다') ||
-                msg.chatMessageContent.includes('나갔습니다') ||
-                msg.chatMessageContent.includes('종료되었습니다'))
+      <div className={styles['chat-body-wrapper']}>
+        <div className={styles.chatBody}>
+          {messages.length === 0 ? (
+            <div className={styles['empty-messages']}>
+              <p>아직 메시지가 없습니다.</p>
+              <p>첫 번째 메시지를 보내보세요!</p>
+            </div>
+          ) : (
+            messages.map(msg => {
+              // 🆕 시스템 메시지 체크 (senderId가 0이고 특정 내용을 포함하는 경우)
+              const isSystemMessage =
+                msg.chatMessageSenderId === 0 &&
+                (msg.chatMessageContent.includes('상담을 종료했습니다') ||
+                  msg.chatMessageContent.includes('나갔습니다') ||
+                  msg.chatMessageContent.includes('종료되었습니다'))
 
-            if (isSystemMessage) {
-              // 시스템 메시지는 중앙에 회색으로 표시
+              if (isSystemMessage) {
+                // 시스템 메시지는 중앙에 회색으로 표시
+                return (
+                  <div key={msg.chatMessageId} className={styles['system-message']}>
+                    <span className={styles['system-message-text']}>{msg.chatMessageContent}</span>
+                    <span className={styles['system-message-time']}>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
+                  </div>
+                )
+              }
+
+              // 일반 메시지는 기존 방식으로 렌더링
+              const isMyMessage = msg.chatMessageSenderType === type
+
+              // 읽음 상태 판단: 내가 보낸 메시지에서 상대방이 읽었는지 확인
+              const isReadByOther = isMyMessage ? msg.chatMessageIsRead || false : false
+
               return (
-                <div key={msg.chatMessageId} className={styles['system-message']}>
-                  <span className={styles['system-message-text']}>{msg.chatMessageContent}</span>
-                  <span className={styles['system-message-time']}>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
-                </div>
+                <ChatBubble
+                  key={msg.chatMessageId}
+                  message={msg.chatMessageContent}
+                  direction={isMyMessage ? 'right' : 'left'}
+                  color={isMyMessage ? COLOR.green_01 : COLOR.white}
+                  colorText={isMyMessage ? COLOR.white : COLOR.black}
+                  profileImage={msg.chatMessageSenderType === 'LAWYER' ? 'https://picsum.photos/200/300' : undefined}
+                  // 읽음 상태 관련 props
+                  isRead={isReadByOther} // 상대방이 읽었는지 여부
+                  showReadStatus={isMyMessage} // 내가 보낸 메시지만 읽음 상태 표시
+                  status={msg.status || 'sent'}
+                >
+                  <div>
+                    <span>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
+                  </div>
+                </ChatBubble>
               )
-            }
-
-            // 일반 메시지는 기존 방식으로 렌더링
-            const isMyMessage = msg.chatMessageSenderType === type
-
-            // 읽음 상태 판단: 내가 보낸 메시지에서 상대방이 읽었는지 확인
-            const isReadByOther = isMyMessage ? msg.chatMessageIsRead || false : false
-
-            return (
-              <ChatBubble
-                key={msg.chatMessageId}
-                message={msg.chatMessageContent}
-                direction={isMyMessage ? 'right' : 'left'}
-                color={isMyMessage ? COLOR.green_01 : COLOR.white}
-                colorText={isMyMessage ? COLOR.white : COLOR.black}
-                profileImage={msg.chatMessageSenderType === 'LAWYER' ? 'https://picsum.photos/200/300' : undefined}
-                // 읽음 상태 관련 props
-                isRead={isReadByOther} // 상대방이 읽었는지 여부
-                showReadStatus={isMyMessage} // 내가 보낸 메시지만 읽음 상태 표시
-                status={msg.status || 'sent'}
-              >
-                <div>
-                  <span>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
-                </div>
-              </ChatBubble>
-            )
-          })
-        )}
+            })
+          )}
+        </div>
+        {/* 채팅 입력창 또는 상태 메시지 */}
+        {renderChatInput()}
       </div>
-      {/* 채팅 입력창 또는 상태 메시지 */}
-      {renderChatInput()}
     </>
   )
 }
