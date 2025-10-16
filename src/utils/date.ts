@@ -20,10 +20,17 @@ export const calculateTimeDifference = (time: string | number | Date): number | 
 }
 
 /**
- * 주어진 시간(time)과 현재 시간 사이의 경과 시간을 "N일 전", "N시간 전", "N분 전", "방금 전" 등으로 포맷팅합니다.
+ * 주어진 시간(time)과 현재 시간 사이의 경과 시간을 포맷팅합니다.
+ * - 24시간 이내: 시간으로 표시 (예: "14시간 전")
+ * - 25시간 이후 ~ 1주일 이내: 일로 표시 (예: "3일 전")
+ * - 1주일 ~ 2주일 이내: "1주 전"
+ * - 2주일 ~ 3주일 이내: "2주 전"
+ * - 3주일 ~ 4주일 이내: "3주 전"
+ * - 4주일 ~ 1달 이내: "1달 전"
+ * - 1달 이후: 날짜 표기 (예: "8월 15일")
  *
  * @param time - 경과 시간을 계산할 기준 시간.
- * @returns 포맷팅된 시간 문자열 (예: "5분 전"). time 형식이 유효하지 않으면 빈 문자열을 반환합니다.
+ * @returns 포맷팅된 시간 문자열. time 형식이 유효하지 않으면 빈 문자열을 반환합니다.
  */
 export const formatTimeAgo = (time: string | number | Date): string => {
   const differenceInMillis = calculateTimeDifference(time)
@@ -37,16 +44,47 @@ export const formatTimeAgo = (time: string | number | Date): string => {
   const hours = Math.floor(minutes / 60)
   const days = Math.floor(hours / 24)
 
-  if (days > 0) {
-    return `${days}일 전`
-  } else if (hours > 0) {
-    return `${hours}시간 전`
-  } else if (minutes > 0) {
-    return `${minutes}분 전`
-  } else {
-    // return `${seconds}초 전`; // 초 단위 표시를 원하면 이 줄 사용
-    return '방금 전' // 1분 미만은 "방금 전"으로 통일
+  // 24시간 이내: 시간으로 표시
+  if (hours < 24) {
+    if (hours > 0) {
+      return `${hours}시간 전`
+    } else if (minutes > 0) {
+      return `${minutes}분 전`
+    } else {
+      return '방금 전'
+    }
   }
+
+  // 25시간 이후 ~ 1주일 이내: 일로 표시
+  if (days < 7) {
+    return `${days}일 전`
+  }
+
+  // 1주일 ~ 2주일 이내: "1주 전"
+  if (days < 14) {
+    return '1주 전'
+  }
+
+  // 2주일 ~ 3주일 이내: "2주 전"
+  if (days < 21) {
+    return '2주 전'
+  }
+
+  // 3주일 ~ 4주일 이내: "3주 전"
+  if (days < 28) {
+    return '3주 전'
+  }
+
+  // 4주일 ~ 1달 이내: "1달 전"
+  if (days < 30) {
+    return '1달 전'
+  }
+
+  // 1달 이후: 날짜 표기 (예: "8월 15일")
+  const pastDate = new Date(time)
+  const month = pastDate.getMonth() + 1
+  const day = pastDate.getDate()
+  return `${month}월 ${day}일`
 }
 
 export const getRelativeTimeString = (date: Date | string): string => {
