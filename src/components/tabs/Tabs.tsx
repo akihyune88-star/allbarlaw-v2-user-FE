@@ -5,7 +5,6 @@ import styles from './tabs.module.scss'
 type MenuItem = {
   path: string
   name: string
-  itemWidth?: number
 }
 
 type TabsContextType = {
@@ -29,7 +28,7 @@ const List = ({ children, className }: { children: React.ReactNode; className?: 
 }
 
 // Item Component
-const Item = ({ path, children, itemWidth }: { path: string; children: React.ReactNode; itemWidth?: number }) => {
+const Item = ({ path, children }: { path: string; children: React.ReactNode }) => {
   const { selectedPath, onSelect } = useTabsContext()
   const isSelected = selectedPath === path
 
@@ -43,7 +42,6 @@ const Item = ({ path, children, itemWidth }: { path: string; children: React.Rea
     <div
       className={`${styles['tab-item']} ${isSelected ? styles.selected : ''}`}
       onClick={handleClick}
-      style={{ '--item-width': itemWidth ? `${itemWidth}px` : undefined } as React.CSSProperties}
     >
       <span>{children}</span>
     </div>
@@ -60,7 +58,15 @@ type TabsProps = {
   onBeforeChange?: (_path: string) => boolean | void
 }
 
-const Tabs = ({ children, items, initialPath, selectedPath: controlledSelectedPath, onChange, onBeforeChange, className }: TabsProps) => {
+const Tabs = ({
+  children,
+  items,
+  initialPath,
+  selectedPath: controlledSelectedPath,
+  onChange,
+  onBeforeChange,
+  className,
+}: TabsProps) => {
   const location = useLocation()
   const [internalSelectedPath, setInternalSelectedPath] = useState(initialPath || items?.[0]?.path || '')
 
@@ -93,9 +99,9 @@ const Tabs = ({ children, items, initialPath, selectedPath: controlledSelectedPa
 
         if (matchingItem) {
           // 가장 긴 매칭 path 선택 (더 구체적인 경로 우선)
-          const longestMatch = items?.filter(item =>
-            pathname === item.path || pathname.startsWith(item.path + '/')
-          ).sort((a, b) => b.path.length - a.path.length)[0]
+          const longestMatch = items
+            ?.filter(item => pathname === item.path || pathname.startsWith(item.path + '/'))
+            .sort((a, b) => b.path.length - a.path.length)[0]
 
           if (longestMatch) {
             setInternalSelectedPath(longestMatch.path)
@@ -142,7 +148,7 @@ const Tabs = ({ children, items, initialPath, selectedPath: controlledSelectedPa
       {children || (
         <List className={className}>
           {items?.map(item => (
-            <Item key={item.path} path={item.path} itemWidth={item.itemWidth}>
+            <Item key={item.path} path={item.path}>
               {item.name}
             </Item>
           ))}
