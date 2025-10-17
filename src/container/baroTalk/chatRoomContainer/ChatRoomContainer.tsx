@@ -3,7 +3,15 @@ import ChatBody from '@/container/baroTalk/chatBody/ChatBody'
 import styles from './chatRoomContainer.module.scss'
 import { useCallback } from 'react'
 import { useLeaveChatRoom } from '@/hooks/queries/useBaroTalk'
-import { useMessages, useChatStatus, useRoomInfo, useSetChatRoomId, useSocket, useIsConnected, useChatRooms } from '@/stores/socketStore'
+import {
+  useMessages,
+  useChatStatus,
+  useRoomInfo,
+  useSetChatRoomId,
+  useSocket,
+  useIsConnected,
+  useChatRooms,
+} from '@/stores/socketStore'
 import { useAuth } from '@/contexts/AuthContext'
 import { useNavigate, useLocation } from 'react-router-dom'
 
@@ -25,11 +33,8 @@ const ChatRoomContainer = ({
   isMobile,
 }: ChatRoomContainerProps) => {
   // Zustand 상태 구독
-  const messages = useMessages()
-  const chatStatus = useChatStatus()
   const roomInfo = useRoomInfo()
   const socket = useSocket()
-  const isConnected = useIsConnected()
   const setChatRoomId = useSetChatRoomId()
   const chatRooms = useChatRooms()
   const { userKeyId } = useAuth()

@@ -21,7 +21,7 @@ const ChatBubble = ({
   color = '#22c55e',
   colorText = '#fff',
   direction = 'left',
-  maxWidth = '80vw',
+  maxWidth = '400px',
   profileImage,
   children,
   isRead = false,

@@ -5,24 +5,34 @@ import { useGetLawyerChatList } from '@/hooks/queries/useBaroTalk'
 import { useAuth } from '@/contexts/AuthContext'
 import React, { useEffect, useState, useRef } from 'react'
 import { toggleClipChatRoom, isClippedChatRoom, sortChatRoomsByClip } from '@/utils/localStorage'
-import { useSetChatRoomId, useChatRoomId } from '@/stores/socketStore'
-import { useNavigate } from 'react-router-dom'
-import { ROUTER } from '@/routes/routerConstant'
+import { useSetChatRoomId } from '@/stores/socketStore'
 import HeaderPortal from '@/components/headerPortal/HeaderPortal'
+import ChatModal from '@/components/chatModal/ChatModal'
 
 interface LawyerChatListProps {
   onChatRoomSelect?: (_chatRoomId: number) => void
 }
 
+interface ChatModalState {
+  chatRoomId: number
+  clientName: string
+  clientId: number
+  userLeft: boolean
+  zIndex: number
+  position: { x: number; y: number }
+}
+
 const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
   const { getLawyerIdFromToken } = useAuth()
-  const lawyerId = getLawyerIdFromToken() // 임시로 userId를 lawyerId로 사용
-  const currentChatRoomId = useChatRoomId()
+  const lawyerId = getLawyerIdFromToken()
   const [clipStates, setClipStates] = useState<Record<number, boolean>>({})
   const setChatRoomId = useSetChatRoomId()
-  const navigate = useNavigate()
   const observerRef = useRef<HTMLDivElement>(null)
   const disabledStatus = ['COMPLETED', 'CANCELLED', 'REJECTED']
+
+  // 멀티 모달 상태 관리
+  const [openModals, setOpenModals] = useState<ChatModalState[]>([])
+  const [nextZIndex, setNextZIndex] = useState(1000)
 
   // 초기 마운트 시 한 번만 로그
   useEffect(() => {
@@ -73,7 +83,12 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
   const getStatusBadge = (status: ChatRoomStatus) => {
     switch (status) {
       case 'PENDING':
-        return <span className={`${styles.statusBadge} ${styles.pending}`}>답변 대기중</span>
+        return (
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <span className={`${styles.statusBadge} ${styles.newQuestion}`}>신규 질문</span>
+            <span className={`${styles.statusBadge} ${styles.pending}`}>답변하기</span>
+          </div>
+        )
       case 'ACTIVE':
         return <span className={`${styles.statusBadge} ${styles.waiting}`}>채팅중</span>
       case 'CONSULTING':
@@ -86,7 +101,7 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
   }
 
   const getResponseStatus = (responseTime: string | null, status: ChatRoomStatus) => {
-    if (!responseTime) {
+    if (status === 'PENDING' || !responseTime) {
       return <span className={styles.pendingResponse}>답변 대기중</span>
     }
 
@@ -141,29 +156,74 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
       return
     }
 
+    // 이미 열려있는 모달인지 확인
+    const existingModal = openModals.find(modal => modal.chatRoomId === chatRoom.chatRoomId)
+    if (existingModal) {
+      // 이미 열려있으면 해당 모달을 맨 앞으로 가져오기
+      handleModalFocus(chatRoom.chatRoomId)
+      return
+    }
+
     console.log('🔘 [LAWYER LIST] 채팅방 클릭:', {
       chatRoomId: chatRoom.chatRoomId,
       clientName: chatRoom.clientName,
       status: chatRoom.chatRoomStatus,
     })
 
-    // 1. 전역 상태에 채팅방 ID 설정
+    // 전역 상태에 채팅방 ID 설정
     setChatRoomId(chatRoom.chatRoomId)
     console.log('✅ [LAWYER LIST] setChatRoomId 호출됨:', chatRoom.chatRoomId)
 
-    // 2. LawyerChat 페이지로 네비게이션
-    navigate(ROUTER.LAWYER_ADMIN_CHAT, {
-      state: {
-        userLeft: chatRoom.userLeft,
-        clientName: chatRoom.clientName,
-        clientId: chatRoom.clientId,
-      },
-    })
+    // 모달 위치 계산 (계단식 배치)
+    const offset = openModals.length * 30
+    const position = {
+      x: 100 + offset,
+      y: 50 + offset,
+    }
 
-    // 3. 만약 onChatRoomSelect prop이 있다면 호출 (선택사항)
+    // 새 모달 추가
+    const newModal: ChatModalState = {
+      chatRoomId: chatRoom.chatRoomId,
+      clientName: chatRoom.clientName,
+      clientId: chatRoom.clientId,
+      userLeft: chatRoom.userLeft || false,
+      zIndex: nextZIndex,
+      position,
+    }
+
+    setOpenModals(prev => [...prev, newModal])
+    setNextZIndex(prev => prev + 1)
+
     if (onChatRoomSelect) {
       onChatRoomSelect(chatRoom.chatRoomId)
     }
+  }
+
+  // 모달 닫기
+  const handleCloseModal = (chatRoomId: number) => {
+    setOpenModals(prev => prev.filter(modal => modal.chatRoomId !== chatRoomId))
+    console.log('🔴 [MODAL] 모달 닫힘:', chatRoomId)
+  }
+
+  // 모달 포커스 (맨 앞으로 가져오기)
+  const handleModalFocus = (chatRoomId: number) => {
+    setOpenModals(prev => {
+      const modal = prev.find(m => m.chatRoomId === chatRoomId)
+      if (!modal) return prev
+
+      const otherModals = prev.filter(m => m.chatRoomId !== chatRoomId)
+      const updatedModal = { ...modal, zIndex: nextZIndex }
+
+      setNextZIndex(nextZIndex + 1)
+      return [...otherModals, updatedModal]
+    })
+  }
+
+  // 모달 위치 변경
+  const handlePositionChange = (chatRoomId: number, newPosition: { x: number; y: number }) => {
+    setOpenModals(prev =>
+      prev.map(modal => (modal.chatRoomId === chatRoomId ? { ...modal, position: newPosition } : modal))
+    )
   }
 
   if (isLoading) {
@@ -180,66 +240,80 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
       <HeaderPortal>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 600 }}>채팅 상담 목록</h2>
-          <span style={{ fontSize: '0.875rem', color: '#666' }}>
-            총 {chatRooms.length}개의 상담
-          </span>
+          <span style={{ fontSize: '0.875rem', color: '#666' }}>총 {chatRooms.length}개의 상담</span>
         </div>
       </HeaderPortal>
-      
+
       <div className={styles.container}>
         <table className={styles.table}>
-        <thead>
-          <tr>
-            <th className={styles.clipColumn}></th>
-            <th>No.</th>
-            <th>의뢰인명</th>
-            <th>채팅수</th>
-            <th>변호사명</th>
-            <th>채팅수</th>
-            <th>질문 일시</th>
-            <th>답변 일시</th>
-            <th>의뢰인 채팅여부</th>
-          </tr>
-        </thead>
-        <tbody>
-          {chatRooms.map((room: LawyerChatRoom) => {
-            const isDisabled = disabledStatus.includes(room.chatRoomStatus)
-            return (
-              <tr
-                key={room.chatRoomId}
-                onClick={() => !isDisabled && handleChatRoomClick(room)}
-                className={`${styles.clickableRow} ${isDisabled ? styles.disabled : ''}`}
-              >
-                <td className={styles.clipColumn}>
-                  <button
-                    className={`${styles.clipButton} ${clipStates[room.chatRoomId] ? styles.clipped : ''} ${
-                      isDisabled ? styles.disabled : ''
-                    }`}
-                    onClick={e => !isDisabled && handleClipRoom(room.chatRoomId, e)}
-                    disabled={isDisabled}
-                  >
-                    <SvgIcon name='clip' size={16} />
-                  </button>
-                </td>
-                <td>{room.chatRoomId}</td>
-                <td>{room.clientName}</td>
-                <td className={styles.chatCount}>{room.clientMessageCount}</td>
-                <td>{room.lawyerName}</td>
-                <td className={styles.chatCount}>{room.lawyerMessageCount}</td>
-                <td>{formatDateTime(room.chatRoomCreatedAt)}</td>
-                <td>{getResponseStatus(room.lawyerFirstResponseAt, room.chatRoomStatus)}</td>
-                <td>{getStatusBadge(room.chatRoomStatus)}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+          <thead>
+            <tr>
+              <th className={styles.clipColumn}></th>
+              <th>No.</th>
+              <th>의뢰인명</th>
+              <th>채팅수</th>
+              <th>변호사명</th>
+              <th>채팅수</th>
+              <th>질문 일시</th>
+              <th>답변 일시</th>
+              <th>의뢰인 채팅여부</th>
+            </tr>
+          </thead>
+          <tbody>
+            {chatRooms.map((room: LawyerChatRoom) => {
+              const isDisabled = disabledStatus.includes(room.chatRoomStatus)
+              return (
+                <tr
+                  key={room.chatRoomId}
+                  onClick={() => !isDisabled && handleChatRoomClick(room)}
+                  className={`${styles.clickableRow} ${isDisabled ? styles.disabled : ''}`}
+                >
+                  <td className={styles.clipColumn}>
+                    <button
+                      className={`${styles.clipButton} ${clipStates[room.chatRoomId] ? styles.clipped : ''} ${
+                        isDisabled ? styles.disabled : ''
+                      }`}
+                      onClick={e => !isDisabled && handleClipRoom(room.chatRoomId, e)}
+                      disabled={isDisabled}
+                    >
+                      <SvgIcon name='clip' size={16} />
+                    </button>
+                  </td>
+                  <td>{room.chatRoomId}</td>
+                  <td>{room.clientName}</td>
+                  <td className={styles.chatCount}>{room.clientMessageCount}</td>
+                  <td>{room.lawyerName}</td>
+                  <td className={styles.chatCount}>{room.lawyerMessageCount}</td>
+                  <td>{formatDateTime(room.chatRoomCreatedAt)}</td>
+                  <td>{getResponseStatus(room.lawyerFirstResponseAt, room.chatRoomStatus)}</td>
+                  <td>{getStatusBadge(room.chatRoomStatus)}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
 
-      {/* IntersectionObserver 타겟 요소 */}
-      <div ref={observerRef} style={{ height: '20px', width: '100%' }}>
-        {isFetchingNextPage && <div className={styles.loadingMore}>더 많은 데이터를 불러오는 중...</div>}
+        {/* IntersectionObserver 타겟 요소 */}
+        <div ref={observerRef} style={{ height: '20px', width: '100%' }}>
+          {isFetchingNextPage && <div className={styles.loadingMore}>더 많은 데이터를 불러오는 중...</div>}
+        </div>
       </div>
-    </div>
+
+      {/* 멀티 채팅 모달 */}
+      {openModals.map(modal => (
+        <ChatModal
+          key={modal.chatRoomId}
+          chatRoomId={modal.chatRoomId}
+          clientName={modal.clientName}
+          clientId={modal.clientId}
+          userLeft={modal.userLeft}
+          onClose={() => handleCloseModal(modal.chatRoomId)}
+          zIndex={modal.zIndex}
+          position={modal.position}
+          onFocus={() => handleModalFocus(modal.chatRoomId)}
+          onPositionChange={newPosition => handlePositionChange(modal.chatRoomId, newPosition)}
+        />
+      ))}
     </>
   )
 }

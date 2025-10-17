@@ -4,8 +4,8 @@ import styles from './chatBody.module.scss'
 import ChatWaitingBlogList from '../chatWaitingBlogList/ChatWaitingBlogList'
 import InputBox from '@/components/inputBox/InputBox'
 import SvgIcon from '@/components/SvgIcon'
-import React, { ChangeEvent, useState, useCallback } from 'react'
-import { ChatMessage, ChatRoomStatus } from '@/types/baroTalkTypes'
+import React, { ChangeEvent, useState, useCallback, useRef, useEffect } from 'react'
+import { ChatMessage } from '@/types/baroTalkTypes'
 import { formatTimeAgo } from '@/utils/date'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useMessages, useChatStatus, useSocket, useIsConnected, useRoomInfo, useAddMessage } from '@/stores/socketStore'
@@ -31,8 +31,19 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
 
   const [message, setMessage] = useState('')
   const isMobile = useMediaQuery('(max-width: 768px)')
+  const chatBodyRef = useRef<HTMLDivElement>(null)
 
-  console.log('🗋 ChatBody: userLeft', userLeft)
+  // 스크롤을 맨 아래로 이동하는 함수
+  const scrollToBottom = () => {
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight
+    }
+  }
+
+  // 메시지가 변경될 때마다 스크롤을 맨 아래로
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value)
@@ -161,7 +172,7 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
         </div>
       )}
       <div className={styles['chat-body-wrapper']}>
-        <div className={styles.chatBody}>
+        <div className={styles.chatBody} ref={chatBodyRef}>
           {messages.length === 0 ? (
             <div className={styles['empty-messages']}>
               <p>아직 메시지가 없습니다.</p>

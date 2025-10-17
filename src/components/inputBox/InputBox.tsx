@@ -29,6 +29,7 @@ const InputBox = ({
   disabled = false,
   className = '',
   style,
+  onIconClick,
 }: InputBoxProps) => {
   return (
     <div className={`${styles['input-container']} ${className}`} style={style}>
@@ -44,7 +45,7 @@ const InputBox = ({
         disabled={disabled}
         style={style}
       />
-      {icon && <div className={styles.icon}>{icon}</div>}
+      {icon && <div className={styles.icon} onClick={onIconClick}>{icon}</div>}
     </div>
   )
 }
