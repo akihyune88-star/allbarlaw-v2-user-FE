@@ -39,7 +39,7 @@
       }
 
       &:hover:not(:disabled) {
-        background-color: darken($color-green-01, 10%);
+        // background-color: darken($color-green-01, 10%);
       }
     }
   }

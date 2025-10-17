@@ -52,11 +52,9 @@ const getUserIdFromToken = (): number | null => {
 // 토큰에서 변호사 ID 추출
 const getLawyerIdFromToken = (): number | null => {
   const token = localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN)
-  console.log('🟢 getLawyerIdFromToken: token', token)
   if (!token) return null
 
   const decoded = decodeToken(token)
-  console.log('🟢 getLawyerIdFromToken: decoded', decoded)
   if (!decoded) return null
 
   // 토큰에서 변호사 ID 추출 (API 응답 구조에 따라 필드명 조정 필요)
@@ -78,19 +76,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const hasToken = !!(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN))
     const storedUserInfo = localStorage.getItem(LOCAL.USER_INFO)
 
-    console.log('🔍 checkLoginStatus 실행:')
-    console.log('- hasToken:', hasToken)
-    console.log('- storedUserInfo:', storedUserInfo)
-    console.log('- LOCAL.TOKEN:', LOCAL.TOKEN)
-
     if (hasToken && storedUserInfo) {
       try {
         const parsedUserInfo: UserInfo = JSON.parse(storedUserInfo)
-        console.log('- parsedUserInfo:', parsedUserInfo)
         setUserInfo(parsedUserInfo)
         setIsLoggedIn(true)
         setIsLawyer(parsedUserInfo.userType === 'lawyer')
-        console.log('- 로그인 성공, isLawyer:', parsedUserInfo.userType === 'lawyer')
       } catch (error) {
         console.error('Failed to parse user info:', error)
         logout()

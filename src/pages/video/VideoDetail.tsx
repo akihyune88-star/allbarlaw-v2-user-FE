@@ -15,13 +15,14 @@ import AiVideoRecommender from '@/container/video/aiVideoRecommender/AiVideoReco
 import { useState, useEffect } from 'react'
 import { useVideoKeep } from '@/hooks/queries/useGetVideoList'
 import { copyUrlToClipboard } from '@/utils/clipboard'
-import { useRecommendationLegalTerm, useRecommendationVideo } from '@/hooks/queries/useRecommendation'
+import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import RecommendationLawyer from '@/container/recommendation/RecommendationLawyer'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import AiVideoCarousel from '@/container/recommendation/aiVideoCarousel/AiVideoCarousel'
 import { useAuth } from '@/contexts/AuthContext'
 import ConfirmModal from '@/components/modal/ConfirmModal'
 import { ROUTER } from '@/routes/routerConstant'
+import { useRandomVideoList } from '@/hooks/queries/useRandomVideoList'
 
 const VideoDetail = () => {
   const { videoId } = useParams<{ videoId: string }>()
@@ -97,9 +98,14 @@ const VideoDetail = () => {
     videoCaseIds: [data?.videoCaseId || 0],
   })
 
-  const { data: recommendationVideo } = useRecommendationVideo({
-    subcategoryId: data?.subcategoryId || 'all',
-    take: 3,
+  // const { data: recommendationVideo } = useRecommendationVideo({
+  //   subcategoryId: data?.subcategoryId || 0,
+  //   take: 3,
+  // })
+
+  const { videoList: recommendationVideo } = useRandomVideoList({
+    subcategoryId: data?.subcategoryId || 0,
+    take: 9,
   })
 
   const handleLawyerClick = (lawyerId: number) => {
@@ -166,7 +172,9 @@ const VideoDetail = () => {
                     />
                     <AiVideoCarousel subcategoryId={data?.subcategoryId || 'all'} take={3} />
                     <RecommendationLawyer />
-                    <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
+                    {recommendationLegalTerm && recommendationLegalTerm.length > 0 && (
+                      <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
+                    )}
                   </div>
                 )}
               </div>

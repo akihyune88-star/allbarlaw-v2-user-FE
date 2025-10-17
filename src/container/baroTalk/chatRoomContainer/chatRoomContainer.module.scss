@@ -1,8 +1,9 @@
 .chat-content {
-  gap: 2.375rem;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  overflow: hidden !important; // 컨테이너 자체 스크롤 제거
+  gap: 0 !important; // 전역 gap 제거
 }
 
 @media (max-width: $breakpoint-desktop) {

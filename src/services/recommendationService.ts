@@ -40,7 +40,6 @@ export const recommendationService = {
     const { subcategoryId, take, excludeIds } = request
 
     const params = new URLSearchParams()
-    if (subcategoryId !== undefined) params.append('subcategoryId', subcategoryId.toString())
     if (take !== undefined) params.append('take', take.toString())
     if (excludeIds !== undefined) params.append('excludeIds', `[${excludeIds}]`)
 

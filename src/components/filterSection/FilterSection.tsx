@@ -29,7 +29,12 @@ const FilterSection = ({ title, filterList, onClick, activeValue }: FilterSectio
               key={filter.filterName}
               tag={filter.filterName}
               onClick={() => onClick(filter.sortType)}
-              className={filter.sortType === activeValue ? styles['active-tag'] : ''}
+              className={
+                filter.sortType === activeValue ||
+                (filter.sortType === 'all' && activeValue === undefined)
+                  ? styles['active-tag']
+                  : ''
+              }
             />
           ))}
         </div>

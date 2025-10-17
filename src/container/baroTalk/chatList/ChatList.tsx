@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { formatTimeAgo } from '@/utils/date'
 import styles from './chatList.module.scss'
 import Divider from '@/components/divider/Divider'
@@ -7,7 +7,7 @@ import { useGetBaroTalkChatList } from '@/hooks/queries/useBaroTalk'
 import { ChatRoom } from '@/types/baroTalkTypes'
 import { ROUTER } from '@/routes/routerConstant'
 import { useNavigate } from 'react-router-dom'
-import useUserStatus from '@/hooks/useUserStatus'
+import { useChatRooms, useSetChatRooms } from '@/stores/socketStore'
 
 type LawyerChatItemProps = {
   name: string
@@ -69,7 +69,13 @@ type ChatListProps = {
 }
 
 const ChatList = ({ onChatRoomClick }: ChatListProps) => {
-  // 채팅방 리스트 데이터 불러오기
+  const navigate = useNavigate()
+
+  // Zustand 상태 및 액션
+  const chatRooms = useChatRooms()
+  const setChatRooms = useSetChatRooms()
+
+  // React Query로 초기 데이터만 로드
   const {
     data: chatPages,
     isLoading,
@@ -79,41 +85,20 @@ const ChatList = ({ onChatRoomClick }: ChatListProps) => {
     chatRoomSort: 'desc',
   })
 
-  const navigate = useNavigate()
-  // 모든 채팅방 데이터를 하나의 배열로 합치기
-  const allChatRooms = useMemo(() => {
-    if (!chatPages) return []
-    return chatPages.pages.flatMap(page => page.chatRooms)
-  }, [chatPages])
-
-  // 변호사 ID들 추출
-  const partnerIds = useMemo(() => {
-    return allChatRooms.map(room => room.chatRoomLawyer.lawyerId)
-  }, [allChatRooms])
-
-  // 서버 가이드 방식으로 상태 관리
-  const userStatuses = useUserStatus(partnerIds)
-
-  // 🔍 변호사 로그인 시나리오 디버깅
+  // React Query 데이터를 Zustand에 동기화
   useEffect(() => {
-    console.log('🔍 ChatList - userStatuses 변경됨:', userStatuses)
-  }, [userStatuses])
+    if (chatPages && chatPages.pages.length > 0) {
+      const firstPage = chatPages.pages[0]
+      const allRooms = chatPages.pages.flatMap(page => page.chatRooms)
 
-  // 🔍 변호사 로그인 시나리오 디버깅
-  useEffect(() => {
-    if (allChatRooms.length > 0) {
-      console.log(
-        '🔍 ChatList - 변호사 상태 확인:',
-        allChatRooms.map(room => ({
-          lawyerId: room.chatRoomLawyer.lawyerId,
-          lawyerName: room.chatRoomLawyer.lawyerName,
-          apiStatus: room.partnerOnlineStatus,
-          realtimeStatus: userStatuses[room.chatRoomLawyer.lawyerId],
-          finalStatus: userStatuses[room.chatRoomLawyer.lawyerId] || room.partnerOnlineStatus,
-        }))
-      )
+      console.log('🔍 [ChatList] React Query 데이터를 Zustand에 저장:', {
+        roomCount: allRooms.length,
+        total: firstPage.total,
+      })
+
+      setChatRooms(allRooms, firstPage.total, firstPage.page, firstPage.totalPages)
     }
-  }, [allChatRooms, userStatuses])
+  }, [chatPages, setChatRooms])
 
   // 로딩 상태 처리
   if (isLoading) {
@@ -149,26 +134,24 @@ const ChatList = ({ onChatRoomClick }: ChatListProps) => {
 
       <section className={styles['chat-list-wrapper']}>
         <div className={styles['chat-list-content']}>
-          {allChatRooms.length === 0
-            ? null
-            : allChatRooms.map((chatRoom: ChatRoom, index: number) => {
-                const lawyerId = chatRoom.chatRoomLawyer.lawyerId
-                const realtimeStatus = userStatuses[lawyerId] as 'online' | 'offline' | 'away' | undefined
-                const finalStatus = realtimeStatus || chatRoom.partnerOnlineStatus
-
-                return (
-                  <div key={chatRoom.chatRoomId} onClick={() => onChatRoomClick(chatRoom.chatRoomId)}>
-                    <LawyerChatItem
-                      name={chatRoom.chatRoomLawyer.lawyerName}
-                      profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
-                      lastMessage={chatRoom.chatRoomLastMessage.chatMessageContent}
-                      lastMessageTime={chatRoom.chatRoomLastMessage.chatMessageCreatedAt}
-                      partnerOnlineStatus={finalStatus}
-                    />
-                    {index !== allChatRooms.length - 1 && <Divider padding={0} />}
-                  </div>
-                )
-              })}
+          {chatRooms.length === 0 ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>채팅방이 없습니다</div>
+          ) : (
+            chatRooms.map((chatRoom: ChatRoom, index: number) => {
+              return (
+                <div key={chatRoom.chatRoomId} onClick={() => onChatRoomClick(chatRoom.chatRoomId)}>
+                  <LawyerChatItem
+                    name={chatRoom.chatRoomLawyer.lawyerName}
+                    profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
+                    lastMessage={chatRoom.chatRoomLastMessage.chatMessageContent}
+                    lastMessageTime={chatRoom.chatRoomLastMessage.chatMessageCreatedAt}
+                    partnerOnlineStatus={chatRoom.partnerOnlineStatus || 'offline'}
+                  />
+                  {index !== chatRooms.length - 1 && <Divider padding={0} />}
+                </div>
+              )
+            })
+          )}
         </div>
       </section>
     </main>

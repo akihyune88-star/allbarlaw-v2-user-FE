@@ -28,10 +28,30 @@
   gap: 1.5rem;
 }
 
-.lawyer-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+// 슬라이더 래퍼
+.slider-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+// 슬라이더 트랙 (모든 아이템을 일렬로 배치)
+.slider-track {
+  display: flex;
+  gap: 23px;
+  will-change: transform; // GPU 가속 활성화
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+// 각 변호사 카드 아이템
+.lawyer-item {
+  width: 234px;
+  flex-shrink: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0); // GPU 가속
+  -webkit-transform: translateZ(0);
 }
 
 .footer {
@@ -87,10 +107,16 @@
       }
     }
   }
-  .lawyer-list {
-    grid-template-columns: repeat(1, 1fr);
+
+  .slider-track {
+    flex-direction: column;
     gap: 0.625rem;
   }
+
+  .lawyer-item {
+    width: 100%;
+  }
+
   .lawyer-horizon {
     background-color: $color-white;
     padding: 1rem;

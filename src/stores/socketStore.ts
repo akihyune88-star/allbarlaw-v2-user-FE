@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { Socket } from 'socket.io-client'
-import { ChatMessage, ChatRoomStatus } from '@/types/baroTalkTypes'
+import { ChatMessage, ChatRoomStatus, ChatRoom } from '@/types/baroTalkTypes'
 
 interface SocketState {
   // 소켓 연결 상태
@@ -24,6 +24,15 @@ interface SocketState {
 
   // 채팅방별 메시지 캐시 (선택적)
   messageCache: Record<number, ChatMessage[]>
+
+  // tempId -> chatRoomId 매핑
+  tempIdToChatRoomMap: Record<string, number>
+
+  // 채팅방 리스트 (Zustand로 관리)
+  chatRooms: ChatRoom[]
+  chatRoomsTotal: number
+  chatRoomsPage: number
+  chatRoomsTotalPages: number
 }
 
 interface SocketActions {
@@ -45,7 +54,7 @@ interface SocketActions {
   addMessage: (_message: ChatMessage) => void
   updateMessage: (_messageId: number, _updates: Partial<ChatMessage>) => void
   updateMessageByTempId: (_tempId: string, _updates: Partial<ChatMessage>) => void
-  markMessagesAsRead: (_messageIds: number[]) => void 
+  markMessagesAsRead: (_messageIds: number[]) => void
   setChatStatus: (_status: ChatRoomStatus) => void
   setRoomInfo: (_roomInfo: any) => void
 
@@ -57,6 +66,22 @@ interface SocketActions {
   setMessagesForRoom: (_roomId: number, _messages: ChatMessage[]) => void
   addMessageToRoom: (_roomId: number, _message: ChatMessage) => void
   getMessagesForRoom: (_roomId: number) => ChatMessage[]
+  markMessagesAsReadInRoom: (_roomId: number, _messageIds: number[]) => void
+  updateMessageByTempIdInRoom: (_roomId: number, _tempId: string, _updates: Partial<ChatMessage>) => void
+
+  // tempId 매핑 관련 액션
+  setTempIdMapping: (_tempId: string, _chatRoomId: number) => void
+  getTempIdMapping: (_tempId: string) => number | undefined
+  deleteTempIdMapping: (_tempId: string) => void
+  clearTempIdMappings: () => void
+
+  // 채팅방 리스트 관련 액션
+  setChatRooms: (_chatRooms: ChatRoom[], _total: number, _page: number, _totalPages: number) => void
+  appendChatRooms: (_chatRooms: ChatRoom[], _total: number, _page: number, _totalPages: number) => void
+  updateChatRoomOnlineStatus: (_lawyerId: number, _status: 'online' | 'offline' | 'away') => void
+  updateChatRoomLastMessage: (_chatRoomId: number, _message: ChatMessage) => void
+  updateSingleChatRoom: (_chatRoomId: number, _updates: Partial<ChatRoom>) => void
+  clearChatRooms: () => void
 
   // 초기화
   resetChatRoom: () => void
@@ -79,6 +104,11 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
   roomInfo: null,
   userStatuses: {},
   messageCache: {},
+  tempIdToChatRoomMap: {},
+  chatRooms: [],
+  chatRoomsTotal: 0,
+  chatRoomsPage: 1,
+  chatRoomsTotalPages: 0,
 
   // 소켓 관련 액션
   setSocket: socket => {
@@ -136,28 +166,52 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
 
   updateMessage: (messageId, updates) => {
     set(state => ({
-      messages: state.messages.map(msg =>
-        msg.chatMessageId === messageId ? { ...msg, ...updates } : msg
-      ),
+      messages: state.messages.map(msg => (msg.chatMessageId === messageId ? { ...msg, ...updates } : msg)),
     }))
   },
 
   updateMessageByTempId: (tempId, updates) => {
-    set(state => ({
-      messages: state.messages.map(msg =>
-        msg.tempId === tempId ? { ...msg, ...updates } : msg
-      ),
-    }))
+    set(state => {
+      // messages 배열 업데이트
+      const updatedMessages = state.messages.map(msg => (msg.tempId === tempId ? { ...msg, ...updates } : msg))
+
+      // messageCache의 모든 방에서 해당 tempId를 가진 메시지 업데이트
+      const updatedCache: Record<number, ChatMessage[]> = {}
+      Object.keys(state.messageCache).forEach(roomIdStr => {
+        const roomId = Number(roomIdStr)
+        updatedCache[roomId] = state.messageCache[roomId].map(msg =>
+          msg.tempId === tempId ? { ...msg, ...updates } : msg
+        )
+      })
+
+      return {
+        messages: updatedMessages,
+        messageCache: updatedCache,
+      }
+    })
   },
 
   markMessagesAsRead: messageIds => {
-    set(state => ({
-      messages: state.messages.map(msg =>
-        messageIds.includes(msg.chatMessageId)
-          ? { ...msg, chatMessageIsRead: true }
-          : msg
-      ),
-    }))
+    set(state => {
+      // messages 배열 업데이트
+      const updatedMessages = state.messages.map(msg =>
+        messageIds.includes(msg.chatMessageId) ? { ...msg, chatMessageIsRead: true } : msg
+      )
+
+      // messageCache의 모든 방에서 해당 메시지들 읽음 처리
+      const updatedCache: Record<number, ChatMessage[]> = {}
+      Object.keys(state.messageCache).forEach(roomIdStr => {
+        const roomId = Number(roomIdStr)
+        updatedCache[roomId] = state.messageCache[roomId].map(msg =>
+          messageIds.includes(msg.chatMessageId) ? { ...msg, chatMessageIsRead: true } : msg
+        )
+      })
+
+      return {
+        messages: updatedMessages,
+        messageCache: updatedCache,
+      }
+    })
   },
 
   setChatStatus: chatStatus => {
@@ -229,6 +283,76 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
     return get().messageCache[roomId] || []
   },
 
+  markMessagesAsReadInRoom: (roomId, messageIds) => {
+    console.log('🔍 [STORE] markMessagesAsReadInRoom 호출:', {
+      roomId,
+      messageIds,
+      messageCount: messageIds.length,
+    })
+
+    set(state => {
+      const roomMessages = state.messageCache[roomId] || []
+      console.log('🔍 [STORE] 현재 방 메시지 수:', roomMessages.length)
+
+      const updatedMessages = roomMessages.map(msg => {
+        const shouldMarkAsRead = messageIds.includes(msg.chatMessageId)
+        if (shouldMarkAsRead) {
+          console.log('✅ [STORE] 메시지 읽음 처리:', {
+            messageId: msg.chatMessageId,
+            before: msg.chatMessageIsRead,
+            after: true,
+          })
+        }
+        return shouldMarkAsRead ? { ...msg, chatMessageIsRead: true } : msg
+      })
+
+      console.log('✅ [STORE] markMessagesAsReadInRoom 완료')
+
+      return {
+        messageCache: {
+          ...state.messageCache,
+          [roomId]: updatedMessages,
+        },
+      }
+    })
+  },
+
+  updateMessageByTempIdInRoom: (roomId, tempId, updates) => {
+    set(state => ({
+      messageCache: {
+        ...state.messageCache,
+        [roomId]: (state.messageCache[roomId] || []).map(msg =>
+          msg.tempId === tempId ? { ...msg, ...updates } : msg
+        ),
+      },
+    }))
+  },
+
+  // tempId 매핑 관련 액션
+  setTempIdMapping: (tempId, chatRoomId) => {
+    set(state => ({
+      tempIdToChatRoomMap: {
+        ...state.tempIdToChatRoomMap,
+        [tempId]: chatRoomId,
+      },
+    }))
+  },
+
+  getTempIdMapping: tempId => {
+    return get().tempIdToChatRoomMap[tempId]
+  },
+
+  deleteTempIdMapping: tempId => {
+    set(state => {
+      const { [tempId]: _, ...rest } = state.tempIdToChatRoomMap
+      return { tempIdToChatRoomMap: rest }
+    })
+  },
+
+  clearTempIdMappings: () => {
+    set({ tempIdToChatRoomMap: {} })
+  },
+
   // 초기화
   resetChatRoom: () => {
     set({
@@ -241,6 +365,86 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
 
   clearMessageCache: () => {
     set({ messageCache: {} })
+  },
+
+  // 채팅방 리스트 관련 액션
+  setChatRooms: (chatRooms, total, page, totalPages) => {
+    console.log('🔍 socketStore - 채팅방 리스트 설정:', { count: chatRooms.length, total, page, totalPages })
+    set({
+      chatRooms,
+      chatRoomsTotal: total,
+      chatRoomsPage: page,
+      chatRoomsTotalPages: totalPages,
+    })
+  },
+
+  appendChatRooms: (newChatRooms, total, page, totalPages) => {
+    console.log('🔍 socketStore - 채팅방 리스트 추가:', { newCount: newChatRooms.length, page })
+    set(state => ({
+      chatRooms: [...state.chatRooms, ...newChatRooms],
+      chatRoomsTotal: total,
+      chatRoomsPage: page,
+      chatRoomsTotalPages: totalPages,
+    }))
+  },
+
+  updateChatRoomOnlineStatus: (lawyerId, status) => {
+    console.log('🔍 socketStore - 채팅방 온라인 상태 업데이트:', { lawyerId, status })
+    set(state => ({
+      chatRooms: state.chatRooms.map(room =>
+        room.chatRoomLawyer.lawyerId === lawyerId
+          ? { ...room, partnerOnlineStatus: status }
+          : room
+      ),
+    }))
+  },
+
+  updateChatRoomLastMessage: (chatRoomId, message) => {
+    console.log('🔍 socketStore - 채팅방 최근 메시지 업데이트:', { chatRoomId, message })
+    set(state => {
+      const updatedRooms = state.chatRooms.map(room =>
+        room.chatRoomId === chatRoomId
+          ? {
+              ...room,
+              chatRoomLastMessage: {
+                chatMessageId: message.chatMessageId,
+                chatMessageContent: message.chatMessageContent,
+                chatMessageSenderType: message.chatMessageSenderType,
+                chatMessageCreatedAt: message.chatMessageCreatedAt,
+              },
+              chatRoomLastMessageAt: message.chatMessageCreatedAt,
+            }
+          : room
+      )
+
+      // 최근 메시지 기준으로 정렬 (최신이 맨 위로)
+      const sortedRooms = [...updatedRooms].sort((a, b) => {
+        const timeA = new Date(a.chatRoomLastMessageAt).getTime()
+        const timeB = new Date(b.chatRoomLastMessageAt).getTime()
+        return timeB - timeA
+      })
+
+      return { chatRooms: sortedRooms }
+    })
+  },
+
+  updateSingleChatRoom: (chatRoomId, updates) => {
+    console.log('🔍 socketStore - 채팅방 업데이트:', { chatRoomId, updates })
+    set(state => ({
+      chatRooms: state.chatRooms.map(room =>
+        room.chatRoomId === chatRoomId ? { ...room, ...updates } : room
+      ),
+    }))
+  },
+
+  clearChatRooms: () => {
+    console.log('🔍 socketStore - 채팅방 리스트 초기화')
+    set({
+      chatRooms: [],
+      chatRoomsTotal: 0,
+      chatRoomsPage: 1,
+      chatRoomsTotalPages: 0,
+    })
   },
 }))
 
@@ -255,6 +459,10 @@ export const useMessages = () => useSocketStore(state => state.messages)
 export const useChatStatus = () => useSocketStore(state => state.chatStatus)
 export const useRoomInfo = () => useSocketStore(state => state.roomInfo)
 export const useUserStatuses = () => useSocketStore(state => state.userStatuses)
+export const useChatRooms = () => useSocketStore(state => state.chatRooms)
+export const useChatRoomsTotal = () => useSocketStore(state => state.chatRoomsTotal)
+export const useChatRoomsPage = () => useSocketStore(state => state.chatRoomsPage)
+export const useChatRoomsTotalPages = () => useSocketStore(state => state.chatRoomsTotalPages)
 
 // 개별 액션들 (안정적인 참조)
 export const useSetSocket = () => useSocketStore(state => state.setSocket)
@@ -276,12 +484,26 @@ export const useSetRoomInfo = () => useSocketStore(state => state.setRoomInfo)
 export const useUpdateUserStatus = () => useSocketStore(state => state.updateUserStatus)
 export const useUpdateBatchUserStatus = () => useSocketStore(state => state.updateBatchUserStatus)
 export const useResetChatRoom = () => useSocketStore(state => state.resetChatRoom)
+export const useSetChatRooms = () => useSocketStore(state => state.setChatRooms)
+export const useAppendChatRooms = () => useSocketStore(state => state.appendChatRooms)
+export const useUpdateChatRoomOnlineStatus = () => useSocketStore(state => state.updateChatRoomOnlineStatus)
+export const useUpdateChatRoomLastMessage = () => useSocketStore(state => state.updateChatRoomLastMessage)
+export const useUpdateSingleChatRoom = () => useSocketStore(state => state.updateSingleChatRoom)
+export const useClearChatRooms = () => useSocketStore(state => state.clearChatRooms)
 
 // 메시지 캐시 관련 액션들
 export const useSetMessagesForRoom = () => useSocketStore(state => state.setMessagesForRoom)
 export const useAddMessageToRoom = () => useSocketStore(state => state.addMessageToRoom)
 export const useGetMessagesForRoom = () => useSocketStore(state => state.getMessagesForRoom)
+export const useMarkMessagesAsReadInRoom = () => useSocketStore(state => state.markMessagesAsReadInRoom)
+export const useUpdateMessageByTempIdInRoom = () => useSocketStore(state => state.updateMessageByTempIdInRoom)
 export const useClearMessageCache = () => useSocketStore(state => state.clearMessageCache)
+
+// tempId 매핑 관련 액션들
+export const useSetTempIdMapping = () => useSocketStore(state => state.setTempIdMapping)
+export const useGetTempIdMapping = () => useSocketStore(state => state.getTempIdMapping)
+export const useDeleteTempIdMapping = () => useSocketStore(state => state.deleteTempIdMapping)
+export const useClearTempIdMappings = () => useSocketStore(state => state.clearTempIdMappings)
 
 // 액션들 (하위 호환성)
 export const useSocketActions = () =>

@@ -109,6 +109,13 @@
     color: #721c24;
     border: 1px solid #f5c6cb;
   }
+
+  &.newQuestion {
+    background-color: #ffc107;
+    color: #ffffff;
+    border: 1px solid #ffb300;
+    font-weight: 600;
+  }
 }
 
 .pendingResponse {

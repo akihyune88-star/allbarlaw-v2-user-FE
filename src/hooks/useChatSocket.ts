@@ -11,29 +11,34 @@ import {
   SendMessageSuccessData,
   SendMessageErrorData,
   UserLeftData,
+  ChatRoomStatus,
 } from '@/types/baroTalkTypes'
 import {
   useSocket,
   useSetSocket,
   useSetConnected,
-  useSetMessages,
   useSetRoomInfo,
-  useAddMessage,
-  useUpdateMessage,
   useUpdateMessageByTempId,
-  useMarkMessagesAsRead,
   useChatStatus,
   useSocketStore,
+  useUpdateBatchUserStatus,
+  useUpdateChatRoomOnlineStatus,
+  useUpdateChatRoomLastMessage,
+  useMarkMessagesAsReadInRoom,
+  useUpdateMessageByTempIdInRoom,
+  useSetTempIdMapping,
+  useGetTempIdMapping,
+  useDeleteTempIdMapping,
 } from '@/stores/socketStore'
 import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
 
 interface UseChatSocketProps {
   chatRoomId: number | null
-  setChatStatus: (_status: any) => void
+  setChatStatus: (_status: ChatRoomStatus) => void
 }
 
 export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps) => {
-  const { getUserIdFromToken } = useAuth()
+  const { getUserIdFromToken, getLawyerIdFromToken } = useAuth()
   const location = useLocation()
   const isLawyer = location.pathname.includes('lawyer-admin')
 
@@ -41,13 +46,19 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   const socket = useSocket()
   const setSocket = useSetSocket()
   const setConnected = useSetConnected()
-  const setMessages = useSetMessages()
   const setRoomInfo = useSetRoomInfo()
-  const addMessage = useAddMessage()
-  const updateMessage = useUpdateMessage()
+  const setMessagesForRoom = useSocketStore(state => state.setMessagesForRoom)
+  const addMessageToRoom = useSocketStore(state => state.addMessageToRoom)
   const updateMessageByTempId = useUpdateMessageByTempId()
-  const markMessagesAsRead = useMarkMessagesAsRead()
+  const markMessagesAsReadInRoom = useMarkMessagesAsReadInRoom()
+  const updateMessageByTempIdInRoom = useUpdateMessageByTempIdInRoom()
+  const setTempIdMapping = useSetTempIdMapping()
+  const getTempIdMapping = useGetTempIdMapping()
+  const deleteTempIdMapping = useDeleteTempIdMapping()
   const currentChatStatus = useChatStatus()
+  const updateBatchUserStatus = useUpdateBatchUserStatus()
+  const updateChatRoomOnlineStatus = useUpdateChatRoomOnlineStatus()
+  const updateChatRoomLastMessage = useUpdateChatRoomLastMessage()
 
   // 채팅방 상태 업데이트 훅
   const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
@@ -63,13 +74,16 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   // refs for tracking state
   const socketConnectedRef = useRef(false)
   const joinRoomAttemptedRef = useRef(false)
-  const markAsReadRef = useRef<((_messageIds?: number[]) => void) | null>(null)
+  const markAsReadRef = useRef<((_messageIds: number[], _targetChatRoomId?: number) => void) | null>(null)
   const timeoutRefs = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
-  const userId = getUserIdFromToken()
 
-  // 소켓 연결
+  // 변호사인 경우 lawyerId, 일반 유저인 경우 userId 사용
+  const userId = isLawyer ? getLawyerIdFromToken() : getUserIdFromToken()
+
+  // 소켓 연결 (userId가 변경될 때만 재연결)
   useEffect(() => {
-    if (!userId || !chatRoomId) {
+    if (!userId) {
+      console.log('⚠️ [SOCKET] userId 없음 - 소켓 연결 안함')
       return
     }
 
@@ -81,8 +95,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 🆕 배포환경 디버깅을 위한 로그
     console.log('🔍 [SOCKET] 소켓 연결 시도:', {
+      userType: isLawyer ? 'LAWYER' : 'USER',
       userId,
-      chatRoomId,
+      chatRoomId: chatRoomId || 'null (채팅방 미선택)',
       serverUrl: import.meta.env.VITE_SERVER_API + '/chat',
       token: localStorage.getItem('accessToken') ? '토큰 존재' : '토큰 없음',
       sessionToken: sessionStorage.getItem('accessToken') ? '세션토큰 존재' : '세션토큰 없음',
@@ -98,10 +113,20 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     setSocket(newSocket)
     joinRoomAttemptedRef.current = false
 
+    // 🔍 모든 소켓 이벤트 로깅
+    newSocket.onAny((eventName, ...args) => {
+      console.log(`📡 [SOCKET EVENT] ${eventName}`, args)
+    })
+
+    // 🔍 등록된 이벤트 리스너 목록 출력
     newSocket.on('connect', () => {
       console.log('✅ [SOCKET] 소켓 연결 성공')
       setConnected(true)
       socketConnectedRef.current = true
+
+      // @ts-ignore - 내부 API 접근
+      const callbacks = newSocket._callbacks || {}
+      console.log('📋 [SOCKET] 등록된 이벤트 리스너:', Object.keys(callbacks))
 
       // 소켓 연결 후 즉시 방 입장 시도
       if (chatRoomId) {
@@ -132,6 +157,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     return () => {
       console.log('🧹 [SOCKET] useEffect cleanup - 소켓 연결 해제')
+      newSocket.offAny() // 모든 이벤트 리스너 제거
       newSocket.disconnect()
       socketConnectedRef.current = false
       joinRoomAttemptedRef.current = false
@@ -142,17 +168,36 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       })
       timeoutRefs.current.clear()
     }
-  }, [userId, chatRoomId, setSocket, setConnected])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]) // setSocket, setConnected는 Zustand 액션으로 안정적이므로 의존성에서 제외
 
   // 읽음 처리 함수 (이벤트 리스너보다 먼저 정의)
+  // chatRoomId를 파라미터로 받도록 수정
   const markAsRead = useCallback(
-    (messageIds?: number[]) => {
-      if (socket && chatRoomId && socket.connected) {
+    (messageIds?: number[], targetChatRoomId?: number) => {
+      const roomIdToUse = targetChatRoomId || chatRoomId
+
+      console.log('📖 [SOCKET] markAsRead 호출:', {
+        messageIds,
+        targetChatRoomId,
+        chatRoomId,
+        roomIdToUse,
+        socketConnected: socket?.connected,
+      })
+
+      if (socket && roomIdToUse && socket.connected && messageIds) {
         const request: MarkAsReadRequest = {
-          chatRoomId,
+          chatRoomId: roomIdToUse,
           messageIds,
         }
+        console.log('📤 [SOCKET] markAsRead 요청:', request)
         socket.emit('markAsRead', request)
+      } else {
+        console.error('❌ [SOCKET] markAsRead 실패:', {
+          hasSocket: !!socket,
+          roomIdToUse,
+          connected: socket?.connected,
+        })
       }
     },
     [socket, chatRoomId]
@@ -163,14 +208,17 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
   // chatRoomId가 변경될 때 방 입장
   useEffect(() => {
-    if (chatRoomId && socket && socket.connected && !joinRoomAttemptedRef.current) {
+    // chatRoomId가 변경되면 joinRoomAttemptedRef 리셋
+    joinRoomAttemptedRef.current = false
+
+    if (chatRoomId && socket && socket.connected) {
       const joinRoomRequest: JoinRoomRequest = {
         chatRoomId: chatRoomId,
         loadRecentMessages: true,
         messageLimit: 50,
       }
 
-      console.log('🔍 [SOCKET] 방 입장 재시도:', joinRoomRequest)
+      console.log('🔍 [SOCKET] 방 입장 요청 (chatRoomId 변경):', joinRoomRequest)
       socket.emit('joinRoom', joinRoomRequest)
       joinRoomAttemptedRef.current = true
     }
@@ -181,7 +229,8 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     if (socket) {
       setConnected(socket.connected)
     }
-  }, [socket, setConnected])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]) // setConnected는 Zustand 액션으로 안정적이므로 의존성에서 제외
 
   // 소켓 이벤트 리스너 설정
   useEffect(() => {
@@ -190,7 +239,12 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     // 채팅방 입장 성공
     const handleJoinRoomSuccess = (data: JoinRoomSuccessData) => {
       console.log('✅ [SOCKET] 방 입장 성공:', data)
-      setMessages(data.recentMessages)
+      // 응답 데이터에서 chatRoomId를 가져와서 사용 (클로저 캡처된 chatRoomId는 null일 수 있음)
+      const roomId = data.chatRoom?.chatRoomId || chatRoomId
+      if (roomId) {
+        console.log('💾 [SOCKET] 메시지 저장:', { roomId, messageCount: data.recentMessages.length })
+        setMessagesForRoom(roomId, data.recentMessages)
+      }
       setRoomInfo(data.chatRoom)
 
       // 🆕 채팅방 입장 시 나가기 상태 확인 및 처리
@@ -208,7 +262,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
             chatMessageSenderId: 0,
             chatMessageCreatedAt: new Date().toISOString(),
           }
-          addMessage(leaveMessage)
+          if (roomId) {
+            addMessageToRoom(roomId, leaveMessage)
+          }
         } else if (userLeft || lawyerLeft) {
           // 한쪽만 나간 경우 (일방향 채팅)
           const leftUserType = userLeft ? '사용자' : '변호사'
@@ -229,7 +285,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
             chatMessageSenderId: 0,
             chatMessageCreatedAt: new Date().toISOString(),
           }
-          addMessage(leaveMessage)
+          if (roomId) {
+            addMessageToRoom(roomId, leaveMessage)
+          }
         } else {
           // 정상 활성 상태
           setChatStatus(data.chatRoom.chatRoomStatus)
@@ -245,8 +303,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           .filter(msg => msg.chatMessageSenderType !== (isLawyer ? 'LAWYER' : 'USER') && !msg.chatMessageIsRead)
           .map(msg => msg.chatMessageId)
 
-        if (unreadMessages.length > 0 && markAsReadRef.current) {
-          markAsReadRef.current(unreadMessages)
+        if (unreadMessages.length > 0 && markAsReadRef.current && roomId) {
+          console.log('📖 [SOCKET] 방 입장 시 읽음 처리:', {
+            roomId,
+            unreadCount: unreadMessages.length,
+            messageIds: unreadMessages,
+          })
+          // chatRoomId를 명시적으로 전달
+          markAsReadRef.current(unreadMessages, roomId)
         }
         timeoutRefs.current.delete(timeoutId)
       }, 500) // 500ms 후 읽음 처리
@@ -262,58 +326,115 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 새 메시지 수신
     const handleNewMessage = (message: ChatMessage) => {
-      console.log('📨 [SOCKET] 새 메시지 수신:', message)
+      console.log('📨 [SOCKET] 새 메시지 수신:', {
+        messageId: message.chatMessageId,
+        content: message.chatMessageContent,
+        senderType: message.chatMessageSenderType,
+        chatRoomId: (message as any).chatRoomId,
+      })
 
       // 내가 보낸 메시지인지 확인
       const isMyMessage = message.chatMessageSenderType === (isLawyer ? 'LAWYER' : 'USER')
 
       if (isMyMessage) {
-        // 내가 보낸 메시지는 이미 임시로 추가되었으므로 중복 방지
+        console.log('⏭️ [SOCKET] 내가 보낸 메시지, 스킵')
         return
       }
 
-      // 중복 메시지 방지: 같은 ID의 메시지가 이미 있는지 확인
-      const currentMessages = useSocketStore.getState().messages
-      const isDuplicateMessage = currentMessages.some(msg => msg.chatMessageId === message.chatMessageId)
+      // 서버에서 chatRoomId를 보내주는 것으로 가정
+      const messageChatRoomId = (message as any).chatRoomId
+
+      if (!messageChatRoomId) {
+        console.error('❌ [SOCKET] 메시지에 chatRoomId가 없습니다:', message)
+        return
+      }
+
+      // 중복 메시지 방지: messageCache에서 해당 방의 메시지 확인
+      const roomMessages = useSocketStore.getState().messageCache[messageChatRoomId] || []
+      const isDuplicateMessage = roomMessages.some(msg => msg.chatMessageId === message.chatMessageId)
 
       if (isDuplicateMessage) {
+        console.log('⏭️ [SOCKET] 중복 메시지, 스킵:', message.chatMessageId)
         return
       }
 
-      // 상대방이 보낸 메시지만 추가
-      addMessage(message)
+      console.log('✅ [SOCKET] 메시지 추가:', { roomId: messageChatRoomId, messageId: message.chatMessageId })
+      addMessageToRoom(messageChatRoomId, message)
+      updateChatRoomLastMessage(messageChatRoomId, message)
 
       // 상대방 메시지 자동 읽음 처리
       const timeoutId = setTimeout(() => {
         if (markAsReadRef.current) {
-          markAsReadRef.current([message.chatMessageId])
+          console.log('📖 [SOCKET] 자동 읽음 처리 시도:', {
+            messageId: message.chatMessageId,
+            chatRoomId: messageChatRoomId,
+          })
+          // chatRoomId를 명시적으로 전달
+          markAsReadRef.current([message.chatMessageId], messageChatRoomId)
         }
         timeoutRefs.current.delete(timeoutId)
-      }, 1000) // 1초 후 읽음 처리
+      }, 1000)
 
       timeoutRefs.current.add(timeoutId)
     }
 
     // 메시지 전송 성공
     const handleSendMessageSuccess = (data: SendMessageSuccessData) => {
-      console.log('✅ [SOCKET] 메시지 전송 성공:', data)
-      if (data.tempId) {
-        // 임시 메시지를 실제 메시지 ID로 업데이트
-        updateMessageByTempId(data.tempId, {
-          chatMessageId: data.messageId, // 서버에서 받은 실제 ID
-          status: 'sent',
-          tempId: undefined, // tempId 제거
-        })
+      console.log('✅ [SOCKET] 메시지 전송 성공:', {
+        messageId: data.messageId,
+        tempId: data.tempId,
+      })
+
+      if (!data.tempId) {
+        console.warn('⚠️ [SOCKET] tempId가 없습니다:', data)
+        return
       }
+
+      // tempId로 chatRoomId 찾기 (zustand에서 가져오기)
+      const responseChatRoomId = getTempIdMapping(data.tempId)
+
+      if (!responseChatRoomId) {
+        console.error('❌ [SOCKET] tempId에 해당하는 chatRoomId를 찾을 수 없습니다:', data.tempId)
+        console.error('현재 매핑 상태:', useSocketStore.getState().tempIdToChatRoomMap)
+        return
+      }
+
+      console.log('🔄 [SOCKET] 임시 메시지 업데이트:', {
+        tempId: data.tempId,
+        messageId: data.messageId,
+        chatRoomId: responseChatRoomId,
+      })
+
+      updateMessageByTempIdInRoom(responseChatRoomId, data.tempId, {
+        chatMessageId: data.messageId,
+        status: 'sent',
+        tempId: undefined,
+      })
+
+      // 매핑 제거 (메모리 정리)
+      deleteTempIdMapping(data.tempId)
     }
 
     // 메시지 전송 실패
     const handleSendMessageError = (error: SendMessageErrorData) => {
       console.error('❌ [SOCKET] 메시지 전송 실패:', error)
+
       if (error.tempId) {
-        updateMessageByTempId(error.tempId, {
-          status: 'failed',
-        })
+        // tempId로 chatRoomId 찾기 (zustand에서 가져오기)
+        const failedChatRoomId = getTempIdMapping(error.tempId)
+
+        if (failedChatRoomId) {
+          updateMessageByTempIdInRoom(failedChatRoomId, error.tempId, {
+            status: 'failed',
+          })
+          // 매핑 제거
+          deleteTempIdMapping(error.tempId)
+        } else {
+          // fallback: 전체 업데이트
+          updateMessageByTempId(error.tempId, {
+            status: 'failed',
+          })
+        }
       }
       // 사용자에게 에러 알림 (추후 toast 추가)
     }
@@ -325,8 +446,28 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 상대방이 메시지를 읽음
     const handleMessagesMarkedAsRead = (data: MessagesMarkedAsReadData) => {
-      // 내가 보낸 메시지들이 읽혔을 때
-      markMessagesAsRead(data.messageIds)
+      console.log('👁️ [SOCKET] messagesMarkedAsRead 이벤트 수신 - 전체 데이터:', JSON.stringify(data, null, 2))
+      console.log('👁️ [SOCKET] 현재 chatRoomId (closured):', chatRoomId)
+      console.log('👁️ [SOCKET] isLawyer:', isLawyer)
+
+      // 서버에서 chatRoomId를 보내주는 것으로 가정
+      const responseChatRoomId = (data as any).chatRoomId
+
+      if (!responseChatRoomId) {
+        console.error('❌ [SOCKET] 응답에 chatRoomId가 없습니다. 전체 데이터:', JSON.stringify(data, null, 2))
+        return
+      }
+
+      console.log('✅ [SOCKET] 방 메시지 읽음 처리 실행:', {
+        chatRoomId: responseChatRoomId,
+        messageIds: data.messageIds,
+        messageCount: data.messageIds.length,
+      })
+
+      // 해당 방의 메시지 읽음 상태 업데이트
+      markMessagesAsReadInRoom(responseChatRoomId, data.messageIds)
+
+      console.log('✅ [SOCKET] markMessagesAsReadInRoom 완료')
     }
 
     // 상대방 퇴장 처리 (새로운 API)
@@ -370,7 +511,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           chatMessageCreatedAt: new Date().toISOString(),
         }
 
-        addMessage(leaveMessage)
+        if (chatRoomId) {
+          addMessageToRoom(chatRoomId, leaveMessage)
+        }
       }
     }
 
@@ -406,7 +549,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           chatMessageCreatedAt: new Date().toISOString(),
         }
 
-        addMessage(leaveMessage)
+        if (chatRoomId) {
+          addMessageToRoom(chatRoomId, leaveMessage)
+        }
       } else {
         const leaveMessage: ChatMessage = {
           chatMessageId: Date.now(),
@@ -415,7 +560,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           chatMessageSenderId: 0,
           chatMessageCreatedAt: new Date().toISOString(),
         }
-        addMessage(leaveMessage)
+        if (chatRoomId) {
+          addMessageToRoom(chatRoomId, leaveMessage)
+        }
         setChatStatus('PARTIAL_LEFT')
       }
     }
@@ -423,6 +570,66 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     // 채팅방 퇴장 실패
     const handleLeaveRoomError = (error: { message: string }) => {
       console.error('채팅방 퇴장 실패:', error.message)
+    }
+
+    // 사용자 상태 구독 응답 처리
+    const handleUserStatusResponse = (data: any) => {
+      console.log('👤 [SOCKET] 사용자 상태 응답:', data)
+      // socketStore의 userStatuses 업데이트 로직 추가 가능
+    }
+
+    // 배치 사용자 상태 응답 처리
+    const handleBatchUserStatusResponse = (data: any) => {
+      console.log('👥 [SOCKET] 배치 사용자 상태 응답:', data)
+      // socketStore의 userStatuses 업데이트 로직 추가 가능
+    }
+
+    // 사용자 상태 변경 이벤트 처리
+    const handleUserStatusChanged = (
+      data:
+        | { userType: string; userId: number; userActivate: boolean }
+        | Array<{ userType: string; userId: number; userActivate: boolean }>
+    ) => {
+      console.log('🔄 [SOCKET] 사용자 상태 변경:', data)
+
+      // 배열이 아니면 배열로 변환
+      const dataArray = Array.isArray(data) ? data : [data]
+
+      // 변호사 상태 변경만 처리
+      const lawyerStatusUpdates = dataArray.filter(item => item.userType === 'LAWYER')
+
+      if (lawyerStatusUpdates.length > 0) {
+        console.log('🔍 [SOCKET] 변호사 상태 업데이트 대상:', lawyerStatusUpdates)
+
+        // Zustand에 상태 저장
+        const statusMap: Record<number, string> = {}
+        lawyerStatusUpdates.forEach(update => {
+          const status = update.userActivate ? 'online' : 'offline'
+          statusMap[update.userId] = status
+          console.log(`✅ [SOCKET] 변호사 ${update.userId} 상태 업데이트: ${status}`)
+
+          // chatRooms의 온라인 상태도 업데이트
+          updateChatRoomOnlineStatus(update.userId, status as 'online' | 'offline')
+        })
+
+        updateBatchUserStatus(statusMap)
+        console.log('🔍 [SOCKET] Zustand 업데이트 완료, 최종 상태:', statusMap)
+      }
+    }
+
+    // 채팅방 상태 변경 이벤트 처리
+    const handleChatRoomStatusChanged = (data: {
+      chatRoomId: number
+      chatRoomStatus: ChatRoomStatus
+      timestamp: string
+    }) => {
+      console.log('🔄 [SOCKET] 채팅방 상태 변경 이벤트:', data)
+
+      // 현재 채팅방의 상태 변경인지 확인
+      if (data.chatRoomId === chatRoomId) {
+        setChatStatus(data.chatRoomStatus)
+        console.log(`✅ [SOCKET] 채팅방 ${data.chatRoomId} 상태가 ${data.chatRoomStatus}로 변경됨`)
+      }
     }
 
     // 이벤트 리스너 등록
@@ -436,6 +643,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     socket.on('userLeft', handleUserLeft)
     socket.on('leaveRoomSuccess', handleLeaveRoomSuccess)
     socket.on('leaveRoomError', handleLeaveRoomError)
+
+    // 사용자 상태 관련 이벤트
+    socket.on('userStatusResponse', handleUserStatusResponse)
+    socket.on('batchUserStatusResponse', handleBatchUserStatusResponse)
+    socket.on('userStatusChanged', handleUserStatusChanged)
+
+    // 채팅방 상태 변경 이벤트
+    socket.on('chatRoomStatusChanged', handleChatRoomStatusChanged)
 
     // 다른 가능한 나가기 이벤트 이름들도 리스닝
     socket.on('user_left', handleUserLeft)
@@ -457,6 +672,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       socket.off('leaveRoomSuccess', handleLeaveRoomSuccess)
       socket.off('leaveRoomError', handleLeaveRoomError)
 
+      // 사용자 상태 관련 이벤트 정리
+      socket.off('userStatusResponse', handleUserStatusResponse)
+      socket.off('batchUserStatusResponse', handleBatchUserStatusResponse)
+      socket.off('userStatusChanged', handleUserStatusChanged)
+
+      // 채팅방 상태 변경 이벤트 정리
+      socket.off('chatRoomStatusChanged', handleChatRoomStatusChanged)
+
       // 추가된 이벤트 리스너들도 정리
       socket.off('user_left')
       socket.off('userDisconnected')
@@ -470,18 +693,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       })
       timeoutRefs.current.clear()
     }
-  }, [
-    socket,
-    setMessages,
-    setRoomInfo,
-    setChatStatus,
-    addMessage,
-    updateMessage,
-    updateMessageByTempId,
-    markMessagesAsRead,
-    chatRoomId,
-    isLawyer,
-  ])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, chatRoomId, isLawyer, setChatStatus])
+  // Zustand 액션들(setMessages, setRoomInfo, addMessage 등)은 안정적이므로 의존성에서 제외
 
   // 메시지 전송 함수
   const sendMessage = useCallback(
@@ -496,6 +710,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
       if (socket && chatRoomId && socket.connected) {
         const tempId = `temp_${Date.now()}_${Math.random()}`
+
+        // tempId와 chatRoomId 매핑 저장 (zustand 사용)
+        setTempIdMapping(tempId, chatRoomId)
 
         // 임시 메시지를 먼저 UI에 표시
         const tempMessage: ChatMessage = {
@@ -512,7 +729,10 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         }
 
         console.log('📤 [SOCKET] 임시 메시지 추가:', tempMessage)
-        addMessage(tempMessage)
+        addMessageToRoom(chatRoomId, tempMessage)
+
+        // chatRooms의 최근 메시지도 업데이트
+        updateChatRoomLastMessage(chatRoomId, tempMessage)
 
         // 서버로 메시지 전송 (상태 변경은 서버에서 처리하도록)
         const messagePayload = {
@@ -546,7 +766,17 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         })
       }
     },
-    [socket, chatRoomId, isLawyer, userId, addMessage, currentChatStatus, updateChatRoomStatus]
+    [
+      socket,
+      chatRoomId,
+      isLawyer,
+      userId,
+      addMessageToRoom,
+      currentChatStatus,
+      updateChatRoomStatus,
+      updateChatRoomLastMessage,
+      setTempIdMapping,
+    ]
   )
 
   // 채팅방 나가기 함수

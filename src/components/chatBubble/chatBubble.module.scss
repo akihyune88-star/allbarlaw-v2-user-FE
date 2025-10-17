@@ -14,7 +14,7 @@
 }
 
 .bubble {
-  max-width: 80vw;
+  max-width: 400px;
   min-width: 100px;
   padding: 1rem;
   background-color: #22c55e;
@@ -30,18 +30,18 @@
 
 @media (max-width: $breakpoint-desktop) {
   .bubble {
-    max-width: 70vw;
+    max-width: 300px;
     min-width: 60px;
     padding: 0.75rem;
     font-size: 0.875rem;
     line-height: 1.4;
     margin-bottom: 1rem;
   }
-  
+
   .bubbleWrap {
     margin-bottom: 0.5rem;
   }
-  
+
   .profileImage {
     width: 2rem;
     height: 2rem;

@@ -50,11 +50,14 @@
 }
 
 .icon {
-  right: 2rem;
+  position: absolute;
+  right: 1rem;
   color: #20bf62;
   pointer-events: auto;
-  padding-right: 1rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: $breakpoint-desktop) {

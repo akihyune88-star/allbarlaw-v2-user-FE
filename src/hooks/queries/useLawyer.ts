@@ -13,6 +13,8 @@ import {
   LawyerCountRequest,
 } from '@/types/lawyerTypes'
 import { queryClient } from '@/lib/queryClient'
+import { isAxiosError } from 'axios'
+import { getErrorMessage } from '@/utils/errorHandler'
 
 export const useLawyerList = (request: LawyerListRequest) => {
   return useQuery({
@@ -60,11 +62,12 @@ export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' 
   })
 }
 
-export const useRandomLawyerList = (request: RandomLawyerListRequest) => {
+export const useRandomLawyerList = (request: RandomLawyerListRequest & { enabled?: boolean }) => {
   const { data, isLoading, isPlaceholderData, refetch } = useQuery({
     queryKey: [QUERY_KEY.LAWYER_LIST, 'random', request.subcategoryId, request.take, request.excludeIds],
     queryFn: () => lawyerService.getRandomLawyerList(request),
     placeholderData: previousData => previousData, // 이전 데이터 유지로 깜빡임 방지
+    enabled: request.enabled !== false,
   })
 
   return {
@@ -141,14 +144,23 @@ export const useLawyerActive = (request: LawyerActiveRequest) => {
   })
 }
 
-export const useLawyerSignUp = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
+export const useLawyerSignUp = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void
+  onError: (_errorMessage: string) => void
+}) => {
   return useMutation({
     mutationFn: (request: LawyerSignUpRequest) => lawyerService.signUpLawyer(request),
     onSuccess: () => {
       onSuccess()
     },
-    onError: () => {
-      onError()
+    onError: (error: Error) => {
+      if (isAxiosError(error)) {
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        onError?.(errorMessage)
+      }
     },
   })
 }

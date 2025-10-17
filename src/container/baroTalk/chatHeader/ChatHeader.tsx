@@ -1,6 +1,7 @@
 import styles from './chatHeader.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { ROUTER } from '@/routes/routerConstant'
+import { COLOR } from '@/styles/color'
 
 interface ChatHeaderProps {
   isActive: boolean
@@ -42,12 +43,21 @@ const ChatHeader = ({
     }
   }
 
+  const handleReport = () => {
+    alert('신고하기 화면 기획이 필요합니다')
+  }
+
   const handleLawyerInfo = () => {
     if (lawyerId) {
       // 새 창으로 변호사 상세 페이지 열기
       const lawyerDetailUrl = `${window.location.origin}${ROUTER.SEARCH_MAIN}/lawyer/${lawyerId}`
       window.open(lawyerDetailUrl, '_blank', 'width=1300,height=800,scrollbars=yes')
     }
+  }
+
+  // 온라인 상태에 따른 배지 색상
+  const getBadgeColor = (isOnline: boolean) => {
+    return isOnline ? COLOR.green_01 : 'rgba(0, 0, 0, 0.7)'
   }
 
   return (
@@ -62,16 +72,26 @@ const ChatHeader = ({
       {/* 모바일용 중앙: 변호사/유저 정보 */}
       <div className={styles['header-center']}>
         {!isLawyer ? (
-          // 유저가 보는 화면 - 변호사 정보 표시
+          // 유저가 보는 화면 - 변호사 정보 표시 + 온라인 상태 배지
           <div className={styles['lawyer-name-badge-wrap']}>
             <span className={styles['lawyer-name']}>{lawyerName} 변호사</span>
-            {isActive && <span className={styles['badge']} />}
+            <span
+              className={styles['badge']}
+              style={{
+                backgroundColor: getBadgeColor(isActive),
+              }}
+            />
           </div>
         ) : (
-          // 변호사가 보는 화면 - 유저 정보 표시
-          <div className={styles['lawyer-name-badge-wrap']}>
+          // 변호사가 보는 화면 - 유저 정보 표시 (온라인 상태 배지 없음)
+          <div
+            className={styles['lawyer-name-badge-wrap']}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.25rem' }}
+          >
+            <span className={styles['lawyer-name']} style={{ fontWeight: 'normal', fontSize: '14px' }}>
+              의뢰인 :
+            </span>
             <span className={styles['lawyer-name']}>{userName ? `${userName} 님` : `사용자 ${userId}`}</span>
-            {isActive && <span className={styles['badge']} />}
           </div>
         )}
       </div>
@@ -90,21 +110,29 @@ const ChatHeader = ({
         {/* PC용 변호사/유저 정보 */}
         <div className={styles['header-user-info']}>
           {!isLawyer ? (
-            // 유저가 보는 화면 - 변호사 정보 표시
+            // 유저가 보는 화면 - 변호사 정보 표시 + 온라인 상태 배지
             <>
               {lawyerProfileImage && (
                 <img src={lawyerProfileImage} alt={`${lawyerName} 변호사`} className={styles['profile-image']} />
               )}
               <div className={styles['lawyer-name-badge-wrap']}>
                 <span className={styles['lawyer-name']}>{lawyerName} 변호사</span>
-                {isActive && <span className={styles['badge']} />}
+                <span
+                  className={styles['badge']}
+                  style={{
+                    backgroundColor: getBadgeColor(isActive),
+                  }}
+                />
               </div>
             </>
           ) : (
-            // 변호사가 보는 화면 - 유저 정보 표시
-            <div className={styles['lawyer-name-badge-wrap']}>
+            // 변호사가 보는 화면 - 유저 정보 표시 (온라인 상태 배지 없음)
+            <div
+              className={styles['lawyer-name-badge-wrap']}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.25rem' }}
+            >
+              <span className={styles['lawyer-name']}>의뢰인 :</span>
               <span className={styles['lawyer-name']}>{userName ? `${userName} 님` : `사용자 ${userId}`}</span>
-              {isActive && <span className={styles['badge']} />}
             </div>
           )}
         </div>
@@ -122,12 +150,15 @@ const ChatHeader = ({
           <div className={styles['chat-info']}>
             <span className={styles['chat-info-title']}>채팅 상담</span>
             <span className={styles['chat-info-count']}>
-              전체 {count.total.toLocaleString()}건&nbsp;&nbsp;&nbsp;한달이네 {count.month.toLocaleString()}건
+              전체 {count.total.toLocaleString()}건&nbsp;&nbsp;&nbsp;한달이내 {count.month.toLocaleString()}건
             </span>
           </div>
         )}
-        <button className={styles['chat-end-button']} onClick={handleEndChat}>
-          상담 끝내기
+        <button
+          className={styles['chat-end-button']}
+          onClick={isLawyer ? handleReport : handleEndChat}
+        >
+          {isLawyer ? '신고 하기' : '상담 끝내기'}
         </button>
       </section>
     </header>

@@ -1,0 +1,90 @@
+.modalOverlay {
+  position: fixed;
+  width: min(650px, 90vw);
+  height: min(500px, 80vh);
+  background: $color-bg-gray-02;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(156, 141, 141, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+  user-select: none;
+
+  &:hover {
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+  }
+
+  &.dragging {
+    box-shadow: 0 16px 64px rgba(0, 0, 0, 0.4);
+    transition: none;
+  }
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  // ChatRoomContainer가 남은 높이를 차지하도록
+  > section {
+    flex: 1;
+    cursor: default;
+    overflow: hidden;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: white;
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
+  user-select: none;
+
+  &:active {
+    background: #f8f9fa;
+  }
+}
+
+.modalTitle {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  font-size: 1.5rem;
+  line-height: 1;
+  font-weight: 300;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}

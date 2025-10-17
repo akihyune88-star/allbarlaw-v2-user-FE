@@ -18,7 +18,7 @@ const Main = () => {
   }
 
   return (
-    <div className={styles['main-container']}>
+    <div className={styles['main-container']} style={{ width: isMobile ? '100%' : 1120 }}>
       <MainHero />
       <div className={styles['content-container']}>
         <CategorySelector

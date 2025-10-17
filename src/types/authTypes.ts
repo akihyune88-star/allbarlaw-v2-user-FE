@@ -33,6 +33,7 @@ export type LoginRequest = {
 
 export type LoginResponse = {
   accessToken: string
+  isFirstLogin?: boolean
   userType: 'user' | 'lawyer' // 사용자 타입 추가
   userId: number
   lawyerId?: number

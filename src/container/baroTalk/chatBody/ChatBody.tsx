@@ -4,58 +4,104 @@ import styles from './chatBody.module.scss'
 import ChatWaitingBlogList from '../chatWaitingBlogList/ChatWaitingBlogList'
 import InputBox from '@/components/inputBox/InputBox'
 import SvgIcon from '@/components/SvgIcon'
-import React, { ChangeEvent, useState } from 'react'
-import { ChatMessage, ChatRoomStatus } from '@/types/baroTalkTypes'
+import React, { ChangeEvent, useState, useCallback, useRef, useEffect } from 'react'
+import { ChatMessage } from '@/types/baroTalkTypes'
 import { formatTimeAgo } from '@/utils/date'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useSocketStore, useChatStatus, useSocket, useIsConnected, useRoomInfo, useSetTempIdMapping } from '@/stores/socketStore'
+import { useAuth } from '@/contexts/AuthContext'
 
 type ChatBodyProps = {
-  chatStatus: ChatRoomStatus
-  type?: 'USER' | 'LAWYER'
-  messages: ChatMessage[]
-  onSendMessage: (_content: string) => void
-  isConnected: boolean
   chatRoomId: number | null
+  type?: 'USER' | 'LAWYER'
   userLeft: boolean
-  leaveRoom?: () => void
   isLawyer?: boolean
 }
 
-const ChatBody = ({
-  chatStatus,
-  messages,
-  onSendMessage,
-  isConnected,
-  type = 'USER',
-  chatRoomId,
-  userLeft,
-  leaveRoom,
-  isLawyer,
-}: ChatBodyProps) => {
+const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyProps) => {
+  // Zustand 전역 상태 구독
+  const messageCache = useSocketStore(state => state.messageCache)
+  const messages = chatRoomId ? messageCache[chatRoomId] || [] : []
+  const chatStatus = useChatStatus()
+  const socket = useSocket()
+  const isConnected = useIsConnected()
+  const roomInfo = useRoomInfo()
+  const addMessageToRoom = useSocketStore(state => state.addMessageToRoom)
+  const setTempIdMapping = useSetTempIdMapping()
+  const { getUserIdFromToken } = useAuth()
+  const userId = getUserIdFromToken()
+
   const [message, setMessage] = useState('')
   const isMobile = useMediaQuery('(max-width: 768px)')
+  const chatBodyRef = useRef<HTMLDivElement>(null)
 
-  console.log('🗋 ChatBody: userLeft', userLeft)
+  console.log('messages', messageCache)
+  // 스크롤을 맨 아래로 이동하는 함수
+  const scrollToBottom = () => {
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight
+    }
+  }
+
+  // 메시지가 변경될 때마다 스크롤을 맨 아래로
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value)
   }
 
-  const handleSendMessage = () => {
-    if (message.trim() && isConnected) {
-      onSendMessage(message.trim())
-      setMessage('')
+  const handleSendMessage = useCallback(() => {
+    if (!message.trim() || !isConnected || !socket || !chatRoomId) {
+      return
     }
-  }
+
+    const tempId = `temp_${Date.now()}_${Math.random()}`
+
+    // tempId와 chatRoomId 매핑 저장
+    setTempIdMapping(tempId, chatRoomId)
+
+    // 임시 메시지를 먼저 UI에 표시
+    const tempMessage: ChatMessage = {
+      chatMessageId: Date.now(),
+      chatMessageContent: message.trim(),
+      chatMessageSenderType: isLawyer ? 'LAWYER' : 'USER',
+      chatMessageSenderId: userId || 0,
+      chatMessageReceiverId: isLawyer
+        ? (roomInfo as any)?.chatRoomUserId || 0
+        : (roomInfo as any)?.chatRoomLawyerId || 0,
+      chatMessageReceiverType: isLawyer ? 'USER' : 'LAWYER',
+      chatMessageIsRead: false,
+      chatMessageCreatedAt: new Date().toISOString(),
+      tempId,
+      status: 'sending',
+    }
+
+    if (chatRoomId) {
+      addMessageToRoom(chatRoomId, tempMessage)
+    }
+
+    // 서버로 메시지 전송
+    socket.emit('sendMessage', {
+      chatRoomId,
+      content: message.trim(),
+      receiverId: isLawyer ? (roomInfo as any)?.chatRoomUserId || 0 : (roomInfo as any)?.chatRoomLawyerId || 0,
+      receiverType: isLawyer ? 'USER' : 'LAWYER',
+      tempId,
+    })
+
+    setMessage('')
+  }, [message, isConnected, socket, chatRoomId, isLawyer, userId, roomInfo, addMessageToRoom, setTempIdMapping])
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     console.log('키 눌림:', e.key, 'Shift:', e.shiftKey, 'Composing:', e.nativeEvent.isComposing)
-    
+
     // 한글 입력 중(조합 중)일 때는 엔터키 이벤트 무시
     if (e.nativeEvent.isComposing) {
       return
     }
-    
+
     if (e.key === 'Enter' && !e.shiftKey) {
       console.log('엔터키 감지, 메시지 전송 시도')
       e.preventDefault()
@@ -100,11 +146,10 @@ const ChatBody = ({
   )
 
   const renderWaitingChat = () => (
-    <ChatWaitingBlogList 
-      chatStatus={chatStatus} 
-      chatRoomId={chatRoomId} 
-      messagesLength={messages.length} 
-      leaveRoom={leaveRoom}
+    <ChatWaitingBlogList
+      chatStatus={chatStatus}
+      chatRoomId={chatRoomId}
+      messagesLength={messages.length}
       isLawyer={isLawyer}
     />
   )
@@ -134,60 +179,62 @@ const ChatBody = ({
           <p>변호사와 1:1 상담을 진행할 수 있습니다.</p>
         </div>
       )}
-      <div className={styles.chatBody}>
-        {messages.length === 0 ? (
-          <div className={styles['empty-messages']}>
-            <p>아직 메시지가 없습니다.</p>
-            <p>첫 번째 메시지를 보내보세요!</p>
-          </div>
-        ) : (
-          messages.map(msg => {
-            // 🆕 시스템 메시지 체크 (senderId가 0이고 특정 내용을 포함하는 경우)
-            const isSystemMessage =
-              msg.chatMessageSenderId === 0 &&
-              (msg.chatMessageContent.includes('상담을 종료했습니다') ||
-                msg.chatMessageContent.includes('나갔습니다') ||
-                msg.chatMessageContent.includes('종료되었습니다'))
+      <div className={styles['chat-body-wrapper']}>
+        <div className={styles.chatBody} ref={chatBodyRef}>
+          {messages.length === 0 ? (
+            <div className={styles['empty-messages']}>
+              <p>아직 메시지가 없습니다.</p>
+              <p>첫 번째 메시지를 보내보세요!</p>
+            </div>
+          ) : (
+            messages.map(msg => {
+              // 🆕 시스템 메시지 체크 (senderId가 0이고 특정 내용을 포함하는 경우)
+              const isSystemMessage =
+                msg.chatMessageSenderId === 0 &&
+                (msg.chatMessageContent.includes('상담을 종료했습니다') ||
+                  msg.chatMessageContent.includes('나갔습니다') ||
+                  msg.chatMessageContent.includes('종료되었습니다'))
 
-            if (isSystemMessage) {
-              // 시스템 메시지는 중앙에 회색으로 표시
+              if (isSystemMessage) {
+                // 시스템 메시지는 중앙에 회색으로 표시
+                return (
+                  <div key={msg.chatMessageId} className={styles['system-message']}>
+                    <span className={styles['system-message-text']}>{msg.chatMessageContent}</span>
+                    <span className={styles['system-message-time']}>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
+                  </div>
+                )
+              }
+
+              // 일반 메시지는 기존 방식으로 렌더링
+              const isMyMessage = msg.chatMessageSenderType === type
+
+              // 읽음 상태 판단: 내가 보낸 메시지에서 상대방이 읽었는지 확인
+              const isReadByOther = isMyMessage ? msg.chatMessageIsRead || false : false
+
               return (
-                <div key={msg.chatMessageId} className={styles['system-message']}>
-                  <span className={styles['system-message-text']}>{msg.chatMessageContent}</span>
-                  <span className={styles['system-message-time']}>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
-                </div>
+                <ChatBubble
+                  key={msg.chatMessageId}
+                  message={msg.chatMessageContent}
+                  direction={isMyMessage ? 'right' : 'left'}
+                  color={isMyMessage ? COLOR.green_01 : COLOR.white}
+                  colorText={isMyMessage ? COLOR.white : COLOR.black}
+                  profileImage={msg.chatMessageSenderType === 'LAWYER' ? 'https://picsum.photos/200/300' : undefined}
+                  // 읽음 상태 관련 props
+                  isRead={isReadByOther} // 상대방이 읽었는지 여부
+                  showReadStatus={isMyMessage} // 내가 보낸 메시지만 읽음 상태 표시
+                  status={msg.status || 'sent'}
+                >
+                  <div>
+                    <span>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
+                  </div>
+                </ChatBubble>
               )
-            }
-
-            // 일반 메시지는 기존 방식으로 렌더링
-            const isMyMessage = msg.chatMessageSenderType === type
-
-            // 읽음 상태 판단: 내가 보낸 메시지에서 상대방이 읽었는지 확인
-            const isReadByOther = isMyMessage ? msg.chatMessageIsRead || false : false
-
-            return (
-              <ChatBubble
-                key={msg.chatMessageId}
-                message={msg.chatMessageContent}
-                direction={isMyMessage ? 'right' : 'left'}
-                color={isMyMessage ? COLOR.green_01 : COLOR.white}
-                colorText={isMyMessage ? COLOR.white : COLOR.black}
-                profileImage={msg.chatMessageSenderType === 'LAWYER' ? 'https://picsum.photos/200/300' : undefined}
-                // 읽음 상태 관련 props
-                isRead={isReadByOther} // 상대방이 읽었는지 여부
-                showReadStatus={isMyMessage} // 내가 보낸 메시지만 읽음 상태 표시
-                status={msg.status || 'sent'}
-              >
-                <div>
-                  <span>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
-                </div>
-              </ChatBubble>
-            )
-          })
-        )}
+            })
+          )}
+        </div>
+        {/* 채팅 입력창 또는 상태 메시지 */}
+        {renderChatInput()}
       </div>
-      {/* 채팅 입력창 또는 상태 메시지 */}
-      {renderChatInput()}
     </>
   )
 }

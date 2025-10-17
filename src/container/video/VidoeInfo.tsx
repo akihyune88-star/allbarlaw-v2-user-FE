@@ -30,7 +30,13 @@ const VidoeInfo = ({
     if (isNaN(numCount) || numCount <= 0) {
       return '0'
     }
-    return numCount.toLocaleString()
+
+    if (numCount < 1000) {
+      return numCount.toLocaleString()
+    }
+
+    const manCount = numCount / 10000
+    return `${manCount.toFixed(1)}만`
   }
 
   return (
@@ -64,7 +70,7 @@ const VidoeInfo = ({
               <div>
                 <h3 className={styles['channel-name']}>{channelName}</h3>
                 <span>
-                  @{handleName}
+                  {handleName}
                   <span style={{ marginLeft: 18 }}>구독자:{formatSubscriberCount(subscriberCount)}명</span>
                 </span>
               </div>

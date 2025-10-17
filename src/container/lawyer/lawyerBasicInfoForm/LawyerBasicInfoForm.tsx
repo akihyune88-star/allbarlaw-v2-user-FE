@@ -58,8 +58,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
         </div>
       </div>
 
-      {/* 생년월일/성별 */}
-      <div className={styles.formRow}>
+      {/* <div className={styles.formRow}>
         <div className={styles.labelCol}>
           <label className={styles.label}>생년월일/성별</label>
         </div>
@@ -153,7 +152,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             )}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* 휴대폰 번호 */}
       <div className={styles.formRow}>

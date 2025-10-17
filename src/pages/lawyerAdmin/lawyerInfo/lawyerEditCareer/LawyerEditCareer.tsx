@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react'
+import React, { useState, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react'
 import {
   DndContext,
   closestCenter,
@@ -28,6 +28,7 @@ interface CareerItem {
   id: string
   lawyerCareerCategoryName: string
   lawyerCareerContent: string
+  lawyerCareerContentArray: string[] // 각 줄을 배열로 관리
   lawyerCareerDisplayOrder: number
 }
 
@@ -36,12 +37,12 @@ interface SortableItemProps {
   isSelected: boolean
   isEditing: boolean
   editingCategoryName: string
-  onCategoryClick: (career: CareerItem) => void
-  onCategoryNameSave: (id: string) => void
-  onCategoryNameChange: (value: string) => void
+  onCategoryClick: (_career: CareerItem) => void
+  onCategoryNameSave: (_id: string) => void
+  onCategoryNameChange: (_value: string) => void
   onCategoryEditCancel: () => void
-  onDelete: (id: string) => void
-  onClick: (career: CareerItem) => void
+  onDelete: (_id: string) => void
+  onClick: (_career: CareerItem) => void
 }
 
 const SortableItem = ({
@@ -134,7 +135,7 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
   const [isInitialized, setIsInitialized] = useState(false)
   const [originalData, setOriginalData] = useState<CareerItem[]>([])
   const [selectedCareer, setSelectedCareer] = useState<CareerItem | null>(null)
-  const [contentValue, setContentValue] = useState('')
+  const [contentArray, setContentArray] = useState<string[]>(['']) // 배열로 관리
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null)
   const [editingCategoryName, setEditingCategoryName] = useState('')
 
@@ -156,6 +157,9 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
           id: `api-${item.lawyerCareerId || index}`,
           lawyerCareerCategoryName: item.lawyerCareerCategoryName || '',
           lawyerCareerContent: item.lawyerCareerContent || '',
+          lawyerCareerContentArray: item.lawyerCareerContent
+            ? item.lawyerCareerContent.split('\n').filter((line: string) => line.trim())
+            : [''],
           lawyerCareerDisplayOrder: item.lawyerCareerDisplayOrder || index + 1,
         }))
         setCareerData(initialData)
@@ -175,7 +179,7 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
   // 카테고리 선택
   const handleCareerClick = (career: CareerItem) => {
     setSelectedCareer(career)
-    setContentValue(career.lawyerCareerContent)
+    setContentArray(career.lawyerCareerContentArray || [''])
   }
 
   // 카테고리 이름 클릭 시 편집 모드
@@ -193,7 +197,8 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
       return (
         item1.lawyerCareerCategoryName === item2.lawyerCareerCategoryName &&
         item1.lawyerCareerContent === item2.lawyerCareerContent &&
-        item1.lawyerCareerDisplayOrder === item2.lawyerCareerDisplayOrder
+        item1.lawyerCareerDisplayOrder === item2.lawyerCareerDisplayOrder &&
+        JSON.stringify(item1.lawyerCareerContentArray) === JSON.stringify(item2.lawyerCareerContentArray)
       )
     })
   }, [])
@@ -222,11 +227,12 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
       id: Date.now().toString(),
       lawyerCareerCategoryName: '새 카테고리',
       lawyerCareerContent: '',
+      lawyerCareerContentArray: [''],
       lawyerCareerDisplayOrder: careerData.length + 1,
     }
     setCareerData(prev => [...prev, newItem])
     setSelectedCareer(newItem)
-    setContentValue('')
+    setContentArray([''])
   }
 
   // 카테고리 삭제
@@ -241,7 +247,7 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
 
     if (selectedCareer?.id === id) {
       setSelectedCareer(null)
-      setContentValue('')
+      setContentArray([''])
     }
   }
 
@@ -264,13 +270,73 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
     }
   }
 
-  // 내용 저장
-  const handleContentBlur = () => {
-    if (selectedCareer && contentValue !== selectedCareer.lawyerCareerContent) {
+  // 개별 인풋 값 변경 핸들러
+  const handleContentItemChange = (index: number, value: string) => {
+    const newArray = [...contentArray]
+    newArray[index] = value
+    setContentArray(newArray)
+
+    // 실시간으로 careerData 업데이트
+    if (selectedCareer) {
+      const contentString = newArray.filter(item => item.trim()).join('\n')
       setCareerData(prev =>
-        prev.map(item => (item.id === selectedCareer.id ? { ...item, lawyerCareerContent: contentValue } : item))
+        prev.map(item =>
+          item.id === selectedCareer.id
+            ? { ...item, lawyerCareerContent: contentString, lawyerCareerContentArray: newArray }
+            : item
+        )
       )
-      setSelectedCareer({ ...selectedCareer, lawyerCareerContent: contentValue })
+      setSelectedCareer({
+        ...selectedCareer,
+        lawyerCareerContent: contentString,
+        lawyerCareerContentArray: newArray,
+      })
+    }
+  }
+
+  // 엔터키 처리
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      // 현재 인덱스 다음에 새 입력 필드 추가
+      const newArray = [...contentArray]
+      newArray.splice(index + 1, 0, '')
+      setContentArray(newArray)
+
+      // 다음 입력 필드로 포커스 이동 (setTimeout으로 DOM 업데이트 대기)
+      setTimeout(() => {
+        const inputs = document.querySelectorAll(`.${styles.contentInput}`)
+        if (inputs[index + 1]) {
+          ;(inputs[index + 1] as HTMLInputElement).focus()
+        }
+      }, 0)
+    }
+  }
+
+  // 새 인풋 추가
+  const handleAddContentItem = () => {
+    setContentArray(prev => [...prev, ''])
+  }
+
+  // 인풋 삭제
+  const handleRemoveContentItem = (index: number) => {
+    const newArray = contentArray.filter((_, i) => i !== index)
+    setContentArray(newArray.length > 0 ? newArray : [''])
+
+    if (selectedCareer) {
+      const contentString = newArray.filter(item => item.trim()).join('\n')
+      setCareerData(prev =>
+        prev.map(item =>
+          item.id === selectedCareer.id
+            ? { ...item, lawyerCareerContent: contentString, lawyerCareerContentArray: newArray }
+            : item
+        )
+      )
+      setSelectedCareer({
+        ...selectedCareer,
+        lawyerCareerContent: contentString,
+        lawyerCareerContentArray: newArray,
+      })
     }
   }
 
@@ -300,11 +366,12 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
 
   // ref를 통해 상위 컴포넌트에 데이터 전달
   useImperativeHandle(ref, () => ({
-    getFormData: () => careerData.map(item => ({
-      lawyerCareerCategoryName: item.lawyerCareerCategoryName,
-      lawyerCareerContent: item.lawyerCareerContent,
-      lawyerCareerDisplayOrder: item.lawyerCareerDisplayOrder,
-    })),
+    getFormData: () =>
+      careerData.map(item => ({
+        lawyerCareerCategoryName: item.lawyerCareerCategoryName,
+        lawyerCareerContent: item.lawyerCareerContent,
+        lawyerCareerDisplayOrder: item.lawyerCareerDisplayOrder,
+      })),
   }))
 
   if (isLoading) {
@@ -369,20 +436,38 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
         </article>
 
         {/* 우측: 내용 편집 */}
-        <article className={styles.panel_container} style={{ maxHeight: 312 }}>
+        <article className={styles.panel_container}>
           <div className={styles.panel_container__title}>
             이력 분류 {selectedCareer ? `> ${selectedCareer.lawyerCareerCategoryName}` : ''}
           </div>
 
           <div className={styles.editorContent}>
             {selectedCareer ? (
-              <textarea
-                value={contentValue}
-                onChange={e => setContentValue(e.target.value)}
-                onBlur={handleContentBlur}
-                placeholder='1줄씩 입력 바랍니다.'
-                className={styles.contentTextarea}
-              />
+              <div className={styles.contentInputContainer}>
+                {contentArray.map((content, index) => (
+                  <div key={index} className={styles.contentInputWrapper}>
+                    <input
+                      type='text'
+                      value={content}
+                      onChange={e => handleContentItemChange(index, e.target.value)}
+                      onKeyPress={e => handleKeyPress(e, index)}
+                      placeholder='1줄씩 입력해주세요'
+                      className={styles.contentInput}
+                    />
+                    <button
+                      type='button'
+                      onClick={() => handleRemoveContentItem(index)}
+                      className={styles.contentInputDelete}
+                      aria-label='삭제'
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+                <button type='button' onClick={handleAddContentItem} className={styles.addItemButton}>
+                  + 항목 추가
+                </button>
+              </div>
             ) : (
               <div className={styles.emptyContent}>
                 <span className={styles.emptyContent__text}>카테고리를 선택해주세요.</span>
