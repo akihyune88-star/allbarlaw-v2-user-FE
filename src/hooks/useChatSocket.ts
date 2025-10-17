@@ -17,9 +17,7 @@ import {
   useSocket,
   useSetSocket,
   useSetConnected,
-  useSetMessages,
   useSetRoomInfo,
-  useAddMessage,
   useUpdateMessage,
   useUpdateMessageByTempId,
   useMarkMessagesAsRead,
@@ -49,9 +47,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   const socket = useSocket()
   const setSocket = useSetSocket()
   const setConnected = useSetConnected()
-  const setMessages = useSetMessages()
   const setRoomInfo = useSetRoomInfo()
-  const addMessage = useAddMessage()
+  const setMessagesForRoom = useSocketStore(state => state.setMessagesForRoom)
+  const addMessageToRoom = useSocketStore(state => state.addMessageToRoom)
   const updateMessage = useUpdateMessage()
   const updateMessageByTempId = useUpdateMessageByTempId()
   const markMessagesAsRead = useMarkMessagesAsRead()
@@ -221,7 +219,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     // 채팅방 입장 성공
     const handleJoinRoomSuccess = (data: JoinRoomSuccessData) => {
       console.log('✅ [SOCKET] 방 입장 성공:', data)
-      setMessages(data.recentMessages)
+      if (chatRoomId) {
+        setMessagesForRoom(chatRoomId, data.recentMessages)
+      }
       setRoomInfo(data.chatRoom)
 
       // 🆕 채팅방 입장 시 나가기 상태 확인 및 처리
@@ -239,7 +239,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
             chatMessageSenderId: 0,
             chatMessageCreatedAt: new Date().toISOString(),
           }
-          addMessage(leaveMessage)
+          if (chatRoomId) {
+            addMessageToRoom(chatRoomId, leaveMessage)
+          }
         } else if (userLeft || lawyerLeft) {
           // 한쪽만 나간 경우 (일방향 채팅)
           const leftUserType = userLeft ? '사용자' : '변호사'
@@ -260,7 +262,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
             chatMessageSenderId: 0,
             chatMessageCreatedAt: new Date().toISOString(),
           }
-          addMessage(leaveMessage)
+          if (chatRoomId) {
+            addMessageToRoom(chatRoomId, leaveMessage)
+          }
         } else {
           // 정상 활성 상태
           setChatStatus(data.chatRoom.chatRoomStatus)
@@ -311,12 +315,13 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         return
       }
 
-      // 상대방이 보낸 메시지만 추가
-      addMessage(message)
+      // 상대방이 보낸 메시지만 추가 (메시지의 chatRoomId 사용)
+      const messageChatRoomId = (message as any).chatRoomId || chatRoomId
+      if (messageChatRoomId) {
+        addMessageToRoom(messageChatRoomId, message)
 
-      // chatRooms의 최근 메시지도 업데이트 (현재 채팅방이면)
-      if (chatRoomId) {
-        updateChatRoomLastMessage(chatRoomId, message)
+        // chatRooms의 최근 메시지도 업데이트
+        updateChatRoomLastMessage(messageChatRoomId, message)
       }
 
       // 상대방 메시지 자동 읽음 처리
@@ -406,7 +411,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           chatMessageCreatedAt: new Date().toISOString(),
         }
 
-        addMessage(leaveMessage)
+        if (chatRoomId) {
+          addMessageToRoom(chatRoomId, leaveMessage)
+        }
       }
     }
 
@@ -442,7 +449,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           chatMessageCreatedAt: new Date().toISOString(),
         }
 
-        addMessage(leaveMessage)
+        if (chatRoomId) {
+          addMessageToRoom(chatRoomId, leaveMessage)
+        }
       } else {
         const leaveMessage: ChatMessage = {
           chatMessageId: Date.now(),
@@ -451,7 +460,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           chatMessageSenderId: 0,
           chatMessageCreatedAt: new Date().toISOString(),
         }
-        addMessage(leaveMessage)
+        if (chatRoomId) {
+          addMessageToRoom(chatRoomId, leaveMessage)
+        }
         setChatStatus('PARTIAL_LEFT')
       }
     }
@@ -613,7 +624,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         }
 
         console.log('📤 [SOCKET] 임시 메시지 추가:', tempMessage)
-        addMessage(tempMessage)
+        addMessageToRoom(chatRoomId, tempMessage)
 
         // chatRooms의 최근 메시지도 업데이트
         updateChatRoomLastMessage(chatRoomId, tempMessage)
@@ -650,7 +661,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         })
       }
     },
-    [socket, chatRoomId, isLawyer, userId, addMessage, currentChatStatus, updateChatRoomStatus, updateChatRoomLastMessage]
+    [socket, chatRoomId, isLawyer, userId, addMessageToRoom, currentChatStatus, updateChatRoomStatus, updateChatRoomLastMessage]
   )
 
   // 채팅방 나가기 함수

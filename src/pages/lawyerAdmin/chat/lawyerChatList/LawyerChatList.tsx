@@ -5,7 +5,6 @@ import { useGetLawyerChatList } from '@/hooks/queries/useBaroTalk'
 import { useAuth } from '@/contexts/AuthContext'
 import React, { useEffect, useState, useRef } from 'react'
 import { toggleClipChatRoom, isClippedChatRoom, sortChatRoomsByClip } from '@/utils/localStorage'
-import { useSetChatRoomId } from '@/stores/socketStore'
 import HeaderPortal from '@/components/headerPortal/HeaderPortal'
 import ChatModal from '@/components/chatModal/ChatModal'
 
@@ -26,7 +25,6 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
   const { getLawyerIdFromToken } = useAuth()
   const lawyerId = getLawyerIdFromToken()
   const [clipStates, setClipStates] = useState<Record<number, boolean>>({})
-  const setChatRoomId = useSetChatRoomId()
   const observerRef = useRef<HTMLDivElement>(null)
   const disabledStatus = ['COMPLETED', 'CANCELLED', 'REJECTED']
 
@@ -169,10 +167,6 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
       clientName: chatRoom.clientName,
       status: chatRoom.chatRoomStatus,
     })
-
-    // 전역 상태에 채팅방 ID 설정
-    setChatRoomId(chatRoom.chatRoomId)
-    console.log('✅ [LAWYER LIST] setChatRoomId 호출됨:', chatRoom.chatRoomId)
 
     // 모달 위치 계산 (계단식 배치)
     const offset = openModals.length * 30

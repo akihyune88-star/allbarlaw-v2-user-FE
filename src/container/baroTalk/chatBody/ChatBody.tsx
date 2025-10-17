@@ -8,7 +8,7 @@ import React, { ChangeEvent, useState, useCallback, useRef, useEffect } from 're
 import { ChatMessage } from '@/types/baroTalkTypes'
 import { formatTimeAgo } from '@/utils/date'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useMessages, useChatStatus, useSocket, useIsConnected, useRoomInfo, useAddMessage } from '@/stores/socketStore'
+import { useSocketStore, useChatStatus, useSocket, useIsConnected, useRoomInfo, useAddMessage } from '@/stores/socketStore'
 import { useAuth } from '@/contexts/AuthContext'
 
 type ChatBodyProps = {
@@ -20,12 +20,13 @@ type ChatBodyProps = {
 
 const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyProps) => {
   // Zustand 전역 상태 구독
-  const messages = useMessages()
+  const messageCache = useSocketStore(state => state.messageCache)
+  const messages = chatRoomId ? (messageCache[chatRoomId] || []) : []
   const chatStatus = useChatStatus()
   const socket = useSocket()
   const isConnected = useIsConnected()
   const roomInfo = useRoomInfo()
-  const addMessage = useAddMessage()
+  const addMessageToRoom = useSocketStore(state => state.addMessageToRoom)
   const { getUserIdFromToken } = useAuth()
   const userId = getUserIdFromToken()
 
@@ -72,7 +73,9 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
       status: 'sending',
     }
 
-    addMessage(tempMessage)
+    if (chatRoomId) {
+      addMessageToRoom(chatRoomId, tempMessage)
+    }
 
     // 서버로 메시지 전송
     socket.emit('sendMessage', {
@@ -84,7 +87,7 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
     })
 
     setMessage('')
-  }, [message, isConnected, socket, chatRoomId, isLawyer, userId, roomInfo, addMessage])
+  }, [message, isConnected, socket, chatRoomId, isLawyer, userId, roomInfo, addMessageToRoom])
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     console.log('키 눌림:', e.key, 'Shift:', e.shiftKey, 'Composing:', e.nativeEvent.isComposing)
