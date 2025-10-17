@@ -197,7 +197,7 @@ const BlogFeedContainer = () => {
         <div
           className={styles['slider-track']}
           style={{
-            transform: `translateX(-${currentIndex * 100}%)`,
+            transform: `translate3d(-${currentIndex * 100}%, 0, 0)`,
             transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none',
           }}
         >
