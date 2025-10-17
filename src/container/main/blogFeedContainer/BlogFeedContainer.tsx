@@ -64,17 +64,27 @@ const BlogFeedContainer = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
   const [isPlaying, setIsPlaying] = useState(true)
+  const [currentIndex, setCurrentIndex] = useState(1) // 0: prev, 1: current, 2: next
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const intervalRef = useRef<number | null>(null)
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 
-  const { blogList, hasNextPage, refetch } = useRandomBlogList({
+  // 현재 데이터
+  const { blogList: currentBlogs, hasNextPage, refetch } = useRandomBlogList({
     subcategoryId: 'all',
     take: isMobile ? 3 : 4,
     excludeIds: currentExcludeIds,
   })
 
-  const subBlogList = isMobile ? blogList : blogList.slice(1, 4)
+  // 다음 데이터 미리 fetching
+  const nextExcludeIds = [...currentExcludeIds, ...currentBlogs.map(blog => blog.blogCaseId)]
+  const { blogList: nextBlogs } = useRandomBlogList({
+    subcategoryId: 'all',
+    take: isMobile ? 3 : 4,
+    excludeIds: nextExcludeIds,
+    enabled: hasNextPage,
+  })
 
   const handleBlogClick = (subcategoryId: number, blogId: number) => {
     navigate(`/${subcategoryId}/blog/${blogId}`)
@@ -85,9 +95,29 @@ const BlogFeedContainer = () => {
   }
 
   const goToNext = () => {
-    if (hasNextPage) {
-      const currentIds = blogList.map(blog => blog.blogCaseId)
-      handleNext(currentIds)
+    if (hasNextPage && !isTransitioning) {
+      setIsTransitioning(true)
+      setCurrentIndex(2)
+
+      setTimeout(() => {
+        const currentIds = currentBlogs.map(blog => blog.blogCaseId)
+        handleNext(currentIds)
+        setCurrentIndex(1)
+        setIsTransitioning(false)
+      }, 500)
+    }
+  }
+
+  const goToPrev = () => {
+    if (canGoPrev && !isTransitioning) {
+      setIsTransitioning(true)
+      setCurrentIndex(0)
+
+      setTimeout(() => {
+        handlePrev()
+        setCurrentIndex(1)
+        setIsTransitioning(false)
+      }, 500)
     }
   }
 
@@ -108,36 +138,31 @@ const BlogFeedContainer = () => {
         window.clearInterval(intervalRef.current)
       }
     }
-  }, [isPlaying, hasNextPage, blogList, isMobile])
+  }, [isPlaying, hasNextPage, currentBlogs, isMobile])
 
-  return (
-    <section className={styles.container}>
-      <BlogFeedHeader
-        refetch={refetch}
-        onNext={hasNextPage ? goToNext : undefined}
-        onPrev={canGoPrev ? handlePrev : undefined}
-        onToggle={handleTogglePlay}
-        isPlaying={isPlaying}
-      />
+  const renderBlogContent = (blogs: typeof currentBlogs) => {
+    const subList = isMobile ? blogs : blogs.slice(1, 4)
+
+    return (
       <div className={styles['blog-list-container']}>
         <div className={`${styles['main-blog-item']} ${isMobile ? styles.hidden : ''}`}>
-          {blogList[0] && (
+          {blogs[0] && (
             <Article
               type='xxlarge'
-              thumbnailUrl={blogList[0].thumbnail}
-              title={blogList[0].title}
-              content={blogList[0].summaryContent}
+              thumbnailUrl={blogs[0].thumbnail}
+              title={blogs[0].title}
+              content={blogs[0].summaryContent}
               className={styles['main-blog-item']}
               lawyerInfo={{
-                name: blogList[0].lawyerName,
-                profileImageUrl: blogList[0].lawyerProfileImage,
+                name: blogs[0].lawyerName,
+                profileImageUrl: blogs[0].lawyerProfileImage,
               }}
-              onClick={() => handleBlogClick(blogList[0].subcategoryId, blogList[0].blogCaseId)}
+              onClick={() => handleBlogClick(blogs[0].subcategoryId, blogs[0].blogCaseId)}
             />
           )}
         </div>
         <div className={styles['sub-blog-list']}>
-          {subBlogList.map((blog, idx) => (
+          {subList.map((blog, idx) => (
             <React.Fragment key={blog.blogCaseId}>
               <BlogItem
                 type='regular'
@@ -146,9 +171,45 @@ const BlogFeedContainer = () => {
                 className={styles['sub-blog-list-item']}
                 onClick={() => handleBlogClick(blog.subcategoryId, blog.blogCaseId)}
               />
-              {isMobile || (idx !== subBlogList.length - 1 && <Divider padding={29} />)}
+              {isMobile || (idx !== subList.length - 1 && <Divider padding={29} />)}
             </React.Fragment>
           ))}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <section className={styles.container}>
+      <BlogFeedHeader
+        refetch={refetch}
+        onNext={hasNextPage ? goToNext : undefined}
+        onPrev={canGoPrev ? goToPrev : undefined}
+        onToggle={handleTogglePlay}
+        isPlaying={isPlaying}
+      />
+      <div className={styles['slider-wrapper']}>
+        <div
+          className={styles['slider-track']}
+          style={{
+            transform: `translateX(-${currentIndex * 100}%)`,
+            transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none',
+          }}
+        >
+          {/* 이전 슬라이드 (placeholder) */}
+          <div className={styles['slide']}>
+            {canGoPrev && renderBlogContent(currentBlogs)}
+          </div>
+
+          {/* 현재 슬라이드 */}
+          <div className={styles['slide']}>
+            {renderBlogContent(currentBlogs)}
+          </div>
+
+          {/* 다음 슬라이드 */}
+          <div className={styles['slide']}>
+            {hasNextPage && nextBlogs.length > 0 && renderBlogContent(nextBlogs)}
+          </div>
         </div>
       </div>
     </section>

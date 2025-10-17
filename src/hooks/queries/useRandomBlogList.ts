@@ -7,13 +7,15 @@ type UseRandomBlogListProps = {
   subcategoryId: number | 'all'
   take?: number
   excludeIds?: number[]
+  enabled?: boolean
 }
 
-export const useRandomBlogList = ({ subcategoryId, take, excludeIds }: UseRandomBlogListProps) => {
+export const useRandomBlogList = ({ subcategoryId, take, excludeIds, enabled = true }: UseRandomBlogListProps) => {
   const { data, isLoading, isPlaceholderData, refetch } = useQuery({
     queryKey: [QUERY_KEY.RANDOM_BLOG_LIST, subcategoryId, take, excludeIds],
     queryFn: () => blogService.getRandomBlogList({ subcategoryId, take, excludeIds }),
     placeholderData: previousData => previousData, // 이전 데이터 유지로 깜빡임 방지
+    enabled,
   })
 
   return {
