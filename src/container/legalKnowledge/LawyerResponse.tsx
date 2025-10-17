@@ -78,11 +78,12 @@ const LawyerResponse = ({ lawyers, className, isBaroTalk }: LawyerResponseProps)
               )}
             </div>
           </Card.Header>
-          {!isMobile && !isBaroTalk && (
-            <button className={styles['mobile-barotalk-btn']} onClick={() => handleBaroTalk(lawyer.lawyerId)}>
-              바로톡
-            </button>
-          )}
+          {!isMobile ||
+            (!isBaroTalk && (
+              <button className={styles['mobile-barotalk-btn']} onClick={() => handleBaroTalk(lawyer.lawyerId)}>
+                바로톡
+              </button>
+            ))}
           <Divider />
           <Card.Content>
             <p className={styles['description']}>{lawyer.content}</p>
