@@ -6,28 +6,23 @@ import { useState, useEffect } from 'react'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useChatSocket } from '@/hooks/useChatSocket'
-import { useChatRoomId, useSetChatStatus, useIsConnected } from '@/stores/socketStore'
+import { useSetChatStatus, useIsConnected } from '@/stores/socketStore'
 
 // 채팅 페이지에서만 소켓을 연결하는 컴포넌트
 const ChatSocketProvider = () => {
-  const chatRoomId = useChatRoomId()
   const setChatStatus = useSetChatStatus()
   const isConnected = useIsConnected()
 
+  // chatRoomId를 null로 설정해서 소켓 연결만 담당 (특정 방에 join하지 않음)
   useChatSocket({
-    chatRoomId, // 리스트에서는 null, 채팅방에서는 roomId
+    chatRoomId: null,
     setChatStatus,
   })
 
   // 초기 마운트 시 한 번만 로그
   useEffect(() => {
-    console.log('💬 [CHAT SOCKET] 소켓 프로바이더 초기화 완료')
+    console.log('💬 [CHAT SOCKET] 소켓 프로바이더 초기화 완료 (방 입장 없음)')
   }, [])
-
-  // chatRoomId 변경 감지
-  useEffect(() => {
-    console.log('💬 [CHAT SOCKET] chatRoomId 변경:', chatRoomId || 'null')
-  }, [chatRoomId])
 
   // 소켓 연결 상태 변경 감지
   useEffect(() => {

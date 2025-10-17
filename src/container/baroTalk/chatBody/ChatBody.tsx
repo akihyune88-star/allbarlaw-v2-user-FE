@@ -8,7 +8,7 @@ import React, { ChangeEvent, useState, useCallback, useRef, useEffect } from 're
 import { ChatMessage } from '@/types/baroTalkTypes'
 import { formatTimeAgo } from '@/utils/date'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useSocketStore, useChatStatus, useSocket, useIsConnected, useRoomInfo, useAddMessage } from '@/stores/socketStore'
+import { useSocketStore, useChatStatus, useSocket, useIsConnected, useRoomInfo } from '@/stores/socketStore'
 import { useAuth } from '@/contexts/AuthContext'
 
 type ChatBodyProps = {
@@ -21,7 +21,7 @@ type ChatBodyProps = {
 const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyProps) => {
   // Zustand 전역 상태 구독
   const messageCache = useSocketStore(state => state.messageCache)
-  const messages = chatRoomId ? (messageCache[chatRoomId] || []) : []
+  const messages = chatRoomId ? messageCache[chatRoomId] || [] : []
   const chatStatus = useChatStatus()
   const socket = useSocket()
   const isConnected = useIsConnected()
@@ -34,6 +34,7 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
   const isMobile = useMediaQuery('(max-width: 768px)')
   const chatBodyRef = useRef<HTMLDivElement>(null)
 
+  console.log('messages', messageCache)
   // 스크롤을 맨 아래로 이동하는 함수
   const scrollToBottom = () => {
     if (chatBodyRef.current) {

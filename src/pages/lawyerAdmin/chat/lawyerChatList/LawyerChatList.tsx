@@ -82,7 +82,7 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
     switch (status) {
       case 'PENDING':
         return (
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', justifyContent: 'center' }}>
             <span className={`${styles.statusBadge} ${styles.newQuestion}`}>신규 질문</span>
             <span className={`${styles.statusBadge} ${styles.pending}`}>답변하기</span>
           </div>
@@ -90,7 +90,7 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
       case 'ACTIVE':
         return <span className={`${styles.statusBadge} ${styles.waiting}`}>채팅중</span>
       case 'CONSULTING':
-        return <span className={`${styles.statusBadge} ${styles.answered}`}>답변완료 채팅시작 대기중</span>
+        return <span className={`${styles.statusBadge} ${styles.consulting}`}>답변완료 채팅시작 대기중</span>
       case 'COMPLETED':
         return <span className={`${styles.statusBadge} ${styles.completed}`}>완료</span>
       default:

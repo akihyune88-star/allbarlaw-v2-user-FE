@@ -219,8 +219,11 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     // 채팅방 입장 성공
     const handleJoinRoomSuccess = (data: JoinRoomSuccessData) => {
       console.log('✅ [SOCKET] 방 입장 성공:', data)
-      if (chatRoomId) {
-        setMessagesForRoom(chatRoomId, data.recentMessages)
+      // 응답 데이터에서 chatRoomId를 가져와서 사용 (클로저 캡처된 chatRoomId는 null일 수 있음)
+      const roomId = data.chatRoom?.chatRoomId || chatRoomId
+      if (roomId) {
+        console.log('💾 [SOCKET] 메시지 저장:', { roomId, messageCount: data.recentMessages.length })
+        setMessagesForRoom(roomId, data.recentMessages)
       }
       setRoomInfo(data.chatRoom)
 
@@ -239,8 +242,8 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
             chatMessageSenderId: 0,
             chatMessageCreatedAt: new Date().toISOString(),
           }
-          if (chatRoomId) {
-            addMessageToRoom(chatRoomId, leaveMessage)
+          if (roomId) {
+            addMessageToRoom(roomId, leaveMessage)
           }
         } else if (userLeft || lawyerLeft) {
           // 한쪽만 나간 경우 (일방향 채팅)
@@ -262,8 +265,8 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
             chatMessageSenderId: 0,
             chatMessageCreatedAt: new Date().toISOString(),
           }
-          if (chatRoomId) {
-            addMessageToRoom(chatRoomId, leaveMessage)
+          if (roomId) {
+            addMessageToRoom(roomId, leaveMessage)
           }
         } else {
           // 정상 활성 상태

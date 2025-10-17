@@ -28,39 +28,60 @@
   width: 100%;
   position: relative;
 
-  // ChatRoomContainer가 전체 높이를 차지하도록
+  // ChatRoomContainer가 남은 높이를 차지하도록
   > section {
-    height: 100%;
+    flex: 1;
     cursor: default;
+    overflow: hidden;
   }
 }
 
-.closeButton {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
   background: white;
-  border: 1px solid $color-line-divider;
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
+  user-select: none;
+
+  &:active {
+    background: #f8f9fa;
+  }
+}
+
+.modalTitle {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $color-text-caption;
+  color: #999;
   transition: all 0.2s ease;
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 1.5rem;
   line-height: 1;
   font-weight: 300;
-  z-index: 10;
-  width: 32px;
-  height: 32px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 
   &:hover {
-    background-color: $color-bg-gray-01;
-    color: $color-text-black;
-    border-color: $color-line-borderbox;
+    background-color: #f0f0f0;
+    color: #333;
   }
 
   &:active {
