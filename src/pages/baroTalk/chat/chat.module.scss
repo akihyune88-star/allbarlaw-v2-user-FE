@@ -4,10 +4,13 @@
   will-change: autodm;
   max-width: 1120px;
   margin: 0 auto;
+  // 뷰포트 높이만큼 고정하여 컨텐츠가 무한히 늘어나지 않도록
+  height: calc(100vh - 140px); // 헤더 높이 고려 (필요시 조정)
 }
 
 .chat-content {
   gap: 2.375rem;
+  // chatRoomContainer.module.scss에서 이미 height: 100%가 설정되어 있음
 }
 
 @media (max-width: $breakpoint-desktop) {
