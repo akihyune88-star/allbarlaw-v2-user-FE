@@ -25,6 +25,9 @@ import {
   useMarkMessagesAsRead,
   useChatStatus,
   useSocketStore,
+  useUpdateBatchUserStatus,
+  useUpdateChatRoomOnlineStatus,
+  useUpdateChatRoomLastMessage,
 } from '@/stores/socketStore'
 import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
 import { useQueryClient } from '@tanstack/react-query'
@@ -37,7 +40,7 @@ interface UseChatSocketProps {
 }
 
 export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps) => {
-  const { getUserIdFromToken } = useAuth()
+  const { getUserIdFromToken, getLawyerIdFromToken } = useAuth()
   const location = useLocation()
   const isLawyer = location.pathname.includes('lawyer-admin')
   const queryClient = useQueryClient()
@@ -53,6 +56,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   const updateMessageByTempId = useUpdateMessageByTempId()
   const markMessagesAsRead = useMarkMessagesAsRead()
   const currentChatStatus = useChatStatus()
+  const updateBatchUserStatus = useUpdateBatchUserStatus()
+  const updateChatRoomOnlineStatus = useUpdateChatRoomOnlineStatus()
+  const updateChatRoomLastMessage = useUpdateChatRoomLastMessage()
 
   // 채팅방 상태 업데이트 훅
   const { mutate: updateChatRoomStatus } = useUpdateChatRoomStatus({
@@ -70,11 +76,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   const joinRoomAttemptedRef = useRef(false)
   const markAsReadRef = useRef<((_messageIds?: number[]) => void) | null>(null)
   const timeoutRefs = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
-  const userId = getUserIdFromToken()
 
-  // 소켓 연결
+  // 변호사인 경우 lawyerId, 일반 유저인 경우 userId 사용
+  const userId = isLawyer ? getLawyerIdFromToken() : getUserIdFromToken()
+
+  // 소켓 연결 (userId가 변경될 때만 재연결)
   useEffect(() => {
     if (!userId) {
+      console.log('⚠️ [SOCKET] userId 없음 - 소켓 연결 안함')
       return
     }
 
@@ -86,6 +95,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 🆕 배포환경 디버깅을 위한 로그
     console.log('🔍 [SOCKET] 소켓 연결 시도:', {
+      userType: isLawyer ? 'LAWYER' : 'USER',
       userId,
       chatRoomId: chatRoomId || 'null (채팅방 미선택)',
       serverUrl: import.meta.env.VITE_SERVER_API + '/chat',
@@ -158,7 +168,8 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       })
       timeoutRefs.current.clear()
     }
-  }, [userId, setSocket, setConnected])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]) // setSocket, setConnected는 Zustand 액션으로 안정적이므로 의존성에서 제외
 
   // 읽음 처리 함수 (이벤트 리스너보다 먼저 정의)
   const markAsRead = useCallback(
@@ -179,14 +190,17 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
   // chatRoomId가 변경될 때 방 입장
   useEffect(() => {
-    if (chatRoomId && socket && socket.connected && !joinRoomAttemptedRef.current) {
+    // chatRoomId가 변경되면 joinRoomAttemptedRef 리셋
+    joinRoomAttemptedRef.current = false
+
+    if (chatRoomId && socket && socket.connected) {
       const joinRoomRequest: JoinRoomRequest = {
         chatRoomId: chatRoomId,
         loadRecentMessages: true,
         messageLimit: 50,
       }
 
-      console.log('🔍 [SOCKET] 방 입장 재시도:', joinRoomRequest)
+      console.log('🔍 [SOCKET] 방 입장 요청 (chatRoomId 변경):', joinRoomRequest)
       socket.emit('joinRoom', joinRoomRequest)
       joinRoomAttemptedRef.current = true
     }
@@ -197,7 +211,8 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     if (socket) {
       setConnected(socket.connected)
     }
-  }, [socket, setConnected])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]) // setConnected는 Zustand 액션으로 안정적이므로 의존성에서 제외
 
   // 소켓 이벤트 리스너 설정
   useEffect(() => {
@@ -298,6 +313,11 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
       // 상대방이 보낸 메시지만 추가
       addMessage(message)
+
+      // chatRooms의 최근 메시지도 업데이트 (현재 채팅방이면)
+      if (chatRoomId) {
+        updateChatRoomLastMessage(chatRoomId, message)
+      }
 
       // 상대방 메시지 자동 읽음 처리
       const timeoutId = setTimeout(() => {
@@ -454,65 +474,33 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     }
 
     // 사용자 상태 변경 이벤트 처리
-    const handleUserStatusChanged = (data: Array<{ userType: string; userId: number; userActivate: boolean }>) => {
+    const handleUserStatusChanged = (
+      data: { userType: string; userId: number; userActivate: boolean } | Array<{ userType: string; userId: number; userActivate: boolean }>
+    ) => {
       console.log('🔄 [SOCKET] 사용자 상태 변경:', data)
 
+      // 배열이 아니면 배열로 변환
+      const dataArray = Array.isArray(data) ? data : [data]
+
       // 변호사 상태 변경만 처리
-      const lawyerStatusUpdates = data.filter(item => item.userType === 'LAWYER')
+      const lawyerStatusUpdates = dataArray.filter(item => item.userType === 'LAWYER')
 
       if (lawyerStatusUpdates.length > 0) {
         console.log('🔍 [SOCKET] 변호사 상태 업데이트 대상:', lawyerStatusUpdates)
 
-        // 모든 가능한 쿼리 키로 캐시 업데이트 시도
-        const queryCache = queryClient.getQueryCache()
-        const allQueries = queryCache.getAll()
+        // Zustand에 상태 저장
+        const statusMap: Record<number, string> = {}
+        lawyerStatusUpdates.forEach(update => {
+          const status = update.userActivate ? 'online' : 'offline'
+          statusMap[update.userId] = status
+          console.log(`✅ [SOCKET] 변호사 ${update.userId} 상태 업데이트: ${status}`)
 
-        console.log('🔍 [SOCKET] 전체 쿼리 목록:', allQueries.map(q => q.queryKey))
-
-        // BARO_TALK_CHAT_LIST 쿼리 찾기
-        const chatListQueries = allQueries.filter(q =>
-          Array.isArray(q.queryKey) && q.queryKey[0] === QUERY_KEY.BARO_TALK_CHAT_LIST
-        )
-
-        console.log('🔍 [SOCKET] 채팅 리스트 쿼리:', chatListQueries.map(q => q.queryKey))
-
-        chatListQueries.forEach(query => {
-          queryClient.setQueryData(query.queryKey, (oldData: any) => {
-            if (!oldData) {
-              console.log('⚠️ [SOCKET] oldData가 없음')
-              return oldData
-            }
-
-            console.log('🔍 [SOCKET] oldData 구조:', oldData)
-
-            const newData = {
-              ...oldData,
-              pages: oldData.pages.map((page: BaroTalkChatListResponse) => ({
-                ...page,
-                chatRooms: page.chatRooms.map(room => {
-                  // 해당 변호사 ID와 일치하는 채팅방 찾기
-                  const statusUpdate = lawyerStatusUpdates.find(update => update.userId === room.chatRoomLawyer.lawyerId)
-
-                  if (statusUpdate) {
-                    const newStatus = statusUpdate.userActivate ? 'online' : 'offline'
-                    console.log(
-                      `✅ [SOCKET] 변호사 ${room.chatRoomLawyer.lawyerId} 상태 업데이트: ${room.partnerOnlineStatus} → ${newStatus}`
-                    )
-                    return {
-                      ...room,
-                      partnerOnlineStatus: newStatus as 'online' | 'offline' | 'away',
-                    }
-                  }
-
-                  return room
-                }),
-              })),
-            }
-
-            console.log('🔍 [SOCKET] newData 구조:', newData)
-            return newData
-          })
+          // chatRooms의 온라인 상태도 업데이트
+          updateChatRoomOnlineStatus(update.userId, status as 'online' | 'offline')
         })
+
+        updateBatchUserStatus(statusMap)
+        console.log('🔍 [SOCKET] Zustand 업데이트 완료, 최종 상태:', statusMap)
       }
     }
 
@@ -592,18 +580,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       })
       timeoutRefs.current.clear()
     }
-  }, [
-    socket,
-    setMessages,
-    setRoomInfo,
-    setChatStatus,
-    addMessage,
-    updateMessage,
-    updateMessageByTempId,
-    markMessagesAsRead,
-    chatRoomId,
-    isLawyer,
-  ])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, chatRoomId, isLawyer, setChatStatus])
+  // Zustand 액션들(setMessages, setRoomInfo, addMessage 등)은 안정적이므로 의존성에서 제외
 
   // 메시지 전송 함수
   const sendMessage = useCallback(
@@ -635,6 +614,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
         console.log('📤 [SOCKET] 임시 메시지 추가:', tempMessage)
         addMessage(tempMessage)
+
+        // chatRooms의 최근 메시지도 업데이트
+        updateChatRoomLastMessage(chatRoomId, tempMessage)
 
         // 서버로 메시지 전송 (상태 변경은 서버에서 처리하도록)
         const messagePayload = {
@@ -668,7 +650,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         })
       }
     },
-    [socket, chatRoomId, isLawyer, userId, addMessage, currentChatStatus, updateChatRoomStatus]
+    [socket, chatRoomId, isLawyer, userId, addMessage, currentChatStatus, updateChatRoomStatus, updateChatRoomLastMessage]
   )
 
   // 채팅방 나가기 함수

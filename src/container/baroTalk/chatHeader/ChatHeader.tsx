@@ -1,6 +1,7 @@
 import styles from './chatHeader.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { ROUTER } from '@/routes/routerConstant'
+import { COLOR } from '@/styles/color'
 
 interface ChatHeaderProps {
   isActive: boolean
@@ -50,6 +51,11 @@ const ChatHeader = ({
     }
   }
 
+  // 온라인 상태에 따른 배지 색상
+  const getBadgeColor = (isOnline: boolean) => {
+    return isOnline ? COLOR.green_01 : 'rgba(0, 0, 0, 0.7)'
+  }
+
   return (
     <header className={`${styles['chat-header']} ${className}`}>
       {/* 모바일용 뒤로가기 버튼 */}
@@ -65,13 +71,23 @@ const ChatHeader = ({
           // 유저가 보는 화면 - 변호사 정보 표시
           <div className={styles['lawyer-name-badge-wrap']}>
             <span className={styles['lawyer-name']}>{lawyerName} 변호사</span>
-            {isActive && <span className={styles['badge']} />}
+            <span
+              className={styles['badge']}
+              style={{
+                backgroundColor: getBadgeColor(isActive),
+              }}
+            />
           </div>
         ) : (
           // 변호사가 보는 화면 - 유저 정보 표시
           <div className={styles['lawyer-name-badge-wrap']}>
             <span className={styles['lawyer-name']}>{userName ? `${userName} 님` : `사용자 ${userId}`}</span>
-            {isActive && <span className={styles['badge']} />}
+            <span
+              className={styles['badge']}
+              style={{
+                backgroundColor: getBadgeColor(isActive),
+              }}
+            />
           </div>
         )}
       </div>
@@ -97,14 +113,24 @@ const ChatHeader = ({
               )}
               <div className={styles['lawyer-name-badge-wrap']}>
                 <span className={styles['lawyer-name']}>{lawyerName} 변호사</span>
-                {isActive && <span className={styles['badge']} />}
+                <span
+                  className={styles['badge']}
+                  style={{
+                    backgroundColor: getBadgeColor(isActive),
+                  }}
+                />
               </div>
             </>
           ) : (
             // 변호사가 보는 화면 - 유저 정보 표시
             <div className={styles['lawyer-name-badge-wrap']}>
               <span className={styles['lawyer-name']}>{userName ? `${userName} 님` : `사용자 ${userId}`}</span>
-              {isActive && <span className={styles['badge']} />}
+              <span
+                className={styles['badge']}
+                style={{
+                  backgroundColor: getBadgeColor(isActive),
+                }}
+              />
             </div>
           )}
         </div>

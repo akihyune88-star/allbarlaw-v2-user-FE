@@ -5,7 +5,7 @@ import { useGetLawyerChatList } from '@/hooks/queries/useBaroTalk'
 import { useAuth } from '@/contexts/AuthContext'
 import React, { useEffect, useState, useRef } from 'react'
 import { toggleClipChatRoom, isClippedChatRoom, sortChatRoomsByClip } from '@/utils/localStorage'
-import { useSetChatRoomId } from '@/stores/socketStore'
+import { useSetChatRoomId, useChatRoomId } from '@/stores/socketStore'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import HeaderPortal from '@/components/headerPortal/HeaderPortal'
@@ -17,12 +17,17 @@ interface LawyerChatListProps {
 const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
   const { getLawyerIdFromToken } = useAuth()
   const lawyerId = getLawyerIdFromToken() // 임시로 userId를 lawyerId로 사용
-  console.log('🟢 LawyerChatList: lawyerId', lawyerId)
+  const currentChatRoomId = useChatRoomId()
   const [clipStates, setClipStates] = useState<Record<number, boolean>>({})
   const setChatRoomId = useSetChatRoomId()
   const navigate = useNavigate()
   const observerRef = useRef<HTMLDivElement>(null)
   const disabledStatus = ['COMPLETED', 'CANCELLED', 'REJECTED']
+
+  // 초기 마운트 시 한 번만 로그
+  useEffect(() => {
+    console.log('📋 [LAWYER LIST] 컴포넌트 초기화 완료:', { lawyerId })
+  }, [lawyerId])
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } = useGetLawyerChatList(
     lawyerId || 0,
@@ -129,13 +134,22 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
 
   const handleChatRoomClick = (chatRoom: LawyerChatRoom) => {
     if (disabledStatus.includes(chatRoom.chatRoomStatus)) {
+      console.log('⚠️ [LAWYER LIST] 비활성 채팅방 클릭 차단:', {
+        chatRoomId: chatRoom.chatRoomId,
+        status: chatRoom.chatRoomStatus,
+      })
       return
     }
 
-    console.log('🗋 LawyerChatList: 채팅방 클릭:', chatRoom)
+    console.log('🔘 [LAWYER LIST] 채팅방 클릭:', {
+      chatRoomId: chatRoom.chatRoomId,
+      clientName: chatRoom.clientName,
+      status: chatRoom.chatRoomStatus,
+    })
 
     // 1. 전역 상태에 채팅방 ID 설정
     setChatRoomId(chatRoom.chatRoomId)
+    console.log('✅ [LAWYER LIST] setChatRoomId 호출됨:', chatRoom.chatRoomId)
 
     // 2. LawyerChat 페이지로 네비게이션
     navigate(ROUTER.LAWYER_ADMIN_CHAT, {

@@ -3,7 +3,7 @@ import ChatBody from '@/container/baroTalk/chatBody/ChatBody'
 import styles from './chatRoomContainer.module.scss'
 import { useCallback } from 'react'
 import { useLeaveChatRoom } from '@/hooks/queries/useBaroTalk'
-import { useMessages, useChatStatus, useRoomInfo, useSetChatRoomId, useSocket, useIsConnected } from '@/stores/socketStore'
+import { useMessages, useChatStatus, useRoomInfo, useSetChatRoomId, useSocket, useIsConnected, useChatRooms } from '@/stores/socketStore'
 import { useAuth } from '@/contexts/AuthContext'
 import { useNavigate, useLocation } from 'react-router-dom'
 
@@ -31,6 +31,7 @@ const ChatRoomContainer = ({
   const socket = useSocket()
   const isConnected = useIsConnected()
   const setChatRoomId = useSetChatRoomId()
+  const chatRooms = useChatRooms()
   const { userKeyId } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
@@ -85,10 +86,14 @@ const ChatRoomContainer = ({
   // 메시지 전송 핸들러 - ChatBody에서 직접 처리하도록 변경
   console.log('roomInfo', roomInfo)
 
+  // 실시간 온라인 상태 계산 (chatRooms에서 현재 채팅방 찾기)
+  const currentChatRoom = chatRooms.find(room => room.chatRoomId === chatRoomId)
+  const isPartnerActive = !isLawyer && currentChatRoom?.partnerOnlineStatus === 'online'
+
   return (
     <section className={`contents-section ${styles['chat-content']}`}>
       <ChatHeader
-        isActive={true}
+        isActive={isPartnerActive}
         count={{ total: 1256, month: 251 }}
         onEndChat={handleEndChat}
         isLawyer={isLawyer}
