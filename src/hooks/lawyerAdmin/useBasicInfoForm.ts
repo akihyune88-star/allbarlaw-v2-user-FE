@@ -62,7 +62,7 @@ export const useBasicInfoForm = (
         birthYear: lawyerBasicInfo.lawyerBirthYear || undefined,
         birthMonth: lawyerBasicInfo.lawyerBirthMonth || undefined,
         birthDay: lawyerBasicInfo.lawyerBirthDay || undefined,
-        gender: lawyerBasicInfo.lawyerGender === 1 ? 'male' : lawyerBasicInfo.lawyerGender === 2 ? 'female' : '',
+        gender: lawyerBasicInfo.lawyerGender === 1 ? 'male' : lawyerBasicInfo.lawyerGender === 2 ? 'female' : lawyerBasicInfo.lawyerGender === 0 ? 'unknown' : '',
         phoneNumber: lawyerBasicInfo.lawyerPhone || '',
         tags: lawyerBasicInfo.lawyerTags?.map(tag => tag.tagName) || [],
         lawfirmName: lawyerBasicInfo.lawyerLawfirmName || '',

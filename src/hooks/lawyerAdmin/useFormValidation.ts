@@ -29,10 +29,8 @@ export const useFormValidation = () => {
       newErrors.birthDay = '생일을 선택해주세요.'
     }
 
-    // 성별 (필수) - disabled 필드지만 검증
-    if (!formData.gender) {
-      newErrors.gender = '성별을 선택해주세요.'
-    }
+    // 성별 (선택) - gender가 0('unknown')인 경우도 허용
+    // disabled 필드이므로 검증에서 제외하거나 완화
 
     // 휴대폰 번호 (필수, 형식 검사)
     if (!formData.phoneNumber.trim()) {
@@ -91,7 +89,7 @@ export const useFormValidation = () => {
 
   // 폼이 유효한지 실시간으로 체크하는 함수
   const isFormComplete = (formData: BasicInfoFormData): boolean => {
-    // 모든 필수 필드가 채워졌는지 확인
+    // 모든 필수 필드가 채워졌는지 확인 (gender는 0('unknown')도 허용)
     return !!(
       formData.greeting.trim() &&
       formData.greeting.length <= 200 &&
@@ -99,7 +97,8 @@ export const useFormValidation = () => {
       formData.birthYear &&
       formData.birthMonth &&
       formData.birthDay &&
-      formData.gender &&
+      // gender는 빈 문자열이 아닌 경우 유효 ('unknown'도 포함)
+      (formData.gender === 'male' || formData.gender === 'female' || formData.gender === 'unknown') &&
       formData.phoneNumber.trim() &&
       formData.tags.length >= 2 &&
       formData.tags.length <= 20 &&

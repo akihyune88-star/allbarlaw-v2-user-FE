@@ -28,7 +28,7 @@ const BasicInfoEdit = () => {
     formData,
     errors,
     setErrors,
-    handleInputChange,
+    handleInputChange: originalHandleInputChange,
     handleAddCategory,
     handleRemoveCategory,
     handleCategoryChange,
@@ -39,6 +39,29 @@ const BasicInfoEdit = () => {
   const { profileImages, handleImageDelete, handleImageUpload, getImageData } = useProfileImageManager(lawyerBasicInfo)
 
   const { validateForm, isValid, isFormComplete } = useFormValidation()
+
+  // 실시간 유효성 검사를 포함한 입력 핸들러
+  const handleInputChange = (field: string, value: any) => {
+    // 기존 입력 핸들러 호출
+    originalHandleInputChange(field, value)
+
+    // 입력 후 해당 필드만 유효성 검사
+    setTimeout(() => {
+      const updatedFormData = { ...formData, [field]: value }
+      const validationErrors = validateForm(updatedFormData)
+
+      // 해당 필드의 에러만 업데이트
+      setErrors(prev => {
+        const newErrors = { ...prev }
+        if (validationErrors[field]) {
+          newErrors[field] = validationErrors[field]
+        } else {
+          delete newErrors[field]
+        }
+        return newErrors
+      })
+    }, 0)
+  }
 
   // mutation hook 사용
   const { mutate: updateBasicInfo, isPending } = useLawyerBasicInfoEdit({
@@ -65,7 +88,7 @@ const BasicInfoEdit = () => {
         lawyerBirthYear: Number(formDataToSubmit.birthYear ?? '0'),
         lawyerBirthMonth: Number(formDataToSubmit.birthMonth ?? '0'),
         lawyerBirthDay: Number(formDataToSubmit.birthDay ?? '0'),
-        lawyerGender: formDataToSubmit.gender === 'male' ? 1 : 2,
+        lawyerGender: formDataToSubmit.gender === 'male' ? 1 : formDataToSubmit.gender === 'female' ? 2 : 0,
         lawyerPhone: formDataToSubmit.phoneNumber,
         lawyerTags: formDataToSubmit.tags || [],
         lawyerLawfirmName: formDataToSubmit.lawfirmName,
