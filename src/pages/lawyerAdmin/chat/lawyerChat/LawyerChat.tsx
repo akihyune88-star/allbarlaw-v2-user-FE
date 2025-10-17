@@ -1,12 +1,11 @@
 import ChatRoomContainer from '@/container/baroTalk/chatRoomContainer/ChatRoomContainer'
 import styles from './lawyerChat.module.scss'
-import { useChatRoomId, useIsConnected, useSetChatRoomId } from '@/stores/socketStore'
+import { useChatRoomId, useSetChatRoomId } from '@/stores/socketStore'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
 
 const LawyerChat = () => {
   const chatRoomIdFromStore = useChatRoomId()
-  const isConnected = useIsConnected()
   const location = useLocation()
   const [searchParams] = useSearchParams()
   const setChatRoomId = useSetChatRoomId()
@@ -43,12 +42,7 @@ const LawyerChat = () => {
 
   return (
     <main className={`w-full sub-main-container ${styles['lawyer-chat']}`}>
-      <ChatRoomContainer
-        chatRoomId={chatRoomId}
-        userLeft={userLeft}
-        clientName={clientName}
-        clientId={clientId}
-      />
+      <ChatRoomContainer chatRoomId={chatRoomId} userLeft={userLeft} clientName={clientName} clientId={clientId} />
     </main>
   )
 }

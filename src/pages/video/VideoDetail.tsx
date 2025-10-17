@@ -15,7 +15,7 @@ import AiVideoRecommender from '@/container/video/aiVideoRecommender/AiVideoReco
 import { useState, useEffect } from 'react'
 import { useVideoKeep } from '@/hooks/queries/useGetVideoList'
 import { copyUrlToClipboard } from '@/utils/clipboard'
-import { useRecommendationLegalTerm, useRecommendationVideo } from '@/hooks/queries/useRecommendation'
+import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import RecommendationLawyer from '@/container/recommendation/RecommendationLawyer'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import AiVideoCarousel from '@/container/recommendation/aiVideoCarousel/AiVideoCarousel'

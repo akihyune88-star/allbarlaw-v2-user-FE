@@ -16,7 +16,7 @@ type ChatWaitingBlogListProps = {
   isLawyer?: boolean
 }
 
-const ChatWaitingBlogList = ({ chatStatus, chatRoomId, messagesLength, isLawyer }: ChatWaitingBlogListProps) => {
+const ChatWaitingBlogList = ({ chatStatus, chatRoomId, isLawyer }: ChatWaitingBlogListProps) => {
   const { blogList } = useGetBlogList({
     subcategoryId: 'all',
     take: 4,

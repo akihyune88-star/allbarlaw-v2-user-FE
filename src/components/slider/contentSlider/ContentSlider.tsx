@@ -34,7 +34,7 @@ const ContentSlider: React.FC<ContentSliderProps> = ({
   sliderSettings = {},
 }) => {
   const sliderRef = useRef<Slider>(null)
-  const [currentSlide, setCurrentSlide] = useState(0)
+  const [_currentSlide, setCurrentSlide] = useState(0)
 
   const defaultSettings: Settings = {
     dots: false,

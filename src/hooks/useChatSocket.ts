@@ -18,9 +18,7 @@ import {
   useSetSocket,
   useSetConnected,
   useSetRoomInfo,
-  useUpdateMessage,
   useUpdateMessageByTempId,
-  useMarkMessagesAsRead,
   useChatStatus,
   useSocketStore,
   useUpdateBatchUserStatus,
@@ -33,9 +31,6 @@ import {
   useDeleteTempIdMapping,
 } from '@/stores/socketStore'
 import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
-import { useQueryClient } from '@tanstack/react-query'
-import { QUERY_KEY } from '@/constants/queryKey'
-import { BaroTalkChatListResponse } from '@/types/baroTalkTypes'
 
 interface UseChatSocketProps {
   chatRoomId: number | null
@@ -46,7 +41,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   const { getUserIdFromToken, getLawyerIdFromToken } = useAuth()
   const location = useLocation()
   const isLawyer = location.pathname.includes('lawyer-admin')
-  const queryClient = useQueryClient()
 
   // Zustand 상태
   const socket = useSocket()
@@ -55,9 +49,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   const setRoomInfo = useSetRoomInfo()
   const setMessagesForRoom = useSocketStore(state => state.setMessagesForRoom)
   const addMessageToRoom = useSocketStore(state => state.addMessageToRoom)
-  const updateMessage = useUpdateMessage()
   const updateMessageByTempId = useUpdateMessageByTempId()
-  const markMessagesAsRead = useMarkMessagesAsRead()
   const markMessagesAsReadInRoom = useMarkMessagesAsReadInRoom()
   const updateMessageByTempIdInRoom = useUpdateMessageByTempIdInRoom()
   const setTempIdMapping = useSetTempIdMapping()
@@ -82,7 +74,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   // refs for tracking state
   const socketConnectedRef = useRef(false)
   const joinRoomAttemptedRef = useRef(false)
-  const markAsReadRef = useRef<((_messageIds?: number[]) => void) | null>(null)
+  const markAsReadRef = useRef<((_messageIds: number[], _targetChatRoomId?: number) => void) | null>(null)
   const timeoutRefs = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
 
   // 변호사인 경우 lawyerId, 일반 유저인 경우 userId 사용
@@ -182,7 +174,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   // 읽음 처리 함수 (이벤트 리스너보다 먼저 정의)
   // chatRoomId를 파라미터로 받도록 수정
   const markAsRead = useCallback(
-    (messageIds: number[], targetChatRoomId?: number) => {
+    (messageIds?: number[], targetChatRoomId?: number) => {
       const roomIdToUse = targetChatRoomId || chatRoomId
 
       console.log('📖 [SOCKET] markAsRead 호출:', {
@@ -193,7 +185,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         socketConnected: socket?.connected,
       })
 
-      if (socket && roomIdToUse && socket.connected) {
+      if (socket && roomIdToUse && socket.connected && messageIds) {
         const request: MarkAsReadRequest = {
           chatRoomId: roomIdToUse,
           messageIds,
@@ -594,7 +586,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 사용자 상태 변경 이벤트 처리
     const handleUserStatusChanged = (
-      data: { userType: string; userId: number; userActivate: boolean } | Array<{ userType: string; userId: number; userActivate: boolean }>
+      data:
+        | { userType: string; userId: number; userActivate: boolean }
+        | Array<{ userType: string; userId: number; userActivate: boolean }>
     ) => {
       console.log('🔄 [SOCKET] 사용자 상태 변경:', data)
 
@@ -772,7 +766,17 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         })
       }
     },
-    [socket, chatRoomId, isLawyer, userId, addMessageToRoom, currentChatStatus, updateChatRoomStatus, updateChatRoomLastMessage, setTempIdMapping]
+    [
+      socket,
+      chatRoomId,
+      isLawyer,
+      userId,
+      addMessageToRoom,
+      currentChatStatus,
+      updateChatRoomStatus,
+      updateChatRoomLastMessage,
+      setTempIdMapping,
+    ]
   )
 
   // 채팅방 나가기 함수
