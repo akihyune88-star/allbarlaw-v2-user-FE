@@ -141,6 +141,11 @@ const BlogFeedContainer = () => {
   }, [isPlaying, hasNextPage, currentBlogs, isMobile])
 
   const renderBlogContent = (blogs: typeof currentBlogs) => {
+    // 데이터가 없으면 빈 컨테이너 반환
+    if (!blogs || blogs.length === 0) {
+      return <div className={styles['blog-list-container']} />
+    }
+
     const subList = isMobile ? blogs : blogs.slice(1, 4)
 
     return (
@@ -149,13 +154,13 @@ const BlogFeedContainer = () => {
           {blogs[0] && (
             <Article
               type='xxlarge'
-              thumbnailUrl={blogs[0].thumbnail}
-              title={blogs[0].title}
-              content={blogs[0].summaryContent}
+              thumbnailUrl={blogs[0].thumbnail || ''}
+              title={blogs[0].title || ''}
+              content={blogs[0].summaryContent || ''}
               className={styles['main-blog-item']}
               lawyerInfo={{
-                name: blogs[0].lawyerName,
-                profileImageUrl: blogs[0].lawyerProfileImage,
+                name: blogs[0].lawyerName || '',
+                profileImageUrl: blogs[0].lawyerProfileImage || '',
               }}
               onClick={() => handleBlogClick(blogs[0].subcategoryId, blogs[0].blogCaseId)}
             />
@@ -198,7 +203,7 @@ const BlogFeedContainer = () => {
         >
           {/* 이전 슬라이드 (placeholder) */}
           <div className={styles['slide']}>
-            {canGoPrev && renderBlogContent(currentBlogs)}
+            {renderBlogContent(currentBlogs)}
           </div>
 
           {/* 현재 슬라이드 */}
@@ -208,7 +213,7 @@ const BlogFeedContainer = () => {
 
           {/* 다음 슬라이드 */}
           <div className={styles['slide']}>
-            {hasNextPage && nextBlogs.length > 0 && renderBlogContent(nextBlogs)}
+            {nextBlogs.length > 0 ? renderBlogContent(nextBlogs) : renderBlogContent(currentBlogs)}
           </div>
         </div>
       </div>

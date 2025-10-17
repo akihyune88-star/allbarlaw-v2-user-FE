@@ -71,7 +71,7 @@ const Article = ({
               )}
             </div>
             <figure className={styles['article-thumbnail']}>
-              <img src={thumbnailUrl} alt='thumbnail' />
+              <img src={thumbnailUrl} alt='thumbnail' referrerPolicy='no-referrer' />
             </figure>
           </article>
         )
