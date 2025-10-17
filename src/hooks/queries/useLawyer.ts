@@ -62,11 +62,12 @@ export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' 
   })
 }
 
-export const useRandomLawyerList = (request: RandomLawyerListRequest) => {
+export const useRandomLawyerList = (request: RandomLawyerListRequest & { enabled?: boolean }) => {
   const { data, isLoading, isPlaceholderData, refetch } = useQuery({
     queryKey: [QUERY_KEY.LAWYER_LIST, 'random', request.subcategoryId, request.take, request.excludeIds],
     queryFn: () => lawyerService.getRandomLawyerList(request),
     placeholderData: previousData => previousData, // 이전 데이터 유지로 깜빡임 방지
+    enabled: request.enabled !== false,
   })
 
   return {

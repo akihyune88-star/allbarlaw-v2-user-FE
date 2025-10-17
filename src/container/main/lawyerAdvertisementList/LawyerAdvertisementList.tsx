@@ -58,24 +58,69 @@ const LawyerAdvertisementList = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
   const [isPlaying, setIsPlaying] = useState(true)
+  const [slideIndex, setSlideIndex] = useState(0) // 현재 슬라이드 인덱스 (0부터 시작)
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const intervalRef = useRef<number | null>(null)
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev, reset } = useNavigationHistory()
 
-  const { lawyerList, hasNextPage, refetch } = useRandomLawyerList({
+  const itemsPerView = isMobile ? 3 : 4
+  const totalFetchCount = itemsPerView * 3 // 한번에 12개 (또는 9개) 미리 받기
+
+  // 현재 데이터 (더 많이 받기)
+  const { lawyerList: currentLawyers, hasNextPage, refetch } = useRandomLawyerList({
     subcategoryId: 'all',
-    take: isMobile ? 3 : 4,
+    take: totalFetchCount,
     excludeIds: currentExcludeIds,
   })
 
+  // 다음 데이터 미리 fetching
+  const nextExcludeIds = [...currentExcludeIds, ...currentLawyers.map(lawyer => lawyer.lawyerId)]
+  const { lawyerList: nextLawyers } = useRandomLawyerList({
+    subcategoryId: 'all',
+    take: totalFetchCount,
+    excludeIds: nextExcludeIds,
+    enabled: hasNextPage && currentLawyers.length > 0,
+  })
+
+  // 전체 슬라이드 데이터 (현재 + 다음)
+  const allLawyers = [...currentLawyers, ...nextLawyers]
+  const maxSlideIndex = Math.max(0, allLawyers.length - itemsPerView)
+
   const handleClickNext = () => {
-    if (!hasNextPage) {
-      // 더 이상 불러올 변호사가 없으면 처음부터 다시 시작
-      reset()
-      refetch()
-    } else if (lawyerList && lawyerList.length > 0) {
-      const currentIds = lawyerList.map(lawyer => lawyer.lawyerId)
-      handleNext(currentIds)
+    if (isTransitioning) return
+
+    if (slideIndex >= maxSlideIndex) {
+      // 끝에 도달하면 더 많은 데이터 가져오기
+      if (hasNextPage) {
+        const currentIds = currentLawyers.map(lawyer => lawyer.lawyerId)
+        handleNext(currentIds)
+        setSlideIndex(0) // 새 데이터로 리셋
+      } else {
+        // 더 이상 데이터가 없으면 처음부터
+        reset()
+        setSlideIndex(0)
+      }
+    } else {
+      // 한 칸 이동
+      setIsTransitioning(true)
+      setSlideIndex(prev => prev + 1)
+      setTimeout(() => setIsTransitioning(false), 500)
+    }
+  }
+
+  const handleClickPrev = () => {
+    if (isTransitioning) return
+
+    if (slideIndex > 0) {
+      // 한 칸 뒤로
+      setIsTransitioning(true)
+      setSlideIndex(prev => prev - 1)
+      setTimeout(() => setIsTransitioning(false), 500)
+    } else if (canGoPrev) {
+      // 이전 데이터 세트로
+      handlePrev()
+      setSlideIndex(0)
     }
   }
 
@@ -100,7 +145,7 @@ const LawyerAdvertisementList = () => {
         window.clearInterval(intervalRef.current)
       }
     }
-  }, [isPlaying, hasNextPage, lawyerList, isMobile])
+  }, [isPlaying, slideIndex, allLawyers, isMobile, hasNextPage])
 
   const handleLawyerClick = (lawyer: Lawyer) => {
     navigate(`/search/lawyer/${lawyer.lawyerId}?q=${lawyer.lawyerName}`)
@@ -111,76 +156,98 @@ const LawyerAdvertisementList = () => {
     navigate(ROUTER.REQUEST_BARO_TALK)
   }
 
+  // 각 아이템 너비 + 갭
+  const itemWidth = isMobile ? 0 : 234 // 모바일은 별도 처리
+  const itemGap = isMobile ? 0 : 23
+
+  const renderLawyerCard = (lawyer: Lawyer) => {
+    return isMobile ? (
+      <LawyerHorizon
+        className={styles['lawyer-horizon']}
+        lawyerId={lawyer.lawyerId}
+        key={lawyer.lawyerId}
+        name={lawyer.lawyerName}
+        lawfirm={lawyer.lawfirmName}
+        socialLink={SOCIAL_LINK_LIST}
+        profileImage={lawyer.lawyerProfileImage}
+        tags={lawyer.tags}
+        buttonComponent={
+          <div className={styles['footer']}>
+            <button
+              className={`${styles['footer-button']} ${styles['left']}`}
+              onClick={() => handleLawyerClick(lawyer)}
+            >
+              더보기
+            </button>
+            <button
+              className={`${styles['footer-button']} ${styles['left']}`}
+              onClick={() => handleBaroTalk(lawyer.lawyerId)}
+            >
+              바로톡
+            </button>
+          </div>
+        }
+      />
+    ) : (
+      <LawyerVertical
+        lawyerId={lawyer.lawyerId}
+        key={lawyer.lawyerId}
+        className={styles['custom-lawyer-vertical']}
+        name={lawyer.lawyerName}
+        profileImage={lawyer.lawyerProfileImage}
+        type={1}
+        blogUrl={lawyer.lawyerBlogUrl}
+        youtubeUrl={lawyer.lawyerYoutubeUrl}
+        instagramUrl={lawyer.lawyerInstagramUrl}
+        tags={lawyer.tags}
+        footer={
+          <div className={styles['footer']}>
+            <button
+              className={`${styles['footer-button']} ${styles['left']}`}
+              onClick={() => handleLawyerClick(lawyer)}
+            >
+              더보기
+            </button>
+            <button
+              className={`${styles['footer-button']} ${styles['right']}`}
+              onClick={() => handleBaroTalk(lawyer.lawyerId)}
+            >
+              바로톡
+            </button>
+          </div>
+        }
+      />
+    )
+  }
+
+  if (!allLawyers || allLawyers.length === 0) {
+    return null
+  }
+
   return (
     <section className={styles['container']}>
       <LawyerAdvertisementListHeader
-        onNext={hasNextPage ? handleClickNext : undefined}
-        onPrev={canGoPrev ? handlePrev : undefined}
+        onNext={slideIndex < maxSlideIndex || hasNextPage ? handleClickNext : undefined}
+        onPrev={slideIndex > 0 || canGoPrev ? handleClickPrev : undefined}
         onToggle={handleTogglePlay}
         isPlaying={isPlaying}
         refetch={refetch}
       />
 
-      <div className={styles['lawyer-list']}>
-        {lawyerList.map(lawyer =>
-          isMobile ? (
-            <LawyerHorizon
-              className={styles['lawyer-horizon']}
-              lawyerId={lawyer.lawyerId}
-              key={lawyer.lawyerId}
-              name={lawyer.lawyerName}
-              lawfirm={lawyer.lawfirmName}
-              socialLink={SOCIAL_LINK_LIST}
-              profileImage={lawyer.lawyerProfileImage}
-              tags={lawyer.tags}
-              buttonComponent={
-                <div className={styles['footer']}>
-                  <button
-                    className={`${styles['footer-button']} ${styles['left']}`}
-                    onClick={() => handleLawyerClick(lawyer)}
-                  >
-                    더보기
-                  </button>
-                  <button
-                    className={`${styles['footer-button']} ${styles['left']}`}
-                    onClick={() => handleBaroTalk(lawyer.lawyerId)}
-                  >
-                    바로톡
-                  </button>
-                </div>
-              }
-            />
-          ) : (
-            <LawyerVertical
-              lawyerId={lawyer.lawyerId}
-              key={lawyer.lawyerId}
-              className={styles['custom-lawyer-vertical']}
-              name={lawyer.lawyerName}
-              profileImage={lawyer.lawyerProfileImage}
-              type={1}
-              blogUrl={lawyer.lawyerBlogUrl}
-              youtubeUrl={lawyer.lawyerYoutubeUrl}
-              instagramUrl={lawyer.lawyerInstagramUrl}
-              tags={lawyer.tags}
-              footer={
-                <div className={styles['footer']}>
-                  <button
-                    className={`${styles['footer-button']} ${styles['left']}`}
-                    onClick={() => handleLawyerClick(lawyer)}
-                  >
-                    더보기
-                  </button>
-                  <button
-                    className={`${styles['footer-button']} ${styles['right']}`}
-                    onClick={() => handleBaroTalk(lawyer.lawyerId)}
-                  >
-                    바로톡
-                  </button>
-                </div>
-              }
-            />
-          )
-        )}
+      <div className={styles['slider-wrapper']}>
+        <div
+          className={styles['slider-track']}
+          style={{
+            transform: `translate3d(-${slideIndex * (itemWidth + itemGap)}px, 0, 0)`,
+            transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none',
+          }}
+        >
+          {allLawyers.map(lawyer => (
+            <div key={lawyer.lawyerId} className={styles['lawyer-item']}>
+              {renderLawyerCard(lawyer)}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )

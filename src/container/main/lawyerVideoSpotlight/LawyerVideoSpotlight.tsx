@@ -62,25 +62,70 @@ const LawyerVideoSpotlightHeader = ({
 const LawyerVideoSpotlight = () => {
   const navigate = useNavigate()
   const [isPlaying, setIsPlaying] = useState(true)
+  const [slideIndex, setSlideIndex] = useState(0) // 현재 슬라이드 인덱스
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const intervalRef = useRef<number | null>(null)
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev, reset } = useNavigationHistory()
 
-  const { videoList, hasNextPage, refetch } = useRandomVideoList({
+  const itemsPerView = 3
+  const totalFetchCount = itemsPerView * 3 // 한번에 9개 미리 받기
+
+  // 현재 데이터 (더 많이 받기)
+  const { videoList: currentVideos, hasNextPage, refetch } = useRandomVideoList({
     subcategoryId: 'all',
-    take: 3,
+    take: totalFetchCount,
     excludeIds: currentExcludeIds,
   })
 
+  // 다음 데이터 미리 fetching
+  const nextExcludeIds = [...currentExcludeIds, ...currentVideos.map(video => video.videoCaseId)]
+  const { videoList: nextVideos } = useRandomVideoList({
+    subcategoryId: 'all',
+    take: totalFetchCount,
+    excludeIds: nextExcludeIds,
+    enabled: hasNextPage && currentVideos.length > 0,
+  })
+
+  // 전체 슬라이드 데이터 (현재 + 다음)
+  const allVideos = [...currentVideos, ...nextVideos]
+  const maxSlideIndex = Math.max(0, allVideos.length - itemsPerView)
+
   const handleNextClick = () => {
-    if (!hasNextPage) {
-      // 더 이상 불러올 영상이 없으면 처음부터 다시 시작
-      reset()
-      refetch()
-    } else if (videoList && videoList.length > 0) {
-      const currentIds = videoList.map(video => video.videoCaseId)
-      handleNext(currentIds)
+    if (isTransitioning) return
+
+    if (slideIndex >= maxSlideIndex) {
+      // 끝에 도달하면 더 많은 데이터 가져오기
+      if (hasNextPage) {
+        const currentIds = currentVideos.map(video => video.videoCaseId)
+        handleNext(currentIds)
+        setSlideIndex(0) // 새 데이터로 리셋
+      } else {
+        // 더 이상 데이터가 없으면 처음부터
+        reset()
+        setSlideIndex(0)
+      }
+    } else {
+      // 한 칸 이동
+      setIsTransitioning(true)
+      setSlideIndex(prev => prev + 1)
+      setTimeout(() => setIsTransitioning(false), 500)
+    }
+  }
+
+  const handlePrevClick = () => {
+    if (isTransitioning) return
+
+    if (slideIndex > 0) {
+      // 한 칸 뒤로
+      setIsTransitioning(true)
+      setSlideIndex(prev => prev - 1)
+      setTimeout(() => setIsTransitioning(false), 500)
+    } else if (canGoPrev) {
+      // 이전 데이터 세트로
+      handlePrev()
+      setSlideIndex(0)
     }
   }
 
@@ -105,31 +150,49 @@ const LawyerVideoSpotlight = () => {
         window.clearInterval(intervalRef.current)
       }
     }
-  }, [isPlaying, hasNextPage, videoList, isMobile])
+  }, [isPlaying, slideIndex, allVideos, isMobile, hasNextPage])
 
   const handleVideoClick = (subcategoryId: number, videoId: number) => {
     navigate(`/${subcategoryId}/video/${videoId}`)
   }
 
+  // 각 아이템 너비 + 갭
+  const itemWidth = isMobile ? 0 : 320 // 모바일은 별도 처리
+  const itemGap = isMobile ? 0 : 24
+
+  if (!allVideos || allVideos.length === 0) {
+    return null
+  }
+
   return (
     <section className={styles.container}>
       <LawyerVideoSpotlightHeader
-        onNext={hasNextPage ? handleNextClick : undefined}
-        onPrev={canGoPrev ? handlePrev : undefined}
+        onNext={slideIndex < maxSlideIndex || hasNextPage ? handleNextClick : undefined}
+        onPrev={slideIndex > 0 || canGoPrev ? handlePrevClick : undefined}
         onToggle={handleTogglePlay}
         isPlaying={isPlaying}
         refetch={refetch}
       />
-      <div className={styles['video-grid-container']}>
-        {videoList.map(video => (
-          <VideoThumbnail
-            key={video.videoCaseId}
-            title={video.title}
-            imgUrl={video.thumbnail}
-            size='large'
-            onClick={() => handleVideoClick(video.subcategoryId, video.videoCaseId)}
-          />
-        ))}
+
+      <div className={styles['slider-wrapper']}>
+        <div
+          className={styles['slider-track']}
+          style={{
+            transform: `translate3d(-${slideIndex * (itemWidth + itemGap)}px, 0, 0)`,
+            transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none',
+          }}
+        >
+          {allVideos.map(video => (
+            <div key={video.videoCaseId} className={styles['video-item']}>
+              <VideoThumbnail
+                title={video.title}
+                imgUrl={video.thumbnail}
+                size='large'
+                onClick={() => handleVideoClick(video.subcategoryId, video.videoCaseId)}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
