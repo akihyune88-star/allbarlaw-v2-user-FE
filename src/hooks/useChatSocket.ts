@@ -26,6 +26,11 @@ import {
   useUpdateBatchUserStatus,
   useUpdateChatRoomOnlineStatus,
   useUpdateChatRoomLastMessage,
+  useMarkMessagesAsReadInRoom,
+  useUpdateMessageByTempIdInRoom,
+  useSetTempIdMapping,
+  useGetTempIdMapping,
+  useDeleteTempIdMapping,
 } from '@/stores/socketStore'
 import { useUpdateChatRoomStatus } from '@/hooks/queries/useBaroTalk'
 import { useQueryClient } from '@tanstack/react-query'
@@ -53,6 +58,11 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   const updateMessage = useUpdateMessage()
   const updateMessageByTempId = useUpdateMessageByTempId()
   const markMessagesAsRead = useMarkMessagesAsRead()
+  const markMessagesAsReadInRoom = useMarkMessagesAsReadInRoom()
+  const updateMessageByTempIdInRoom = useUpdateMessageByTempIdInRoom()
+  const setTempIdMapping = useSetTempIdMapping()
+  const getTempIdMapping = useGetTempIdMapping()
+  const deleteTempIdMapping = useDeleteTempIdMapping()
   const currentChatStatus = useChatStatus()
   const updateBatchUserStatus = useUpdateBatchUserStatus()
   const updateChatRoomOnlineStatus = useUpdateChatRoomOnlineStatus()
@@ -170,14 +180,32 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
   }, [userId]) // setSocket, setConnected는 Zustand 액션으로 안정적이므로 의존성에서 제외
 
   // 읽음 처리 함수 (이벤트 리스너보다 먼저 정의)
+  // chatRoomId를 파라미터로 받도록 수정
   const markAsRead = useCallback(
-    (messageIds?: number[]) => {
-      if (socket && chatRoomId && socket.connected) {
+    (messageIds: number[], targetChatRoomId?: number) => {
+      const roomIdToUse = targetChatRoomId || chatRoomId
+
+      console.log('📖 [SOCKET] markAsRead 호출:', {
+        messageIds,
+        targetChatRoomId,
+        chatRoomId,
+        roomIdToUse,
+        socketConnected: socket?.connected,
+      })
+
+      if (socket && roomIdToUse && socket.connected) {
         const request: MarkAsReadRequest = {
-          chatRoomId,
+          chatRoomId: roomIdToUse,
           messageIds,
         }
+        console.log('📤 [SOCKET] markAsRead 요청:', request)
         socket.emit('markAsRead', request)
+      } else {
+        console.error('❌ [SOCKET] markAsRead 실패:', {
+          hasSocket: !!socket,
+          roomIdToUse,
+          connected: socket?.connected,
+        })
       }
     },
     [socket, chatRoomId]
@@ -283,8 +311,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
           .filter(msg => msg.chatMessageSenderType !== (isLawyer ? 'LAWYER' : 'USER') && !msg.chatMessageIsRead)
           .map(msg => msg.chatMessageId)
 
-        if (unreadMessages.length > 0 && markAsReadRef.current) {
-          markAsReadRef.current(unreadMessages)
+        if (unreadMessages.length > 0 && markAsReadRef.current && roomId) {
+          console.log('📖 [SOCKET] 방 입장 시 읽음 처리:', {
+            roomId,
+            unreadCount: unreadMessages.length,
+            messageIds: unreadMessages,
+          })
+          // chatRoomId를 명시적으로 전달
+          markAsReadRef.current(unreadMessages, roomId)
         }
         timeoutRefs.current.delete(timeoutId)
       }, 500) // 500ms 후 읽음 처리
@@ -300,64 +334,115 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 새 메시지 수신
     const handleNewMessage = (message: ChatMessage) => {
-      console.log('📨 [SOCKET] 새 메시지 수신:', message)
+      console.log('📨 [SOCKET] 새 메시지 수신:', {
+        messageId: message.chatMessageId,
+        content: message.chatMessageContent,
+        senderType: message.chatMessageSenderType,
+        chatRoomId: (message as any).chatRoomId,
+      })
 
       // 내가 보낸 메시지인지 확인
       const isMyMessage = message.chatMessageSenderType === (isLawyer ? 'LAWYER' : 'USER')
 
       if (isMyMessage) {
-        // 내가 보낸 메시지는 이미 임시로 추가되었으므로 중복 방지
+        console.log('⏭️ [SOCKET] 내가 보낸 메시지, 스킵')
         return
       }
 
-      // 중복 메시지 방지: 같은 ID의 메시지가 이미 있는지 확인
-      const currentMessages = useSocketStore.getState().messages
-      const isDuplicateMessage = currentMessages.some(msg => msg.chatMessageId === message.chatMessageId)
+      // 서버에서 chatRoomId를 보내주는 것으로 가정
+      const messageChatRoomId = (message as any).chatRoomId
+
+      if (!messageChatRoomId) {
+        console.error('❌ [SOCKET] 메시지에 chatRoomId가 없습니다:', message)
+        return
+      }
+
+      // 중복 메시지 방지: messageCache에서 해당 방의 메시지 확인
+      const roomMessages = useSocketStore.getState().messageCache[messageChatRoomId] || []
+      const isDuplicateMessage = roomMessages.some(msg => msg.chatMessageId === message.chatMessageId)
 
       if (isDuplicateMessage) {
+        console.log('⏭️ [SOCKET] 중복 메시지, 스킵:', message.chatMessageId)
         return
       }
 
-      // 상대방이 보낸 메시지만 추가 (메시지의 chatRoomId 사용)
-      const messageChatRoomId = (message as any).chatRoomId || chatRoomId
-      if (messageChatRoomId) {
-        addMessageToRoom(messageChatRoomId, message)
-
-        // chatRooms의 최근 메시지도 업데이트
-        updateChatRoomLastMessage(messageChatRoomId, message)
-      }
+      console.log('✅ [SOCKET] 메시지 추가:', { roomId: messageChatRoomId, messageId: message.chatMessageId })
+      addMessageToRoom(messageChatRoomId, message)
+      updateChatRoomLastMessage(messageChatRoomId, message)
 
       // 상대방 메시지 자동 읽음 처리
       const timeoutId = setTimeout(() => {
         if (markAsReadRef.current) {
-          markAsReadRef.current([message.chatMessageId])
+          console.log('📖 [SOCKET] 자동 읽음 처리 시도:', {
+            messageId: message.chatMessageId,
+            chatRoomId: messageChatRoomId,
+          })
+          // chatRoomId를 명시적으로 전달
+          markAsReadRef.current([message.chatMessageId], messageChatRoomId)
         }
         timeoutRefs.current.delete(timeoutId)
-      }, 1000) // 1초 후 읽음 처리
+      }, 1000)
 
       timeoutRefs.current.add(timeoutId)
     }
 
     // 메시지 전송 성공
     const handleSendMessageSuccess = (data: SendMessageSuccessData) => {
-      console.log('✅ [SOCKET] 메시지 전송 성공:', data)
-      if (data.tempId) {
-        // 임시 메시지를 실제 메시지 ID로 업데이트
-        updateMessageByTempId(data.tempId, {
-          chatMessageId: data.messageId, // 서버에서 받은 실제 ID
-          status: 'sent',
-          tempId: undefined, // tempId 제거
-        })
+      console.log('✅ [SOCKET] 메시지 전송 성공:', {
+        messageId: data.messageId,
+        tempId: data.tempId,
+      })
+
+      if (!data.tempId) {
+        console.warn('⚠️ [SOCKET] tempId가 없습니다:', data)
+        return
       }
+
+      // tempId로 chatRoomId 찾기 (zustand에서 가져오기)
+      const responseChatRoomId = getTempIdMapping(data.tempId)
+
+      if (!responseChatRoomId) {
+        console.error('❌ [SOCKET] tempId에 해당하는 chatRoomId를 찾을 수 없습니다:', data.tempId)
+        console.error('현재 매핑 상태:', useSocketStore.getState().tempIdToChatRoomMap)
+        return
+      }
+
+      console.log('🔄 [SOCKET] 임시 메시지 업데이트:', {
+        tempId: data.tempId,
+        messageId: data.messageId,
+        chatRoomId: responseChatRoomId,
+      })
+
+      updateMessageByTempIdInRoom(responseChatRoomId, data.tempId, {
+        chatMessageId: data.messageId,
+        status: 'sent',
+        tempId: undefined,
+      })
+
+      // 매핑 제거 (메모리 정리)
+      deleteTempIdMapping(data.tempId)
     }
 
     // 메시지 전송 실패
     const handleSendMessageError = (error: SendMessageErrorData) => {
       console.error('❌ [SOCKET] 메시지 전송 실패:', error)
+
       if (error.tempId) {
-        updateMessageByTempId(error.tempId, {
-          status: 'failed',
-        })
+        // tempId로 chatRoomId 찾기 (zustand에서 가져오기)
+        const failedChatRoomId = getTempIdMapping(error.tempId)
+
+        if (failedChatRoomId) {
+          updateMessageByTempIdInRoom(failedChatRoomId, error.tempId, {
+            status: 'failed',
+          })
+          // 매핑 제거
+          deleteTempIdMapping(error.tempId)
+        } else {
+          // fallback: 전체 업데이트
+          updateMessageByTempId(error.tempId, {
+            status: 'failed',
+          })
+        }
       }
       // 사용자에게 에러 알림 (추후 toast 추가)
     }
@@ -369,8 +454,28 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 상대방이 메시지를 읽음
     const handleMessagesMarkedAsRead = (data: MessagesMarkedAsReadData) => {
-      // 내가 보낸 메시지들이 읽혔을 때
-      markMessagesAsRead(data.messageIds)
+      console.log('👁️ [SOCKET] messagesMarkedAsRead 이벤트 수신 - 전체 데이터:', JSON.stringify(data, null, 2))
+      console.log('👁️ [SOCKET] 현재 chatRoomId (closured):', chatRoomId)
+      console.log('👁️ [SOCKET] isLawyer:', isLawyer)
+
+      // 서버에서 chatRoomId를 보내주는 것으로 가정
+      const responseChatRoomId = (data as any).chatRoomId
+
+      if (!responseChatRoomId) {
+        console.error('❌ [SOCKET] 응답에 chatRoomId가 없습니다. 전체 데이터:', JSON.stringify(data, null, 2))
+        return
+      }
+
+      console.log('✅ [SOCKET] 방 메시지 읽음 처리 실행:', {
+        chatRoomId: responseChatRoomId,
+        messageIds: data.messageIds,
+        messageCount: data.messageIds.length,
+      })
+
+      // 해당 방의 메시지 읽음 상태 업데이트
+      markMessagesAsReadInRoom(responseChatRoomId, data.messageIds)
+
+      console.log('✅ [SOCKET] markMessagesAsReadInRoom 완료')
     }
 
     // 상대방 퇴장 처리 (새로운 API)
@@ -612,6 +717,9 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       if (socket && chatRoomId && socket.connected) {
         const tempId = `temp_${Date.now()}_${Math.random()}`
 
+        // tempId와 chatRoomId 매핑 저장 (zustand 사용)
+        setTempIdMapping(tempId, chatRoomId)
+
         // 임시 메시지를 먼저 UI에 표시
         const tempMessage: ChatMessage = {
           chatMessageId: Date.now(), // 임시 ID
@@ -664,7 +772,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         })
       }
     },
-    [socket, chatRoomId, isLawyer, userId, addMessageToRoom, currentChatStatus, updateChatRoomStatus, updateChatRoomLastMessage]
+    [socket, chatRoomId, isLawyer, userId, addMessageToRoom, currentChatStatus, updateChatRoomStatus, updateChatRoomLastMessage, setTempIdMapping]
   )
 
   // 채팅방 나가기 함수

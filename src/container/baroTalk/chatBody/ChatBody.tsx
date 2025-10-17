@@ -8,7 +8,7 @@ import React, { ChangeEvent, useState, useCallback, useRef, useEffect } from 're
 import { ChatMessage } from '@/types/baroTalkTypes'
 import { formatTimeAgo } from '@/utils/date'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useSocketStore, useChatStatus, useSocket, useIsConnected, useRoomInfo } from '@/stores/socketStore'
+import { useSocketStore, useChatStatus, useSocket, useIsConnected, useRoomInfo, useSetTempIdMapping } from '@/stores/socketStore'
 import { useAuth } from '@/contexts/AuthContext'
 
 type ChatBodyProps = {
@@ -27,6 +27,7 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
   const isConnected = useIsConnected()
   const roomInfo = useRoomInfo()
   const addMessageToRoom = useSocketStore(state => state.addMessageToRoom)
+  const setTempIdMapping = useSetTempIdMapping()
   const { getUserIdFromToken } = useAuth()
   const userId = getUserIdFromToken()
 
@@ -58,6 +59,9 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
 
     const tempId = `temp_${Date.now()}_${Math.random()}`
 
+    // tempId와 chatRoomId 매핑 저장
+    setTempIdMapping(tempId, chatRoomId)
+
     // 임시 메시지를 먼저 UI에 표시
     const tempMessage: ChatMessage = {
       chatMessageId: Date.now(),
@@ -88,7 +92,7 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
     })
 
     setMessage('')
-  }, [message, isConnected, socket, chatRoomId, isLawyer, userId, roomInfo, addMessageToRoom])
+  }, [message, isConnected, socket, chatRoomId, isLawyer, userId, roomInfo, addMessageToRoom, setTempIdMapping])
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     console.log('키 눌림:', e.key, 'Shift:', e.shiftKey, 'Composing:', e.nativeEvent.isComposing)
