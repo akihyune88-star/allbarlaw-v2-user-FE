@@ -65,15 +65,23 @@ const Login = () => {
   })
 
   const { mutate: lawyerLogin, isPending: isLawyerLoginPending } = useLawyerLogin({
-    onSuccess: accessToken => {
+    onSuccess: (accessToken, isFirstLogin) => {
       // 변호사 로그인 시 관리 페이지로
       const lawyerId = getLawyerIdFromToken(accessToken)
 
-      navigate(ROUTER.LAWYER_ADMIN_LAWYER_DETAIL, {
-        state: {
-          lawyerId,
-        },
-      })
+      if (isFirstLogin) {
+        navigate(ROUTER.LAWYER_ADMIN_LAWYER_EDIT_BASIC_INFO, {
+          state: {
+            lawyerId,
+          },
+        })
+      } else {
+        navigate(ROUTER.LAWYER_ADMIN_LAWYER_DETAIL, {
+          state: {
+            lawyerId,
+          },
+        })
+      }
     },
     onError: message => {
       console.log('message', message)

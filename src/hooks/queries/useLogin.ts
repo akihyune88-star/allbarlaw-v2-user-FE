@@ -51,7 +51,13 @@ export const useLogin = (options?: UseLoginOptions) => {
   })
 }
 
-export const useLawyerLogin = (options?: UseLoginOptions) => {
+export const useLawyerLogin = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_accessToken: string, _isFirstLogin?: boolean) => void
+  onError: (_message: string) => void
+}) => {
   const { checkLoginStatus, setUserInfo } = useAuth()
 
   return useMutation<LoginResponse, Error, LoginRequest>({
@@ -78,12 +84,12 @@ export const useLawyerLogin = (options?: UseLoginOptions) => {
 
       // 토큰 저장 후 로그인 상태 체크
       checkLoginStatus()
-      options?.onSuccess?.(data.accessToken)
+      onSuccess?.(data.accessToken, data.isFirstLogin)
     },
     onError: error => {
       if (isAxiosError(error)) {
         const errorMessage = getErrorMessage(error.response?.data.code)
-        options?.onError?.(errorMessage)
+        onError?.(errorMessage)
       }
     },
   })
