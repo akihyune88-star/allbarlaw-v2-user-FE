@@ -2,10 +2,18 @@
 import { useState, useEffect } from 'react'
 import styles from './ad-slider.module.scss'
 import PlayButton from '@/components/playButton/PlayButton'
-import { BannerResponse } from '@/types/banner'
+
+type Banner = {
+  bannerId: number
+  bannerImageUrl: string
+  bannerMobileImageUrl: string
+  bannerStartedAt: string
+  bannerFinishedAt: string
+  bannerLink: string
+}
 
 interface AdSliderProps {
-  ads: BannerResponse | []
+  ads: Banner[] | []
   className?: string
 }
 
@@ -62,13 +70,13 @@ const AdSlider = ({ ads, className }: AdSliderProps) => {
         ) : (
           <>
             {ads.map((ad, index) => (
-              <a key={ad.id} href={ad.link} className={styles['ad-item']}>
-                <img src={ad.imageUrl} alt={`광고 ${index + 1}`} />
+              <a key={ad.bannerId} href={ad.bannerLink} className={styles['ad-item']}>
+                <img src={ad.bannerImageUrl} alt={`광고 ${index + 1}`} />
               </a>
             ))}
             {/* 무한 루프를 위한 첫 번째 슬라이드 복제 */}
-            <a key={`${ads[0]?.id}-clone`} href={ads[0]?.link} className={styles['ad-item']}>
-              <img src={ads[0]?.imageUrl} alt={`광고 1 (복제)`} />
+            <a key={`${ads[0]?.bannerId}-clone`} href={ads[0]?.bannerLink} className={styles['ad-item']}>
+              <img src={ads[0]?.bannerImageUrl} alt={`광고 1 (복제)`} />
             </a>
           </>
         )}

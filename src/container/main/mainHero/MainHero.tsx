@@ -4,10 +4,10 @@ import styles from './main-hero.module.scss'
 import AdSlider from './adSlider/AdSlider'
 import PlayButton from '@/components/playButton/PlayButton'
 import { COLOR } from '@/styles/color'
-import { useGetBanner } from '@/hooks/queries/useGetBanner'
+import { useMainBanner } from '@/hooks/queries/useBanner'
 
 const MainHero = () => {
-  const { data: bannerList } = useGetBanner()
+  const { data: bannerList } = useMainBanner()
 
   return (
     <section className={styles['main-hero']}>

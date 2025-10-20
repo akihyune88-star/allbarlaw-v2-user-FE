@@ -83,8 +83,10 @@ const LawyerAdvertisementList = () => {
     enabled: hasNextPage && currentLawyers.length > 0,
   })
 
-  // 전체 슬라이드 데이터 (현재 + 다음)
-  const allLawyers = [...currentLawyers, ...nextLawyers]
+  // 전체 슬라이드 데이터 (현재 + 다음) - 중복 제거
+  const allLawyers = [...currentLawyers, ...nextLawyers].filter(
+    (lawyer, index, self) => self.findIndex(l => l.lawyerId === lawyer.lawyerId) === index
+  )
   const maxSlideIndex = Math.max(0, allLawyers.length - itemsPerView)
 
   const handleClickNext = () => {

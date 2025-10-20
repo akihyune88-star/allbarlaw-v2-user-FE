@@ -88,8 +88,10 @@ const LawyerVideoSpotlight = () => {
     enabled: hasNextPage && currentVideos.length > 0,
   })
 
-  // 전체 슬라이드 데이터 (현재 + 다음)
-  const allVideos = [...currentVideos, ...nextVideos]
+  // 전체 슬라이드 데이터 (현재 + 다음) - 중복 제거
+  const allVideos = [...currentVideos, ...nextVideos].filter(
+    (video, index, self) => self.findIndex(v => v.videoCaseId === video.videoCaseId) === index
+  )
   const maxSlideIndex = Math.max(0, allVideos.length - itemsPerView)
 
   const handleNextClick = () => {

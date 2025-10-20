@@ -17,7 +17,6 @@ export const QUERY_KEY = {
   KNOWLEDGE_COUNT: 'knowledgeCount',
   KNOWLEDGE_LIST: 'knowledgeList',
   KNOWLEDGE_DETAIL: 'knowledgeDetail',
-  BANNER: 'banner',
   LAWFIRM_LIST: 'lawfirmList',
   TRACK_VIEW: 'trackView',
   NOTICE_TYPES: 'noticeTypes',
@@ -71,6 +70,10 @@ export const QUERY_KEY = {
 
   // 변호사 관리자
   LAWYER_ADMIN_BASIC_INFO: 'lawyerAdminBasicInfo',
+
+  //광고
+  MAIN_BANNER: 'mainBanner',
+  SUB_BANNER: 'subBanner',
 
   // AI
   BLOG_AI_SUMMARY: 'blogAiSummary',
