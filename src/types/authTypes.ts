@@ -67,3 +67,22 @@ export type UserInfo = {
   lawyerName?: string
   lawFirmName?: string
 }
+
+export type UserProfileResponse = {
+  userAccount: string
+  userPhone: string
+  userEmail: string
+}
+
+export type UserProfileUpdateRequest = {
+  currentPassword?: string
+  newPassword?: string
+  newPasswordConfirm?: string
+  newPhone?: string
+  certNumber?: string
+  newEmail?: string
+}
+
+export type UserProfileUpdateResponse = {
+  updatedFields: string[]
+}

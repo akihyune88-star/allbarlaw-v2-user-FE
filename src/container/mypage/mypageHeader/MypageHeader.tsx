@@ -23,7 +23,7 @@ const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange, y
         .reduce((sum, [, value]) => sum + ((value as number) || 0), 0)
     : 0
 
-  const getTabInfo = (tab: string): { name: string; icon: KeyOfIcon } => {
+  const getTabInfo = (tab: string): { name: string; icon: KeyOfIcon | null } => {
     switch (tab) {
       case 'keepList':
         return {
@@ -34,6 +34,11 @@ const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange, y
         return {
           name: '지식인 채팅 목록',
           icon: 'talk',
+        }
+      case 'accountEdit':
+        return {
+          name: '회원정보/비밀번호 변경',
+          icon: null,
         }
       default:
         return {
@@ -58,7 +63,9 @@ const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange, y
                   className={`${styles.tabButton} ${isActive ? styles.active : ''}`}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  <SvgIcon name={tabInfo.icon} size={16} color={isActive ? COLOR.green_01 : COLOR.text_caption} />
+                  {tabInfo.icon && (
+                    <SvgIcon name={tabInfo.icon} size={16} color={isActive ? COLOR.green_01 : COLOR.text_caption} />
+                  )}
                   <span>{tabInfo.name}</span>
                 </button>
               </li>
@@ -66,7 +73,7 @@ const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange, y
           })}
         </ul>
 
-        {onSortChange && (
+        {onSortChange && currentTab !== 'accountEdit' && (
           <div className={styles.sortWrapper}>
             <span>
               전체{' '}

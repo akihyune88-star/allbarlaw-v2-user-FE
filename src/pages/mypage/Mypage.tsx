@@ -1,10 +1,11 @@
 import ChatList from '@/container/mypage/myChatList/MyChatList'
 import KeepList from '@/container/mypage/keepList/KeepList'
+import AccountEdit from '@/container/mypage/accountEdit/AccountEdit'
 import MypageHeader from '@/container/mypage/mypageHeader/MypageHeader'
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-const TABS = ['keepList', 'chatList']
+const TABS = ['keepList', 'chatList', 'accountEdit']
 
 const Mypage = () => {
   const { state } = useLocation()
@@ -34,11 +35,13 @@ const Mypage = () => {
         onSortChange={handleSortChange}
       />
       <section>
-        {tab === TABS[0] ? (
+        {tab === 'keepList' ? (
           <KeepList sortOrder={sortOrder} year={year} month={month} />
-        ) : (
+        ) : tab === 'chatList' ? (
           <ChatList sort={sortOrder} year={year} month={month} onYearChange={setYear} onMonthChange={setMonth} />
-        )}
+        ) : tab === 'accountEdit' ? (
+          <AccountEdit />
+        ) : null}
       </section>
     </div>
   )

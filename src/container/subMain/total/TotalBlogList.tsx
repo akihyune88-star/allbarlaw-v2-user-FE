@@ -56,6 +56,7 @@ const TotalBlogList = () => {
             lawyerInfo={{
               name: blogItem.lawyerName,
               profileImageUrl: blogItem.lawyerProfileImage,
+              lawfirmName: blogItem.lawfirmName,
             }}
             onClick={() => handleDetailBlogClick(blogItem.subcategoryId, blogItem.blogCaseId)}
           />
