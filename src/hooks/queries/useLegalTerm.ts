@@ -121,6 +121,7 @@ export const useChangeLegalTermKeep = (options?: {
     mutationFn: (legalTermId: number) => legalTermService.changeLegalTermKeep(legalTermId),
     onSuccess: (data: LegalTermDetailResponse) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_LEGAL_DICTIONARY_LIST] })
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_PAGE_COUNT] })
       options?.onSuccess?.(data)
     },
     onError: () => {

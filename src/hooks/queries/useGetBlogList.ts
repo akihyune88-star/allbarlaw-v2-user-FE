@@ -96,7 +96,7 @@ export const useBlogKeep = ({
           ),
         }
       })
-
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_PAGE_COUNT] })
       onSuccess(data)
     },
     onError: error => {
