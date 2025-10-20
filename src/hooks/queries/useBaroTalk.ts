@@ -45,9 +45,12 @@ export const useGetBaroTalkLawyerList = (request: BaroTalkLawyerListRequest) => 
   })
 }
 
-export const useGetBaroTalkChatList = (request: BaroTalkChatListRequest) => {
+export const useGetBaroTalkChatList = (request: BaroTalkChatListRequest, options?: { enabled?: boolean }) => {
   const { getUserIdFromToken } = useAuth()
   const userId = getUserIdFromToken()
+
+  // enabled 옵션이 명시적으로 전달되지 않으면 true (기존 동작 유지)
+  const shouldEnable = options?.enabled !== undefined ? options.enabled : true
 
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.BARO_TALK_CHAT_LIST, request],
@@ -64,6 +67,7 @@ export const useGetBaroTalkChatList = (request: BaroTalkChatListRequest) => {
       return undefined
     },
     initialPageParam: 1,
+    enabled: !!userId && shouldEnable, // userId가 있고 enabled가 true일 때만 쿼리 실행
     staleTime: 0, // 즉시 stale로 처리
     gcTime: 0, // 가비지 컬렉션 즉시 실행
     refetchOnMount: true, // 컴포넌트 마운트 시 항상 refetch

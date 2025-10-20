@@ -16,11 +16,14 @@ const BottomNavigation = () => {
   const lastScrollY = useRef(0)
   const scrollTimeout = useRef<number | null>(null)
 
-  // 채팅방 목록 데이터 (prefetch용)
-  const { refetch: refetchChatList } = useGetBaroTalkChatList({
-    chatRoomOrderBy: 'lastMessageAt',
-    chatRoomSort: 'desc',
-  })
+  // 채팅방 목록 데이터 (refetch 전용 - 자동 실행 안 함)
+  const { refetch: refetchChatList } = useGetBaroTalkChatList(
+    {
+      chatRoomOrderBy: 'lastMessageAt',
+      chatRoomSort: 'desc',
+    },
+    { enabled: false }
+  )
 
   // 바로톡(상담) 클릭 핸들러
   const handleBaroTalkClick = async () => {

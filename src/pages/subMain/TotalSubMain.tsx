@@ -3,11 +3,17 @@ import TotalBlogList from '@/container/subMain/total/TotalBlogList'
 import TotalLawyer from '@/container/subMain/total/TotalLawyer'
 import TotalLegalKnowledge from '@/container/subMain/total/TotalLegalKnowledge'
 import TotalVideo from '@/container/subMain/total/TotalVideo'
-import { useGetBanner } from '@/hooks/queries/useGetBanner'
+import { useSubBanner } from '@/hooks/queries/useBanner'
+// import { useGetBanner } from '@/hooks/queries/useBanner'
 import styles from '@/pages/subMain/total-sub-main.module.scss'
+import { useParams } from 'react-router-dom'
 
 const TotalSubMain = () => {
-  const { data: bannerList } = useGetBanner()
+  // const { data: bannerList } = useGetBanner()
+  const { subcategoryId } = useParams<{ subcategoryId: string }>()
+  const numericSubcategoryId = subcategoryId ? Number(subcategoryId) : 0
+  const { data: bannerList } = useSubBanner(Number.isNaN(numericSubcategoryId) ? 0 : numericSubcategoryId)
+
   return (
     <div className={styles['total-sub-main']}>
       <div className={styles['ad-slider']}>
