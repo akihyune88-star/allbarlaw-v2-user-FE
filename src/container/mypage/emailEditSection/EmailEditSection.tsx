@@ -13,7 +13,7 @@ export type EmailEditSectionProps<T extends FieldValues> = {
   currentEmail?: string
 }
 
-function EmailEditSection<T extends { email: string } & FieldValues>({
+function EmailEditSection<T extends { email?: string } & FieldValues>({
   register,
   errors,
   onEmailError,

@@ -35,6 +35,8 @@ const TotalBlogList = () => {
   const handleDetailBlogClick = (subcategoryId: number, blogCaseId: number) =>
     navigate(`/${subcategoryId}/blog/${blogCaseId}`)
 
+  console.log(blogList[0].lawfirmName, 'blogList')
+
   return (
     <div className={styles['total-blog-list']}>
       <ArticleHeader
@@ -56,6 +58,7 @@ const TotalBlogList = () => {
             lawyerInfo={{
               name: blogItem.lawyerName,
               profileImageUrl: blogItem.lawyerProfileImage,
+              lawfirmName: blogItem.lawfirmName,
             }}
             onClick={() => handleDetailBlogClick(blogItem.subcategoryId, blogItem.blogCaseId)}
           />

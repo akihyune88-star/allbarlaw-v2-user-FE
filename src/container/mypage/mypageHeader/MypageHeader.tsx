@@ -73,7 +73,7 @@ const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange, y
           })}
         </ul>
 
-        {onSortChange && (
+        {onSortChange && currentTab !== 'accountEdit' && (
           <div className={styles.sortWrapper}>
             <span>
               전체{' '}

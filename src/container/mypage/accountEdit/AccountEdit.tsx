@@ -7,13 +7,25 @@ import PasswordChangeSection from '@/container/mypage/passwordChangeSection/Pass
 import EmailEditSection from '@/container/mypage/emailEditSection/EmailEditSection'
 import PhoneVerificationEditSection from '@/container/mypage/phoneVerificationEditSection/PhoneVerificationEditSection'
 import Button from '@/components/button/Button'
-import { useGetUserProfile } from '@/hooks/queries/useAuth'
+import { useGetUserProfile, useUpdateUserProfile } from '@/hooks/queries/useAuth'
 import { LOCAL } from '@/constants/local'
+import type { UserProfileUpdateRequest } from '@/types/authTypes'
 
 const AccountEdit = () => {
   const [isEmailError, setIsEmailError] = useState(false)
-  const [isPasswordError, setIsPasswordError] = useState(false)
+  const [_isPasswordError, setIsPasswordError] = useState(false)
+  const [isPasswordChecked, setIsPasswordChecked] = useState(false)
   const { data: userProfile } = useGetUserProfile()
+
+  const { mutateAsync: updateProfile } = useUpdateUserProfile({
+    onSuccess: data => {
+      alert(`다음 정보가 수정되었습니다: ${data.updatedFields.join(', ')}`)
+      window.location.reload()
+    },
+    onError: message => {
+      alert(`정보 수정 실패: ${message}`)
+    },
+  })
 
   const methods = useForm<AccountEditFormData>({
     resolver: zodResolver(accountEditSchema),
@@ -43,56 +55,73 @@ const AccountEdit = () => {
     }
   }, [userProfile, reset])
 
-  // TODO: useAccountUpdate 훅을 생성하여 API 연동 필요
   const onSubmit = async (data: AccountEditFormData) => {
     try {
-      const verificationToken = sessionStorage.getItem(LOCAL.VERIFICATION_TOKEN)
-      if (!verificationToken) {
-        alert('휴대폰 인증이 완료되지 않았습니다.')
+      const updateData: UserProfileUpdateRequest = {}
+
+      // 1. 비밀번호 변경 체크
+      const isPasswordChange = data.currentPassword && data.newPassword && data.confirmNewPassword
+      if (isPasswordChange) {
+        if (!isPasswordChecked) {
+          alert('현재 비밀번호 확인이 필요합니다.')
+          return
+        }
+        updateData.currentPassword = data.currentPassword
+        updateData.newPassword = data.newPassword
+        updateData.newPasswordConfirm = data.confirmNewPassword
+      }
+
+      // 2. 휴대폰 번호 변경 체크
+      const isPhoneChange = data.phoneNumber && data.verificationCode
+      if (isPhoneChange) {
+        const verificationToken = sessionStorage.getItem(LOCAL.VERIFICATION_TOKEN)
+        if (!verificationToken) {
+          alert('휴대폰 인증이 완료되지 않았습니다.')
+          return
+        }
+        updateData.newPhone = data.phoneNumber
+        updateData.certNumber = data.verificationCode
+      }
+
+      // 3. 이메일 변경 체크
+      const isEmailChange = data.email && data.email !== userProfile?.userEmail
+      if (isEmailChange) {
+        if (isEmailError) {
+          alert('이메일 중복 확인이 필요합니다.')
+          return
+        }
+        updateData.newEmail = data.email
+      }
+
+      // 변경할 항목이 없는 경우
+      if (!isPasswordChange && !isPhoneChange && !isEmailChange) {
+        alert('변경할 정보를 입력해주세요.')
         return
       }
 
-      // API 호출 예시:
-      // await updateAccount({
-      //   currentPassword: data.currentPassword,
-      //   newPassword: data.newPassword,
-      //   passwordRepeat: data.confirmNewPassword,
-      //   email: data.email,
-      //   phone: data.phoneNumber,
-      //   verificationToken: verificationToken,
-      // })
-      console.log('계정 수정 데이터:', data)
-      alert('계정 정보가 성공적으로 수정되었습니다.')
+      // API 호출
+      await updateProfile(updateData)
     } catch (error) {
       console.error('계정 수정 실패:', error)
-      alert('계정 정보 수정에 실패했습니다.')
     }
   }
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    if (isEmailError) {
-      e.preventDefault()
-      alert('이미 등록된 이메일입니다.')
-      return
-    }
-    if (isPasswordError) {
-      e.preventDefault()
-      alert('현재 비밀번호가 일치하지 않습니다.')
-      return
-    }
-    handleSubmit(onSubmit)(e)
+  const handlePasswordChecked = (isChecked: boolean) => {
+    setIsPasswordChecked(isChecked)
+    setIsPasswordError(!isChecked)
   }
 
   return (
     <FormProvider {...methods}>
       <main className={`${styles['account-edit']}`}>
-        <form onSubmit={handleFormSubmit} className={styles['account-edit-form-section']}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles['account-edit-form-section']}>
           <PasswordChangeSection
             register={register}
             errors={errors}
             watch={watch}
             userId={userProfile?.userAccount}
             onPasswordError={setIsPasswordError}
+            onPasswordChecked={handlePasswordChecked}
           />
           <PhoneVerificationEditSection currentPhone={userProfile?.userPhone} />
           <EmailEditSection
@@ -101,11 +130,7 @@ const AccountEdit = () => {
             onEmailError={setIsEmailError}
             currentEmail={userProfile?.userEmail}
           />
-          <Button
-            type='submit'
-            disabled={isSubmitting || !isValid || isEmailError || isPasswordError}
-            className={styles['account-edit-button']}
-          >
+          <Button type='submit' disabled={isSubmitting} className={styles['account-edit-button']}>
             {isSubmitting ? '수정 진행 중...' : '회원정보 및 비밀번호 변경 완료'}
           </Button>
         </form>

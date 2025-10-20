@@ -12,11 +12,12 @@ export type PasswordChangeSectionProps<T extends FieldValues> = {
   watch: UseFormWatch<T>
   userId?: string
   onPasswordError?: (_isError: boolean) => void
+  onPasswordChecked?: (_isChecked: boolean) => void
 }
 
 function PasswordChangeSection<
-  T extends { currentPassword: string; newPassword: string; confirmNewPassword: string } & FieldValues
->({ register, errors, watch, userId, onPasswordError }: PasswordChangeSectionProps<T>) {
+  T extends { currentPassword?: string; newPassword?: string; confirmNewPassword?: string } & FieldValues
+>({ register, errors, watch, userId, onPasswordError, onPasswordChecked }: PasswordChangeSectionProps<T>) {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const debounceTimer = useRef<ReturnType<typeof setTimeout>>(null)
   const [passwordMessage, setPasswordMessage] = useState<string | undefined>(undefined)
@@ -31,16 +32,19 @@ function PasswordChangeSection<
         setPasswordMessage('현재 비밀번호가 확인되었습니다.')
         setIsPasswordError(false)
         onPasswordError?.(false)
+        onPasswordChecked?.(true)
       } else {
         setPasswordMessage('현재 비밀번호가 일치하지 않습니다.')
         setIsPasswordError(true)
         onPasswordError?.(true)
+        onPasswordChecked?.(false)
       }
     },
     onError: message => {
       setPasswordMessage(message)
       setIsPasswordError(true)
       onPasswordError?.(true)
+      onPasswordChecked?.(false)
     },
   })
 
@@ -50,6 +54,7 @@ function PasswordChangeSection<
     setPasswordMessage(undefined)
     setIsPasswordError(false)
     onPasswordError?.(false)
+    onPasswordChecked?.(false)
 
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current)
