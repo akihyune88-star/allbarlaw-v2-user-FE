@@ -4,6 +4,7 @@ import LegalKnowledgeItem from '@/components/legalKnowledgeItem/LegalKnowledgeIt
 import SvgIcon from '@/components/SvgIcon'
 import styles from '@/container/subMain/total/total-legal-knowledge.module.scss'
 import { useGetKnowledgeList } from '@/hooks/queries/useGetKnowledgeList'
+import { useKnowledgeCount } from '@/hooks/queries/useKnowledge'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { ROUTER } from '@/routes/routerConstant'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -23,6 +24,16 @@ const TotalLegalKnowledge = () => {
     orderBy: 'createdAt',
   })
 
+  const { data: knowledgeTotalCount } = useKnowledgeCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
+    recentDays: 'all',
+  })
+
+  const { data: recentMonthKnowledgeCount } = useKnowledgeCount({
+    subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
+    recentDays: 30,
+  })
+
   const handleBaroTalk = () => navigate(ROUTER.REQUEST_BARO_TALK)
   const handleTotalLegalKnowledgeClick = () => navigate(`/${subcategoryId}${ROUTER.LEGAL_KNOWLEDGE}`)
   const handleDetailLegalKnowledgeClick = (knowledgeId: number) =>
@@ -38,9 +49,9 @@ const TotalLegalKnowledge = () => {
             <div className={styles.aside__header}>
               <h3 className={styles[`aside__header-title`]}>{`최신 \n법률지식인`}</h3>
               <span className={styles['aside__header-count']}>
-                전체 21,321상담
+                전체 {knowledgeTotalCount || 0}상담
                 <br />
-                최근 한달 1,314상담
+                최근 한달 {recentMonthKnowledgeCount || 0}상담
               </span>
               <button className={'total-view-button'} onClick={handleTotalLegalKnowledgeClick}>
                 <span>전체보기</span>
