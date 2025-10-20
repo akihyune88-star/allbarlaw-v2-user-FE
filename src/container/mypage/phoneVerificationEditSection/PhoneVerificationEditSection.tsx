@@ -58,7 +58,9 @@ const PhoneVerificationEditSection = ({ currentPhone }: PhoneVerificationEditSec
     const isValid = await trigger('phoneNumber')
     if (isValid) {
       setValue('verificationCode', '')
-      sendVerificationCode({ phone: getValues('phoneNumber'), purpose: 'profile_update' })
+      const phone = getValues('phoneNumber')
+      if (!phone) return
+      sendVerificationCode({ phone, purpose: 'profile_update' })
     }
   }
 
@@ -67,9 +69,11 @@ const PhoneVerificationEditSection = ({ currentPhone }: PhoneVerificationEditSec
     if (!isFormValid) return
 
     const code = getValues('verificationCode')
+    const phone = phoneNumberValue
+    if (!phone || !code) return
 
     await verifyVerificationCode({
-      phone: phoneNumberValue,
+      phone,
       certNumber: code,
     })
   }
