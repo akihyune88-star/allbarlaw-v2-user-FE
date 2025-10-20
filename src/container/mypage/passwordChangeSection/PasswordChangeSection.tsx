@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { UseFormRegister, FieldErrors, UseFormWatch, FieldValues, Path } from 'react-hook-form'
 import LabelInput from '@/components/labelInput/LabelInput'
 import styles from './passwordChangeSection.module.scss'
@@ -22,7 +22,6 @@ function PasswordChangeSection<
   const [passwordMessage, setPasswordMessage] = useState<string | undefined>(undefined)
   const [isPasswordError, setIsPasswordError] = useState(false)
 
-  const watchCurrentPassword = watch('currentPassword' as Path<T>)
   const watchNewPassword = watch('newPassword' as Path<T>)
   const watchConfirmNewPassword = watch('confirmNewPassword' as Path<T>)
 

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { authService } from '@/services/authService'
-import { UserProfileResponse, UserProfileUpdateRequest, UserProfileUpdateResponse } from '@/types/authTypes'
+import { UserProfileUpdateRequest, UserProfileUpdateResponse } from '@/types/authTypes'
 import { QUERY_KEY } from '@/constants/queryKey'
 import { getErrorMessage } from '@/utils/errorHandler'
 import { isAxiosError } from 'axios'
@@ -9,7 +9,7 @@ export const useUserFindId = ({
   onSuccess,
   onError,
 }: {
-  onSuccess: (data: { userAccount: string }) => void
+  onSuccess: (_data: { userAccount: string }) => void
   onError: () => void
 }) => {
   return useMutation({
@@ -23,7 +23,7 @@ export const useUserResetPassword = ({
   onSuccess,
   onError,
 }: {
-  onSuccess: (data: { message: string }) => void
+  onSuccess: (_data: { message: string }) => void
   onError: () => void
 }) => {
   return useMutation({
@@ -37,7 +37,7 @@ export const useLawyerFindId = ({
   onSuccess,
   onError,
 }: {
-  onSuccess: (data: { lawyerAccount: string }) => void
+  onSuccess: (_data: { lawyerAccount: string }) => void
   onError: () => void
 }) => {
   return useMutation({
@@ -51,7 +51,7 @@ export const useLawyerResetPassword = ({
   onSuccess,
   onError,
 }: {
-  onSuccess: (data: { message: string }) => void
+  onSuccess: (_data: { message: string }) => void
   onError: () => void
 }) => {
   return useMutation({
