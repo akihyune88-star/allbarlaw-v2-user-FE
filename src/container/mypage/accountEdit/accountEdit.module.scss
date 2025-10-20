@@ -1,0 +1,38 @@
+.account-edit {
+  width: 100%;
+  max-width: 34rem;
+  margin: 0 auto;
+  // padding: 2rem 0;
+}
+
+.account-edit-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.account-edit-button {
+  margin-top: 2rem;
+  width: 100%;
+  height: 3.5rem;
+  font-size: 1.125rem;
+  font-weight: $font-weight-bold;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .account-edit {
+    padding: 1.5rem 1rem;
+  }
+
+  .account-edit-form-section {
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .account-edit-button {
+    margin-top: 1.5rem;
+    height: 3rem;
+    font-size: 1rem;
+  }
+}

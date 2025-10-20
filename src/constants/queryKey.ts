@@ -53,6 +53,7 @@ export const QUERY_KEY = {
   MY_LAWYER_LIST: 'myLawyerList',
   MY_LEGAL_DICTIONARY_LIST: 'myLegalDictionaryList',
   MY_CONSULTATION_LIST: 'myConsultationList',
+  USER_PROFILE: 'userProfile',
 
   //검색
   SEARCH: 'search',

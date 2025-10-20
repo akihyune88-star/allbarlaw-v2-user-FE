@@ -1,5 +1,13 @@
 import instance from '@/lib/axios'
-import { LoginRequest, SignUpRequest, SocialLoginRequest, VerifyVerificationCodeRequest } from '@/types/authTypes'
+import {
+  LoginRequest,
+  SignUpRequest,
+  SocialLoginRequest,
+  UserProfileResponse,
+  UserProfileUpdateRequest,
+  UserProfileUpdateResponse,
+  VerifyVerificationCodeRequest,
+} from '@/types/authTypes'
 
 // 현재는 목업 데이터를 사용하지만, 실제 API로 교체 가능
 export const authService = {
@@ -12,7 +20,7 @@ export const authService = {
       throw error
     }
   },
-  sendVerificationCode: async (phone: string, purpose?: 'recovery' | 'signup') => {
+  sendVerificationCode: async (phone: string, purpose?: 'recovery' | 'signup' | 'profile_update') => {
     try {
       const response = await instance.post('/user/send-verification', { phone, purpose })
       return response.data
@@ -119,6 +127,33 @@ export const authService = {
       return response.data
     } catch (error) {
       console.error('Failed to find password:', error)
+      throw error
+    }
+  },
+  userProfile: async () => {
+    try {
+      const response = await instance.get<UserProfileResponse>('/user/profile')
+      return response.data
+    } catch (error) {
+      console.error('Failed to get user profile:', error)
+      throw error
+    }
+  },
+  updateUserProfile: async (inputValue: UserProfileUpdateRequest) => {
+    try {
+      const response = await instance.put<UserProfileUpdateResponse>('/user/profile', inputValue)
+      return response.data
+    } catch (error) {
+      console.error('Failed to update user profile:', error)
+      throw error
+    }
+  },
+  passwordCheck: async (password: string) => {
+    try {
+      const response = await instance.post<{ isValid: boolean }>('/user/check-password', { password })
+      return response.data
+    } catch (error) {
+      console.error('Failed to check password:', error)
       throw error
     }
   },

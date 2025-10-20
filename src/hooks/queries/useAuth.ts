@@ -1,5 +1,9 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { authService } from '@/services/authService'
+import { UserProfileResponse, UserProfileUpdateRequest, UserProfileUpdateResponse } from '@/types/authTypes'
+import { QUERY_KEY } from '@/constants/queryKey'
+import { getErrorMessage } from '@/utils/errorHandler'
+import { isAxiosError } from 'axios'
 
 export const useUserFindId = ({
   onSuccess,
@@ -54,5 +58,60 @@ export const useLawyerResetPassword = ({
     mutationFn: authService.lawyerResetPassword,
     onSuccess,
     onError,
+  })
+}
+
+export const useGetUserProfile = () => {
+  return useQuery({
+    queryKey: [QUERY_KEY.USER_PROFILE],
+    queryFn: authService.userProfile,
+  })
+}
+
+export const useUpdateUserProfile = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: UserProfileUpdateResponse) => void
+  onError: (_message: string) => void
+}) => {
+  return useMutation({
+    mutationFn: async (inputValue: UserProfileUpdateRequest) => {
+      const response = await authService.updateUserProfile(inputValue)
+      return response
+    },
+    onSuccess: (data: UserProfileUpdateResponse) => {
+      onSuccess?.(data)
+    },
+    onError: error => {
+      if (isAxiosError(error)) {
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        onError?.(errorMessage)
+      }
+    },
+  })
+}
+
+export const usePasswordCheck = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: { isValid: boolean }) => void
+  onError: (_message: string) => void
+}) => {
+  return useMutation<{ isValid: boolean }, Error, { password: string }>({
+    mutationFn: async ({ password }) => {
+      const response = await authService.passwordCheck(password)
+      return response
+    },
+    onSuccess: (data, _variables) => {
+      onSuccess?.(data)
+    },
+    onError: error => {
+      if (isAxiosError(error)) {
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        onError?.(errorMessage)
+      }
+    },
   })
 }
