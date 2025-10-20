@@ -16,4 +16,14 @@ export type SubBanner = {
   subMainBannerLink: string
 }
 
+// 공통 배너 타입 (prefix 제거)
+export type Banner = {
+  bannerId: number
+  bannerImageUrl: string
+  bannerMobileImageUrl: string
+  bannerStartedAt: string
+  bannerFinishedAt: string
+  bannerLink: string
+}
+
 export type BannerResponse = MainBanner[] | SubBanner[]
