@@ -1,20 +1,24 @@
 import { useState, useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
-import { accountEditSchema, type AccountEditFormData } from './accountEditSchema'
-import styles from './accountEdit.module.scss'
+import { accountEditSchema, type AccountEditFormData } from '@/container/mypage/accountEdit/accountEditSchema'
+import styles from './lawyerAccountEdit.module.scss'
 import PasswordChangeSection from '@/container/mypage/passwordChangeSection/PasswordChangeSection'
 import EmailEditSection from '@/container/mypage/emailEditSection/EmailEditSection'
 import PhoneVerificationEditSection from '@/container/mypage/phoneVerificationEditSection/PhoneVerificationEditSection'
+import LawyerCertificationEdit from '@/container/lawyerAdmin/lawyerCertificationEdit/LawyerCertificationEdit'
 import Button from '@/components/button/Button'
-import { useGetUserProfile, useUpdateUserProfile, usePasswordCheck } from '@/hooks/queries/useAuth'
+import { useGetUserProfile, useUpdateUserProfile } from '@/hooks/queries/useAuth'
 import { LOCAL } from '@/constants/local'
 import type { UserProfileUpdateRequest } from '@/types/authTypes'
+import HeaderPortal from '@/components/headerPortal/HeaderPortal'
 
-const AccountEdit = () => {
+const LawyerAccountEdit = () => {
   const [isEmailError, setIsEmailError] = useState(false)
   const [_isPasswordError, setIsPasswordError] = useState(false)
   const [isPasswordChecked, setIsPasswordChecked] = useState(false)
+
+  // TODO: 변호사용 프로필 API가 추가되면 useGetLawyerProfile로 변경 필요
   const { data: userProfile } = useGetUserProfile()
 
   const { mutateAsync: updateProfile } = useUpdateUserProfile({
@@ -34,6 +38,7 @@ const AccountEdit = () => {
       email: '',
     },
   })
+
   const {
     register,
     handleSubmit,
@@ -111,19 +116,35 @@ const AccountEdit = () => {
     setIsPasswordError(!isChecked)
   }
 
-  const { mutateAsync: checkPassword } = usePasswordCheck({
-    onSuccess: () => {},
-    onError: () => {},
-  })
+  const handleCheckPassword = async (password: string): Promise<{ isValid: boolean }> => {
+    // TODO: 실제 비밀번호 확인 API로 교체
+    const isValid = typeof password === 'string' && password.length >= 8
+    return { isValid }
+  }
 
-  const handleCheckPassword = async (password: string) => {
-    const result = await checkPassword({ password })
-    return result
+  const handlePhoneVerification = () => {
+    // TODO: 휴대폰 본인인증 모달 또는 인증 프로세스 시작
+    alert('휴대폰 본인인증 기능은 준비 중입니다.')
   }
 
   return (
     <FormProvider {...methods}>
       <main className={`${styles['account-edit']}`}>
+        <HeaderPortal>
+          <div className={styles.header}>
+            <button type='button' disabled={isSubmitting} className={styles.header__button__item}>
+              탈퇴 하기
+            </button>
+            <nav className={styles.header__button}>
+              <button type='button' disabled={isSubmitting} className={styles.header__button__item}>
+                취소
+              </button>
+              <button type='submit' disabled={isSubmitting} className={styles.header__button__item}>
+                {isSubmitting ? '수정 진행 중...' : '변경'}
+              </button>
+            </nav>
+          </div>
+        </HeaderPortal>
         <form onSubmit={handleSubmit(onSubmit)} className={styles['account-edit-form-section']}>
           <PasswordChangeSection
             register={register}
@@ -134,20 +155,22 @@ const AccountEdit = () => {
             onPasswordChecked={handlePasswordChecked}
             onCheckPassword={handleCheckPassword}
           />
-          <PhoneVerificationEditSection currentPhone={userProfile?.userPhone} />
+          <LawyerCertificationEdit
+            register={register as any}
+            errors={errors}
+            currentPhone={userProfile?.userPhone}
+            onPhoneVerification={handlePhoneVerification}
+          />
           <EmailEditSection
             register={register}
             errors={errors}
             onEmailError={setIsEmailError}
             currentEmail={userProfile?.userEmail}
           />
-          <Button type='submit' disabled={isSubmitting} className={styles['account-edit-button']}>
-            {isSubmitting ? '수정 진행 중...' : '회원정보 및 비밀번호 변경 완료'}
-          </Button>
         </form>
       </main>
     </FormProvider>
   )
 }
 
-export default AccountEdit
+export default LawyerAccountEdit

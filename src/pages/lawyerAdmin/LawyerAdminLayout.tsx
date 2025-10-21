@@ -37,23 +37,38 @@ const ChatSocketProvider = () => {
 }
 
 const LawyerAdminLayout = () => {
-  const [selectedMainCategory, setSelectedMainCategory] = useState<number | null>(1)
-  const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(1)
+  const [selectedMainCategory, setSelectedMainCategory] = useState<number | null>(null)
+  const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(null)
   const navigate = useNavigate()
   const location = useLocation()
 
+  // URL 경로에 따라 선택된 카테고리 자동 업데이트
+  useEffect(() => {
+    const path = location.pathname
+
+    // subcategoryId와 해당하는 categoryId 매핑
+    const pathMapping: Record<string, { subcategoryId: number; categoryId: number }> = {
+      '/lawyer-admin/lawyer-detail': { subcategoryId: 1, categoryId: 1 },
+      '/lawyer-admin/lawyer-edit': { subcategoryId: 2, categoryId: 1 },
+      '/lawyer-admin/content/blog': { subcategoryId: 3, categoryId: 2 },
+      '/lawyer-admin/content/video': { subcategoryId: 4, categoryId: 2 },
+      '/lawyer-admin/content/legal-knowledge': { subcategoryId: 5, categoryId: 2 },
+      '/lawyer-admin/chat': { subcategoryId: 6, categoryId: 3 },
+      '/lawyer-admin/account-edit': { subcategoryId: 7, categoryId: 4 },
+    }
+
+    // 경로에 맞는 카테고리 찾기
+    const matchedPath = Object.keys(pathMapping).find(key => path.includes(key))
+
+    if (matchedPath) {
+      const { subcategoryId, categoryId } = pathMapping[matchedPath]
+      setSelectedSubcategory(subcategoryId)
+      setSelectedMainCategory(categoryId)
+    }
+  }, [location.pathname])
+
   // 채팅 관련 페이지인지 확인
   const isChatPage = location.pathname.includes('/lawyer-admin/chat')
-
-  // 초기 마운트 시 한 번만 로그
-  useEffect(() => {
-    console.log('🏛️ [LAWYER ADMIN] Layout 초기화 완료')
-  }, [])
-
-  // 페이지 변경 감지
-  useEffect(() => {
-    console.log('🏛️ [LAWYER ADMIN] 페이지 변경:', location.pathname, '/ 채팅 페이지:', isChatPage)
-  }, [location.pathname, isChatPage])
 
   const handleMainCategoryClick = (id: number) => {
     setSelectedMainCategory(selectedMainCategory === id ? null : id)
@@ -79,6 +94,9 @@ const LawyerAdminLayout = () => {
         break
       case 6:
         navigate(ROUTER.LAWYER_ADMIN_CHAT_LIST)
+        break
+      case 7:
+        navigate(ROUTER.LAWYER_ADMIN_ACCOUNT_EDIT)
         break
     }
   }
@@ -109,6 +127,21 @@ const LawyerAdminLayout = () => {
 export default LawyerAdminLayout
 
 const categories: CategoryList = [
+  {
+    categoryId: 4,
+    categoryName: '변호사 회원정보',
+    imageUrl: '',
+    clickedImageUrl: '',
+    isUncategorized: false,
+    subcategories: [
+      {
+        subcategoryId: 7,
+        subcategoryName: '회원정보/비밀번호 변경',
+        isUncategorized: false,
+        categoryId: 4,
+      },
+    ],
+  },
   {
     categoryId: 1,
     categoryName: '변호사 정보관리',
