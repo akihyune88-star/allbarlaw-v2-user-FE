@@ -70,6 +70,7 @@ import LawyerLegalKnowledgeLayout from '@/pages/lawyerAdmin/lawyerContents/lawye
 import LawyerLegalKnowledgeList from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeList/LawyerLegalKnowledgeList'
 import LawyerLegalKnowledgeDetail from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeDetail/LawyerLegalKnowledgeDetail'
 import { COLOR } from '@/styles/color'
+import LawyerAccountEdit from '@/pages/lawyerAdmin/lawyerAccountEdit/LawyerAccountEdit'
 
 const router = createBrowserRouter([
   {
@@ -335,6 +336,10 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <Navigate to={ROUTER.LAWYER_ADMIN_LAWYER_DETAIL} replace />,
+      },
+      {
+        path: ROUTER.LAWYER_ADMIN_ACCOUNT_EDIT,
+        element: <LawyerAccountEdit />,
       },
       {
         path: ROUTER.LAWYER_ADMIN_LAWYER_DETAIL,

@@ -52,6 +52,7 @@ export const ROUTER = {
   // 변호사 관리
   LAWYER_ADMIN_CHAT_LIST: '/lawyer-admin/chat-list',
   LAWYER_ADMIN_CHAT: '/lawyer-admin/chat',
+  LAWYER_ADMIN_ACCOUNT_EDIT: '/lawyer-admin/account-edit',
 
   LAWYER_ADMIN_LAWYER_DETAIL: '/lawyer-admin/lawyer-detail',
   LAWYER_ADMIN_LAWYER_EDIT: '/lawyer-admin/lawyer-edit',
