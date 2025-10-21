@@ -4,7 +4,6 @@ import LabelInput from '@/components/labelInput/LabelInput'
 import styles from './passwordChangeSection.module.scss'
 import Divider from '@/components/divider/Divider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { usePasswordCheck } from '@/hooks/queries/useAuth'
 
 export type PasswordChangeSectionProps<T extends FieldValues> = {
   register: UseFormRegister<T>
@@ -13,11 +12,20 @@ export type PasswordChangeSectionProps<T extends FieldValues> = {
   userId?: string
   onPasswordError?: (_isError: boolean) => void
   onPasswordChecked?: (_isChecked: boolean) => void
+  onCheckPassword: (_password: string) => Promise<{ isValid: boolean }>
 }
 
 function PasswordChangeSection<
   T extends { currentPassword?: string; newPassword?: string; confirmNewPassword?: string } & FieldValues
->({ register, errors, watch, userId, onPasswordError, onPasswordChecked }: PasswordChangeSectionProps<T>) {
+>({
+  register,
+  errors,
+  watch,
+  userId,
+  onPasswordError,
+  onPasswordChecked,
+  onCheckPassword,
+}: PasswordChangeSectionProps<T>) {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const debounceTimer = useRef<ReturnType<typeof setTimeout>>(null)
   const [passwordMessage, setPasswordMessage] = useState<string | undefined>(undefined)
@@ -25,28 +33,6 @@ function PasswordChangeSection<
 
   const watchNewPassword = watch('newPassword' as Path<T>)
   const watchConfirmNewPassword = watch('confirmNewPassword' as Path<T>)
-
-  const { mutate: checkPassword } = usePasswordCheck({
-    onSuccess: data => {
-      if (data.isValid) {
-        setPasswordMessage('현재 비밀번호가 확인되었습니다.')
-        setIsPasswordError(false)
-        onPasswordError?.(false)
-        onPasswordChecked?.(true)
-      } else {
-        setPasswordMessage('현재 비밀번호가 일치하지 않습니다.')
-        setIsPasswordError(true)
-        onPasswordError?.(true)
-        onPasswordChecked?.(false)
-      }
-    },
-    onError: message => {
-      setPasswordMessage(message)
-      setIsPasswordError(true)
-      onPasswordError?.(true)
-      onPasswordChecked?.(false)
-    },
-  })
 
   const handleCurrentPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -60,9 +46,27 @@ function PasswordChangeSection<
       clearTimeout(debounceTimer.current)
     }
 
-    debounceTimer.current = setTimeout(() => {
+    debounceTimer.current = setTimeout(async () => {
       if (value && value.length >= 8) {
-        checkPassword({ password: value })
+        try {
+          const result = await onCheckPassword(value)
+          if (result.isValid) {
+            setPasswordMessage('현재 비밀번호가 확인되었습니다.')
+            setIsPasswordError(false)
+            onPasswordError?.(false)
+            onPasswordChecked?.(true)
+          } else {
+            setPasswordMessage('현재 비밀번호가 일치하지 않습니다.')
+            setIsPasswordError(true)
+            onPasswordError?.(true)
+            onPasswordChecked?.(false)
+          }
+        } catch (error) {
+          setPasswordMessage('비밀번호 확인 중 오류가 발생했습니다.')
+          setIsPasswordError(true)
+          onPasswordError?.(true)
+          onPasswordChecked?.(false)
+        }
       }
     }, 300)
   }

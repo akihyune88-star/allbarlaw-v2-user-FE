@@ -7,7 +7,7 @@ import PasswordChangeSection from '@/container/mypage/passwordChangeSection/Pass
 import EmailEditSection from '@/container/mypage/emailEditSection/EmailEditSection'
 import PhoneVerificationEditSection from '@/container/mypage/phoneVerificationEditSection/PhoneVerificationEditSection'
 import Button from '@/components/button/Button'
-import { useGetUserProfile, useUpdateUserProfile } from '@/hooks/queries/useAuth'
+import { useGetUserProfile, useUpdateUserProfile, usePasswordCheck } from '@/hooks/queries/useAuth'
 import { LOCAL } from '@/constants/local'
 import type { UserProfileUpdateRequest } from '@/types/authTypes'
 
@@ -111,6 +111,16 @@ const AccountEdit = () => {
     setIsPasswordError(!isChecked)
   }
 
+  const { mutateAsync: checkPassword } = usePasswordCheck({
+    onSuccess: () => {},
+    onError: () => {},
+  })
+
+  const handleCheckPassword = async (password: string) => {
+    const result = await checkPassword({ password })
+    return result
+  }
+
   return (
     <FormProvider {...methods}>
       <main className={`${styles['account-edit']}`}>
@@ -122,6 +132,7 @@ const AccountEdit = () => {
             userId={userProfile?.userAccount}
             onPasswordError={setIsPasswordError}
             onPasswordChecked={handlePasswordChecked}
+            onCheckPassword={handleCheckPassword}
           />
           <PhoneVerificationEditSection currentPhone={userProfile?.userPhone} />
           <EmailEditSection

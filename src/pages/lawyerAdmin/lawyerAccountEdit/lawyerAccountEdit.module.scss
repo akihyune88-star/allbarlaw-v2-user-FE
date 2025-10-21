@@ -1,0 +1,95 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  // 탈퇴 버튼 (헤더의 첫 번째 direct child button)
+  > button {
+    padding: 0.875rem 1.375rem;
+    border-radius: 0.5rem;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    background-color: #ff5f51;
+    color: $color-white;
+    border: none;
+
+    &:hover {
+      background-color: #ff5252;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: $font-weight-extra-bold;
+  }
+
+  &__button {
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__button__item {
+    padding: 0.875rem 1.375rem;
+    border-radius: 0.5rem;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    background-color: $color-white;
+    border: 1px solid $color-line-borderbox;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &:last-child {
+      background-color: $color-green-01;
+      color: $color-white;
+      border: none;
+    }
+  }
+}
+
+.account-edit {
+  width: 100%;
+  max-width: 34rem;
+  margin: 1rem auto;
+  // padding: 2rem 0;
+}
+
+.account-edit-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  // margin-top: 2rem;
+}
+
+.account-edit-button {
+  margin-top: 2rem;
+  width: 100%;
+  height: 3.5rem;
+  font-size: 1.125rem;
+  font-weight: $font-weight-bold;
+}
+
+@media (max-width: $breakpoint-desktop) {
+  .account-edit {
+    padding: 1.5rem 1rem;
+  }
+
+  .account-edit-form-section {
+    gap: 1.5rem;
+    // margin-top: 1.5rem;
+  }
+
+  .account-edit-button {
+    margin-top: 1.5rem;
+    height: 3rem;
+    font-size: 1rem;
+  }
+}
