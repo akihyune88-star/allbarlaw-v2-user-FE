@@ -83,7 +83,7 @@ const LawyerAccountEdit = () => {
           return
         }
         updateData.newPhone = data.phoneNumber
-        updateData.certNumber = data.verificationCode
+        // updateData.certNumber = data.verificationCode
       }
 
       // 3. 이메일 변경 체크
