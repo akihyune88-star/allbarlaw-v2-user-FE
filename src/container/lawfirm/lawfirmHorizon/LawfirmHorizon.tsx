@@ -1,5 +1,8 @@
+import { useState } from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import Tag from '@/components/tag/Tag'
+import { AlertModal } from '@/components/modal/Modal'
+import { formatPhoneNumber } from '@/utils/formatUtils'
 import styles from './lawfirm-horizon.module.scss'
 import { usePostTrackView } from '@/hooks/mutatate/usePostTrackView'
 
@@ -35,10 +38,31 @@ const LawfirmHorizon = ({
   className,
 }: LawfirmHorizonProps) => {
   const { mutate: trackView } = usePostTrackView()
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false)
+  const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)
 
-  const handleContactClick = (url: string) => {
+  const handleBlogClick = () => {
+    if (blogUrl) {
+      trackView(lawfirmId)
+      window.open(blogUrl, '_blank')
+    }
+  }
+
+  const handleHomepageClick = () => {
+    if (homepageUrl) {
+      trackView(lawfirmId)
+      window.open(homepageUrl, '_blank')
+    }
+  }
+
+  const handleAddressClick = () => {
     trackView(lawfirmId)
-    window.open(url, '_blank')
+    setIsAddressModalOpen(true)
+  }
+
+  const handlePhoneClick = () => {
+    trackView(lawfirmId)
+    setIsPhoneModalOpen(true)
   }
 
   const handleTagClick = (url: string) => {
@@ -57,25 +81,25 @@ const LawfirmHorizon = ({
             <h3 className={styles['lawfirm-name']}>{lawfirmName}</h3>
             <div className={styles['contact-info']}>
               {blogUrl && (
-                <button className={styles['contact-info-item']} onClick={() => handleContactClick(blogUrl)}>
+                <button className={styles['contact-info-item']} onClick={handleBlogClick}>
                   <SvgIcon name={'blog'} size={24} />
                   <span>블로그</span>
                 </button>
               )}
               {homepageUrl && (
-                <button className={styles['contact-info-item']} onClick={() => handleContactClick(homepageUrl)}>
+                <button className={styles['contact-info-item']} onClick={handleHomepageClick}>
                   <SvgIcon name={'homepage'} size={24} />
                   <span>홈페이지</span>
                 </button>
               )}
               {address && (
-                <button className={styles['contact-info-item']} onClick={() => handleContactClick(address)}>
+                <button className={styles['contact-info-item']} onClick={handleAddressClick}>
                   <SvgIcon name={'map'} size={24} />
                   <span>위치</span>
                 </button>
               )}
               {phoneNumber && (
-                <button className={styles['contact-info-item']} onClick={() => handleContactClick(phoneNumber)}>
+                <button className={styles['contact-info-item']} onClick={handlePhoneClick}>
                   <SvgIcon name={'call'} size={24} />
                   <span>연락처</span>
                 </button>
@@ -99,6 +123,22 @@ const LawfirmHorizon = ({
             ))}
         </div>
       </div>
+
+      {/* 위치 모달 */}
+      <AlertModal
+        isOpen={isAddressModalOpen}
+        onClose={() => setIsAddressModalOpen(false)}
+        message={address || ''}
+        confirmText='확인'
+      />
+
+      {/* 연락처 모달 */}
+      <AlertModal
+        isOpen={isPhoneModalOpen}
+        onClose={() => setIsPhoneModalOpen(false)}
+        message={formatPhoneNumber(phoneNumber)}
+        confirmText='확인'
+      />
     </article>
   )
 }
