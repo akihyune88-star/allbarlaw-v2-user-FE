@@ -20,7 +20,6 @@ const AccountEdit = () => {
   const { mutateAsync: updateProfile } = useUpdateUserProfile({
     onSuccess: data => {
       alert(`다음 정보가 수정되었습니다: ${data.updatedFields.join(', ')}`)
-      window.location.reload()
     },
     onError: message => {
       alert(`정보 수정 실패: ${message}`)
@@ -80,7 +79,7 @@ const AccountEdit = () => {
           return
         }
         updateData.newPhone = data.phoneNumber
-        updateData.certNumber = data.verificationCode
+        updateData.verificationToken = verificationToken
       }
 
       // 3. 이메일 변경 체크

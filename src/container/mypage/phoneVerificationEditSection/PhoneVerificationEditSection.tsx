@@ -57,9 +57,17 @@ const PhoneVerificationEditSection = ({ currentPhone }: PhoneVerificationEditSec
   const handleSendVerificationCode = async () => {
     const isValid = await trigger('phoneNumber')
     if (isValid) {
-      setValue('verificationCode', '')
       const phone = getValues('phoneNumber')
       if (!phone) return
+
+      // 현재 등록된 번호와 동일한지 체크
+      if (currentPhone && phone === currentPhone) {
+        setCodeError({ text: '현재 등록된 번호입니다. 다른 번호를 입력해주세요.', isError: true })
+        return
+      }
+
+      setValue('verificationCode', '')
+      setCodeError(null)
       sendVerificationCode({ phone, purpose: 'profile_update' })
     }
   }
