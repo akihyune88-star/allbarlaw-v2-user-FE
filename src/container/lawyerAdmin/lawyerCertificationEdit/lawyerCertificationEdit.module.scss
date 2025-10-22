@@ -68,10 +68,6 @@
   cursor: pointer;
   transition: background-color 0.2s;
 
-  &:hover {
-    background-color: darken($color-green-01, 10%);
-  }
-
   &:disabled {
     background-color: #ccc;
     cursor: not-allowed;
