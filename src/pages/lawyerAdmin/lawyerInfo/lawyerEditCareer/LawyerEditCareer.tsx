@@ -182,13 +182,17 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
     setContentArray(career.lawyerCareerContentArray || [''])
   }
 
-  // 카테고리 이름 클릭 시 편집 모드 + 우측 패널 표시
+  // 카테고리 이름 클릭 핸들러
   const handleCategoryClick = (career: CareerItem) => {
-    setEditingCategoryId(career.id)
-    setEditingCategoryName(career.lawyerCareerCategoryName)
-    // 우측 패널도 함께 표시
-    setSelectedCareer(career)
-    setContentArray(career.lawyerCareerContentArray || [''])
+    // 이미 선택된 항목을 다시 클릭한 경우 → 편집 모드
+    if (selectedCareer?.id === career.id) {
+      setEditingCategoryId(career.id)
+      setEditingCategoryName(career.lawyerCareerCategoryName)
+    } else {
+      // 처음 클릭 → 선택만 (우측 패널 표시)
+      setSelectedCareer(career)
+      setContentArray(career.lawyerCareerContentArray || [''])
+    }
   }
 
   // 데이터 비교 함수

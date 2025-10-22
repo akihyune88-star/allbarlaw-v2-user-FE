@@ -183,16 +183,20 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
     setContentArray(contentLines)
   }
 
-  // 카테고리 이름 클릭 시 편집 모드 + 우측 패널 표시
+  // 카테고리 이름 클릭 핸들러
   const handleCategoryClick = (activity: ActivityItem) => {
-    setEditingCategoryId(activity.id)
-    setEditingCategoryName(activity.lawyerActivityCategoryName)
-    // 우측 패널도 함께 표시
-    setSelectedActivity(activity)
-    const contentLines = activity.lawyerActivityContent
-      ? activity.lawyerActivityContent.split('\n').filter(line => line.trim() !== '')
-      : []
-    setContentArray(contentLines)
+    // 이미 선택된 항목을 다시 클릭한 경우 → 편집 모드
+    if (selectedActivity?.id === activity.id) {
+      setEditingCategoryId(activity.id)
+      setEditingCategoryName(activity.lawyerActivityCategoryName)
+    } else {
+      // 처음 클릭 → 선택만 (우측 패널 표시)
+      setSelectedActivity(activity)
+      const contentLines = activity.lawyerActivityContent
+        ? activity.lawyerActivityContent.split('\n').filter(line => line.trim() !== '')
+        : []
+      setContentArray(contentLines)
+    }
   }
 
   // 데이터 비교 함수
