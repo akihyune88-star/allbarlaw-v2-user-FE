@@ -1,4 +1,5 @@
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { formatSubscriberCount } from '@/utils/youtubeUtils'
 import styles from './vidoe-info.module.scss'
 
 type VidoeInfoProps = {
@@ -22,21 +23,6 @@ const VidoeInfo = ({
 
   const handleChannelButton = () => {
     window.open(source, '_blank')
-  }
-
-  // 구독자 수 안전하게 포맷팅
-  const formatSubscriberCount = (count: number) => {
-    const numCount = Number(count)
-    if (isNaN(numCount) || numCount <= 0) {
-      return '0'
-    }
-
-    if (numCount < 1000) {
-      return numCount.toLocaleString()
-    }
-
-    const manCount = numCount / 10000
-    return `${manCount.toFixed(1)}만`
   }
 
   return (
@@ -71,7 +57,7 @@ const VidoeInfo = ({
                 <h3 className={styles['channel-name']}>{channelName}</h3>
                 <span>
                   {handleName}
-                  <span style={{ marginLeft: 18 }}>구독자:{formatSubscriberCount(subscriberCount)}명</span>
+                  <span style={{ marginLeft: 18 }}>구독자:{formatSubscriberCount(subscriberCount)}</span>
                 </span>
               </div>
               <button className={styles['channel-button']} onClick={handleChannelButton}>

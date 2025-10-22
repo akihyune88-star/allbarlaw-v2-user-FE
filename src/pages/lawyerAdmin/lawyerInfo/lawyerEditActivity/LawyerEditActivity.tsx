@@ -183,10 +183,20 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
     setContentArray(contentLines)
   }
 
-  // 카테고리 이름 클릭 시 편집 모드
+  // 카테고리 이름 클릭 핸들러
   const handleCategoryClick = (activity: ActivityItem) => {
-    setEditingCategoryId(activity.id)
-    setEditingCategoryName(activity.lawyerActivityCategoryName)
+    // 이미 선택된 항목을 다시 클릭한 경우 → 편집 모드
+    if (selectedActivity?.id === activity.id) {
+      setEditingCategoryId(activity.id)
+      setEditingCategoryName(activity.lawyerActivityCategoryName)
+    } else {
+      // 처음 클릭 → 선택만 (우측 패널 표시)
+      setSelectedActivity(activity)
+      const contentLines = activity.lawyerActivityContent
+        ? activity.lawyerActivityContent.split('\n').filter(line => line.trim() !== '')
+        : []
+      setContentArray(contentLines)
+    }
   }
 
   // 데이터 비교 함수
@@ -274,7 +284,7 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
     }
     setActivityData(prev => [...prev, newItem])
     setSelectedActivity(newItem)
-    setContentArray([])
+    setContentArray(['']) // 1줄이 보이도록 빈 문자열 1개
   }
 
   // 카테고리 삭제
@@ -329,8 +339,14 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
       setHasUnsavedChanges(false)
       success('활동사항이 성공적으로 저장되었습니다.')
     },
-    onError: () => {
-      error('활동사항 저장에 실패했습니다. 다시 시도해주세요.')
+    onError: err => {
+      const errorCode = err.response.data.code
+
+      if (errorCode === 4006) {
+        error('활동 분류값 또는 활동 항목값이 입력되지 않았습니다. 모두 입력해주세요')
+      } else {
+        error('이력사항 저장에 실패했습니다. 다시 시도해주세요.')
+      }
     },
   })
 
@@ -445,7 +461,6 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
                         onChange={e => handleContentItemChange(index, e.target.value)}
                         onKeyPress={e => handleKeyPress(e, index)}
                         placeholder='활동사항을 입력해 주세요 (예: 대한변호사협회 이사)'
-                        autoFocus={index === contentArray.length - 1}
                       />
                       <button
                         className={styles.contentInputDelete}

@@ -12,6 +12,7 @@ import { LOCAL } from '@/constants/local'
 import { useToast } from '@/hooks/useToast'
 import { useEffect } from 'react'
 import TagInput from '@/components/tag/TagInput'
+import { formatSubscriberCount } from '@/utils/youtubeUtils'
 
 const LawyerVideoEditor = () => {
   const navigate = useNavigate()
@@ -323,7 +324,12 @@ const LawyerVideoEditor = () => {
             <button type='button' className={styles['header-button-cancel']} onClick={handleCancel}>
               취소
             </button>
-            <button type='button' className={styles['header-button-save']} onClick={handleSave} disabled={isPending || !isFormValid()}>
+            <button
+              type='button'
+              className={styles['header-button-save']}
+              onClick={handleSave}
+              disabled={isPending || !isFormValid()}
+            >
               {isPending ? '저장 중...' : '저장'}
             </button>
           </nav>
@@ -414,9 +420,7 @@ const LawyerVideoEditor = () => {
               </button>
               <ul className={styles['video-channel-info']}>
                 <li>채널명 : {formData.channelName}</li>
-                <li>
-                  구독자 수 : {formData.subscriberCount ? `${(formData.subscriberCount / 10000).toFixed(1)}만명` : ''}
-                </li>
+                <li>구독자 수 : {formData.subscriberCount ? formatSubscriberCount(formData.subscriberCount) : ''}</li>
                 <li>핸들 명 : {formData.handleName}</li>
                 <li>채널 설명: {formData.channelDescription}</li>
               </ul>
@@ -432,7 +436,9 @@ const LawyerVideoEditor = () => {
                 value={formData.title}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                placeholder={isLoadingVideoInfo || isLoadingAiSummary ? 'AI 요약중입니다...' : '영상 제목을 입력해주세요.'}
+                placeholder={
+                  isLoadingVideoInfo || isLoadingAiSummary ? 'AI 요약중입니다...' : '영상 제목을 입력해주세요.'
+                }
                 className={`${styles['video-editor__input']} ${errors.title ? styles['error'] : ''}`}
                 disabled={isLoadingVideoInfo || isLoadingAiSummary}
               />
@@ -444,7 +450,11 @@ const LawyerVideoEditor = () => {
             <div>
               <textarea
                 name='summaryContent'
-                placeholder={isLoadingVideoInfo || isLoadingAiSummary ? 'AI 요약중입니다...' : `동영상 주소를 입력 후,AI 요약이 완료되면 내용이 입력되어집니다\n변경할 사항이 있다면 직접 변경해주세요`}
+                placeholder={
+                  isLoadingVideoInfo || isLoadingAiSummary
+                    ? 'AI 요약중입니다...'
+                    : `동영상 주소를 입력 후,AI 요약이 완료되면 내용이 입력되어집니다\n변경할 사항이 있다면 직접 변경해주세요`
+                }
                 className={`${styles['video-editor__textarea']} ${errors.summaryContent ? styles['error'] : ''}`}
                 value={formData.summaryContent}
                 onChange={handleChange}

@@ -182,10 +182,17 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
     setContentArray(career.lawyerCareerContentArray || [''])
   }
 
-  // 카테고리 이름 클릭 시 편집 모드
+  // 카테고리 이름 클릭 핸들러
   const handleCategoryClick = (career: CareerItem) => {
-    setEditingCategoryId(career.id)
-    setEditingCategoryName(career.lawyerCareerCategoryName)
+    // 이미 선택된 항목을 다시 클릭한 경우 → 편집 모드
+    if (selectedCareer?.id === career.id) {
+      setEditingCategoryId(career.id)
+      setEditingCategoryName(career.lawyerCareerCategoryName)
+    } else {
+      // 처음 클릭 → 선택만 (우측 패널 표시)
+      setSelectedCareer(career)
+      setContentArray(career.lawyerCareerContentArray || [''])
+    }
   }
 
   // 데이터 비교 함수
@@ -346,8 +353,14 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
       setHasUnsavedChanges(false)
       success('이력사항이 성공적으로 저장되었습니다.')
     },
-    onError: () => {
-      error('이력사항 저장에 실패했습니다. 다시 시도해주세요.')
+    onError: err => {
+      const errorCode = err.response.data.code
+
+      if (errorCode === 4006) {
+        error('이력 분류값 또는 이력 항목값이 입력되지 않았습니다. 모두 입력해주세요')
+      } else {
+        error('이력사항 저장에 실패했습니다. 다시 시도해주세요.')
+      }
     },
   })
 

@@ -79,7 +79,7 @@ export type UserProfileUpdateRequest = {
   newPassword?: string
   newPasswordConfirm?: string
   newPhone?: string
-  certNumber?: string
+  verificationToken?: string
   newEmail?: string
 }
 
