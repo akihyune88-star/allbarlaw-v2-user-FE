@@ -349,8 +349,14 @@ const LawyerEditCareer = forwardRef<LawyerEditCareerRef, {}>((_props, ref) => {
       setHasUnsavedChanges(false)
       success('이력사항이 성공적으로 저장되었습니다.')
     },
-    onError: () => {
-      error('이력사항 저장에 실패했습니다. 다시 시도해주세요.')
+    onError: err => {
+      const errorCode = err.response.data.code
+
+      if (errorCode === 4006) {
+        error('이력 분류값 또는 이력 항목값이 입력되지 않았습니다. 모두 입력해주세요')
+      } else {
+        error('이력사항 저장에 실패했습니다. 다시 시도해주세요.')
+      }
     },
   })
 

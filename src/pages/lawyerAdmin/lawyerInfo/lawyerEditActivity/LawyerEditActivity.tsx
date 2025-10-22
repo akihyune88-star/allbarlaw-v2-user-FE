@@ -280,7 +280,7 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
     }
     setActivityData(prev => [...prev, newItem])
     setSelectedActivity(newItem)
-    setContentArray([])
+    setContentArray(['']) // 1줄이 보이도록 빈 문자열 1개
   }
 
   // 카테고리 삭제
@@ -335,8 +335,14 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
       setHasUnsavedChanges(false)
       success('활동사항이 성공적으로 저장되었습니다.')
     },
-    onError: () => {
-      error('활동사항 저장에 실패했습니다. 다시 시도해주세요.')
+    onError: err => {
+      const errorCode = err.response.data.code
+
+      if (errorCode === 4006) {
+        error('활동 분류값 또는 활동 항목값이 입력되지 않았습니다. 모두 입력해주세요')
+      } else {
+        error('이력사항 저장에 실패했습니다. 다시 시도해주세요.')
+      }
     },
   })
 

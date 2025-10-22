@@ -230,7 +230,13 @@ export const useLawyerActivity = (lawyerId: number) => {
   })
 }
 
-export const useLawyerActivityUpdate = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
+export const useLawyerActivityUpdate = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void
+  onError: (error: any) => void
+}) => {
   return useMutation({
     mutationFn: ({ lawyerId, activityData }: { lawyerId: number; activityData: LawyerActivityUpdateRequest }) =>
       lawyerService.updateLawyerActivity(lawyerId, activityData),
@@ -238,8 +244,8 @@ export const useLawyerActivityUpdate = ({ onSuccess, onError }: { onSuccess: () 
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_DETAIL] })
       onSuccess?.()
     },
-    onError: () => {
-      onError()
+    onError: error => {
+      onError?.(error)
     },
   })
 }
