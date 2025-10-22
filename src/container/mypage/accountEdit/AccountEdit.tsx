@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
+import { useQueryClient } from '@tanstack/react-query'
 import { accountEditSchema, type AccountEditFormData } from './accountEditSchema'
 import styles from './accountEdit.module.scss'
 import PasswordChangeSection from '@/container/mypage/passwordChangeSection/PasswordChangeSection'
@@ -9,20 +10,47 @@ import PhoneVerificationEditSection from '@/container/mypage/phoneVerificationEd
 import Button from '@/components/button/Button'
 import { useGetUserProfile, useUpdateUserProfile, usePasswordCheck } from '@/hooks/queries/useAuth'
 import { LOCAL } from '@/constants/local'
+import { QUERY_KEY } from '@/constants/queryKey'
 import type { UserProfileUpdateRequest } from '@/types/authTypes'
+import { useToast } from '@/hooks/useToast'
+import { ToastContainer } from '@/components/toast/Toast'
 
 const AccountEdit = () => {
   const [isEmailError, setIsEmailError] = useState(false)
   const [_isPasswordError, setIsPasswordError] = useState(false)
   const [isPasswordChecked, setIsPasswordChecked] = useState(false)
+  const [phoneVerificationKey, setPhoneVerificationKey] = useState(0)
   const { data: userProfile } = useGetUserProfile()
+  const queryClient = useQueryClient()
+  const toast = useToast()
 
   const { mutateAsync: updateProfile } = useUpdateUserProfile({
-    onSuccess: data => {
-      alert(`다음 정보가 수정되었습니다: ${data.updatedFields.join(', ')}`)
+    onSuccess: () => {
+      toast.success('변경이 완료되었습니다.')
+
+      // 폼 초기화
+      reset({
+        email: userProfile?.userEmail || '',
+        currentPassword: '',
+        newPassword: '',
+        confirmNewPassword: '',
+        phoneNumber: '',
+        verificationCode: '',
+      })
+
+      // 상태 초기화
+      setIsPasswordChecked(false)
+      setIsEmailError(false)
+      setPhoneVerificationKey(prev => prev + 1)
+
+      // sessionStorage 토큰 제거
+      sessionStorage.removeItem(LOCAL.VERIFICATION_TOKEN)
+
+      // 프로필 쿼리 갱신
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USER_PROFILE] })
     },
     onError: message => {
-      alert(`정보 수정 실패: ${message}`)
+      toast.error(`정보 수정 실패: ${message}`)
     },
   })
 
@@ -133,7 +161,7 @@ const AccountEdit = () => {
             onPasswordChecked={handlePasswordChecked}
             onCheckPassword={handleCheckPassword}
           />
-          <PhoneVerificationEditSection currentPhone={userProfile?.userPhone} />
+          <PhoneVerificationEditSection key={phoneVerificationKey} currentPhone={userProfile?.userPhone} />
           <EmailEditSection
             register={register}
             errors={errors}
@@ -145,6 +173,7 @@ const AccountEdit = () => {
           </Button>
         </form>
       </main>
+      <ToastContainer toasts={toast.toasts} onRemove={toast.removeToast} />
     </FormProvider>
   )
 }
