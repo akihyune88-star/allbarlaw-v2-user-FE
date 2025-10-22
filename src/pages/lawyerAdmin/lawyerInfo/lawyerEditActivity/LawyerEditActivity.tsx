@@ -183,10 +183,16 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
     setContentArray(contentLines)
   }
 
-  // 카테고리 이름 클릭 시 편집 모드
+  // 카테고리 이름 클릭 시 편집 모드 + 우측 패널 표시
   const handleCategoryClick = (activity: ActivityItem) => {
     setEditingCategoryId(activity.id)
     setEditingCategoryName(activity.lawyerActivityCategoryName)
+    // 우측 패널도 함께 표시
+    setSelectedActivity(activity)
+    const contentLines = activity.lawyerActivityContent
+      ? activity.lawyerActivityContent.split('\n').filter(line => line.trim() !== '')
+      : []
+    setContentArray(contentLines)
   }
 
   // 데이터 비교 함수
@@ -445,7 +451,6 @@ const LawyerEditActivity = forwardRef<LawyerEditActivityRef, {}>((_props, ref) =
                         onChange={e => handleContentItemChange(index, e.target.value)}
                         onKeyPress={e => handleKeyPress(e, index)}
                         placeholder='활동사항을 입력해 주세요 (예: 대한변호사협회 이사)'
-                        autoFocus={index === contentArray.length - 1}
                       />
                       <button
                         className={styles.contentInputDelete}
