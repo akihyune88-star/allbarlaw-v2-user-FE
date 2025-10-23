@@ -70,7 +70,7 @@ export const QUERY_KEY = {
 
   // 변호사 관리자
   LAWYER_ADMIN_BASIC_INFO: 'lawyerAdminBasicInfo',
-
+  LAWYER_PROFILE: 'lawyerProfile',
   //광고
   MAIN_BANNER: 'mainBanner',
   SUB_BANNER: 'subBanner',

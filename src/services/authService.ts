@@ -1,5 +1,8 @@
 import instance from '@/lib/axios'
 import {
+  LawyerProfileResponse,
+  LawyerProfileUpdateRequest,
+  LawyerProfileUpdateResponse,
   LoginRequest,
   SignUpRequest,
   SocialLoginRequest,
@@ -154,6 +157,24 @@ export const authService = {
       return response.data
     } catch (error) {
       console.error('Failed to check password:', error)
+      throw error
+    }
+  },
+  lawyerProfile: async () => {
+    try {
+      const response = await instance.get<LawyerProfileResponse>('/lawyer/profile')
+      return response.data
+    } catch (error) {
+      console.error('Failed to get lawyer profile:', error)
+      throw error
+    }
+  },
+  updateLawyerProfile: async (inputValue: LawyerProfileUpdateRequest) => {
+    try {
+      const response = await instance.put<LawyerProfileUpdateResponse>('/lawyer/profile', inputValue)
+      return response.data
+    } catch (error) {
+      console.error('Failed to update user profile:', error)
       throw error
     }
   },
