@@ -157,7 +157,7 @@
   overflow: hidden;
 
   @media (max-width: $breakpoint-tablet) {
-    margin-top: 2rem;
+    margin: 1.5rem 0;
     height: auto; // 태블릿에서 높이 자동 조절
     display: flex;
     flex-direction: column; // 텍스트 위, 이미지 아래
