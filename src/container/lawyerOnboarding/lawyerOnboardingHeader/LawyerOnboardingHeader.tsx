@@ -37,6 +37,8 @@ const LawyerOnboardingHeader = () => {
     navigate(href)
   }
 
+  const handleSignup = () => navigate(`${ROUTER.AUTH}/${ROUTER.LAWYER_SIGNUP_FORM}`)
+
   return (
     <>
       {/* 모바일 헤더 */}
@@ -89,7 +91,9 @@ const LawyerOnboardingHeader = () => {
             <br />
             올바로가 열어드립니다.
           </h1>
-          <button type='button'>무료 변호사 회원가입</button>
+          <button type='button' onClick={handleSignup}>
+            무료 변호사 회원가입
+          </button>
         </div>
       </section>
       <BottomNavigation />
