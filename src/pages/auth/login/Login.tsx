@@ -137,6 +137,8 @@ const Login = () => {
     }
   }
 
+  const handleLawyerOnboarding = () => navigate(ROUTER.LAWYER_ONBOARDING)
+
   const isPending = isLoginPending || isLawyerLoginPending
 
   return (
@@ -201,7 +203,9 @@ const Login = () => {
           {activeTab === '/user' ? (
             <SocialLoginButton type='icon' />
           ) : (
-            <button className={styles['lawyer-footer-button']}>변호사 가입 안내</button>
+            <button className={styles['lawyer-footer-button']} onClick={handleLawyerOnboarding}>
+              변호사 가입 안내
+            </button>
           )}
         </footer>
       </section>

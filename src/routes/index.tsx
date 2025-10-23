@@ -46,6 +46,7 @@ import {
   LawyerBlogLayout,
   LawyerBlogList,
   LawyerChatList,
+  LawyerOnboarding,
   LawyerSignupForm,
   LegalTermDetail,
   Mypage,
@@ -324,6 +325,10 @@ const router = createBrowserRouter([
   {
     path: ROUTER.ABOUT,
     element: <AboutAllbarlaw />,
+  },
+  {
+    path: ROUTER.LAWYER_ONBOARDING,
+    element: <LawyerOnboarding />,
   },
   {
     path: ROUTER.LAWYER_ADMIN,
