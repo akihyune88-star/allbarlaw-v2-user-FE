@@ -9,4 +9,21 @@ import post from './post.webp'
 import knowledge from './knowledge.webp'
 import video from './video.webp'
 
-export { guideBanner, blog, youtube, instagram, lawyerAdminLogo, lawyer, post, knowledge, video }
+import lawyerConsulting from './lawyer-consultation.webp'
+import lawyerExpertis from './lawyer-expertis.webp'
+import onboardingCoreValue from './onboarding-core-value.webp'
+
+export {
+  guideBanner,
+  blog,
+  youtube,
+  instagram,
+  lawyerAdminLogo,
+  lawyer,
+  post,
+  knowledge,
+  video,
+  lawyerConsulting,
+  lawyerExpertis,
+  onboardingCoreValue,
+}

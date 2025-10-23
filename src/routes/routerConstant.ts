@@ -49,6 +49,9 @@ export const ROUTER = {
   LAWYER_DETAIL: '/lawyer',
   NOT_FOUND: '*',
 
+  // 변호사 온보딩
+  LAWYER_ONBOARDING: '/lawyer-onboarding',
+
   // 변호사 관리
   LAWYER_ADMIN_CHAT_LIST: '/lawyer-admin/chat-list',
   LAWYER_ADMIN_CHAT: '/lawyer-admin/chat',

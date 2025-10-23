@@ -34,6 +34,9 @@ import LawyerBlogList from './lawyerAdmin/lawyerContents/lawyerBlog/lawyerBlogLi
 import LawyerBlogDetail from './lawyerAdmin/lawyerContents/lawyerBlog/lawyerBlogDetail/LawyerBlogDetail'
 import LawyerBlogEditor from './lawyerAdmin/lawyerContents/lawyerBlog/lawyerBlogEditor/LawyerBlogEditor'
 
+//변호사 온보딩
+import LawyerOnboarding from './lawyerOnboarding/LawyerOnboarding'
+
 export {
   Mypage,
   LawyerSignupForm,
@@ -54,4 +57,5 @@ export {
   LawyerBlogList,
   LawyerBlogDetail,
   LawyerBlogEditor,
+  LawyerOnboarding,
 }

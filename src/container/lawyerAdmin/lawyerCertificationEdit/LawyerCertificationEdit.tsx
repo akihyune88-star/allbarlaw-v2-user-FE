@@ -3,13 +3,14 @@ import LabelInput from '@/components/labelInput/LabelInput'
 import { FieldErrors, UseFormRegister, Path, FieldValues } from 'react-hook-form'
 import Divider from '@/components/divider/Divider'
 import { getLawyerExamOptions } from '@/utils/auth'
-import { useState, ChangeEvent } from 'react'
+import { useState, ChangeEvent, useEffect } from 'react'
 import Button from '@/components/button/Button'
 
 export type LawyerCertificationEditProps<T extends FieldValues> = {
   register: UseFormRegister<T>
   errors: FieldErrors<any>
   currentPhone?: string
+  currentFirmContact?: string
   onPhoneVerification?: () => void
 }
 
@@ -17,6 +18,7 @@ function LawyerCertificationEdit<T extends FieldValues>({
   register,
   errors,
   currentPhone,
+  currentFirmContact,
   onPhoneVerification,
 }: LawyerCertificationEditProps<T>) {
   const [firmContact, setFirmContact] = useState('')
@@ -56,6 +58,13 @@ function LawyerCertificationEdit<T extends FieldValues>({
     }
   }
 
+  useEffect(() => {
+    if (currentFirmContact) {
+      const formatted = formatPhoneNumber(currentFirmContact)
+      setFirmContact(formatted)
+    }
+  }, [currentFirmContact])
+
   const handleFirmContactChange = (e: ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhoneNumber(e.target.value)
     setFirmContact(formatted)
@@ -79,7 +88,7 @@ function LawyerCertificationEdit<T extends FieldValues>({
         <div className={styles['phone-display-container']}>
           <div className={styles['field-container']}>
             <label className={styles['label']}>인증 휴대폰번호</label>
-            <div className={styles['text-value']}>{currentPhone || '-'}</div>
+            <div className={styles['text-value']}>{currentPhone ? formatPhoneNumber(currentPhone) : '-'}</div>
           </div>
           <span className={styles['field-message']}>휴대폰 번호를 변경하시려면 아래 휴대폰 인증을 다시해주세요</span>
 

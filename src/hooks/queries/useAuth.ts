@@ -1,6 +1,11 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { authService } from '@/services/authService'
-import { UserProfileUpdateRequest, UserProfileUpdateResponse } from '@/types/authTypes'
+import {
+  LawyerProfileUpdateRequest,
+  LawyerProfileUpdateResponse,
+  UserProfileUpdateRequest,
+  UserProfileUpdateResponse,
+} from '@/types/authTypes'
 import { QUERY_KEY } from '@/constants/queryKey'
 import { getErrorMessage } from '@/utils/errorHandler'
 import { isAxiosError } from 'axios'
@@ -115,3 +120,43 @@ export const usePasswordCheck = ({
     },
   })
 }
+
+export const useGetLawyerProfile = () => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_PROFILE],
+    queryFn: () => authService.lawyerProfile(),
+  })
+}
+
+export const useUpdateLawyerProfile = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: LawyerProfileUpdateResponse) => void
+  onError: (_message: string) => void
+}) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (inputValue: LawyerProfileUpdateRequest) => {
+      const response = await authService.updateLawyerProfile(inputValue)
+      return response
+    },
+    onSuccess: (data: LawyerProfileUpdateResponse) => {
+      onSuccess?.(data)
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.LAWYER_PROFILE] })
+    },
+    onError: error => {
+      if (isAxiosError(error)) {
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        onError?.(errorMessage)
+      }
+    },
+  })
+}
+
+// export const useGetLawyerAccount = () => {
+//   return useQuery({
+//     queryKey: [QUERY_KEY.LAWYER_ACCOUNT],
+//     queryFn: () => lawyerService.getLawyerAccount(),
+//   })
+// }

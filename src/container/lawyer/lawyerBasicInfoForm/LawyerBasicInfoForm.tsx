@@ -1,6 +1,8 @@
 import styles from './lawyerBasicInfoForm.module.scss'
 import { BasicInfoFormData } from '@/hooks/lawyerAdmin/useBasicInfoForm'
 import TagInput from '@/components/tag/TagInput'
+import AddressSearchModal from '@/components/addressSearchModal/AddressSearchModal'
+import { useAddressSearch } from '@/hooks/useAddressSearch'
 
 interface LawyerBasicInfoFormProps {
   formData: BasicInfoFormData
@@ -9,6 +11,12 @@ interface LawyerBasicInfoFormProps {
 }
 
 const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInfoFormProps) => {
+  const { isOpen, openAddressSearch, closeAddressSearch } = useAddressSearch()
+
+  const handleAddressComplete = (data: { address: string; zonecode: string }) => {
+    onInputChange('address', data.address)
+  }
+
   return (
     <section className={styles.formContainer}>
       {/* 인사말 */}
@@ -57,102 +65,6 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
           </div>
         </div>
       </div>
-
-      {/* <div className={styles.formRow}>
-        <div className={styles.labelCol}>
-          <label className={styles.label}>생년월일/성별</label>
-        </div>
-        <div className={styles.inputCol}>
-          <div className={styles.flexRow}>
-            <select
-              className={styles.select}
-              value={formData.birthYear || ''}
-              onChange={e => onInputChange('birthYear', e.target.value ? Number(e.target.value) : undefined)}
-              style={{
-                borderColor: errors.birthYear ? '#ff4d4f' : undefined,
-                width: 172,
-                backgroundColor: '#f5f5f5',
-                cursor: 'not-allowed',
-              }}
-              disabled
-            >
-              <option value=''>연도 선택</option>
-              {Array.from({ length: 50 }, (_, i) => 2024 - i).map(year => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-            <select
-              className={styles.select}
-              value={formData.birthMonth || ''}
-              onChange={e => onInputChange('birthMonth', e.target.value ? Number(e.target.value) : undefined)}
-              style={{
-                borderColor: errors.birthMonth ? '#ff4d4f' : undefined,
-                width: 108,
-                backgroundColor: '#f5f5f5',
-                cursor: 'not-allowed',
-              }}
-              disabled
-            >
-              <option value=''>월</option>
-              {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
-                <option key={month} value={month}>
-                  {month}
-                </option>
-              ))}
-            </select>
-            <select
-              className={styles.select}
-              value={formData.birthDay || ''}
-              onChange={e => onInputChange('birthDay', e.target.value ? Number(e.target.value) : undefined)}
-              style={{
-                borderColor: errors.birthDay ? '#ff4d4f' : undefined,
-                width: 108,
-                backgroundColor: '#f5f5f5',
-                cursor: 'not-allowed',
-              }}
-              disabled
-            >
-              <option value=''>일</option>
-              {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
-                <option key={day} value={day}>
-                  {day}
-                </option>
-              ))}
-            </select>
-            <div className={styles.radioGroup}>
-              <label>
-                <input
-                  type='radio'
-                  value='male'
-                  checked={formData.gender === 'male'}
-                  onChange={e => onInputChange('gender', e.target.value)}
-                  disabled
-                />
-                남자
-              </label>
-              <label>
-                <input
-                  type='radio'
-                  value='female'
-                  checked={formData.gender === 'female'}
-                  onChange={e => onInputChange('gender', e.target.value)}
-                  disabled
-                />
-                여자
-              </label>
-            </div>
-          </div>
-          <div className={styles.errorWrapper}>
-            {(errors.birthYear || errors.birthMonth || errors.birthDay || errors.gender) && (
-              <span className={styles.error}>
-                {errors.birthYear || errors.birthMonth || errors.birthDay || errors.gender}
-              </span>
-            )}
-          </div>
-        </div>
-      </div> */}
 
       {/* 휴대폰 번호 */}
       <div className={styles.formRow}>
@@ -231,7 +143,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
         </div>
         <div className={styles.inputCol}>
           <div className={styles.flexRow}>
-            <button type='button' className={styles.button}>
+            <button type='button' className={styles.button} onClick={openAddressSearch}>
               주소 검색하기
             </button>
             <input
@@ -279,6 +191,8 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
           </div>
         </div>
       </div>
+
+      <AddressSearchModal isOpen={isOpen} onClose={closeAddressSearch} onComplete={handleAddressComplete} />
     </section>
   )
 }

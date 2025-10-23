@@ -6,9 +6,9 @@ import styles from './lawyerAccountEdit.module.scss'
 import PasswordChangeSection from '@/container/mypage/passwordChangeSection/PasswordChangeSection'
 import EmailEditSection from '@/container/mypage/emailEditSection/EmailEditSection'
 import LawyerCertificationEdit from '@/container/lawyerAdmin/lawyerCertificationEdit/LawyerCertificationEdit'
-import { useGetUserProfile, useUpdateUserProfile } from '@/hooks/queries/useAuth'
+import { useGetLawyerProfile, useUpdateLawyerProfile } from '@/hooks/queries/useAuth'
 import { LOCAL } from '@/constants/local'
-import type { UserProfileUpdateRequest } from '@/types/authTypes'
+import type { LawyerProfileUpdateRequest } from '@/types/authTypes'
 import HeaderPortal from '@/components/headerPortal/HeaderPortal'
 
 const LawyerAccountEdit = () => {
@@ -16,13 +16,11 @@ const LawyerAccountEdit = () => {
   const [_isPasswordError, setIsPasswordError] = useState(false)
   const [isPasswordChecked, setIsPasswordChecked] = useState(false)
 
-  // TODO: 변호사용 프로필 API가 추가되면 useGetLawyerProfile로 변경 필요
-  const { data: userProfile } = useGetUserProfile()
+  const { data: lawyerProfile } = useGetLawyerProfile()
 
-  const { mutateAsync: updateProfile } = useUpdateUserProfile({
+  const { mutateAsync: updateProfile } = useUpdateLawyerProfile({
     onSuccess: data => {
       alert(`다음 정보가 수정되었습니다: ${data.updatedFields.join(', ')}`)
-      window.location.reload()
     },
     onError: message => {
       alert(`정보 수정 실패: ${message}`)
@@ -46,21 +44,24 @@ const LawyerAccountEdit = () => {
   } = methods
 
   useEffect(() => {
-    if (userProfile) {
+    if (lawyerProfile) {
       reset({
-        email: userProfile.userEmail,
+        email: lawyerProfile.lawyerEmail,
         currentPassword: '',
         newPassword: '',
         confirmNewPassword: '',
         phoneNumber: '',
         verificationCode: '',
-      })
+        lawyerFirm: lawyerProfile.lawyerLawfirmName || '',
+        lawyerFirmContact: lawyerProfile.lawyerLawfirmContact || '',
+        lawyerExam: lawyerProfile.lawyerBarExamNumber?.toString() || '',
+      } as any)
     }
-  }, [userProfile, reset])
+  }, [lawyerProfile, reset])
 
   const onSubmit = async (data: AccountEditFormData) => {
     try {
-      const updateData: UserProfileUpdateRequest = {}
+      const updateData: Partial<LawyerProfileUpdateRequest> = {}
 
       // 1. 비밀번호 변경 체크
       const isPasswordChange = data.currentPassword && data.newPassword && data.confirmNewPassword
@@ -82,12 +83,12 @@ const LawyerAccountEdit = () => {
           alert('휴대폰 인증이 완료되지 않았습니다.')
           return
         }
-        updateData.newPhone = data.phoneNumber
-        // updateData.certNumber = data.verificationCode
+        updateData.newContact = data.phoneNumber
+        updateData.verificationToken = verificationToken
       }
 
       // 3. 이메일 변경 체크
-      const isEmailChange = data.email && data.email !== userProfile?.userEmail
+      const isEmailChange = data.email && data.email !== lawyerProfile?.lawyerEmail
       if (isEmailChange) {
         if (isEmailError) {
           alert('이메일 중복 확인이 필요합니다.')
@@ -96,14 +97,41 @@ const LawyerAccountEdit = () => {
         updateData.newEmail = data.email
       }
 
+      // 4. 로펌명 변경 체크
+      const isFirmChange = (data as any).lawyerFirm && (data as any).lawyerFirm !== lawyerProfile?.lawyerLawfirmName
+      if (isFirmChange) {
+        updateData.newLawfirmName = (data as any).lawyerFirm
+      }
+
+      // 5. 로펌 연락처 변경 체크
+      const isFirmContactChange =
+        (data as any).lawyerFirmContact && (data as any).lawyerFirmContact !== lawyerProfile?.lawyerLawfirmContact
+      if (isFirmContactChange) {
+        updateData.newLawfirmContact = (data as any).lawyerFirmContact
+      }
+
+      // 6. 출신시험 변경 체크
+      const isExamChange =
+        (data as any).lawyerExam && (data as any).lawyerExam !== lawyerProfile?.lawyerBarExamNumber?.toString()
+      if (isExamChange) {
+        updateData.newBarExamNumber = Number((data as any).lawyerExam)
+      }
+
       // 변경할 항목이 없는 경우
-      if (!isPasswordChange && !isPhoneChange && !isEmailChange) {
+      if (
+        !isPasswordChange &&
+        !isPhoneChange &&
+        !isEmailChange &&
+        !isFirmChange &&
+        !isFirmContactChange &&
+        !isExamChange
+      ) {
         alert('변경할 정보를 입력해주세요.')
         return
       }
 
       // API 호출
-      await updateProfile(updateData)
+      await updateProfile(updateData as LawyerProfileUpdateRequest)
     } catch (error) {
       console.error('계정 수정 실패:', error)
     }
@@ -137,7 +165,12 @@ const LawyerAccountEdit = () => {
               <button type='button' disabled={isSubmitting} className={styles.header__button__item}>
                 취소
               </button>
-              <button type='submit' disabled={isSubmitting} className={styles.header__button__item}>
+              <button
+                type='button'
+                disabled={isSubmitting}
+                className={styles.header__button__item}
+                onClick={handleSubmit(onSubmit)}
+              >
                 {isSubmitting ? '수정 진행 중...' : '변경'}
               </button>
             </nav>
@@ -148,7 +181,7 @@ const LawyerAccountEdit = () => {
             register={register}
             errors={errors}
             watch={watch}
-            userId={userProfile?.userAccount}
+            userId={lawyerProfile?.lawyerAccount}
             onPasswordError={setIsPasswordError}
             onPasswordChecked={handlePasswordChecked}
             onCheckPassword={handleCheckPassword}
@@ -156,14 +189,15 @@ const LawyerAccountEdit = () => {
           <LawyerCertificationEdit
             register={register as any}
             errors={errors}
-            currentPhone={userProfile?.userPhone}
+            currentPhone={lawyerProfile?.lawyerContact}
+            currentFirmContact={lawyerProfile?.lawyerLawfirmContact}
             onPhoneVerification={handlePhoneVerification}
           />
           <EmailEditSection
             register={register}
             errors={errors}
             onEmailError={setIsEmailError}
-            currentEmail={userProfile?.userEmail}
+            currentEmail={lawyerProfile?.lawyerEmail}
           />
         </form>
       </main>

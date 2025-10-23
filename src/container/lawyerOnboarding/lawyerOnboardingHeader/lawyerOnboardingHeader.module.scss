@@ -1,0 +1,105 @@
+.hero-header {
+  width: 100%;
+  background-color: $color-green-02;
+  background-image: var(--hero-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 44.1875rem;
+  padding-bottom: clamp(42px, 8vw, 5.125rem);
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &-nav {
+    width: 80rem;
+    height: 6rem;
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 2.3125rem 0 1.3125rem 0;
+
+    &-list {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.5rem;
+    }
+
+    &-list-item {
+      width: 10rem;
+      font-size: 1rem;
+      font-weight: $font-weight-semibold;
+      color: $color-white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+
+      &:hover {
+        color: $color-white;
+        opacity: 0.8;
+      }
+
+      &:visited {
+        color: $color-white;
+      }
+
+      &:active {
+        color: $color-white;
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-desktop) {
+    height: auto;
+    min-height: 375px;
+    aspect-ratio: 16 / 9;
+    background-size: cover;
+    background-position: center;
+
+    .hero-header-nav {
+      display: none;
+    }
+  }
+}
+
+.hero-header-content {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: $breakpoint-desktop) {
+    width: 100%;
+    align-items: flex-start;
+    padding: 0 1.3125rem;
+  }
+
+  &-title {
+    font-size: clamp(1.25rem, 2vw, 3rem); // 20px ~ 48px
+    font-weight: $font-weight-extra-bold;
+    color: $color-white;
+    text-align: center;
+    line-height: clamp(1.5rem, 3vw, 4.5rem);
+    margin-bottom: clamp(1.5rem, 3vw, 1.9375rem);
+
+    @media (max-width: $breakpoint-desktop) {
+      text-align: left;
+    }
+  }
+
+  button {
+    width: 12.1875rem;
+    height: 3rem;
+    border-radius: 0.5rem;
+
+    background-color: $color-green-02;
+
+    text-align: center;
+    font-weight: $font-weight-semibold;
+    color: $color-white;
+  }
+}

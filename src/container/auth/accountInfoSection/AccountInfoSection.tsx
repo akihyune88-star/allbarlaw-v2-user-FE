@@ -98,7 +98,7 @@ function AccountInfoSection<T extends { id: string; password: string; confirmPas
       {!isMobile && <Divider padding={1} />}
       <LabelInput
         label='아이디'
-        placeholder='영문, 숫자 사용 5자 이상 입력해주세요.'
+        placeholder='영문 대/소문자, 숫자 사용 가능 (5자 이상)'
         {...register('id' as Path<T>, {
           onChange: handleIdChange,
         })}

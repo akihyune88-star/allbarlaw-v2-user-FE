@@ -1,0 +1,51 @@
+.lawyer-onboarding-footer {
+  background-color: $color-bg-gray-02;
+  padding: 7.5rem 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 1.9375rem;
+
+  &-title {
+    font-size: clamp(1.5rem, 3.5vw, 3rem);
+    line-height: clamp(2rem, 4vw, 4.5rem);
+    font-weight: $font-weight-extra-bold;
+    color: $color-text-black;
+
+    text-align: center;
+
+    @media (max-width: $breakpoint-tablet) {
+      word-break: keep-all;
+
+      br {
+        display: none;
+      }
+    }
+  }
+
+  &-nav {
+    display: flex;
+    gap: 1.5rem;
+
+    button {
+      width: 12.1875rem;
+      height: 3rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      font-weight: $font-weight-semibold;
+    }
+
+    button:first-child {
+      background-color: $color-icon-darkgreen;
+      color: $color-white;
+    }
+
+    button:last-child {
+      background-color: $color-white;
+      color: $color-icon-darkgreen;
+      border: 1px solid $color-icon-darkgreen;
+    }
+  }
+}

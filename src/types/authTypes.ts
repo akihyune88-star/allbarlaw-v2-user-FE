@@ -86,3 +86,28 @@ export type UserProfileUpdateRequest = {
 export type UserProfileUpdateResponse = {
   updatedFields: string[]
 }
+
+export type LawyerProfileResponse = {
+  lawyerAccount: string
+  lawyerEmail: string
+  lawyerContact: string
+  lawyerLawfirmName: string
+  lawyerLawfirmContact: string
+  lawyerBarExamNumber: number
+}
+
+export type LawyerProfileUpdateRequest = {
+  currentPassword: string
+  newPassword: string
+  newPasswordConfirm: string
+  newEmail: string
+  newContact: string
+  verificationToken: string
+  newLawfirmName: string
+  newLawfirmContact: string
+  newBarExamNumber: number
+}
+
+export type LawyerProfileUpdateResponse = {
+  updatedFields: string[]
+}
