@@ -32,7 +32,7 @@ const VideoLayout = () => {
     <main className='sub-main-container'>
       <section className='contents-section'>
         <div className={styles['video-carousel-wrapper']}>
-          <AiVideoCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={4} />
+          <AiVideoCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={10} />
         </div>
         <VideoList
           videoList={videoList}

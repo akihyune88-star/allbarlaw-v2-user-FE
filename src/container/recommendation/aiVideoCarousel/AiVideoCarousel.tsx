@@ -1,13 +1,13 @@
 import AiRecommenderContentSlider from '@/components/slider/AiRecommenderContentSlider'
-import { useRecommendationVideo } from '@/hooks/queries/useRecommendation'
 import { useNavigate } from 'react-router-dom'
 import { VideoCase } from '@/types/videoTypes'
 import VideoThumbnail from '@/components/video/VideoThumbnail'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
+import { useRandomVideoList } from '@/hooks/queries/useRandomVideoList'
 
 const AiVideoCarousel = ({ subcategoryId, take }: { subcategoryId: number | 'all'; take: number }) => {
-  const { data: recommendationVideo } = useRecommendationVideo({
+  const { videoList } = useRandomVideoList({
     subcategoryId,
     take,
   })
@@ -20,27 +20,27 @@ const AiVideoCarousel = ({ subcategoryId, take }: { subcategoryId: number | 'all
   }
 
   return (
-    <AiRecommenderContentSlider title='AI 추천 영상' autoPlay={true} itemsPerSlide={isMobile ? 1 : 3}>
-      {recommendationVideo?.map(video => {
+    <AiRecommenderContentSlider title='AI 추천 영상' autoPlay={true} itemsPerSlide={isMobile ? 1 : 2}>
+      {videoList?.map(video => {
         return (
           <>
-            {isMobile ? (
+            {/* {isMobile ? (
               <RecommenderVideo
                 key={video.videoCaseId}
                 videoUrl={video.thumbnail}
                 description={video.title}
                 onClick={() => handleVideoItemClick(video)}
               />
-            ) : (
-              <VideoThumbnail
-                key={video.videoCaseId}
-                size={isMobile ? 'text' : 'small'}
-                imgUrl={video.thumbnail}
-                lawyerName={video.lawyerName}
-                description={video.summaryContent}
-                onClick={() => handleVideoItemClick(video)}
-              />
-            )}
+            ) : ( */}
+            <VideoThumbnail
+              key={video.videoCaseId}
+              size={isMobile ? 'text' : 'large'}
+              imgUrl={video.thumbnail}
+              lawyerName={video.lawyerName}
+              description={video.summaryContent}
+              onClick={() => handleVideoItemClick(video)}
+            />
+            {/* )} */}
           </>
         )
       })}

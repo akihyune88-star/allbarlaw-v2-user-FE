@@ -12,6 +12,8 @@ type RecommenderVideoProps = {
   description?: string
   isVideoKeep?: boolean
   videoCaseId?: number
+  lawyerName?: string
+  lawfirmName?: string
   onClick?: () => void
 }
 
@@ -22,6 +24,8 @@ const RecommenderVideo = ({
   description,
   isVideoKeep,
   videoCaseId,
+  lawyerName,
+  lawfirmName,
   onClick,
 }: RecommenderVideoProps) => {
   const { isLoggedIn } = useAuth()
@@ -56,25 +60,29 @@ const RecommenderVideo = ({
   }
   return (
     <section className={styles.container} onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
-      {isShowTitle && (
-        <header>
-          <span>{title}</span>
-        </header>
-      )}
       <div className={styles['content']}>
         <figure>
           <img src={videoUrl} alt='recommender-video' className={styles.thumbnail} />
         </figure>
-        <div className={styles.description}>{description}</div>
-        {isLoggedIn && isVideoKeep !== undefined && (
-          <button onClick={handleVideoKeep} style={{ backgroundColor: 'transparent', border: 'none' }}>
-            <SvgIcon
-              name='bookMark'
-              style={{ flexShrink: 0, fill: isVideoKeep ? COLOR.green_01 : '#fff', cursor: 'pointer' }}
-              size={16}
-            />
-          </button>
-        )}
+        <div className={styles['text-wrapper']}>
+          {isShowTitle && (
+            <header>
+              <span className={styles['title']}>{title}</span>
+            </header>
+          )}
+          <div className={styles['video-info']}>
+            <span className={styles['lawyer-info']}>{lawyerName} 변호사 </span>
+            <button onClick={handleVideoKeep} className={styles['bookmark-btn']}>
+              <SvgIcon
+                name='bookMark'
+                style={{ flexShrink: 0, fill: _like ? COLOR.green_01 : '#fff', cursor: 'pointer' }}
+                size={20}
+              />
+            </button>
+
+            {/* )} */}
+          </div>
+        </div>
       </div>
     </section>
   )
