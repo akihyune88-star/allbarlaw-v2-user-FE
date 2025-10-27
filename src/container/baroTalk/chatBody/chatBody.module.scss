@@ -3,7 +3,12 @@
   display: flex;
   flex-direction: column;
   min-height: 0; // flex 자식 요소의 overflow가 작동하도록
-  overflow: hidden;
+  overflow: hidden; // 기본은 hidden
+
+  // 대기 상태일 때만 전체 스크롤
+  &.waiting {
+    overflow-y: auto;
+  }
 }
 
 .chatBody {
@@ -15,6 +20,13 @@
   gap: 1rem;
   background-color: transparent;
   min-height: 0;
+
+  // 대기 상태일 때만 40% 고정
+  &.waiting {
+    flex: none;
+    height: 40vh;
+    flex-shrink: 0;
+  }
 }
 
 .mobile-info-header {
@@ -138,4 +150,9 @@
     text-align: center;
     border-bottom: 1px solid #ffeaa7;
   }
+}
+
+.waiting-chat-wrapper {
+  flex-shrink: 0; // 줄어들지 않음
+  // 높이 제한 제거 - 자연스럽게 확장
 }

@@ -8,7 +8,14 @@ import React, { ChangeEvent, useState, useCallback, useRef, useEffect } from 're
 import { ChatMessage } from '@/types/baroTalkTypes'
 import { formatTimeAgo } from '@/utils/date'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useSocketStore, useChatStatus, useSocket, useIsConnected, useRoomInfo, useSetTempIdMapping } from '@/stores/socketStore'
+import {
+  useSocketStore,
+  useChatStatus,
+  useSocket,
+  useIsConnected,
+  useRoomInfo,
+  useSetTempIdMapping,
+} from '@/stores/socketStore'
 import { useAuth } from '@/contexts/AuthContext'
 
 type ChatBodyProps = {
@@ -146,12 +153,14 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
   )
 
   const renderWaitingChat = () => (
-    <ChatWaitingBlogList
-      chatStatus={chatStatus}
-      chatRoomId={chatRoomId}
-      messagesLength={messages.length}
-      isLawyer={isLawyer}
-    />
+    <div className={styles['waiting-chat-wrapper']}>
+      <ChatWaitingBlogList
+        chatStatus={chatStatus}
+        chatRoomId={chatRoomId}
+        messagesLength={messages.length}
+        isLawyer={isLawyer}
+      />
+    </div>
   )
 
   // 채팅 입력창 렌더링 로직
@@ -179,8 +188,13 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
           <p>변호사와 1:1 상담을 진행할 수 있습니다.</p>
         </div>
       )}
-      <div className={styles['chat-body-wrapper']}>
-        <div className={styles.chatBody} ref={chatBodyRef}>
+      <div
+        className={`${styles['chat-body-wrapper']} ${chatStatus !== 'ACTIVE' && chatStatus !== 'COMPLETED' && chatStatus !== 'PARTIAL_LEFT' ? styles.waiting : ''}`}
+      >
+        <div
+          className={`${styles.chatBody} ${chatStatus !== 'ACTIVE' && chatStatus !== 'COMPLETED' && chatStatus !== 'PARTIAL_LEFT' ? styles.waiting : ''}`}
+          ref={chatBodyRef}
+        >
           {messages.length === 0 ? (
             <div className={styles['empty-messages']}>
               <p>아직 메시지가 없습니다.</p>
