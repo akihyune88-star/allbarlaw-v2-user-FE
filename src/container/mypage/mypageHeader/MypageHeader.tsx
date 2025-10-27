@@ -3,8 +3,11 @@ import { COLOR } from '@/styles/color'
 import { KeyOfIcon } from '@/types/svg'
 import styles from './mypageHeader.module.scss'
 import { useGetMypageCount } from '@/hooks/queries/useMypage'
-import Modal from '@/components/modal'
 import { useState } from 'react'
+import { useWithdrawUser } from '@/hooks/queries/useAuth'
+import { useNavigate } from 'react-router-dom'
+import { ROUTER } from '@/routes/routerConstant'
+import WithdrawModal from '@/components/withdrawModal/WithdrawModal'
 
 interface MypageHeaderProps {
   tabs: string[]
@@ -17,14 +20,24 @@ interface MypageHeaderProps {
 }
 
 const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange, year, month }: MypageHeaderProps) => {
+  const navigate = useNavigate()
   const { data: mypageCount } = useGetMypageCount({ year, month })
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false)
+  const [withdrawReason, setWithdrawReason] = useState('')
+
+  const { mutate: withdrawUser, isPending } = useWithdrawUser({
+    onSuccess: () => {
+      alert('회원 탈퇴가 완료되었습니다.')
+      localStorage.removeItem('accessToken')
+      navigate(`${ROUTER.AUTH}`)
+    },
+    onError: (message: string) => {
+      alert(message || '탈퇴 처리 중 오류가 발생했습니다.')
+    },
+  })
 
   const handleWithdraw = () => {
-    // TODO: 탈퇴 로직 구현
-    if (confirm('정말 탈퇴하시겠습니까?')) {
-      console.log('탈퇴하기')
-    }
+    withdrawUser({ reason: withdrawReason })
   }
 
   const totalKeepCount = mypageCount
@@ -119,42 +132,24 @@ const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange, y
           )}
         </nav>
       </header>
-      <Modal
+      <WithdrawModal
         isOpen={isWithdrawModalOpen}
         onClose={() => setIsWithdrawModalOpen(false)}
-        className={styles.withdrawModalWrapper}
-      >
-        <Modal.Header>
-          <h2>회원 탈퇴하기</h2>
-        </Modal.Header>
-        <Modal.Body className={styles.withdrawModalBody}>
-          <div className={styles.withdrawModal}>
-            <div className={styles.withdrawContent}>
-              <div className={styles.withdrawLabel}>탈퇴 사유 입력</div>
-              <textarea
-                className={styles.withdrawTextarea}
-                placeholder='탈퇴사유를 100자이내로 입력하여주세요'
-                maxLength={100}
-              />
-            </div>
-            <p className={styles.withdrawNotice}>
-              회원 탈퇴를 선택 경우
-              <br />
-              즉시 탈퇴하였던 탈퇴회원가 완료됩니다
-              <br />
-              그동안 이용해 주셔서 감사합니다
-            </p>
-          </div>
-        </Modal.Body>
-        <Modal.Footer className={styles.withdrawModalFooter}>
-          <button onClick={() => setIsWithdrawModalOpen(false)} className={styles.cancelButton}>
-            취소
-          </button>
-          <button onClick={handleWithdraw} className={styles.confirmButton}>
-            탈퇴하기 완료
-          </button>
-        </Modal.Footer>
-      </Modal>
+        title='회원 탈퇴하기'
+        noticeText={
+          <>
+            회원 탈퇴를 선택할 경우
+            <br />
+            즉시 로그아웃 되며, 탈퇴처리가 완료됩니다.
+            <br />
+            그동안 이용해 주셔서 감사합니다
+          </>
+        }
+        withdrawReason={withdrawReason}
+        onReasonChange={setWithdrawReason}
+        onConfirm={handleWithdraw}
+        isPending={isPending}
+      />
     </>
   )
 }
