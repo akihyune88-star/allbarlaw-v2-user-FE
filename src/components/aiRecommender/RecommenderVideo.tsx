@@ -15,6 +15,8 @@ type RecommenderVideoProps = {
   lawyerName?: string
   lawfirmName?: string
   onClick?: () => void
+  className?: string
+  style?: React.CSSProperties
 }
 
 const RecommenderVideo = ({
@@ -26,6 +28,8 @@ const RecommenderVideo = ({
   videoCaseId,
   lawyerName,
   lawfirmName,
+  className,
+  style,
   onClick,
 }: RecommenderVideoProps) => {
   const { isLoggedIn } = useAuth()
@@ -59,7 +63,11 @@ const RecommenderVideo = ({
     }
   }
   return (
-    <section className={styles.container} onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
+    <section
+      className={`${styles.container} ${className}`}
+      onClick={onClick}
+      style={{ cursor: onClick ? 'pointer' : 'default', ...style }}
+    >
       <div className={styles['content']}>
         <figure>
           <img src={videoUrl} alt='recommender-video' className={styles.thumbnail} />
@@ -79,8 +87,6 @@ const RecommenderVideo = ({
                 size={20}
               />
             </button>
-
-            {/* )} */}
           </div>
         </div>
       </div>

@@ -23,25 +23,14 @@ const AiVideoCarousel = ({ subcategoryId, take }: { subcategoryId: number | 'all
     <AiRecommenderContentSlider title='AI 추천 영상' autoPlay={true} itemsPerSlide={isMobile ? 1 : 2}>
       {videoList?.map(video => {
         return (
-          <>
-            {/* {isMobile ? (
-              <RecommenderVideo
-                key={video.videoCaseId}
-                videoUrl={video.thumbnail}
-                description={video.title}
-                onClick={() => handleVideoItemClick(video)}
-              />
-            ) : ( */}
-            <VideoThumbnail
-              key={video.videoCaseId}
-              size={isMobile ? 'text' : 'large'}
-              imgUrl={video.thumbnail}
-              lawyerName={video.lawyerName}
-              description={video.summaryContent}
-              onClick={() => handleVideoItemClick(video)}
-            />
-            {/* )} */}
-          </>
+          <VideoThumbnail
+            key={video.videoCaseId}
+            size={'large'}
+            imgUrl={video.thumbnail}
+            lawyerName={video.lawyerName}
+            description={video.summaryContent}
+            onClick={() => handleVideoItemClick(video)}
+          />
         )
       })}
     </AiRecommenderContentSlider>

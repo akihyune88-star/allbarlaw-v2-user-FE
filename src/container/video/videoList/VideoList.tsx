@@ -81,6 +81,7 @@ const VideoList = ({
                 lawyerName={video.lawyerName}
                 lawfirmName={video.lawfirmName}
                 description={video.summaryContent}
+                style={{ padding: ' 0 1rem' }}
                 onClick={() => handleVideoClick(video.videoCaseId)}
               />
             ) : (
@@ -89,8 +90,11 @@ const VideoList = ({
                 title={video.title}
                 videoCaseId={video.videoCaseId}
                 isKeep={video.isKeep}
+                summaryContents={video.summaryContent}
                 lawyerName={video.lawyerName}
                 lawfirmName={video.lawfirmName}
+                channelName={video.channelName}
+                channelThumbnail={video.channelThumbnail}
               />
             )}
             {!isMobile && index !== videoList.length - 1 && <Divider padding={24} />}
