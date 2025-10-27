@@ -189,10 +189,14 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
         </div>
       )}
       <div
-        className={`${styles['chat-body-wrapper']} ${chatStatus !== 'ACTIVE' && chatStatus !== 'COMPLETED' && chatStatus !== 'PARTIAL_LEFT' ? styles.waiting : ''}`}
+        className={`${styles['chat-body-wrapper']} ${
+          chatStatus !== 'ACTIVE' && chatStatus !== 'COMPLETED' && chatStatus !== 'PARTIAL_LEFT' ? styles.waiting : ''
+        }`}
       >
         <div
-          className={`${styles.chatBody} ${chatStatus !== 'ACTIVE' && chatStatus !== 'COMPLETED' && chatStatus !== 'PARTIAL_LEFT' ? styles.waiting : ''}`}
+          className={`${styles.chatBody} ${
+            chatStatus !== 'ACTIVE' && chatStatus !== 'COMPLETED' && chatStatus !== 'PARTIAL_LEFT' ? styles.waiting : ''
+          }`}
           ref={chatBodyRef}
         >
           {messages.length === 0 ? (
