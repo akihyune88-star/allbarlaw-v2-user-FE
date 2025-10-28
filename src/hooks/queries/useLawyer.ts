@@ -256,3 +256,11 @@ export const useLawyerCount = (request: LawyerCountRequest) => {
     queryFn: () => lawyerService.getLawyerCount(request),
   })
 }
+
+export const useLawyerBarExam = () => {
+  return useQuery({
+    queryKey: [QUERY_KEY.LAWYER_BAR_EXAM],
+    queryFn: () => lawyerService.getLawyerBarExam(),
+    select: data => data.examTypes,
+  })
+}

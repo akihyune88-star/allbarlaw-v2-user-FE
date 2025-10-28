@@ -36,6 +36,7 @@ export const QUERY_KEY = {
   LAWYER_ACTIVE: 'lawyerActive',
   LAWYER: 'lawyer',
   LAWYER_COUNT: 'lawyerCount',
+  LAWYER_BAR_EXAM: 'lawyerBarExam',
 
   // 법률용어
   POPULAR_LEGAL_TERM_LIST: 'popularLegalTermList',

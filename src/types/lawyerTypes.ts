@@ -151,6 +151,7 @@ export type LawyerSignUpRequest = {
   lawyerName: string
   lawyerContact: string
   lawyerLawfirmName: string
+  lawyerBarExamType: 'JUDICIAL_EXAM' | 'LAWYER_EXAM' | 'MILITARY_EXAM' | 'HIGHER_CIVIL_EXAM'
   lawyerBarExamNumber: string
   lawyerEmail: string
 }
@@ -244,4 +245,12 @@ export type LawyerActivityResponse = {
 export type LawyerCountRequest = {
   subcategoryId: number | 'all'
   recentDays: 'all' | number
+}
+
+export type LawyerBarExam = {
+  type: 'JUDICIAL_EXAM' | 'LAWYER_EXAM' | 'MILITARY_EXAM' | 'HIGHER_CIVIL_EXAM'
+  name: '사법시험' | '변호사시험' | '군법무관 임용시험' | '고등고시'
+  minNumber: number
+  maxNumber: number
+  isActive: boolean
 }
