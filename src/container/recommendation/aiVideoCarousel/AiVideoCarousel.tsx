@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { VideoCase } from '@/types/videoTypes'
 import VideoThumbnail from '@/components/video/VideoThumbnail'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
 import { useRandomVideoList } from '@/hooks/queries/useRandomVideoList'
 
 const AiVideoCarousel = ({ subcategoryId, take }: { subcategoryId: number | 'all'; take: number }) => {

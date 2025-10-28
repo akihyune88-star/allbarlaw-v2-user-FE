@@ -8,7 +8,6 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { VideoCase } from '@/types/videoTypes'
 import { useGetVideoCount } from '@/hooks/queries/useVideo'
 import { useParams } from 'react-router-dom'
-import VideoThumbnail from '@/components/video/VideoThumbnail'
 import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
 
 interface VideoListProps {
