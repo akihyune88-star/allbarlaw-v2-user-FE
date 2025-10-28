@@ -42,7 +42,7 @@
   div:last-child {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
+    gap: 1.25rem;
   }
 
   @include breakpoint($breakpoint-desktop) {
