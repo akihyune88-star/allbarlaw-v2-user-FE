@@ -1,20 +1,26 @@
 import { useState, useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { accountEditSchema, type AccountEditFormData } from '@/container/mypage/accountEdit/accountEditSchema'
 import styles from './lawyerAccountEdit.module.scss'
 import PasswordChangeSection from '@/container/mypage/passwordChangeSection/PasswordChangeSection'
 import EmailEditSection from '@/container/mypage/emailEditSection/EmailEditSection'
 import LawyerCertificationEdit from '@/container/lawyerAdmin/lawyerCertificationEdit/LawyerCertificationEdit'
-import { useGetLawyerProfile, useUpdateLawyerProfile } from '@/hooks/queries/useAuth'
+import { useGetLawyerProfile, useUpdateLawyerProfile, useWithdrawLawyer } from '@/hooks/queries/useAuth'
 import { LOCAL } from '@/constants/local'
 import type { LawyerProfileUpdateRequest } from '@/types/authTypes'
 import HeaderPortal from '@/components/headerPortal/HeaderPortal'
+import WithdrawModal from '@/components/withdrawModal/WithdrawModal'
+import { ROUTER } from '@/routes/routerConstant'
 
 const LawyerAccountEdit = () => {
+  const navigate = useNavigate()
   const [isEmailError, setIsEmailError] = useState(false)
   const [_isPasswordError, setIsPasswordError] = useState(false)
   const [isPasswordChecked, setIsPasswordChecked] = useState(false)
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false)
+  const [withdrawReason, setWithdrawReason] = useState('')
 
   const { data: lawyerProfile } = useGetLawyerProfile()
 
@@ -24,6 +30,17 @@ const LawyerAccountEdit = () => {
     },
     onError: message => {
       alert(`정보 수정 실패: ${message}`)
+    },
+  })
+
+  const { mutate: withdrawLawyer, isPending: isWithdrawPending } = useWithdrawLawyer({
+    onSuccess: () => {
+      alert('변호사 탈퇴가 완료되었습니다.')
+      localStorage.removeItem('accessToken')
+      navigate(`${ROUTER.AUTH}`)
+    },
+    onError: (message: string) => {
+      alert(message || '탈퇴 처리 중 오류가 발생했습니다.')
     },
   })
 
@@ -153,12 +170,21 @@ const LawyerAccountEdit = () => {
     alert('휴대폰 본인인증 기능은 준비 중입니다.')
   }
 
+  const handleWithdraw = () => {
+    withdrawLawyer({ reason: withdrawReason })
+  }
+
   return (
     <FormProvider {...methods}>
       <main className={`${styles['account-edit']}`}>
         <HeaderPortal>
           <div className={styles.header}>
-            <button type='button' disabled={isSubmitting} className={styles.header__button__item}>
+            <button
+              type='button'
+              disabled={isSubmitting}
+              className={styles.header__button__item}
+              onClick={() => setIsWithdrawModalOpen(true)}
+            >
               탈퇴 하기
             </button>
             <nav className={styles.header__button}>
@@ -201,6 +227,22 @@ const LawyerAccountEdit = () => {
           />
         </form>
       </main>
+      <WithdrawModal
+        isOpen={isWithdrawModalOpen}
+        onClose={() => setIsWithdrawModalOpen(false)}
+        title='변호사 탈퇴하기'
+        noticeText={
+          <>
+            변호사 탈퇴를 선택할 경우
+            <br />
+            즉시 로그아웃 되며, 1주일 이내 담당자가 연락하여 탈퇴처리를 도와드립니다.
+          </>
+        }
+        withdrawReason={withdrawReason}
+        onReasonChange={setWithdrawReason}
+        onConfirm={handleWithdraw}
+        isPending={isWithdrawPending}
+      />
     </FormProvider>
   )
 }

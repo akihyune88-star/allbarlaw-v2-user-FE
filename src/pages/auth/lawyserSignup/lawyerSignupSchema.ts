@@ -30,7 +30,8 @@ export const lawyerSignupSchema = z
       }),
     lawyerContact: z.string().min(1, { message: '연락처는 숫자만 입력 가능합니다.' }),
     lawyerFirm: z.string().min(1, { message: '소속(법인,회사)을 입력해주세요.' }),
-    lawyerExam: z.string().min(1, { message: '출신시험을 선택해주세요.' }),
+    lawyerBarExamType: z.string().min(1, { message: '출신시험 유형을 선택해주세요.' }),
+    lawyerBarExamNumber: z.string().min(1, { message: '출신시험 기수를 선택해주세요.' }),
 
     // 이메일
     email: z

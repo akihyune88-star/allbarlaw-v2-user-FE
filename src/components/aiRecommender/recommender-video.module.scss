@@ -11,20 +11,51 @@
 
   figure {
     flex-shrink: 0;
+    width: 45%;
   }
 }
 
-.thumbnail {
-  width: 5.625rem;
-  height: 3.1875rem;
-  border-radius: 0.5rem;
-  object-fit: cover;
-  flex-shrink: 0;
+.text-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
 }
 
-.description {
+.thumbnail {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+.title {
+  font-size: 1rem;
+  @include ellipsis(2);
+}
+
+.video-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lawyer-info {
   font-size: 1rem;
   line-height: 24px;
+  color: $color-green-01;
   @include ellipsis(2);
-  flex: 1;
+}
+
+.bookmark-btn {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }

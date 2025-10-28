@@ -8,6 +8,8 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { VideoCase } from '@/types/videoTypes'
 import { useGetVideoCount } from '@/hooks/queries/useVideo'
 import { useParams } from 'react-router-dom'
+import VideoThumbnail from '@/components/video/VideoThumbnail'
+import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
 
 interface VideoListProps {
   videoList: VideoCase[]
@@ -71,18 +73,30 @@ const VideoList = ({
       <section className={styles['video-list-section']}>
         {videoList.map((video, index) => (
           <Fragment key={video.videoCaseId}>
-            <VideoHorizon
-              thumbnailUrl={video.thumbnail}
-              title={video.title}
-              videoCaseId={video.videoCaseId}
-              isKeep={video.isKeep}
-              lawyerName={video.lawyerName}
-              lawfirmName={video.lawfirmName}
-              channelName={video.channelName}
-              channelThumbnail={video.channelThumbnail}
-              summaryContents={video.summaryContent}
-              onClick={() => handleVideoClick(video.videoCaseId)}
-            />
+            {isMobile ? (
+              <RecommenderVideo
+                key={video.videoCaseId}
+                videoUrl={video.thumbnail}
+                title={video.title}
+                lawyerName={video.lawyerName}
+                lawfirmName={video.lawfirmName}
+                description={video.summaryContent}
+                style={{ padding: ' 0 1rem' }}
+                onClick={() => handleVideoClick(video.videoCaseId)}
+              />
+            ) : (
+              <VideoHorizon
+                thumbnailUrl={video.thumbnail}
+                title={video.title}
+                videoCaseId={video.videoCaseId}
+                isKeep={video.isKeep}
+                summaryContents={video.summaryContent}
+                lawyerName={video.lawyerName}
+                lawfirmName={video.lawfirmName}
+                channelName={video.channelName}
+                channelThumbnail={video.channelThumbnail}
+              />
+            )}
             {!isMobile && index !== videoList.length - 1 && <Divider padding={24} />}
           </Fragment>
         ))}

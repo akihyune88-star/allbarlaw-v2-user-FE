@@ -57,7 +57,12 @@ const LawyerSignupForm = () => {
       lawyerName: data.lawyerName,
       lawyerContact: data.lawyerContact,
       lawyerLawfirmName: data.lawyerFirm,
-      lawyerBarExamNumber: data.lawyerExam,
+      lawyerBarExamType: data.lawyerBarExamType as
+        | 'JUDICIAL_EXAM'
+        | 'LAWYER_EXAM'
+        | 'MILITARY_EXAM'
+        | 'HIGHER_CIVIL_EXAM',
+      lawyerBarExamNumber: data.lawyerBarExamNumber,
       lawyerEmail: data.email,
     })
   }

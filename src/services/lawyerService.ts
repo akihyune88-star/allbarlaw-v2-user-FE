@@ -5,6 +5,7 @@ import {
   LawyerActiveResponse,
   LawyerActivityResponse,
   LawyerActivityUpdateRequest,
+  LawyerBarExam,
   LawyerBasicInfoEditRequest,
   LawyerBasicInfoEditResponse,
   LawyerCareerResponse,
@@ -174,6 +175,10 @@ export const lawyerService = {
   getLawyerCount: async (request: LawyerCountRequest) => {
     const { subcategoryId, recentDays } = request
     const response = await instance.get<number>(`/lawyer/${subcategoryId}/${recentDays}/count`)
+    return response.data
+  },
+  getLawyerBarExam: async () => {
+    const response = await instance.get<{ examTypes: LawyerBarExam[] }>(`/bar-exam/metadata`)
     return response.data
   },
 }

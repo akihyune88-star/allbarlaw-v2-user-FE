@@ -2,8 +2,8 @@ import styles from './lawyerCertification.module.scss'
 import LabelInput from '@/components/labelInput/LabelInput'
 import { FieldErrors, UseFormRegister, Path, FieldValues } from 'react-hook-form'
 import Divider from '@/components/divider/Divider'
-import { getLawyerExamOptions } from '@/utils/auth'
-import { useState, ChangeEvent } from 'react'
+import { useState, ChangeEvent, useEffect, useMemo } from 'react'
+import { useLawyerBarExam } from '@/hooks/queries/useLawyer'
 
 export type LawyerCertificationProps<T extends FieldValues> = {
   register: UseFormRegister<T>
@@ -11,11 +11,47 @@ export type LawyerCertificationProps<T extends FieldValues> = {
 }
 
 function LawyerCertification<
-  T extends { lawyerName: string; lawyerContact: string; lawyerExam: string } & FieldValues
+  T extends {
+    lawyerName: string
+    lawyerContact: string
+    lawyerBarExamType: string
+    lawyerBarExamNumber: string
+  } & FieldValues
 >({ register, errors }: LawyerCertificationProps<T>) {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [lawyerName, setLawyerName] = useState('')
   const [nameErrorMessage, setNameErrorMessage] = useState<string | undefined>(undefined)
+  const [selectedExamType, setSelectedExamType] = useState<string>('')
+
+  // 서버에서 시험 유형 데이터 가져오기
+  const { data: examData, isLoading: isExamLoading } = useLawyerBarExam()
+
+  // 선택된 시험 유형에 따른 기수 범위
+  const examNumberOptions = useMemo(() => {
+    if (!selectedExamType || !examData) return []
+
+    const selectedExam = examData.find(exam => exam.type === selectedExamType)
+    if (!selectedExam) return []
+
+    const options = []
+    for (let i = selectedExam.minNumber; i <= selectedExam.maxNumber; i++) {
+      options.push({ value: String(i), label: `${i}기` })
+    }
+    return options
+  }, [selectedExamType, examData])
+
+  // 시험 유형 변경 시 기수 초기화
+  useEffect(() => {
+    if (selectedExamType) {
+      const { onChange } = register('lawyerBarExamNumber' as Path<T>)
+      onChange({
+        target: {
+          name: 'lawyerBarExamNumber',
+          value: '',
+        },
+      } as any)
+    }
+  }, [selectedExamType, register])
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -138,11 +174,49 @@ function LawyerCertification<
           isError={!!errors.lawyerFirm}
           message={(errors.lawyerFirm as any)?.message}
         />
-        <LabelInput label='출신시험' isError={!!errors.lawyerExam} message={(errors.lawyerExam as any)?.message}>
-          <select {...register('lawyerExam' as Path<T>)} className={styles['select']} defaultValue=''>
-            {getLawyerExamOptions().map(({ value, label }) => (
-              <option key={value} value={value}>
-                {label}
+        <LabelInput
+          label='출신시험 유형'
+          isError={!!errors.lawyerBarExamType}
+          message={(errors.lawyerBarExamType as any)?.message}
+        >
+          <select
+            {...register('lawyerBarExamType' as Path<T>)}
+            className={styles['select']}
+            defaultValue=''
+            disabled={isExamLoading}
+            onChange={e => {
+              setSelectedExamType(e.target.value)
+              const { onChange } = register('lawyerBarExamType' as Path<T>)
+              onChange(e)
+            }}
+          >
+            <option value='' disabled>
+              {isExamLoading ? '로딩 중...' : '시험 유형을 선택하세요'}
+            </option>
+            {examData?.map(exam => (
+              <option key={exam.type} value={exam.type}>
+                {exam.name}
+              </option>
+            ))}
+          </select>
+        </LabelInput>
+        <LabelInput
+          label='출신시험 기수'
+          isError={!!errors.lawyerBarExamNumber}
+          message={(errors.lawyerBarExamNumber as any)?.message}
+        >
+          <select
+            {...register('lawyerBarExamNumber' as Path<T>)}
+            className={styles['select']}
+            defaultValue=''
+            disabled={!selectedExamType}
+          >
+            <option value='' disabled>
+              {!selectedExamType ? '먼저 시험 유형을 선택하세요' : '기수를 선택하세요'}
+            </option>
+            {examNumberOptions.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
               </option>
             ))}
           </select>

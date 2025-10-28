@@ -111,3 +111,13 @@ export type LawyerProfileUpdateRequest = {
 export type LawyerProfileUpdateResponse = {
   updatedFields: string[]
 }
+
+export type WithdrawRequest = {
+  reason: string
+}
+
+export type WithdrawResponse = {
+  withdrawalRequestId: number
+  withdrawalStatus: 'PENDING' | 'APPROVED' | 'REJECTED'
+  withdrawalRequestedAt: string
+}

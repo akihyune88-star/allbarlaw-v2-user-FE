@@ -10,6 +10,8 @@ import {
   UserProfileUpdateRequest,
   UserProfileUpdateResponse,
   VerifyVerificationCodeRequest,
+  WithdrawRequest,
+  WithdrawResponse,
 } from '@/types/authTypes'
 
 // 현재는 목업 데이터를 사용하지만, 실제 API로 교체 가능
@@ -175,6 +177,24 @@ export const authService = {
       return response.data
     } catch (error) {
       console.error('Failed to update user profile:', error)
+      throw error
+    }
+  },
+  withdrawUser: async (inputValue: WithdrawRequest) => {
+    try {
+      const response = await instance.post<WithdrawResponse>('/user/withdrawal', inputValue)
+      return response.data
+    } catch (error) {
+      console.error('Failed to withdraw user:', error)
+      throw error
+    }
+  },
+  withdrawLawyer: async (inputValue: WithdrawRequest) => {
+    try {
+      const response = await instance.post<WithdrawResponse>('/lawyer/withdrawal', inputValue)
+      return response.data
+    } catch (error) {
+      console.error('Failed to withdraw lawyer:', error)
       throw error
     }
   },

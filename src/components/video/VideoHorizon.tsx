@@ -34,6 +34,7 @@ const VideoHorizon = ({
   summaryContents,
   isKeep,
   onClick,
+
   videoCaseId,
 }: VideoHorizonProps) => {
   const [like, setLike] = useState(isKeep)

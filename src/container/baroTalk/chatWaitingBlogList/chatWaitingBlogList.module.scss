@@ -1,8 +1,12 @@
 .chatWaitingBlogList {
+  display: flex;
+  flex-direction: column;
+  // 높이 제한 제거 - 자연스럽게 확장
 }
 
 .chatWaitingBlogList__header {
   height: 3rem;
+  flex-shrink: 0;
   background-color: rgba(0, 0, 0, 0.7);
 
   display: flex;
@@ -17,6 +21,7 @@
 
 .chatWaitingBlogList__content {
   padding: 1.5rem;
+  // overflow 제거 - 부모 레벨에서 스크롤
 }
 
 .chatWaitingBlogList__content__title {

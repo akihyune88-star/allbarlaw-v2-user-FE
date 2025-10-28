@@ -5,6 +5,8 @@ import {
   LawyerProfileUpdateResponse,
   UserProfileUpdateRequest,
   UserProfileUpdateResponse,
+  WithdrawRequest,
+  WithdrawResponse,
 } from '@/types/authTypes'
 import { QUERY_KEY } from '@/constants/queryKey'
 import { getErrorMessage } from '@/utils/errorHandler'
@@ -154,9 +156,50 @@ export const useUpdateLawyerProfile = ({
   })
 }
 
-// export const useGetLawyerAccount = () => {
-//   return useQuery({
-//     queryKey: [QUERY_KEY.LAWYER_ACCOUNT],
-//     queryFn: () => lawyerService.getLawyerAccount(),
-//   })
-// }
+export const useWithdrawUser = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: WithdrawResponse) => void
+  onError: (_message: string) => void
+}) => {
+  return useMutation({
+    mutationFn: async (inputValue: WithdrawRequest) => {
+      const response = await authService.withdrawUser(inputValue)
+      return response
+    },
+    onSuccess: (data: WithdrawResponse) => {
+      onSuccess?.(data)
+    },
+    onError: error => {
+      if (isAxiosError(error)) {
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        onError?.(errorMessage)
+      }
+    },
+  })
+}
+
+export const useWithdrawLawyer = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: WithdrawResponse) => void
+  onError: (_message: string) => void
+}) => {
+  return useMutation({
+    mutationFn: async (inputValue: WithdrawRequest) => {
+      const response = await authService.withdrawLawyer(inputValue)
+      return response
+    },
+    onSuccess: (data: WithdrawResponse) => {
+      onSuccess?.(data)
+    },
+    onError: error => {
+      if (isAxiosError(error)) {
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        onError?.(errorMessage)
+      }
+    },
+  })
+}
