@@ -60,7 +60,8 @@ const BottomNavigation = () => {
 
   const handleItemClick = (path: string, itemName: string) => {
     // 상담 메뉴인 경우 특별 처리
-    if (itemName === '상담') {
+    if (itemName === '바로톡') {
+      setActiveMenuPath(path)
       handleBaroTalkClick()
       return
     }
@@ -112,7 +113,9 @@ const BottomNavigation = () => {
         return (
           <div
             key={item.path}
-            className={`${styles.item} ${isActive ? styles.active : ''} ${item.name === '상담' && isCheckingBaroTalk ? styles.disabled : ''}`}
+            className={`${styles.item} ${isActive ? styles.active : ''} ${
+              item.name === '바로톡' && isCheckingBaroTalk ? styles.disabled : ''
+            }`}
             onClick={() => !isCheckingBaroTalk && handleItemClick(item.path, item.name)}
           >
             <SvgIcon name={isActive ? item.activeIcon : item.icon} size={24} />
