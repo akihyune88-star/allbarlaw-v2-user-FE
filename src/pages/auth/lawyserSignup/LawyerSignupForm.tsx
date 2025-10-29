@@ -37,7 +37,9 @@ const LawyerSignupForm = () => {
 
   const { mutate: signUpLawyer } = useLawyerSignUp({
     onSuccess: () => {
-      setAlertMessage('회원가입이 완료되었습니다. 관리자 승인 후 로그인 가능합니다.')
+      setAlertMessage(
+        '변호사 가입신청이 완료되었습니다.\n곧 담당자가 증빙자료 제출을 위해 연락드릴 예정입니다.\n이후 정상적으로 서비스 이용이 가능합니다.\n\n문의사항이 있으실 경우 아래의 번호로 연락주시기 바랍니다.\n010-2029-4962'
+      )
       setAlertOpen(true)
       setTimeout(() => {
         navigate(ROUTER.MAIN)

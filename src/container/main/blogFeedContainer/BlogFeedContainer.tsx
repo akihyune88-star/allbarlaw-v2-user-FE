@@ -71,14 +71,21 @@ const BlogFeedContainer = () => {
   const { currentExcludeIds, handleNext, handlePrev, canGoPrev } = useNavigationHistory()
 
   // 현재 데이터
-  const { blogList: currentBlogs, hasNextPage, refetch } = useRandomBlogList({
+  const {
+    blogList: currentBlogs,
+    hasNextPage,
+    refetch,
+  } = useRandomBlogList({
     subcategoryId: 'all',
     take: isMobile ? 3 : 4,
     excludeIds: currentExcludeIds,
   })
 
+  console.log('current', currentExcludeIds)
+
   // 다음 데이터 미리 fetching
   const nextExcludeIds = [...currentExcludeIds, ...currentBlogs.map(blog => blog.blogCaseId)]
+
   const { blogList: nextBlogs } = useRandomBlogList({
     subcategoryId: 'all',
     take: isMobile ? 3 : 4,
@@ -202,14 +209,10 @@ const BlogFeedContainer = () => {
           }}
         >
           {/* 이전 슬라이드 (placeholder) */}
-          <div className={styles['slide']}>
-            {renderBlogContent(currentBlogs)}
-          </div>
+          <div className={styles['slide']}>{renderBlogContent(currentBlogs)}</div>
 
           {/* 현재 슬라이드 */}
-          <div className={styles['slide']}>
-            {renderBlogContent(currentBlogs)}
-          </div>
+          <div className={styles['slide']}>{renderBlogContent(currentBlogs)}</div>
 
           {/* 다음 슬라이드 */}
           <div className={styles['slide']}>

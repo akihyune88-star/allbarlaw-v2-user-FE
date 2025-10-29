@@ -28,10 +28,15 @@ export const lawyerSignupSchema = z
       .regex(/^[가-힣\s]+$/, {
         message: '이름은 한글만 입력 가능합니다.',
       }),
-    lawyerContact: z.string().min(1, { message: '연락처는 숫자만 입력 가능합니다.' }),
+    lawyerContact: z
+      .string()
+      .min(1, { message: '연락처를 입력해주세요.' })
+      .regex(/^(02-\d{3,4}-\d{4}|01[016789]-\d{3,4}-\d{4}|0[3-9]\d{1}-\d{3,4}-\d{4})$/, {
+        message: '올바른 전화번호 형식이 아닙니다.',
+      }),
     lawyerFirm: z.string().min(1, { message: '소속(법인,회사)을 입력해주세요.' }),
     lawyerBarExamType: z.string().min(1, { message: '출신시험 유형을 선택해주세요.' }),
-    lawyerBarExamNumber: z.string().min(1, { message: '출신시험 기수를 선택해주세요.' }),
+    lawyerBarExamNumber: z.string().min(1, { message: '출신시험 회수를 선택해주세요.' }),
 
     // 이메일
     email: z
