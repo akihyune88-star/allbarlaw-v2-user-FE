@@ -4,7 +4,7 @@ export const useNavigationHistory = () => {
   const [excludeIdsHistory, setExcludeIdsHistory] = useState<number[][]>([[]])
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0)
 
-  const currentExcludeIds = excludeIdsHistory[currentHistoryIndex]
+  const currentExcludeIds = excludeIdsHistory[currentHistoryIndex] || []
 
   const handleNext = useCallback(
     (currentItemIds: number[]) => {

@@ -29,7 +29,9 @@ const Main = () => {
           enableMobileExpand={true}
         />
         <BlogFeedContainer />
-        {!isMobile && <BaroTalkBanner />}
+        <div className={styles['baro-talk-banner-container']}>
+          <BaroTalkBanner />
+        </div>
         {!isMobile && <LawyerAdvertisementList />}
         <LawyerVideoSpotlight />
         {isMobile && <LawyerAdvertisementList />}
