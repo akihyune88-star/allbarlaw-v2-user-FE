@@ -128,21 +128,6 @@ export default LawyerAdminLayout
 
 const categories: CategoryList = [
   {
-    categoryId: 4,
-    categoryName: '변호사 회원정보',
-    imageUrl: '',
-    clickedImageUrl: '',
-    isUncategorized: false,
-    subcategories: [
-      {
-        subcategoryId: 7,
-        subcategoryName: '회원정보/비밀번호 변경',
-        isUncategorized: false,
-        categoryId: 4,
-      },
-    ],
-  },
-  {
     categoryId: 1,
     categoryName: '변호사 정보관리',
     imageUrl: '',
@@ -202,6 +187,21 @@ const categories: CategoryList = [
         subcategoryName: '채팅리스트',
         isUncategorized: false,
         categoryId: 3,
+      },
+    ],
+  },
+  {
+    categoryId: 4,
+    categoryName: '변호사 회원정보',
+    imageUrl: '',
+    clickedImageUrl: '',
+    isUncategorized: false,
+    subcategories: [
+      {
+        subcategoryId: 7,
+        subcategoryName: '회원정보/비밀번호 변경',
+        isUncategorized: false,
+        categoryId: 4,
       },
     ],
   },
