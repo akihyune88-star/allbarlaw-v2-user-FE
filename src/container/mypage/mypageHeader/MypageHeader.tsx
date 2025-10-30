@@ -90,7 +90,7 @@ const MypageHeader = ({ tabs, onTabClick, currentTab, sortOrder, onSortChange, y
                     {tabInfo.icon && (
                       <SvgIcon name={tabInfo.icon} size={16} color={isActive ? COLOR.green_01 : COLOR.text_caption} />
                     )}
-                    <span>{tabInfo.name}</span>
+                    <span className={styles.tabButtonText}>{tabInfo.name}</span>
                   </button>
                 </li>
               )
