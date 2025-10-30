@@ -153,11 +153,7 @@ const AiRecommenderContentSlider = ({
 
   return (
     <div className={`${styles.wrapper} ${className || ''}`}>
-      <div
-        className={styles.container}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div className={styles.container} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <div className={styles.contentWrapper}>
           <h3 className={styles.title}>{title}</h3>
 
@@ -180,11 +176,19 @@ const AiRecommenderContentSlider = ({
             >
               {Array.from({ length: totalSlides }).map((_, slideIndex) => (
                 <div key={slideIndex} className={styles.slideGroup}>
-                  {childrenArray.slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide).map((child, index) => (
-                    <div key={`${slideIndex}-${index}`} className={styles.slideItem} style={{ flex: `0 0 calc(${100 / itemsPerSlide}% - ${itemsPerSlide > 1 ? '8px' : '0px'})` }}>
-                      {child}
-                    </div>
-                  ))}
+                  {childrenArray
+                    .slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide)
+                    .map((child, index) => (
+                      <div
+                        key={`${slideIndex}-${index}`}
+                        className={styles.slideItem}
+                        style={{
+                          flex: `0 0 calc((100% - ${itemsPerSlide > 1 ? `${(itemsPerSlide - 1) * 16}px` : '0px'}) / ${itemsPerSlide})`,
+                        }}
+                      >
+                        {child}
+                      </div>
+                    ))}
                 </div>
               ))}
             </div>

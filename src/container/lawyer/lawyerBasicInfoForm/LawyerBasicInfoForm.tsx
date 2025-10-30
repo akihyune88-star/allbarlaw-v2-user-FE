@@ -3,6 +3,7 @@ import { BasicInfoFormData } from '@/hooks/lawyerAdmin/useBasicInfoForm'
 import TagInput from '@/components/tag/TagInput'
 import AddressSearchModal from '@/components/addressSearchModal/AddressSearchModal'
 import { useAddressSearch } from '@/hooks/useAddressSearch'
+import { useState, useEffect, ChangeEvent } from 'react'
 
 interface LawyerBasicInfoFormProps {
   formData: BasicInfoFormData
@@ -12,9 +13,97 @@ interface LawyerBasicInfoFormProps {
 
 const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInfoFormProps) => {
   const { isOpen, openAddressSearch, closeAddressSearch } = useAddressSearch()
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [officePhone, setOfficePhone] = useState('')
+
+  // formData가 변경될 때 로컬 상태 동기화
+  useEffect(() => {
+    setPhoneNumber(formData.phoneNumber)
+  }, [formData.phoneNumber])
+
+  useEffect(() => {
+    setOfficePhone(formData.officePhone)
+  }, [formData.officePhone])
 
   const handleAddressComplete = (data: { address: string; zonecode: string }) => {
     onInputChange('address', data.address)
+  }
+
+  const formatPhoneNumber = (value: string) => {
+    // 숫자만 추출
+    const numbers = value.replace(/[^\d]/g, '')
+
+    // 최대 11자리로 제한
+    const limitedNumbers = numbers.slice(0, 11)
+
+    // 빈 문자열이면 그대로 반환
+    if (!limitedNumbers) return ''
+
+    // 서울 지역번호 02로 시작하는 경우
+    if (limitedNumbers.startsWith('02')) {
+      if (limitedNumbers.length <= 2) {
+        return limitedNumbers
+      } else if (limitedNumbers.length <= 5) {
+        return `${limitedNumbers.slice(0, 2)}-${limitedNumbers.slice(2)}`
+      } else if (limitedNumbers.length === 9) {
+        // 02-XXX-XXXX (9자리)
+        return `${limitedNumbers.slice(0, 2)}-${limitedNumbers.slice(2, 5)}-${limitedNumbers.slice(5, 9)}`
+      } else {
+        // 02-XXXX-XXXX (10자리)
+        return `${limitedNumbers.slice(0, 2)}-${limitedNumbers.slice(2, 6)}-${limitedNumbers.slice(6, 10)}`
+      }
+    }
+
+    // 그 외 (휴대폰 010, 지역번호 031 등)
+    if (limitedNumbers.length <= 3) {
+      return limitedNumbers
+    } else if (limitedNumbers.length <= 6) {
+      return `${limitedNumbers.slice(0, 3)}-${limitedNumbers.slice(3)}`
+    } else if (limitedNumbers.length === 10) {
+      // 0XX-XXX-XXXX (10자리)
+      return `${limitedNumbers.slice(0, 3)}-${limitedNumbers.slice(3, 6)}-${limitedNumbers.slice(6, 10)}`
+    } else {
+      // 0XX-XXXX-XXXX (11자리)
+      return `${limitedNumbers.slice(0, 3)}-${limitedNumbers.slice(3, 7)}-${limitedNumbers.slice(7, 11)}`
+    }
+  }
+
+  const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value
+
+    // 삭제 동작 감지 (이전 값보다 짧아진 경우)
+    if (inputValue.length < phoneNumber.length) {
+      // 마지막 문자가 하이픈이면 하이픈 앞의 숫자까지 제거
+      if (inputValue.endsWith('-')) {
+        const withoutHyphen = inputValue.slice(0, -1)
+        setPhoneNumber(withoutHyphen)
+        onInputChange('phoneNumber', withoutHyphen)
+        return
+      }
+    }
+
+    const formatted = formatPhoneNumber(inputValue)
+    setPhoneNumber(formatted)
+    onInputChange('phoneNumber', formatted)
+  }
+
+  const handleOfficePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value
+
+    // 삭제 동작 감지 (이전 값보다 짧아진 경우)
+    if (inputValue.length < officePhone.length) {
+      // 마지막 문자가 하이픈이면 하이픈 앞의 숫자까지 제거
+      if (inputValue.endsWith('-')) {
+        const withoutHyphen = inputValue.slice(0, -1)
+        setOfficePhone(withoutHyphen)
+        onInputChange('officePhone', withoutHyphen)
+        return
+      }
+    }
+
+    const formatted = formatPhoneNumber(inputValue)
+    setOfficePhone(formatted)
+    onInputChange('officePhone', formatted)
   }
 
   return (
@@ -76,9 +165,10 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             className={styles.input}
             type='text'
             placeholder='휴대폰 번호를 입력해주세요'
-            value={formData.phoneNumber}
-            onChange={e => onInputChange('phoneNumber', e.target.value)}
+            value={phoneNumber}
+            onChange={handlePhoneChange}
             style={{ borderColor: errors.phoneNumber ? '#ff4d4f' : undefined }}
+            maxLength={13}
           />
           <div className={styles.errorWrapper}>
             {errors.phoneNumber && <span className={styles.error}>{errors.phoneNumber}</span>}
@@ -182,9 +272,10 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             className={styles.input}
             type='text'
             placeholder='사무실 번호를 입력해주세요'
-            value={formData.officePhone}
-            onChange={e => onInputChange('officePhone', e.target.value)}
+            value={officePhone}
+            onChange={handleOfficePhoneChange}
             style={{ borderColor: errors.officePhone ? '#ff4d4f' : undefined }}
+            maxLength={13}
           />
           <div className={styles.errorWrapper}>
             {errors.officePhone && <span className={styles.error}>{errors.officePhone}</span>}

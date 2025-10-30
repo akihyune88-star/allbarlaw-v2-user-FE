@@ -15,7 +15,6 @@ import { getLawyerIdFromToken } from '@/utils/tokenUtils'
 import { LOCAL } from '@/constants/local'
 import { useToast } from '@/hooks/useToast'
 import { ToastContainer } from '@/components/toast/Toast'
-import { formatPhoneNumber } from '@/utils/numberFormatter'
 
 const BasicInfoEdit = () => {
   const navigate = useNavigate()
@@ -43,18 +42,12 @@ const BasicInfoEdit = () => {
 
   // 실시간 유효성 검사를 포함한 입력 핸들러
   const handleInputChange = (field: string, value: any) => {
-    // 전화번호 필드는 자동 포맷팅 적용
-    let formattedValue = value
-    if (field === 'phoneNumber' || field === 'officePhone') {
-      formattedValue = formatPhoneNumber(value)
-    }
-
-    // 기존 입력 핸들러 호출 (포맷팅된 값으로)
-    originalHandleInputChange(field, formattedValue)
+    // 기존 입력 핸들러 호출
+    originalHandleInputChange(field, value)
 
     // 입력 후 해당 필드만 유효성 검사
     setTimeout(() => {
-      const updatedFormData = { ...formData, [field]: formattedValue }
+      const updatedFormData = { ...formData, [field]: value }
       const validationErrors = validateForm(updatedFormData)
 
       // 해당 필드의 에러만 업데이트

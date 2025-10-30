@@ -6,6 +6,7 @@ import { formatTimeAgo } from '@/utils/date'
 import { useAuth } from '@/contexts/AuthContext'
 import { useKnowledgeKeep } from '@/hooks/queries/useGetKnowledgeList'
 import React, { useEffect, useState, useRef } from 'react'
+import allbarlawLogo from '@/assets/imgs/allbarlaw-logo.png'
 
 type LegalKnowledgeItemProps = {
   knowledgeId: number
@@ -39,6 +40,7 @@ const LegalKnowledgeItem = ({
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const { isLoggedIn } = useAuth()
   const formattedTime = time ? formatTimeAgo(time) : ''
+  const DEFAULT_PROFILE_IMAGE = allbarlawLogo
 
   const [isKeep, setIsKeep] = useState(knowledgeKeep)
   const lawyerListRef = useRef<HTMLDivElement>(null)
@@ -136,7 +138,7 @@ const LegalKnowledgeItem = ({
           >
             {lawyerList.map(lawyer => (
               <div className={styles['lawyer-item']} key={lawyer.lawyerId}>
-                <img src={lawyer.lawyerProfileImage} alt={lawyer.lawyerName} />
+                <img src={lawyer.lawyerProfileImage || DEFAULT_PROFILE_IMAGE} alt={lawyer.lawyerName} />
                 <span>{lawyer.lawyerName} 변호사</span>
               </div>
             ))}

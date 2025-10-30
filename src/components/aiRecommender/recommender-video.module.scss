@@ -36,6 +36,13 @@
   @include ellipsis(2);
 }
 
+.description {
+  font-size: 0.875rem;
+  line-height: 1.3125rem;
+  color: $color-text-index;
+  @include ellipsis(2);
+}
+
 .video-info {
   display: flex;
   flex-direction: row;

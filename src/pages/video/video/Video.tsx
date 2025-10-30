@@ -7,11 +7,13 @@ import { useInfiniteVideoList } from '@/hooks/queries/useGetVideoList'
 import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
 import AiVideoCarousel from '@/container/recommendation/aiVideoCarousel/AiVideoCarousel'
 import styles from './video.module.scss'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const VideoLayout = () => {
   const navigate = useNavigate()
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const [sortCase, setSortCase] = useState<string>('viewCount')
+  const isMobile = useMediaQuery('(max-width: 80rem)')
 
   const { videoList, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteVideoList({
     subcategoryId: subcategoryId ? Number(subcategoryId) : undefined,
@@ -32,7 +34,7 @@ const VideoLayout = () => {
     <main className='sub-main-container'>
       <section className='contents-section'>
         <div className={styles['video-carousel-wrapper']}>
-          <AiVideoCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={10} />
+          <AiVideoCarousel subcategoryId={subcategoryId ? Number(subcategoryId) : 'all'} take={isMobile ? 3 : 6} />
         </div>
         <VideoList
           videoList={videoList}
