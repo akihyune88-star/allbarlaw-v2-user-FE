@@ -51,6 +51,7 @@ const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
         <LawyerProfile
           lawyerId={lawyerDetail?.lawyerId ?? 0}
           lawyerName={lawyerDetail?.lawyerName ?? ''}
+          lawyerProfileImage={lawyerDetail?.lawyerProfileImage ?? ''}
           discription={lawyerDetail?.lawyerDescription ?? ''}
           lawyerLawfirm={lawyerDetail?.lawfirmName ?? ''}
           lawyerAdress={lawyerDetail?.lawfirmAddress ?? ''}
