@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { LawyerBasicInfoEditResponse } from '@/types/lawyerTypes'
 import { CategoryList } from '@/types/categoryTypes'
+import { formatPhoneNumber } from '@/utils/numberFormatter'
 
 export interface BasicInfoFormData {
   greeting: string
@@ -63,12 +64,12 @@ export const useBasicInfoForm = (
         birthMonth: lawyerBasicInfo.lawyerBirthMonth || undefined,
         birthDay: lawyerBasicInfo.lawyerBirthDay || undefined,
         gender: lawyerBasicInfo.lawyerGender === 1 ? 'male' : lawyerBasicInfo.lawyerGender === 2 ? 'female' : lawyerBasicInfo.lawyerGender === 0 ? 'unknown' : '',
-        phoneNumber: lawyerBasicInfo.lawyerPhone || '',
+        phoneNumber: formatPhoneNumber(lawyerBasicInfo.lawyerPhone || ''),
         tags: lawyerBasicInfo.lawyerTags?.map(tag => tag.tagName) || [],
         lawfirmName: lawyerBasicInfo.lawyerLawfirmName || '',
         address: lawyerBasicInfo.lawyerLawfirmAddress || '',
         addressDetail: lawyerBasicInfo.lawyerLawfirmAddressDetail || '',
-        officePhone: lawyerBasicInfo.lawyerLawfirmContact || '',
+        officePhone: formatPhoneNumber(lawyerBasicInfo.lawyerLawfirmContact || ''),
         categories: mappedCategories,
       }
 
