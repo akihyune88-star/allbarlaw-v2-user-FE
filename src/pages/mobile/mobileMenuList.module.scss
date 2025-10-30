@@ -36,7 +36,6 @@
   span {
     text-align: left;
     align-self: flex-start;
-    text-decoration: underline;
 
     font-size: 0.8125rem;
     color: $color-text-index;
@@ -51,21 +50,25 @@
 
   button {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
     background-color: transparent;
     border: none;
     padding: 0;
-    width: auto;
     min-width: 3.75rem;
-    height: auto;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
     cursor: pointer;
+
+    // SvgIcon span을 flex로 중앙 정렬
+    > span {
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
   }
 
   .icon-span {
-    text-align: center;
     font-size: 0.75rem;
     white-space: nowrap;
   }

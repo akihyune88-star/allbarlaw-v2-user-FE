@@ -38,7 +38,9 @@ const SvgIcon = ({
     <span
       onClick={onClick}
       style={{
-        display: 'inline-block',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         cursor: onClick ? 'pointer' : 'default',
         color: color,
         ...style,
