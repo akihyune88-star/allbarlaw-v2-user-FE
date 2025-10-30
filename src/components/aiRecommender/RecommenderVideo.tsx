@@ -9,6 +9,7 @@ type RecommenderVideoProps = {
   videoUrl: string
   isShowTitle?: boolean
   title?: string
+  showBookmarkButton?: boolean
   description?: string
   isVideoKeep?: boolean
   videoCaseId?: number
@@ -23,12 +24,14 @@ const RecommenderVideo = ({
   videoUrl,
   isShowTitle = true,
   title,
+  description,
   isVideoKeep,
   videoCaseId,
   lawyerName,
   className,
   style,
   onClick,
+  showBookmarkButton = true,
 }: RecommenderVideoProps) => {
   const { isLoggedIn } = useAuth()
 
@@ -77,14 +80,17 @@ const RecommenderVideo = ({
             </header>
           )}
           <div className={styles['video-info']}>
-            <span className={styles['lawyer-info']}>{lawyerName} 변호사 </span>
-            <button onClick={handleVideoKeep} className={styles['bookmark-btn']}>
-              <SvgIcon
-                name='bookMark'
-                style={{ flexShrink: 0, fill: _like ? COLOR.green_01 : '#fff', cursor: 'pointer' }}
-                size={20}
-              />
-            </button>
+            {lawyerName && <span className={styles['lawyer-info']}>{lawyerName} 변호사 </span>}
+            {description && <span className={styles['description']}>{description}</span>}
+            {showBookmarkButton && (
+              <button onClick={handleVideoKeep} className={styles['bookmark-btn']}>
+                <SvgIcon
+                  name='bookMark'
+                  style={{ flexShrink: 0, fill: _like ? COLOR.green_01 : '#fff', cursor: 'pointer' }}
+                  size={20}
+                />
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -183,9 +183,7 @@ const AiRecommenderContentSlider = ({
                         key={`${slideIndex}-${index}`}
                         className={styles.slideItem}
                         style={{
-                          flex: `0 0 calc((100% - ${
-                            itemsPerSlide > 1 ? `${(itemsPerSlide - 1) * 16}px` : '0px'
-                          }) / ${itemsPerSlide})`,
+                          flex: `0 0 calc((100% - ${itemsPerSlide > 1 ? `${(itemsPerSlide - 1) * 16}px` : '0px'}) / ${itemsPerSlide})`,
                         }}
                       >
                         {child}
