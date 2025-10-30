@@ -63,14 +63,14 @@
 .mobile-video-spotlight {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   margin-top: 0.5rem;
 
   // RecommenderVideo 내부 간격 조정
   // CSS Modules 클래스명을 속성 선택자로 타겟팅
   :global {
     div[class*='text-wrapper'] {
-      gap: 12px !important; // 타이틀과 로펌네임 사이 간격
+      gap: 16px !important; // 타이틀과 로펌네임 사이 간격
     }
   }
 }

@@ -6,7 +6,6 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import PlayButton from '@/components/playButton/PlayButton'
 import { COLOR } from '@/styles/color'
 import { useNavigationHistory } from '@/hooks'
-import SvgIcon from '@/components/SvgIcon'
 import { useGetVideoCount } from '@/hooks/queries/useVideo'
 import DesktopVidoeSpotlight from './DesktopVidoeSpotlight'
 import MobileVidoeSpotlight from './MobileVidoeSpotlight'
@@ -17,7 +16,6 @@ const LawyerVideoSpotlightHeader = ({
   onPrev,
   onToggle,
   isPlaying,
-  refetch,
 }: {
   onNext?: () => void
   onPrev?: () => void
@@ -25,8 +23,6 @@ const LawyerVideoSpotlightHeader = ({
   isPlaying?: boolean
   refetch?: () => void
 }) => {
-  const isMobile = useMediaQuery('(max-width: 80rem)')
-
   const { data: totalVideoCount } = useGetVideoCount({
     subcategoryId: 'all',
     recentDays: 'all',
