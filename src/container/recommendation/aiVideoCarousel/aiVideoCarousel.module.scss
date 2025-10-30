@@ -1,0 +1,8 @@
+.videoItem {
+  min-width: 0 !important;
+  width: 100%;
+
+  & > div {
+    min-width: 0 !important;
+  }
+}

@@ -55,12 +55,20 @@
   width: 100%;
 
   @media (max-width: $breakpoint-desktop) {
-    gap: 0;
+    gap: 8px;
   }
 }
 
 .slideItem {
   min-width: 0;
+  box-sizing: border-box;
+  flex-shrink: 0;
+
+  // 자식 VideoThumbnail의 min-width 오버라이드
+  > * {
+    min-width: 0 !important;
+    width: 100%;
+  }
 }
 
 .pagination {
