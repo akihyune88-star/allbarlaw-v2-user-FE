@@ -11,7 +11,7 @@ const MobileMenuList = () => {
 
   const handleMyPage = () => navigate(ROUTER.MYPAGE)
   const handleChat = () => navigate(ROUTER.CHAT)
-  const handleLawfirm = () => navigate(ROUTER.LAW_FIRM)
+  const handleNotice = () => navigate(ROUTER.SUPPORT_NOTICE)
   const handleFaq = () => navigate(ROUTER.FAQ)
 
   const { data: categoryList } = useCategory()
@@ -44,8 +44,8 @@ const MobileMenuList = () => {
         <SearchInput />
         <button className={styles['mobile-menu-list-button']}>올바로 소개</button>
         <div className={styles['mobile-menu-list-button-container']}>
-          <button className={styles['mobile-menu-list-button']} onClick={handleLawfirm} disabled={true}>
-            로펌/법률사무소
+          <button className={styles['mobile-menu-list-button']} onClick={handleNotice} disabled={true}>
+            공지사항
           </button>
           <button className={styles['mobile-menu-list-button']} onClick={handleFaq}>
             FAQ
