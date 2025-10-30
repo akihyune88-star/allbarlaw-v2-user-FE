@@ -7,10 +7,14 @@ import { useAuth } from '@/contexts/AuthContext'
 const MobileHeader = () => {
   const navigate = useNavigate()
   const { isLoggedIn, logout } = useAuth()
+  const isMobileMenuList = location.pathname === ROUTER.MOBILE_MENU_LIST
 
   const handleLogout = () => {
     logout()
     navigate(ROUTER.MAIN)
+  }
+  const handleAccountEdit = () => {
+    navigate(ROUTER.ACCOUNT_EDIT)
   }
 
   return (
@@ -21,12 +25,15 @@ const MobileHeader = () => {
       </div>
       <div>
         {isLoggedIn ? (
-          <button onClick={handleLogout}>
-            <span>로그아웃</span>
-          </button>
+          <>
+            {isMobileMenuList && <button onClick={handleAccountEdit}>내정보 수정</button>}
+            <button onClick={handleLogout}>
+              <span>로그아웃</span>
+            </button>
+          </>
         ) : (
           <button onClick={() => navigate(ROUTER.AUTH)}>
-            <span>로그인</span> | <span>회원가입</span>
+            <span>로그인</span> | <span>마이페이지</span>
           </button>
         )}
         <SvgIcon name='search' onClick={() => navigate(ROUTER.SEARCH_MAIN)} />

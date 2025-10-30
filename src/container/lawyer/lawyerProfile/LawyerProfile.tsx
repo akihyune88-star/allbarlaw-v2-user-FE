@@ -10,6 +10,7 @@ import { LOCAL } from '@/constants/local'
 import { useNavigate } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useSearchStore } from '@/stores/searchStore'
+import defaultProfileImage from '@/assets/imgs/allbarlaw-logo.png'
 
 type LawyerProfileProps = {
   discription: string
@@ -18,12 +19,14 @@ type LawyerProfileProps = {
   lawyerId: number
   lawyerName: string
   lawfirmContact: string
+  lawyerProfileImage: string
   tags: { id: number; name: string }[] | []
 }
 
 const LawyerProfile = ({
   discription,
   lawyerLawfirm,
+  lawyerProfileImage,
   lawyerAdress,
   lawyerId,
   lawyerName,
@@ -62,7 +65,7 @@ const LawyerProfile = ({
             lawyerId={lawyerId}
             name={lawyerName}
             lawfirm={lawyerLawfirm}
-            profileImage='https://picsum.photos/200/300'
+            profileImage={lawyerProfileImage || defaultProfileImage}
             socialLink={[{ type: 'naver', link: 'https://www.naver.com' }]}
             buttonComponent={
               <button

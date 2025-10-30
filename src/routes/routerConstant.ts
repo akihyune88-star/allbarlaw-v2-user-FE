@@ -19,6 +19,7 @@ export const ROUTER = {
   MYPAGE: '/mypage',
   KEEP_LIST: 'keep-list',
   CHAT_LIST: 'chat-list',
+  ACCOUNT_EDIT: 'account-edit',
 
   SUPPORT: '/support',
   ABOUT: '/about',

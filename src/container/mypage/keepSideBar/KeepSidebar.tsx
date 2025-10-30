@@ -26,6 +26,7 @@ const KeepSidebar = ({ buttonList, activeButton, setActiveButton, count }: KeepS
           onClick={() => setActiveButton(button)}
         >
           {button}
+          <br />
           <span className={styles.count}>({countList[index].toLocaleString()})</span>
         </button>
       ))}

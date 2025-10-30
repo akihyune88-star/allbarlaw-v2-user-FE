@@ -46,6 +46,10 @@
   }
 }
 
+.tabButtonText {
+  word-break: keep-all;
+}
+
 .sortWrapper {
   display: flex;
   gap: 0.6875rem;
