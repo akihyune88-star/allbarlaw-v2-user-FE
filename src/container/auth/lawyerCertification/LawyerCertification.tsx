@@ -35,7 +35,7 @@ function LawyerCertification<
 
     const options = []
     for (let i = selectedExam.minNumber; i <= selectedExam.maxNumber; i++) {
-      options.push({ value: String(i), label: `${i}기` })
+      options.push({ value: String(i), label: `${i}회` })
     }
     return options
   }, [selectedExamType, examData])
@@ -109,11 +109,13 @@ function LawyerCertification<
     if (limitedNumbers.startsWith('02')) {
       if (limitedNumbers.length <= 2) {
         return limitedNumbers
-      } else if (limitedNumbers.length <= 6) {
+      } else if (limitedNumbers.length <= 5) {
         return `${limitedNumbers.slice(0, 2)}-${limitedNumbers.slice(2)}`
-      } else if (limitedNumbers.length <= 9) {
-        return `${limitedNumbers.slice(0, 2)}-${limitedNumbers.slice(2, 6)}-${limitedNumbers.slice(6)}`
+      } else if (limitedNumbers.length === 9) {
+        // 02-XXX-XXXX (9자리)
+        return `${limitedNumbers.slice(0, 2)}-${limitedNumbers.slice(2, 5)}-${limitedNumbers.slice(5, 9)}`
       } else {
+        // 02-XXXX-XXXX (10자리)
         return `${limitedNumbers.slice(0, 2)}-${limitedNumbers.slice(2, 6)}-${limitedNumbers.slice(6, 10)}`
       }
     }
@@ -121,17 +123,39 @@ function LawyerCertification<
     // 그 외 (휴대폰 010, 지역번호 031 등)
     if (limitedNumbers.length <= 3) {
       return limitedNumbers
-    } else if (limitedNumbers.length <= 7) {
+    } else if (limitedNumbers.length <= 6) {
       return `${limitedNumbers.slice(0, 3)}-${limitedNumbers.slice(3)}`
-    } else if (limitedNumbers.length <= 10) {
-      return `${limitedNumbers.slice(0, 3)}-${limitedNumbers.slice(3, 7)}-${limitedNumbers.slice(7)}`
+    } else if (limitedNumbers.length === 10) {
+      // 0XX-XXX-XXXX (10자리)
+      return `${limitedNumbers.slice(0, 3)}-${limitedNumbers.slice(3, 6)}-${limitedNumbers.slice(6, 10)}`
     } else {
+      // 0XX-XXXX-XXXX (11자리)
       return `${limitedNumbers.slice(0, 3)}-${limitedNumbers.slice(3, 7)}-${limitedNumbers.slice(7, 11)}`
     }
   }
 
   const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatPhoneNumber(e.target.value)
+    const inputValue = e.target.value
+
+    // 삭제 동작 감지 (이전 값보다 짧아진 경우)
+    if (inputValue.length < phoneNumber.length) {
+      // 마지막 문자가 하이픈이면 하이픈 앞의 숫자까지 제거
+      if (inputValue.endsWith('-')) {
+        const withoutHyphen = inputValue.slice(0, -1)
+        setPhoneNumber(withoutHyphen)
+
+        const { onChange } = register('lawyerContact' as Path<T>)
+        onChange({
+          target: {
+            name: 'lawyerContact',
+            value: withoutHyphen,
+          },
+        } as any)
+        return
+      }
+    }
+
+    const formatted = formatPhoneNumber(inputValue)
     setPhoneNumber(formatted)
 
     // react-hook-form에 값 전달 (하이픈 포함)
@@ -201,7 +225,7 @@ function LawyerCertification<
           </select>
         </LabelInput>
         <LabelInput
-          label='출신시험 기수'
+          label='출신시험 회차'
           isError={!!errors.lawyerBarExamNumber}
           message={(errors.lawyerBarExamNumber as any)?.message}
         >
@@ -212,7 +236,7 @@ function LawyerCertification<
             disabled={!selectedExamType}
           >
             <option value='' disabled>
-              {!selectedExamType ? '먼저 시험 유형을 선택하세요' : '기수를 선택하세요'}
+              {!selectedExamType ? '먼저 시험 유형을 선택하세요' : '회차 선택하세요'}
             </option>
             {examNumberOptions.map(option => (
               <option key={option.value} value={option.value}>

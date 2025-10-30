@@ -17,7 +17,7 @@ export const mobileBottomTapList: MobileBottomTap[] = [
   },
   {
     path: ROUTER.REQUEST_BARO_TALK,
-    name: '상담',
+    name: '바로톡',
     icon: 'talk',
     activeIcon: 'activeTalk',
   },
