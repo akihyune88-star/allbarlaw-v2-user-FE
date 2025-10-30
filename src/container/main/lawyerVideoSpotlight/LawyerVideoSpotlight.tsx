@@ -10,6 +10,7 @@ import SvgIcon from '@/components/SvgIcon'
 import { useGetVideoCount } from '@/hooks/queries/useVideo'
 import DesktopVidoeSpotlight from './DesktopVidoeSpotlight'
 import MobileVidoeSpotlight from './MobileVidoeSpotlight'
+import Divider from '@/components/divider/Divider'
 
 const LawyerVideoSpotlightHeader = ({
   onNext,
@@ -45,17 +46,17 @@ const LawyerVideoSpotlightHeader = ({
           <span className={styles['count-number']}>최근 한달 {recentMonthVideoCount?.toLocaleString()}개</span>
         </div>
       </div>
-      {!isMobile ? (
-        <PlayButton
-          iconColor={COLOR.text_black}
-          onNext={onNext}
-          onPrev={onPrev}
-          onToggle={onToggle}
-          isPlaying={isPlaying}
-        />
-      ) : (
+      {/* {!isMobile ? ( */}
+      <PlayButton
+        iconColor={COLOR.text_black}
+        onNext={onNext}
+        onPrev={onPrev}
+        onToggle={onToggle}
+        isPlaying={isPlaying}
+      />
+      {/* ) : (
         <SvgIcon name='refresh' size={16} onClick={refetch} style={{ cursor: 'pointer' }} />
-      )}
+      )} */}
     </header>
   )
 }
@@ -191,7 +192,10 @@ const LawyerVideoSpotlight = () => {
         handleVideoClick={handleVideoClick}
       />
       {isMobile ? (
-        <MobileVidoeSpotlight excludeIds={currentExcludeIds.slice(0, 10)} handleVideoClick={handleVideoClick} />
+        <>
+          <Divider padding={0} />
+          <MobileVidoeSpotlight excludeIds={currentExcludeIds.slice(0, 10)} handleVideoClick={handleVideoClick} />
+        </>
       ) : null}
     </section>
   )

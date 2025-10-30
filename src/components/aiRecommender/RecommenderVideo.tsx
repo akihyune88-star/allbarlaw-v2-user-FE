@@ -28,6 +28,7 @@ const RecommenderVideo = ({
   isVideoKeep,
   videoCaseId,
   lawyerName,
+  lawfirmName,
   className,
   style,
   onClick,
@@ -80,7 +81,11 @@ const RecommenderVideo = ({
             </header>
           )}
           <div className={styles['video-info']}>
-            {lawyerName && <span className={styles['lawyer-info']}>{lawyerName} 변호사 </span>}
+            {lawyerName && (
+              <span className={styles['lawyer-info']}>
+                {lawyerName} 변호사 {lawfirmName && `[${lawfirmName}]`}{' '}
+              </span>
+            )}
             {description && <span className={styles['description']}>{description}</span>}
             {showBookmarkButton && (
               <button onClick={handleVideoKeep} className={styles['bookmark-btn']}>

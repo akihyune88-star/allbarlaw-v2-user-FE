@@ -1,6 +1,6 @@
-import VideoHorizon from '@/components/video/VideoHorizon'
-import VideoThumbnail from '@/components/video/VideoThumbnail'
+import RecommenderVideo from '@/components/aiRecommender/RecommenderVideo'
 import { useRandomVideoList } from '@/hooks/queries/useRandomVideoList'
+import styles from './lawyer-video-spotlight.module.scss'
 
 interface MobileVidoeSpotlightProps {
   excludeIds: number[]
@@ -16,16 +16,16 @@ const MobileVidoeSpotlight = ({ excludeIds, handleVideoClick }: MobileVidoeSpotl
   })
 
   return (
-    <div>
+    <div className={styles['mobile-video-spotlight']}>
       {videoList?.map(video => (
         <div key={video.videoCaseId}>
-          <VideoHorizon
-            videoCaseId={video.videoCaseId}
-            isKeep={video.isKeep}
-            // size='re'
-            thumbnailUrl={video.thumbnail}
+          <RecommenderVideo
+            key={video.videoCaseId}
+            videoUrl={video.thumbnail}
             title={video.title}
-            summaryContents={video.summaryContent}
+            showBookmarkButton={false}
+            lawyerName={video.lawyerName}
+            lawfirmName={video.lawfirmName}
             onClick={() => handleVideoClick(video.subcategoryId, video.videoCaseId)}
           />
         </div>
