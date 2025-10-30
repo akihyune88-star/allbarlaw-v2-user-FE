@@ -72,6 +72,7 @@ import LawyerLegalKnowledgeList from '@/pages/lawyerAdmin/lawyerContents/lawyerL
 import LawyerLegalKnowledgeDetail from '@/pages/lawyerAdmin/lawyerContents/lawyerLegalKnowledge/lawyerLegalKnowledgeDetail/LawyerLegalKnowledgeDetail'
 import { COLOR } from '@/styles/color'
 import LawyerAccountEdit from '@/pages/lawyerAdmin/lawyerAccountEdit/LawyerAccountEdit'
+import AccountEdit from '@/container/mypage/accountEdit/AccountEdit'
 
 const router = createBrowserRouter([
   {
@@ -217,6 +218,10 @@ const router = createBrowserRouter([
                 <Mypage />
               </ProtectedRoute>
             ),
+          },
+          {
+            path: ROUTER.ACCOUNT_EDIT,
+            element: <AccountEdit />,
           },
           {
             path: ROUTER.LEGAL_DICTIONARY,
