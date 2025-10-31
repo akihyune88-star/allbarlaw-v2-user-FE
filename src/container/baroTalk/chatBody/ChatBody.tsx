@@ -30,16 +30,20 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
   // Zustand 전역 상태 구독
   const messageCache = useSocketStore(state => state.messageCache)
   const messages = chatRoomId ? messageCache[chatRoomId] || [] : []
-  const chatStatus = useChatStatus()
+  const chatStatusFromHook = useChatStatus()
+  const roomInfo = useRoomInfo()
+  // roomInfo가 있으면 거기서 상태를 가져오고, 없으면 hook의 상태 사용
+  const chatStatus = roomInfo?.chatRoomStatus || chatStatusFromHook
   const socket = useSocket()
   const isConnected = useIsConnected()
-  const roomInfo = useRoomInfo()
   const addMessageToRoom = useSocketStore(state => state.addMessageToRoom)
   const setTempIdMapping = useSetTempIdMapping()
   const { getUserIdFromToken } = useAuth()
   const userId = getUserIdFromToken()
 
   const [message, setMessage] = useState('')
+  const [editingMessageId, setEditingMessageId] = useState<number | null>(null)
+  const [editingContent, setEditingContent] = useState('')
   const isMobile = useMediaQuery('(max-width: 768px)')
   const chatBodyRef = useRef<HTMLDivElement>(null)
 
@@ -121,6 +125,33 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
       e.preventDefault()
       handleSendMessage()
     }
+  }
+
+  // 메시지 수정 시작
+  const handleStartEdit = (messageId: number, content: string) => {
+    setEditingMessageId(messageId)
+    setEditingContent(content)
+  }
+
+  // 메시지 수정 취소
+  const handleCancelEdit = () => {
+    setEditingMessageId(null)
+    setEditingContent('')
+  }
+
+  // 메시지 수정 완료
+  const handleConfirmEdit = () => {
+    if (!socket || !editingMessageId || !chatRoomId) return
+
+    // 서버에 메시지 수정 요청
+    socket.emit('updateMessage', {
+      chatRoomId,
+      messageId: editingMessageId,
+      content: editingContent.trim(),
+    })
+
+    setEditingMessageId(null)
+    setEditingContent('')
   }
 
   // 채팅 입력창 렌더링 함수들
@@ -225,23 +256,104 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
 
               const isMyMessage = msg.chatMessageSenderType === type
               const isReadByOther = isMyMessage ? msg.chatMessageIsRead || false : false
+              const isEditing = editingMessageId === msg.chatMessageId
+
+              // 수정하기 버튼 표시 조건: 변호사가 보낸 메시지 + CONSULTING 상태 + 유저가 아직 읽지 않음
+              const showEditButton =
+                isLawyer &&
+                isMyMessage &&
+                chatStatus === 'CONSULTING' &&
+                !msg.chatMessageIsRead
+
+              // 수정 중인 메시지는 입력창으로 표시
+              if (isEditing) {
+                return (
+                  <div key={msg.chatMessageId} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-end', marginBottom: '1rem', justifyContent: 'flex-end' }}>
+                    <textarea
+                      value={editingContent}
+                      onChange={e => setEditingContent(e.target.value)}
+                      style={{
+                        flex: 1,
+                        maxWidth: '400px',
+                        minHeight: '80px',
+                        padding: '0.75rem',
+                        borderRadius: '12px',
+                        border: '2px solid #20BF62',
+                        fontSize: '0.875rem',
+                        resize: 'vertical',
+                      }}
+                      autoFocus
+                    />
+                    <button
+                      onClick={handleConfirmEdit}
+                      style={{
+                        padding: '0.5rem 1rem',
+                        backgroundColor: '#20BF62',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '0.875rem',
+                        fontWeight: 600,
+                      }}
+                    >
+                      확인
+                    </button>
+                    <button
+                      onClick={handleCancelEdit}
+                      style={{
+                        padding: '0.5rem 1rem',
+                        backgroundColor: '#E0E0E0',
+                        color: '#666',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '0.875rem',
+                      }}
+                    >
+                      취소
+                    </button>
+                  </div>
+                )
+              }
 
               return (
-                <ChatBubble
-                  key={msg.chatMessageId}
-                  message={msg.chatMessageContent}
-                  direction={isMyMessage ? 'right' : 'left'}
-                  color={isMyMessage ? COLOR.green_01 : COLOR.white}
-                  colorText={isMyMessage ? COLOR.white : COLOR.black}
-                  profileImage={msg.chatMessageSenderType === 'LAWYER' ? 'https://picsum.photos/200/300' : undefined}
-                  isRead={isReadByOther}
-                  showReadStatus={isMyMessage}
-                  status={msg.status || 'sent'}
-                >
-                  <div>
-                    <span>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
-                  </div>
-                </ChatBubble>
+                <div key={msg.chatMessageId} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', marginBottom: '1rem', flexDirection: isMyMessage ? 'row-reverse' : 'row' }}>
+                  <ChatBubble
+                    message={msg.chatMessageContent}
+                    direction={isMyMessage ? 'right' : 'left'}
+                    color={isMyMessage ? COLOR.green_01 : COLOR.white}
+                    colorText={isMyMessage ? COLOR.white : COLOR.black}
+                    profileImage={msg.chatMessageSenderType === 'LAWYER' ? 'https://picsum.photos/200/300' : undefined}
+                    isRead={isReadByOther}
+                    showReadStatus={isMyMessage}
+                    status={msg.status || 'sent'}
+                  >
+                    <div>
+                      <span>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
+                    </div>
+                  </ChatBubble>
+                  {showEditButton && (
+                    <button
+                      onClick={() => handleStartEdit(msg.chatMessageId, msg.chatMessageContent)}
+                      style={{
+                        padding: '0.25rem 0.75rem',
+                        backgroundColor: 'white',
+                        color: '#20BF62',
+                        border: '1px solid #20BF62',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        whiteSpace: 'nowrap',
+                        alignSelf: 'flex-end',
+                        marginBottom: '2rem',
+                      }}
+                    >
+                      수정하기
+                    </button>
+                  )}
+                </div>
               )
             })
           )}

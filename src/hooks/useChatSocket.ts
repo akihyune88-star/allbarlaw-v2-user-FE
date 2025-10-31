@@ -403,12 +403,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         tempId: data.tempId,
         messageId: data.messageId,
         chatRoomId: responseChatRoomId,
+        fullData: data,
       })
 
       updateMessageByTempIdInRoom(responseChatRoomId, data.tempId, {
         chatMessageId: data.messageId,
         status: 'sent',
         tempId: undefined,
+        ...(data.chatMessageIsRead !== undefined && { chatMessageIsRead: data.chatMessageIsRead }),
       })
 
       // 매핑 제거 (메모리 정리)
@@ -624,11 +626,28 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       timestamp: string
     }) => {
       console.log('🔄 [SOCKET] 채팅방 상태 변경 이벤트:', data)
+      console.log('🔍 [SOCKET] 현재 chatRoomId:', chatRoomId)
+      console.log('🔍 [SOCKET] 비교:', data.chatRoomId, '===', chatRoomId, '?', data.chatRoomId === chatRoomId)
 
       // 현재 채팅방의 상태 변경인지 확인
       if (data.chatRoomId === chatRoomId) {
         setChatStatus(data.chatRoomStatus)
         console.log(`✅ [SOCKET] 채팅방 ${data.chatRoomId} 상태가 ${data.chatRoomStatus}로 변경됨`)
+      } else {
+        console.log(`⚠️ [SOCKET] 다른 채팅방의 상태 변경 이벤트 (현재: ${chatRoomId}, 이벤트: ${data.chatRoomId})`)
+
+        // chatRoomId가 null이면 전역 소켓이므로 roomInfo를 업데이트
+        if (chatRoomId === null) {
+          console.log('🔄 [SOCKET] 전역 소켓 - roomInfo 상태 업데이트 시도')
+          const currentRoomInfo = useSocketStore.getState().roomInfo
+          if (currentRoomInfo && currentRoomInfo.chatRoomId === data.chatRoomId) {
+            useSocketStore.getState().setRoomInfo({
+              ...currentRoomInfo,
+              chatRoomStatus: data.chatRoomStatus,
+            })
+            console.log(`✅ [SOCKET] roomInfo 상태 업데이트: ${data.chatRoomStatus}`)
+          }
+        }
       }
     }
 

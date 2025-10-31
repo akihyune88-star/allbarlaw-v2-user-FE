@@ -143,8 +143,8 @@ const ChatList = ({ onChatRoomClick }: ChatListProps) => {
                   <LawyerChatItem
                     name={chatRoom.chatRoomLawyer.lawyerName}
                     profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
-                    lastMessage={chatRoom.chatRoomLastMessage.chatMessageContent}
-                    lastMessageTime={chatRoom.chatRoomLastMessage.chatMessageCreatedAt}
+                    lastMessage={chatRoom.chatRoomLastMessage?.chatMessageContent || '메시지 없음'}
+                    lastMessageTime={chatRoom.chatRoomLastMessage?.chatMessageCreatedAt || new Date().toISOString()}
                     partnerOnlineStatus={chatRoom.partnerOnlineStatus || 'offline'}
                   />
                   {index !== chatRooms.length - 1 && <Divider padding={0} />}

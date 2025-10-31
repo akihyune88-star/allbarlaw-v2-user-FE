@@ -238,3 +238,17 @@ export type UserLeftData = {
   leftUserType?: 'USER' | 'LAWYER'
   leftUserName?: string
 }
+
+export type PatchMessageRequest = {
+  messageId: number
+  messageContent: string
+  userId: number
+}
+
+export type PatchMessageResponse = {
+  chatMessageId: number
+  chatMessageContent: string
+  chatMessageIsRead: boolean
+  chatMessageUpdatedAt: string
+  success: boolean
+}
