@@ -304,7 +304,7 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
                 color: '#333',
               }}
             >
-              🔄 자동 새로고침
+              자동 새로고침
             </label>
             <select
               id='polling-interval'
@@ -324,9 +324,9 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
                 boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
                 appearance: 'none',
                 backgroundImage:
-                  'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' ' +
-                  'width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath fill=\'%23666\' ' +
-                  'd=\'M6 9L1 4h10z\'/%3E%3C/svg%3E")',
+                  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' " +
+                  "width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' " +
+                  "d='M6 9L1 4h10z'/%3E%3C/svg%3E\")",
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'right 0.75rem center',
               }}
@@ -339,15 +339,15 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
                 e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)'
               }}
             >
-              <option value={1}>1분마다</option>
-              <option value={5}>5분마다</option>
-              <option value={10}>10분마다</option>
-              <option value={30}>30분마다</option>
+              <option value={1}>1분</option>
+              <option value={5}>5분</option>
+              <option value={10}>10분</option>
+              <option value={30}>30분</option>
             </select>
           </div>
         </div>
 
-        <table className={styles.table} style={{ backgroundColor: 'white' }}>
+        <table className={styles.table}>
           <thead>
             <tr>
               <th className={styles.clipColumn}></th>
