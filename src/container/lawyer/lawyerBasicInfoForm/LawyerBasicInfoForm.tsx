@@ -215,13 +215,14 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
           <input
             className={styles.input}
             type='text'
+            disabled={true}
             placeholder='사무실명을 입력해주세요'
             value={formData.lawfirmName}
             onChange={e => onInputChange('lawfirmName', e.target.value)}
             style={{ borderColor: errors.lawfirmName ? '#ff4d4f' : undefined }}
           />
           <div className={styles.errorWrapper}>
-            {errors.lawfirmName && <span className={styles.error}>{errors.lawfirmName}</span>}
+            <span className={styles.helperText}>로펌 사무실 이름은 변호사 회원정보에서 수정이 가능합니다.</span>
           </div>
         </div>
       </div>
@@ -276,9 +277,10 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             onChange={handleOfficePhoneChange}
             style={{ borderColor: errors.officePhone ? '#ff4d4f' : undefined }}
             maxLength={13}
+            disabled={true}
           />
           <div className={styles.errorWrapper}>
-            {errors.officePhone && <span className={styles.error}>{errors.officePhone}</span>}
+            <span className={styles.helperText}>사무실 연락처는 변호사 회원정보에서 수정이 가능합니다.</span>
           </div>
         </div>
       </div>
