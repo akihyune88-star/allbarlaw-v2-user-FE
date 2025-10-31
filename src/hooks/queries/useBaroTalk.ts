@@ -95,7 +95,11 @@ export const useUpdateChatRoomStatus = (options?: UseCreateBaroTalkOptions) => {
   })
 }
 
-export const useGetLawyerChatList = (lawyerId: number, request: { take: number; sort: string; page?: number }) => {
+export const useGetLawyerChatList = (
+  lawyerId: number,
+  request: { take: number; sort: string; page?: number },
+  refetchInterval?: number
+) => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.LAWYER_CHAT_LIST, lawyerId, request],
     queryFn: ({ pageParam = 1 }) =>
@@ -114,6 +118,7 @@ export const useGetLawyerChatList = (lawyerId: number, request: { take: number; 
     gcTime: 0, // 가비지 컬렉션 즉시 실행
     refetchOnMount: true, // 컴포넌트 마운트 시 항상 refetch
     refetchOnWindowFocus: true, // 윈도우 포커스 시 refetch
+    refetchInterval, // 폴링 간격 (밀리초)
   })
 }
 
