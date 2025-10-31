@@ -29,6 +29,8 @@ const MyChatList = ({ sort, year, month, onYearChange, onMonthChange }: MyChatLi
   const [editContent, setEditContent] = useState('')
   const [editTitle, setEditTitle] = useState('')
   const [editConsultationRequestId, setEditConsultationRequestId] = useState<number | null>(null)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const navigate = useNavigate()
@@ -76,7 +78,21 @@ const MyChatList = ({ sort, year, month, onYearChange, onMonthChange }: MyChatLi
   }
 
   const handleDeleteConsultation = (consultationRequestId: number) => {
-    changeConsultationStatus({ consultationRequestId, consultationRequestStatus: 'DELETED' })
+    setDeleteTargetId(consultationRequestId)
+    setDeleteModalOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    if (deleteTargetId) {
+      changeConsultationStatus({ consultationRequestId: deleteTargetId, consultationRequestStatus: 'DELETED' })
+      setDeleteModalOpen(false)
+      setDeleteTargetId(null)
+    }
+  }
+
+  const handleCancelDelete = () => {
+    setDeleteModalOpen(false)
+    setDeleteTargetId(null)
   }
 
   const handleHideConsultation = (consultationRequestId: number) => {
@@ -110,6 +126,20 @@ const MyChatList = ({ sort, year, month, onYearChange, onMonthChange }: MyChatLi
   return (
     <>
       <AlertModal isOpen={alertOpen} onClose={() => setAlertOpen(false)} message={alertMessage} confirmText='확인' />
+
+      <Modal isOpen={deleteModalOpen} onClose={handleCancelDelete}>
+        <div className={styles['myChatList-edit-modal']}>
+          <h3>정말 삭제하시겠습니까?</h3>
+          <p style={{ margin: '1rem 0', textAlign: 'center' }}>삭제된 상담 내역은 복구할 수 없습니다.</p>
+          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+            <button onClick={handleCancelDelete} style={{ backgroundColor: COLOR.bg_gray_disable, border: 'none' }}>
+              취소
+            </button>
+            <button onClick={handleConfirmDelete}>삭제</button>
+          </div>
+        </div>
+      </Modal>
+
       <Modal isOpen={editModalOpen} onClose={() => setEditModalOpen(false)}>
         <div className={styles['myChatList-edit-modal']}>
           <h3>상담 내용 수정</h3>
