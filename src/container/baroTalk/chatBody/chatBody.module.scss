@@ -106,6 +106,57 @@
   background-color: white;
 }
 
+// 변호사 채팅 페이지에서만 입력창 하단 고정
+:global(.lawyer-chat-page) {
+  .chat-body-wrapper {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    min-height: 0 !important;
+    padding-bottom: 4rem !important; // 입력창 높이만큼 여유 공간
+  }
+
+  .chatBody {
+    height: auto !important;
+    flex: none !important;
+  }
+
+  .chat-input {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    flex-shrink: 0 !important;
+    background-color: white !important;
+    z-index: 10 !important;
+  }
+
+  .chat-disabled,
+  .chat-partial-left {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    flex-shrink: 0 !important;
+    background-color: white !important;
+    z-index: 10 !important;
+  }
+
+  .waiting-chat-wrapper {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    flex-shrink: 0 !important;
+    background-color: white !important;
+    z-index: 10 !important;
+  }
+
+  // chat-content가 relative position을 가지도록
+  :global(.chat-content) {
+    position: relative !important;
+  }
+}
+
 @media (max-width: $breakpoint-desktop) {
   .chat-input {
     position: fixed;

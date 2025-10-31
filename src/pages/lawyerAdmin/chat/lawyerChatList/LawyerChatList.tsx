@@ -3,10 +3,11 @@ import styles from './lawyerChatList.module.scss'
 import SvgIcon from '@/components/SvgIcon'
 import { useGetLawyerChatList } from '@/hooks/queries/useBaroTalk'
 import { useAuth } from '@/contexts/AuthContext'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { toggleClipChatRoom, isClippedChatRoom, sortChatRoomsByClip } from '@/utils/localStorage'
 import HeaderPortal from '@/components/headerPortal/HeaderPortal'
 import ChatModal from '@/components/chatModal/ChatModal'
+import Tabs from '@/components/tabs/Tabs'
 
 interface LawyerChatListProps {
   onChatRoomSelect?: (_chatRoomId: number) => void
@@ -32,6 +33,12 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
   const [openModals, setOpenModals] = useState<ChatModalState[]>([])
   const [nextZIndex, setNextZIndex] = useState(1000)
 
+  // 폴링 간격 상태 (분 단위, 밀리초로 변환)
+  const [pollingInterval, setPollingInterval] = useState<number>(5)
+
+  // 탭 상태 (전체/진행중/종료)
+  const [selectedTab, setSelectedTab] = useState<string>('all')
+
   // 초기 마운트 시 한 번만 로그
   useEffect(() => {
     console.log('📋 [LAWYER LIST] 컴포넌트 초기화 완료:', { lawyerId })
@@ -43,7 +50,8 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
       take: 20,
       sort: 'desc',
       page: 1,
-    }
+    },
+    pollingInterval * 60 * 1000 // 분을 밀리초로 변환하여 refetchInterval로 전달
   )
 
   // IntersectionObserver를 사용한 무한스크롤
@@ -76,7 +84,28 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
 
   // 모든 페이지의 채팅방 데이터를 하나의 배열로 합치기
   const allChatRooms = data?.pages.flatMap((page: any) => page.chatRooms) || []
-  const chatRooms = sortChatRoomsByClip(allChatRooms)
+
+  // 탭에 따라 필터링
+  const filteredChatRooms = useMemo(() => {
+    let filtered = allChatRooms
+
+    if (selectedTab === 'active') {
+      // 진행중: PENDING, ACTIVE, CONSULTING, PARTIAL_LEFT
+      filtered = allChatRooms.filter((room: LawyerChatRoom) =>
+        ['PENDING', 'ACTIVE', 'CONSULTING', 'PARTIAL_LEFT'].includes(room.chatRoomStatus)
+      )
+    } else if (selectedTab === 'completed') {
+      // 종료: COMPLETED, CANCELLED, REJECTED
+      filtered = allChatRooms.filter((room: LawyerChatRoom) =>
+        ['COMPLETED', 'CANCELLED', 'REJECTED'].includes(room.chatRoomStatus)
+      )
+    }
+    // 'all'이면 모든 채팅방 표시
+
+    return filtered
+  }, [allChatRooms, selectedTab])
+
+  const chatRooms = sortChatRoomsByClip(filteredChatRooms)
 
   const getStatusBadge = (status: ChatRoomStatus) => {
     switch (status) {
@@ -239,6 +268,85 @@ const LawyerChatList = ({ onChatRoomSelect }: LawyerChatListProps) => {
       </HeaderPortal>
 
       <div className={styles.container}>
+        {/* 탭과 폴링 간격 선택 */}
+        <div
+          style={{
+            marginBottom: '1.5rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          {/* 탭 */}
+          <Tabs
+            selectedPath={selectedTab}
+            onChange={path => setSelectedTab(path)}
+            items={[
+              { path: 'all', name: '전체' },
+              { path: 'active', name: '진행중' },
+              { path: 'completed', name: '종료' },
+            ]}
+          />
+
+          {/* 폴링 간격 선택 */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+            }}
+          >
+            <label
+              htmlFor='polling-interval'
+              style={{
+                fontSize: '0.875rem',
+                fontWeight: 500,
+                color: '#333',
+              }}
+            >
+              자동 새로고침
+            </label>
+            <select
+              id='polling-interval'
+              value={pollingInterval}
+              onChange={e => setPollingInterval(Number(e.target.value))}
+              style={{
+                padding: '0.625rem 2.5rem 0.625rem 1rem',
+                border: '1px solid #e0e0e0',
+                borderRadius: '8px',
+                fontSize: '0.875rem',
+                fontWeight: 500,
+                cursor: 'pointer',
+                backgroundColor: 'white',
+                color: '#333',
+                outline: 'none',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+                appearance: 'none',
+                backgroundImage:
+                  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' " +
+                  "width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' " +
+                  "d='M6 9L1 4h10z'/%3E%3C/svg%3E\")",
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right 0.75rem center',
+              }}
+              onMouseOver={e => {
+                e.currentTarget.style.borderColor = '#20BF62'
+                e.currentTarget.style.boxShadow = '0 2px 6px rgba(32, 191, 98, 0.15)'
+              }}
+              onMouseOut={e => {
+                e.currentTarget.style.borderColor = '#e0e0e0'
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)'
+              }}
+            >
+              <option value={1}>1분</option>
+              <option value={5}>5분</option>
+              <option value={10}>10분</option>
+              <option value={30}>30분</option>
+            </select>
+          </div>
+        </div>
+
         <table className={styles.table}>
           <thead>
             <tr>

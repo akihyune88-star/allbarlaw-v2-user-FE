@@ -403,12 +403,14 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         tempId: data.tempId,
         messageId: data.messageId,
         chatRoomId: responseChatRoomId,
+        fullData: data,
       })
 
       updateMessageByTempIdInRoom(responseChatRoomId, data.tempId, {
         chatMessageId: data.messageId,
         status: 'sent',
         tempId: undefined,
+        ...(data.chatMessageIsRead !== undefined && { chatMessageIsRead: data.chatMessageIsRead }),
       })
 
       // 매핑 제거 (메모리 정리)
@@ -472,48 +474,62 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
     // 상대방 퇴장 처리 (새로운 API)
     const handleUserLeft = (data: UserLeftData) => {
-      // 내가 나간 경우와 상대방이 나간 경우 구분
-      const currentUserLeft = (isLawyer && data.lawyerLeft) || (!isLawyer && data.userLeft)
+      console.log('👋 [SOCKET] userLeft 이벤트 수신:', data)
 
-      // 시스템 메시지 생성 및 상태 업데이트
-      let messageContent = ''
+      // 현재 roomInfo 가져오기
+      const roomInfo = useSocketStore.getState().roomInfo
 
-      if (!data.chatRoomIsActive) {
-        // 양쪽 모두 나간 경우 - 완전 종료
-        messageContent = '채팅이 종료되었습니다.'
-        setChatStatus('COMPLETED')
-      } else if (currentUserLeft) {
-        // 내가 나간 경우
-        messageContent = '채팅을 나갔습니다. 상대방은 계속 메시지를 보낼 수 있습니다.'
-        setChatStatus('COMPLETED')
-      } else {
-        // 상대방이 나간 경우 - 일방향 채팅 상태
-        const leftUserType = data.userLeft ? '사용자' : '변호사'
-        messageContent = `${leftUserType}가 채팅을 나갔습니다.`
-        setChatStatus('PARTIAL_LEFT')
+      // 현재 연결된 방이 없으면 무시
+      if (!roomInfo || !chatRoomId) {
+        console.log('⚠️ [SOCKET] 현재 연결된 방이 없어서 무시')
+        return
       }
 
-      // 중복 메시지 방지: 같은 내용의 시스템 메시지가 이미 있는지 확인
-      const currentMessages = useSocketStore.getState().messages
-      const isDuplicateMessage = currentMessages.some(
-        msg =>
-          msg.chatMessageContent === messageContent &&
-          msg.chatMessageSenderId === 0 &&
-          Date.now() - new Date(msg.chatMessageCreatedAt).getTime() < 5000 // 5초 이내
-      )
+      // 받은 userId가 현재 방의 userId와 일치하는지 확인
+      const isMatchingRoom = (data as any).userId && roomInfo.chatRoomUserId === (data as any).userId
 
-      if (!isDuplicateMessage) {
-        const leaveMessage: ChatMessage = {
-          chatMessageId: Date.now(),
-          chatMessageContent: messageContent,
-          chatMessageSenderType: 'LAWYER', // 시스템 메시지
-          chatMessageSenderId: 0,
-          chatMessageCreatedAt: new Date().toISOString(),
-        }
+      if (!isMatchingRoom) {
+        console.log('⚠️ [SOCKET] 다른 방의 이벤트라서 무시', {
+          eventUserId: (data as any).userId,
+          currentRoomUserId: roomInfo.chatRoomUserId,
+        })
+        return
+      }
 
-        if (chatRoomId) {
-          addMessageToRoom(chatRoomId, leaveMessage)
-        }
+      console.log('✅ [SOCKET] 현재 방과 일치하는 userLeft 이벤트 처리')
+
+      // 시스템 메시지 생성
+      const messageContent = '유저가 채팅을 종료하였습니다.'
+
+      // 채팅 상태 업데이트
+      setChatStatus('PARTIAL_LEFT')
+
+      // 시스템 메시지 생성
+      const leaveMessage: ChatMessage = {
+        chatMessageId: Date.now(),
+        chatMessageContent: messageContent,
+        chatMessageSenderType: 'LAWYER', // 시스템 메시지
+        chatMessageSenderId: 0,
+        chatMessageCreatedAt: new Date().toISOString(),
+      }
+
+      // 메시지 추가
+      console.log('💾 [SOCKET] 시스템 메시지 추가:', { chatRoomId, messageContent })
+      addMessageToRoom(chatRoomId, leaveMessage)
+
+      // 변호사 채팅 리스트 업데이트 (변호사인 경우에만)
+      if (isLawyer) {
+        console.log('📋 [SOCKET] 변호사 채팅 리스트 업데이트: 유저가 나감')
+        const updateSingleChatRoom = useSocketStore.getState().updateSingleChatRoom
+        updateSingleChatRoom(chatRoomId, {
+          chatRoomStatus: 'PARTIAL_LEFT',
+          chatRoomLastMessage: {
+            chatMessageId: leaveMessage.chatMessageId,
+            chatMessageContent: messageContent,
+            chatMessageSenderType: 'LAWYER',
+            chatMessageCreatedAt: leaveMessage.chatMessageCreatedAt,
+          },
+        })
       }
     }
 
@@ -624,11 +640,28 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       timestamp: string
     }) => {
       console.log('🔄 [SOCKET] 채팅방 상태 변경 이벤트:', data)
+      console.log('🔍 [SOCKET] 현재 chatRoomId:', chatRoomId)
+      console.log('🔍 [SOCKET] 비교:', data.chatRoomId, '===', chatRoomId, '?', data.chatRoomId === chatRoomId)
 
       // 현재 채팅방의 상태 변경인지 확인
       if (data.chatRoomId === chatRoomId) {
         setChatStatus(data.chatRoomStatus)
         console.log(`✅ [SOCKET] 채팅방 ${data.chatRoomId} 상태가 ${data.chatRoomStatus}로 변경됨`)
+      } else {
+        console.log(`⚠️ [SOCKET] 다른 채팅방의 상태 변경 이벤트 (현재: ${chatRoomId}, 이벤트: ${data.chatRoomId})`)
+
+        // chatRoomId가 null이면 전역 소켓이므로 roomInfo를 업데이트
+        if (chatRoomId === null) {
+          console.log('🔄 [SOCKET] 전역 소켓 - roomInfo 상태 업데이트 시도')
+          const currentRoomInfo = useSocketStore.getState().roomInfo
+          if (currentRoomInfo && currentRoomInfo.chatRoomId === data.chatRoomId) {
+            useSocketStore.getState().setRoomInfo({
+              ...currentRoomInfo,
+              chatRoomStatus: data.chatRoomStatus,
+            })
+            console.log(`✅ [SOCKET] roomInfo 상태 업데이트: ${data.chatRoomStatus}`)
+          }
+        }
       }
     }
 

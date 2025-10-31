@@ -7,6 +7,55 @@
   overflow: hidden; // 바깥 영역 스크롤 제거
 }
 
+// 전역 스타일: lawyer-chat-page 내부에서만 적용
+:global(.lawyer-chat-page) {
+  :global(.contents-section) {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+  }
+
+  :global(.chat-body-wrapper) {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  :global(.chatBody) {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    min-height: 0 !important;
+  }
+
+  :global(.chat-input) {
+    flex-shrink: 0 !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    background-color: white !important;
+    z-index: 10 !important;
+    padding: 1rem !important;
+  }
+
+  :global(.chat-disabled),
+  :global(.chat-partial-left) {
+    flex-shrink: 0 !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    background-color: white !important;
+    z-index: 10 !important;
+  }
+
+  :global(.waiting-chat-wrapper) {
+    flex-shrink: 0 !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    background-color: white !important;
+    z-index: 10 !important;
+  }
+}
+
 .connectionStatusWrapper {
   position: sticky;
   top: 0;

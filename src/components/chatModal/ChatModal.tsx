@@ -136,7 +136,13 @@ const ChatModal = ({
         </div>
 
         {/* 채팅 컨테이너 (ChatHeader와 ChatBody 포함) */}
-        <ChatRoomContainer chatRoomId={chatRoomId} userLeft={userLeft} clientName={clientName} clientId={clientId} />
+        <ChatRoomContainer
+          chatRoomId={chatRoomId}
+          userLeft={userLeft}
+          clientName={clientName}
+          clientId={clientId}
+          fixedInputBar={true}
+        />
       </div>
     </div>
   )

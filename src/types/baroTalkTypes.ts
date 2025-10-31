@@ -238,3 +238,17 @@ export type UserLeftData = {
   leftUserType?: 'USER' | 'LAWYER'
   leftUserName?: string
 }
+
+export type PatchMessageRequest = {
+  messageId: number
+  messageContent: string
+  userId: number // 현재 로그인 한 유저의 아이디
+}
+
+export type PatchMessageResponse = {
+  chatMessageId: number
+  chatMessageContent: string
+  chatMessageIsRead: boolean
+  chatMessageUpdatedAt: string
+  success: boolean
+}

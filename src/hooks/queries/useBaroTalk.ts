@@ -8,8 +8,12 @@ import {
   UpdateChatRoomStatusRequest,
   UpdateChatRoomStatusResponse,
   LeaveChatRoomRequest,
+  PatchMessageRequest,
+  PatchMessageResponse,
 } from '@/types/baroTalkTypes'
 import { QUERY_KEY } from '@/constants/queryKey'
+import { isAxiosError } from 'axios'
+import { getErrorMessage } from '@/utils/errorHandler'
 
 interface UseCreateBaroTalkOptions {
   onSuccess?: (_data?: any) => void
@@ -91,7 +95,11 @@ export const useUpdateChatRoomStatus = (options?: UseCreateBaroTalkOptions) => {
   })
 }
 
-export const useGetLawyerChatList = (lawyerId: number, request: { take: number; sort: string; page?: number }) => {
+export const useGetLawyerChatList = (
+  lawyerId: number,
+  request: { take: number; sort: string; page?: number },
+  refetchInterval?: number
+) => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.LAWYER_CHAT_LIST, lawyerId, request],
     queryFn: ({ pageParam = 1 }) =>
@@ -110,6 +118,7 @@ export const useGetLawyerChatList = (lawyerId: number, request: { take: number; 
     gcTime: 0, // 가비지 컬렉션 즉시 실행
     refetchOnMount: true, // 컴포넌트 마운트 시 항상 refetch
     refetchOnWindowFocus: true, // 윈도우 포커스 시 refetch
+    refetchInterval, // 폴링 간격 (밀리초)
   })
 }
 
@@ -123,6 +132,27 @@ export const useLeaveChatRoom = (options?: UseCreateBaroTalkOptions) => {
     },
     onError: (error: Error) => {
       options?.onError?.(error)
+    },
+  })
+}
+
+export const usePatchMessage = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: PatchMessageResponse) => void
+  onError: (_error: string) => void
+}) => {
+  return useMutation({
+    mutationFn: (request: PatchMessageRequest) => baroTalkServices.patchMessage(request),
+    onSuccess: data => {
+      onSuccess?.(data)
+    },
+    onError: (error: Error) => {
+      if (isAxiosError(error)) {
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        onError?.(errorMessage)
+      }
     },
   })
 }
