@@ -8,8 +8,12 @@ import {
   UpdateChatRoomStatusRequest,
   UpdateChatRoomStatusResponse,
   LeaveChatRoomRequest,
+  PatchMessageRequest,
+  PatchMessageResponse,
 } from '@/types/baroTalkTypes'
 import { QUERY_KEY } from '@/constants/queryKey'
+import { isAxiosError } from 'axios'
+import { getErrorMessage } from '@/utils/errorHandler'
 
 interface UseCreateBaroTalkOptions {
   onSuccess?: (_data?: any) => void
@@ -123,6 +127,27 @@ export const useLeaveChatRoom = (options?: UseCreateBaroTalkOptions) => {
     },
     onError: (error: Error) => {
       options?.onError?.(error)
+    },
+  })
+}
+
+export const usePatchMessage = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: PatchMessageResponse) => void
+  onError: (_error: string) => void
+}) => {
+  return useMutation({
+    mutationFn: (request: PatchMessageRequest) => baroTalkServices.patchMessage(request),
+    onSuccess: data => {
+      onSuccess?.(data)
+    },
+    onError: (error: Error) => {
+      if (isAxiosError(error)) {
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        onError?.(errorMessage)
+      }
     },
   })
 }

@@ -15,8 +15,10 @@ import {
   useIsConnected,
   useRoomInfo,
   useSetTempIdMapping,
+  useUpdateMessageInRoom,
 } from '@/stores/socketStore'
 import { useAuth } from '@/contexts/AuthContext'
+import { usePatchMessage } from '@/hooks/queries/useBaroTalk'
 
 type ChatBodyProps = {
   chatRoomId: number | null
@@ -38,6 +40,7 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
   const isConnected = useIsConnected()
   const addMessageToRoom = useSocketStore(state => state.addMessageToRoom)
   const setTempIdMapping = useSetTempIdMapping()
+  const updateMessageInRoom = useUpdateMessageInRoom()
   const { getUserIdFromToken } = useAuth()
   const userId = getUserIdFromToken()
 
@@ -46,6 +49,27 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
   const [editingContent, setEditingContent] = useState('')
   const isMobile = useMediaQuery('(max-width: 768px)')
   const chatBodyRef = useRef<HTMLDivElement>(null)
+
+  // 메시지 수정 mutation
+  const { mutate: patchMessage } = usePatchMessage({
+    onSuccess: data => {
+      console.log('✅ 메시지 수정 성공:', data)
+      // 로컬 메시지 캐시 업데이트 (chatRoomId별로 관리)
+      if (chatRoomId) {
+        updateMessageInRoom(chatRoomId, data.chatMessageId, {
+          chatMessageContent: data.chatMessageContent,
+          chatMessageUpdatedAt: data.chatMessageUpdatedAt,
+        })
+      }
+      // 수정 모드 종료
+      setEditingMessageId(null)
+      setEditingContent('')
+    },
+    onError: error => {
+      console.error('❌ 메시지 수정 실패:', error)
+      alert(error)
+    },
+  })
 
   // 스크롤을 맨 아래로 이동하는 함수
   const scrollToBottom = () => {
@@ -141,17 +165,15 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
 
   // 메시지 수정 완료
   const handleConfirmEdit = () => {
-    if (!socket || !editingMessageId || !chatRoomId) return
+    const lawyerId = (roomInfo as any)?.chatRoomLawyerId
+    if (!editingMessageId || !lawyerId) return
 
-    // 서버에 메시지 수정 요청
-    socket.emit('updateMessage', {
-      chatRoomId,
+    // REST API로 메시지 수정 요청 (변호사 ID로 전송)
+    patchMessage({
       messageId: editingMessageId,
-      content: editingContent.trim(),
+      messageContent: editingContent.trim(),
+      userId: lawyerId,
     })
-
-    setEditingMessageId(null)
-    setEditingContent('')
   }
 
   // 채팅 입력창 렌더링 함수들

@@ -9,6 +9,8 @@ import {
   UpdateChatRoomStatusResponse,
   LawyerChatListResponse,
   LeaveChatRoomRequest,
+  PatchMessageRequest,
+  PatchMessageResponse,
 } from '@/types/baroTalkTypes'
 
 export const baroTalkServices = {
@@ -68,6 +70,13 @@ export const baroTalkServices = {
       userId: request.userId,
       userType: request.userType,
       reason: request.reason,
+    })
+    return response.data
+  },
+  patchMessage: async (request: PatchMessageRequest) => {
+    const response = await instance.patch<PatchMessageResponse>(`/chat/message/${request.messageId}`, {
+      messageContent: request.messageContent,
+      userId: request.userId,
     })
     return response.data
   },

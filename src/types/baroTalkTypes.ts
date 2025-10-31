@@ -242,7 +242,7 @@ export type UserLeftData = {
 export type PatchMessageRequest = {
   messageId: number
   messageContent: string
-  userId: number
+  userId: number // 현재 로그인 한 유저의 아이디
 }
 
 export type PatchMessageResponse = {

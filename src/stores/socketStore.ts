@@ -67,6 +67,7 @@ interface SocketActions {
   addMessageToRoom: (_roomId: number, _message: ChatMessage) => void
   getMessagesForRoom: (_roomId: number) => ChatMessage[]
   markMessagesAsReadInRoom: (_roomId: number, _messageIds: number[]) => void
+  updateMessageInRoom: (_roomId: number, _messageId: number, _updates: Partial<ChatMessage>) => void
   updateMessageByTempIdInRoom: (_roomId: number, _tempId: string, _updates: Partial<ChatMessage>) => void
 
   // tempId 매핑 관련 액션
@@ -317,6 +318,17 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
     })
   },
 
+  updateMessageInRoom: (roomId, messageId, updates) => {
+    set(state => ({
+      messageCache: {
+        ...state.messageCache,
+        [roomId]: (state.messageCache[roomId] || []).map(msg =>
+          msg.chatMessageId === messageId ? { ...msg, ...updates } : msg
+        ),
+      },
+    }))
+  },
+
   updateMessageByTempIdInRoom: (roomId, tempId, updates) => {
     set(state => ({
       messageCache: {
@@ -496,6 +508,7 @@ export const useSetMessagesForRoom = () => useSocketStore(state => state.setMess
 export const useAddMessageToRoom = () => useSocketStore(state => state.addMessageToRoom)
 export const useGetMessagesForRoom = () => useSocketStore(state => state.getMessagesForRoom)
 export const useMarkMessagesAsReadInRoom = () => useSocketStore(state => state.markMessagesAsReadInRoom)
+export const useUpdateMessageInRoom = () => useSocketStore(state => state.updateMessageInRoom)
 export const useUpdateMessageByTempIdInRoom = () => useSocketStore(state => state.updateMessageByTempIdInRoom)
 export const useClearMessageCache = () => useSocketStore(state => state.clearMessageCache)
 
