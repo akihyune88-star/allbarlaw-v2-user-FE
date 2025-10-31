@@ -14,6 +14,7 @@ interface ChatRoomContainerProps {
   clientId?: number
   onBack?: () => void
   isMobile?: boolean
+  fixedInputBar?: boolean // 입력창을 하단에 고정할지 여부
 }
 
 const ChatRoomContainer = ({
@@ -23,6 +24,7 @@ const ChatRoomContainer = ({
   clientId,
   onBack,
   isMobile,
+  fixedInputBar = false,
 }: ChatRoomContainerProps) => {
   // Zustand 상태 구독
   const roomInfo = useRoomInfo()
@@ -109,6 +111,7 @@ const ChatRoomContainer = ({
         type={isLawyer ? 'LAWYER' : 'USER'}
         userLeft={userLeft || false}
         isLawyer={isLawyer}
+        fixedInputBar={fixedInputBar}
       />
     </section>
   )

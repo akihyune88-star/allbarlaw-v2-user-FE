@@ -23,9 +23,10 @@ type ChatBodyProps = {
   type?: 'USER' | 'LAWYER'
   userLeft: boolean
   isLawyer?: boolean
+  fixedInputBar?: boolean // 입력창을 하단에 고정할지 여부
 }
 
-const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyProps) => {
+const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar = false }: ChatBodyProps) => {
   // Zustand 전역 상태 구독
   const messageCache = useSocketStore(state => state.messageCache)
   const messages = chatRoomId ? messageCache[chatRoomId] || [] : []
@@ -42,7 +43,6 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
   const isMobile = useMediaQuery('(max-width: 768px)')
   const chatBodyRef = useRef<HTMLDivElement>(null)
 
-  console.log('messages', messageCache)
   // 스크롤을 맨 아래로 이동하는 함수
   const scrollToBottom = () => {
     if (chatBodyRef.current) {
@@ -54,6 +54,13 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  // fixedInputBar 모드일 때 초기 로드 시에도 스크롤을 맨 아래로
+  useEffect(() => {
+    if (fixedInputBar && messages.length > 0) {
+      setTimeout(() => scrollToBottom(), 100)
+    }
+  }, [fixedInputBar, messages.length])
 
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value)
@@ -148,7 +155,13 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
       onIconClick={handleSendMessage}
       disabled={!isConnected || userLeft}
       className={styles['chat-input']}
-      style={type === 'LAWYER' ? { height: '3rem', minHeight: '3rem' } : undefined}
+      style={
+        fixedInputBar
+          ? { position: 'absolute', bottom: 0, left: 0, right: 0, height: '3rem', minHeight: '3rem', backgroundColor: 'white', zIndex: 10 }
+          : type === 'LAWYER'
+          ? { height: '3rem', minHeight: '3rem' }
+          : undefined
+      }
     />
   )
 
@@ -180,6 +193,76 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer }: ChatBodyPro
     return renderWaitingChat()
   }
 
+  // fixedInputBar 모드일 때 완전히 다른 레이아웃
+  if (fixedInputBar) {
+    return (
+      <div style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div
+          ref={chatBodyRef}
+          style={{ flex: 1, overflowY: 'auto', padding: '1rem', paddingBottom: '5rem' }}
+        >
+          {messages.length === 0 ? (
+            <div className={styles['empty-messages']}>
+              <p>아직 메시지가 없습니다.</p>
+              <p>첫 번째 메시지를 보내보세요!</p>
+            </div>
+          ) : (
+            messages.map(msg => {
+              const isSystemMessage =
+                msg.chatMessageSenderId === 0 &&
+                (msg.chatMessageContent.includes('상담을 종료했습니다') ||
+                  msg.chatMessageContent.includes('나갔습니다') ||
+                  msg.chatMessageContent.includes('종료되었습니다'))
+
+              if (isSystemMessage) {
+                return (
+                  <div key={msg.chatMessageId} className={styles['system-message']}>
+                    <span className={styles['system-message-text']}>{msg.chatMessageContent}</span>
+                    <span className={styles['system-message-time']}>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
+                  </div>
+                )
+              }
+
+              const isMyMessage = msg.chatMessageSenderType === type
+              const isReadByOther = isMyMessage ? msg.chatMessageIsRead || false : false
+
+              return (
+                <ChatBubble
+                  key={msg.chatMessageId}
+                  message={msg.chatMessageContent}
+                  direction={isMyMessage ? 'right' : 'left'}
+                  color={isMyMessage ? COLOR.green_01 : COLOR.white}
+                  colorText={isMyMessage ? COLOR.white : COLOR.black}
+                  profileImage={msg.chatMessageSenderType === 'LAWYER' ? 'https://picsum.photos/200/300' : undefined}
+                  isRead={isReadByOther}
+                  showReadStatus={isMyMessage}
+                  status={msg.status || 'sent'}
+                >
+                  <div>
+                    <span>{formatTimeAgo(msg.chatMessageCreatedAt)}</span>
+                  </div>
+                </ChatBubble>
+              )
+            })
+          )}
+        </div>
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'white', zIndex: 10, padding: '0.5rem 1rem' }}>
+          <InputBox
+            icon={<SvgIcon name='send' />}
+            value={message}
+            onChange={handleChangeMessage}
+            onKeyDown={handleKeyPress}
+            onIconClick={handleSendMessage}
+            disabled={!isConnected || userLeft}
+            className={styles['chat-input']}
+            style={{ height: '3rem', minHeight: '3rem', margin: 0 }}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  // 기존 렌더링 (fixedInputBar가 false일 때)
   return (
     <>
       {isMobile && (

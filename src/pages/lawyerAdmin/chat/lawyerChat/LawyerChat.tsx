@@ -41,8 +41,14 @@ const LawyerChat = () => {
   }, [chatRoomId, clientName])
 
   return (
-    <main className={`w-full sub-main-container ${styles['lawyer-chat']}`}>
-      <ChatRoomContainer chatRoomId={chatRoomId} userLeft={userLeft} clientName={clientName} clientId={clientId} />
+    <main className={`w-full sub-main-container ${styles['lawyer-chat']} lawyer-chat-page`}>
+      <ChatRoomContainer
+        chatRoomId={chatRoomId}
+        userLeft={userLeft}
+        clientName={clientName}
+        clientId={clientId}
+        fixedInputBar={true}
+      />
     </main>
   )
 }
