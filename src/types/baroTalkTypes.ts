@@ -220,6 +220,7 @@ export type SendMessageSuccessData = {
   tempId?: string
   messageId: number
   timestamp: string
+  chatMessageIsRead?: boolean
 }
 
 export type SendMessageErrorData = {
