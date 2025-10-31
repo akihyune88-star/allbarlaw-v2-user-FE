@@ -33,9 +33,12 @@ const CategorySelector = ({
 
   // 모바일 분기 처리
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const { chunkSize } = useCategoryRenderChunk({
+  const { chunkSize: mobileChunkSize } = useCategoryRenderChunk({
     horizontalPadding: horizontalPadding,
   })
+
+  // PC는 9개, 모바일은 계산된 값 사용
+  const chunkSize = isMobile ? mobileChunkSize : 9
 
   // 기본 서브카테고리 ID가 있으면 해당 카테고리와 서브카테고리를 자동으로 선택
   useEffect(() => {
