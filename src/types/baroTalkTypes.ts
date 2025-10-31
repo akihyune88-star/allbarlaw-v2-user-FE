@@ -78,6 +78,7 @@ export type ChatMessage = {
   chatMessageReceiverType?: 'USER' | 'LAWYER'
   chatMessageIsRead?: boolean
   chatMessageCreatedAt: string
+  chatMessageUpdatedAt?: string
   // 로컬 상태 (전송 상태 추적용)
   tempId?: string
   status?: 'sending' | 'sent' | 'failed'
