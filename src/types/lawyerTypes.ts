@@ -207,6 +207,9 @@ export type LawyerBasicInfoEditResponse = {
   lawyerLawfirmAddress: string
   lawyerLawfirmAddressDetail: string
   lawyerLawfirmContact: string
+  lawyerBlogUrl?: string | null
+  lawyerInstagramUrl?: string | null
+  lawyerYoutubeUrl?: string | null
   lawyerSubcategories: {
     subcategoryId: number
     subcategoryName: string
