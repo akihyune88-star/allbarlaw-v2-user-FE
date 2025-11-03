@@ -24,6 +24,8 @@ const Footer = ({ className, style }: FooterProps) => {
           <button onClick={() => navigate(ROUTER.SUPPORT_NOTICE)}>공지사항</button>
           <span className={styles.divider}>|</span>
           <button onClick={() => navigate(ROUTER.FAQ)}>FAQ</button>
+          <span className={styles.divider}>|</span>
+          <button onClick={() => navigate(ROUTER.AUTH)}>변호사 페이지</button>
         </div>
       </header>
       {!isMobile && <Divider padding={12} />}

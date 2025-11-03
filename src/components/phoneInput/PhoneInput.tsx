@@ -19,7 +19,7 @@ const PhoneInput = ({ label, isError, message, rightContent, ...rest }: PhoneInp
         </label>
         <div className={styles['input-container']}>
           <input id={id} className={styles['input']} aria-invalid={isError} {...rest} />
-          {rightContent}
+          {rightContent && <div className={styles['right-content']}>{rightContent}</div>}
         </div>
       </div>
       <span className={styles['field-message']} data-error={isError}>

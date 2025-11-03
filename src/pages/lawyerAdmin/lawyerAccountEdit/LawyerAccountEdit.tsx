@@ -7,6 +7,7 @@ import styles from './lawyerAccountEdit.module.scss'
 import PasswordChangeSection from '@/container/mypage/passwordChangeSection/PasswordChangeSection'
 import EmailEditSection from '@/container/mypage/emailEditSection/EmailEditSection'
 import LawyerCertificationEdit from '@/container/lawyerAdmin/lawyerCertificationEdit/LawyerCertificationEdit'
+import LawyerPhoneVerificationEdit from '@/container/lawyerAdmin/lawyerPhoneVerificationEdit/LawyerPhoneVerificationEdit'
 import { useGetLawyerProfile, useUpdateLawyerProfile, useWithdrawLawyer } from '@/hooks/queries/useAuth'
 import { LOCAL } from '@/constants/local'
 import type { LawyerProfileUpdateRequest } from '@/types/authTypes'
@@ -71,7 +72,8 @@ const LawyerAccountEdit = () => {
         verificationCode: '',
         lawyerFirm: lawyerProfile.lawyerLawfirmName || '',
         lawyerFirmContact: lawyerProfile.lawyerLawfirmContact || '',
-        lawyerExam: lawyerProfile.lawyerBarExamNumber?.toString() || '',
+        lawyerBarExamType: lawyerProfile.lawyerBarExamType || '',
+        lawyerBarExamNumber: lawyerProfile.lawyerBarExamNumber?.toString() || '',
       } as any)
     }
   }, [lawyerProfile, reset])
@@ -93,14 +95,14 @@ const LawyerAccountEdit = () => {
       }
 
       // 2. 휴대폰 번호 변경 체크
-      const isPhoneChange = data.phoneNumber && data.verificationCode
+      const isPhoneChange = (data as any).lawyerPhone && (data as any).lawyerVerificationCode
       if (isPhoneChange) {
         const verificationToken = sessionStorage.getItem(LOCAL.VERIFICATION_TOKEN)
         if (!verificationToken) {
           alert('휴대폰 인증이 완료되지 않았습니다.')
           return
         }
-        updateData.newContact = data.phoneNumber
+        updateData.newContact = (data as any).lawyerPhone
         updateData.verificationToken = verificationToken
       }
 
@@ -127,11 +129,22 @@ const LawyerAccountEdit = () => {
         updateData.newLawfirmContact = (data as any).lawyerFirmContact
       }
 
-      // 6. 출신시험 변경 체크
-      const isExamChange =
-        (data as any).lawyerExam && (data as any).lawyerExam !== lawyerProfile?.lawyerBarExamNumber?.toString()
+      // 6. 출신시험 유형 및 회차 변경 체크 (세트로 관리)
+      const isExamTypeChange =
+        (data as any).lawyerBarExamType && (data as any).lawyerBarExamType !== lawyerProfile?.lawyerBarExamType
+      const isExamNumberChange =
+        (data as any).lawyerBarExamNumber &&
+        (data as any).lawyerBarExamNumber !== lawyerProfile?.lawyerBarExamNumber?.toString()
+
+      // 출신시험 유형 또는 회차 중 하나라도 변경되면 둘 다 전송
+      const isExamChange = isExamTypeChange || isExamNumberChange
       if (isExamChange) {
-        updateData.newBarExamNumber = Number((data as any).lawyerExam)
+        if (!(data as any).lawyerBarExamType || !(data as any).lawyerBarExamNumber) {
+          alert('출신시험 유형과 회차를 모두 선택해주세요.')
+          return
+        }
+        updateData.newBarExamType = (data as any).lawyerBarExamType
+        updateData.newBarExamNumber = Number((data as any).lawyerBarExamNumber)
       }
 
       // 변경할 항목이 없는 경우
@@ -163,11 +176,6 @@ const LawyerAccountEdit = () => {
     // TODO: 실제 비밀번호 확인 API로 교체
     const isValid = typeof password === 'string' && password.length >= 8
     return { isValid }
-  }
-
-  const handlePhoneVerification = () => {
-    // TODO: 휴대폰 본인인증 모달 또는 인증 프로세스 시작
-    alert('휴대폰 본인인증 기능은 준비 중입니다.')
   }
 
   const handleWithdraw = () => {
@@ -212,12 +220,13 @@ const LawyerAccountEdit = () => {
             onPasswordChecked={handlePasswordChecked}
             onCheckPassword={handleCheckPassword}
           />
+          <LawyerPhoneVerificationEdit currentPhone={lawyerProfile?.lawyerContact} />
           <LawyerCertificationEdit
             register={register as any}
             errors={errors}
-            currentPhone={lawyerProfile?.lawyerContact}
             currentFirmContact={lawyerProfile?.lawyerLawfirmContact}
-            onPhoneVerification={handlePhoneVerification}
+            currentBarExamType={lawyerProfile?.lawyerBarExamType}
+            currentBarExamNumber={lawyerProfile?.lawyerBarExamNumber}
           />
           <EmailEditSection
             register={register}

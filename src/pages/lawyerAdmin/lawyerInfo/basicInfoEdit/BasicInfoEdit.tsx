@@ -95,6 +95,9 @@ const BasicInfoEdit = () => {
         lawyerLawfirmAddress: formDataToSubmit.address,
         lawyerLawfirmAddressDetail: formDataToSubmit.addressDetail || '',
         lawyerLawfirmContact: formDataToSubmit.officePhone,
+        lawyerBlogUrl: formDataToSubmit.blogUrl || null,
+        lawyerYoutubeUrl: formDataToSubmit.youtubeUrl || null,
+        lawyerInstagramUrl: formDataToSubmit.instagramUrl || null,
         lawyerSubcategories: formDataToSubmit.categories.map(cat => ({
           subcategoryId: cat.subcategoryId ?? 0,
           subcategoryName:

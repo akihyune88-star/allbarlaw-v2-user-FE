@@ -56,8 +56,17 @@ const Login = () => {
 
   const { mutate: login, isPending: isLoginPending } = useLogin({
     onSuccess: () => {
-      // 일반 사용자 로그인 시 메인 페이지로
-      navigate(ROUTER.MAIN)
+      // 저장된 리다이렉트 URL 확인
+      const redirectUrl = sessionStorage.getItem('redirectAfterLogin')
+
+      if (redirectUrl) {
+        // 저장된 URL이 있으면 해당 URL로 이동하고 세션 스토리지에서 제거
+        sessionStorage.removeItem('redirectAfterLogin')
+        navigate(redirectUrl)
+      } else {
+        // 일반 사용자 로그인 시 메인 페이지로
+        navigate(ROUTER.MAIN)
+      }
     },
     onError: message => {
       setErrorMessage(message)
@@ -69,13 +78,22 @@ const Login = () => {
       // 변호사 로그인 시 관리 페이지로
       const lawyerId = getLawyerIdFromToken(accessToken)
 
-      if (isFirstLogin) {
+      // 저장된 리다이렉트 URL 확인
+      const redirectUrl = sessionStorage.getItem('redirectAfterLogin')
+
+      if (redirectUrl) {
+        // 저장된 URL이 있으면 해당 URL로 이동하고 세션 스토리지에서 제거
+        sessionStorage.removeItem('redirectAfterLogin')
+        navigate(redirectUrl)
+      } else if (isFirstLogin) {
+        // 첫 로그인인 경우 기본 정보 입력 페이지로
         navigate(ROUTER.LAWYER_ADMIN_LAWYER_EDIT_BASIC_INFO, {
           state: {
             lawyerId,
           },
         })
       } else {
+        // 일반 로그인인 경우 변호사 상세 페이지로
         navigate(ROUTER.LAWYER_ADMIN_LAWYER_DETAIL, {
           state: {
             lawyerId,

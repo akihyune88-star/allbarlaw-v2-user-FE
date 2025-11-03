@@ -111,7 +111,9 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
       {/* 인사말 */}
       <div className={styles.formRow}>
         <div className={styles.labelCol}>
-          <label className={styles.label}>인사말</label>
+          <label className={styles.label}>
+            인사말<sup style={{ color: '#ff4d4f' }}>*</sup>
+          </label>
         </div>
         <div className={styles.inputCol}>
           <textarea
@@ -158,7 +160,9 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
       {/* 휴대폰 번호 */}
       <div className={styles.formRow}>
         <div className={styles.labelCol}>
-          <label className={styles.label}>휴대폰 번호</label>
+          <label className={styles.label}>
+            휴대폰 번호<sup style={{ color: '#ff4d4f' }}>*</sup>
+          </label>
         </div>
         <div className={styles.inputCol}>
           <input
@@ -180,7 +184,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
       <div className={styles.formRow}>
         <div className={styles.labelCol}>
           <label className={styles.label}>
-            관련 태그
+            관련 태그<sup style={{ color: '#ff4d4f' }}>*</sup>
             <br />
             <span className={styles.helperText} style={{ fontSize: 12 }}>
               (최소2개/최대20개)
@@ -191,7 +195,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
           <TagInput
             tags={formData.tags}
             onChange={tags => onInputChange('tags', tags)}
-            placeholder='자신있는 분야, 관련 키워드를 입력 후 엔터를 눌러주세요'
+            placeholder='자신있는 분야, 관련 키워드를 입력 후 엔터 또는 쉼표를 눌러주세요'
             maxTags={20}
             disabled={false}
             isLoading={false}
@@ -202,6 +206,66 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
             ) : (
               <span className={styles.helperText}>2개이상의 태그를 입력해주세요. 검색에 노출됩니다.</span>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* 네이버 블로그 주소 */}
+      <div className={styles.formRow}>
+        <div className={styles.labelCol}>
+          <label className={styles.label}>네이버 블로그 주소</label>
+        </div>
+        <div className={styles.inputCol}>
+          <input
+            className={styles.input}
+            type='text'
+            placeholder='네이버 블로그 URL을 입력해주세요'
+            value={formData.blogUrl}
+            onChange={e => onInputChange('blogUrl', e.target.value)}
+            style={{ borderColor: errors.blogUrl ? '#ff4d4f' : undefined }}
+          />
+          <div className={styles.errorWrapper}>
+            {errors.blogUrl && <span className={styles.error}>{errors.blogUrl}</span>}
+          </div>
+        </div>
+      </div>
+
+      {/* 유튜브 채널 */}
+      <div className={styles.formRow}>
+        <div className={styles.labelCol}>
+          <label className={styles.label}>유튜브 채널</label>
+        </div>
+        <div className={styles.inputCol}>
+          <input
+            className={styles.input}
+            type='text'
+            placeholder='유튜브 채널 URL을 입력해주세요'
+            value={formData.youtubeUrl}
+            onChange={e => onInputChange('youtubeUrl', e.target.value)}
+            style={{ borderColor: errors.youtubeUrl ? '#ff4d4f' : undefined }}
+          />
+          <div className={styles.errorWrapper}>
+            {errors.youtubeUrl && <span className={styles.error}>{errors.youtubeUrl}</span>}
+          </div>
+        </div>
+      </div>
+
+      {/* 인스타그램 주소 */}
+      <div className={styles.formRow}>
+        <div className={styles.labelCol}>
+          <label className={styles.label}>인스타그램 주소</label>
+        </div>
+        <div className={styles.inputCol}>
+          <input
+            className={styles.input}
+            type='text'
+            placeholder='인스타그램 URL을 입력해주세요'
+            value={formData.instagramUrl}
+            onChange={e => onInputChange('instagramUrl', e.target.value)}
+            style={{ borderColor: errors.instagramUrl ? '#ff4d4f' : undefined }}
+          />
+          <div className={styles.errorWrapper}>
+            {errors.instagramUrl && <span className={styles.error}>{errors.instagramUrl}</span>}
           </div>
         </div>
       </div>
@@ -230,7 +294,9 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
       {/* 사무실 주소 */}
       <div className={styles.formRow}>
         <div className={styles.labelCol}>
-          <label className={styles.label}>사무실 주소</label>
+          <label className={styles.label}>
+            사무실 주소<sup style={{ color: '#ff4d4f' }}>*</sup>
+          </label>
         </div>
         <div className={styles.inputCol}>
           <div className={styles.flexRow}>
@@ -245,9 +311,6 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
               value={formData.address}
               onChange={e => onInputChange('address', e.target.value)}
             />
-          </div>
-          <div className={styles.errorWrapper}>
-            {errors.address && <span className={styles.error}>{errors.address}</span>}
           </div>
           <input
             className={styles.input}

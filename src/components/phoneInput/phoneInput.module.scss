@@ -7,13 +7,13 @@
 .field-container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 }
 
 .label {
-  min-width: 7.5rem;
-  width: 7.5rem;
+  min-width: 120px;
+  width: 120px;
   font-size: 1rem;
   font-weight: $font-weight-semibold;
   color: $color-text-black;
@@ -22,24 +22,28 @@
 
 .input-container {
   width: 100%;
-
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  background-color: $color-bg-gray-03;
-  padding: 0.875rem 1.0625rem 0.875rem 1.5rem;
-  border: 1px solid $color-line-borderbox;
-  border-radius: 0.5rem;
+  position: relative;
 }
 
 .input {
-  flex: 1;
+  width: 100%;
+  background-color: $color-bg-gray-03;
+  padding: 0.875rem 7.5rem 0.875rem 1.5rem; // 오른쪽에 버튼 공간 확보
+  border: 1px solid $color-line-borderbox;
+  border-radius: 0.5rem;
   outline: none;
+
   &::placeholder {
     color: $color-text-caption;
     font-size: 13px;
   }
+}
+
+.right-content {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .field-message {
@@ -63,29 +67,11 @@
 
   .label {
     font-size: 0.875rem;
+    width: 100%;
+    min-width: 0;
   }
 
   .field-message {
     text-align: left;
-  }
-
-  .input-container {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-
-    gap: 0.625rem;
-  }
-
-  .input {
-    background-color: $color-bg-gray-03;
-    border: 1px solid $color-line-borderbox;
-    padding: 0.875rem 1.0625rem 0.875rem 1.5rem;
-    border-radius: 0.5rem;
-
-    &::placeholder {
-      color: $color-text-caption;
-      font-size: 13px;
-    }
   }
 }

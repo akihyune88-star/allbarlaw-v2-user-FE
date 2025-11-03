@@ -57,8 +57,10 @@ export type LawyerAchievement = {
 
 type LawyerStatistics = {
   blogPostCount: number
+  blogCaseCount: number
   videoCount: number
   knowledgeAnswerCount: number
+  consultationRequestCount: number
   last30DaysSiteVisitCount: number
   totalSiteVisitCount: number
 }
@@ -174,12 +176,15 @@ export type LawyerBasicInfoEditRequest = {
   lawyerLawfirmName: string
   lawyerLawfirmAddress: string
   lawyerLawfirmAddressDetail: string
-  lawyerLawfirmContact: string
+  lawyerLawfirmContact?: string
+  lawyerBlogUrl?: string | null
+  lawyerInstagramUrl?: string | null
+  lawyerYoutubeUrl?: string | null
   lawyerSubcategories: {
     subcategoryId: number
     subcategoryName: string
   }[]
-  lawyerProfileImages: {
+  lawyerProfileImages?: {
     imageUrl: string
     displayOrder: number
   }[]
@@ -202,6 +207,9 @@ export type LawyerBasicInfoEditResponse = {
   lawyerLawfirmAddress: string
   lawyerLawfirmAddressDetail: string
   lawyerLawfirmContact: string
+  lawyerBlogUrl?: string | null
+  lawyerInstagramUrl?: string | null
+  lawyerYoutubeUrl?: string | null
   lawyerSubcategories: {
     subcategoryId: number
     subcategoryName: string

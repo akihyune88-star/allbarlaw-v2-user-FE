@@ -51,6 +51,8 @@ export const ProtectedRoute = ({
       // console.log('❌ 로그인하지 않음! 로그인 페이지로 리다이렉트')
 
       if (shouldRedirect) {
+        // 의도한 URL을 저장하고 로그인 페이지로 리다이렉트
+        sessionStorage.setItem('redirectAfterLogin', window.location.pathname)
         return <Navigate to={ROUTER.AUTH} replace />
       }
 
@@ -109,6 +111,14 @@ export const ProtectedRoute = ({
   // 변호사 권한이 필요한 페이지인데 변호사가 아닌 경우 (일반 유저는 변호사 어드민 접근 불가)
   if (requireLawyer && !isLawyer) {
     // console.log('❌ 일반 유저는 변호사 어드민 페이지에 접근할 수 없습니다!')
+
+    // 로그인하지 않은 경우 - 의도한 URL을 저장하고 변호사 로그인으로 리다이렉트
+    if (!isLoggedIn) {
+      sessionStorage.setItem('redirectAfterLogin', window.location.pathname)
+      return <Navigate to={ROUTER.LAWYER_LOGIN} replace />
+    }
+
+    // 일반 유저인 경우 - 메인으로 리다이렉트
     return <Navigate to={ROUTER.MAIN} replace />
   }
 

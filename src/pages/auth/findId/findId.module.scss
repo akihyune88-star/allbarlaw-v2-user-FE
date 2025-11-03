@@ -52,10 +52,6 @@
   transition: background-color 0.2s;
   text-align: center;
 
-  &:hover {
-    // background-color: darken($color-green-01, 10%);
-  }
-
   &:disabled {
     background-color: #e5e7eb;
     color: #9ca3af;
@@ -134,10 +130,6 @@
   border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.2s;
-
-  &:hover {
-    // background-color: darken($color-green-01, 10%);
-  }
 }
 
 @media (max-width: $breakpoint-desktop) {

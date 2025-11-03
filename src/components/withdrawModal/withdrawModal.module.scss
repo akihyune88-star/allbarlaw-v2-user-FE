@@ -96,10 +96,6 @@
 .confirmButton {
   background-color: $color-green-01;
   color: $color-white;
-
-  &:hover:not(:disabled) {
-    // background-color: darken($color-green-01, 5%);
-  }
 }
 
 @media (max-width: $breakpoint-desktop) {

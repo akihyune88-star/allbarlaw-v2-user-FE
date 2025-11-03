@@ -22,7 +22,7 @@ const LawyerCategorySelect = ({
     <div className={styles.formRow}>
       <div className={styles.labelCol}>
         <label className={styles.label}>
-          주요분야 선택
+          주요분야 선택<sup style={{ color: '#ff4d4f' }}>*</sup>
           <br />
           <span className={styles.helperText} style={{ fontSize: 12 }}>
             (최소1개/최대20개)

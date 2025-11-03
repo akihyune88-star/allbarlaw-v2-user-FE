@@ -51,7 +51,7 @@ const WithdrawModal = ({
         <button onClick={onClose} className={styles.cancelButton} disabled={isPending}>
           {cancelButtonText}
         </button>
-        <button onClick={onConfirm} className={styles.confirmButton} disabled={isPending || !withdrawReason.trim()}>
+        <button onClick={onConfirm} className={styles.confirmButton} disabled={isPending}>
           {isPending ? '처리 중...' : confirmButtonText}
         </button>
       </Modal.Footer>

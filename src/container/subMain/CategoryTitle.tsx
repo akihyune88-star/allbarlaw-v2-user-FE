@@ -35,15 +35,13 @@ const CategoryTitle = () => {
       <h1 className={styles['desktop-title']}>{categoryInfo.subcategory.subcategoryName}</h1>
 
       {/* Mobile View */}
-      <div className={styles['mobile-title']}>
-        <h2 onClick={toggleCategory}>
-          {categoryInfo.mainCategory.categoryName}
-          <SvgIcon
-            name='arrowSmall'
-            className={`${styles['arrow-icon']} ${isCategoryOpen ? styles.open : ''}`}
-            size={16}
-          />
-        </h2>
+      <div className={styles['mobile-title']} onClick={toggleCategory}>
+        <h2>{categoryInfo.mainCategory.categoryName}</h2>
+        <SvgIcon
+          name='arrowSmall'
+          className={`${styles['arrow-icon']} ${isCategoryOpen ? styles.open : ''}`}
+          size={16}
+        />
         {!isCategoryOpen && <h2>{categoryInfo.subcategory.subcategoryName}</h2>}
       </div>
 
