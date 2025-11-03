@@ -12,6 +12,17 @@ export type LawyerPhoneVerificationEditProps = {
   currentPhone?: string
 }
 
+const formatPhoneNumber = (phone?: string) => {
+  if (!phone) return '-'
+  const numbers = phone.replace(/[^0-9]/g, '')
+  if (numbers.length === 11) {
+    return numbers.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')
+  } else if (numbers.length === 10) {
+    return numbers.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')
+  }
+  return phone
+}
+
 function LawyerPhoneVerificationEdit({ currentPhone }: LawyerPhoneVerificationEditProps) {
   const {
     register,
@@ -95,7 +106,7 @@ function LawyerPhoneVerificationEdit({ currentPhone }: LawyerPhoneVerificationEd
         <div className={styles['phone-display-container']}>
           <div className={styles['field-container']}>
             <label className={styles['label']}>인증 휴대폰번호</label>
-            <div className={styles['text-value']}>{currentPhone || '-'}</div>
+            <div className={styles['text-value']}>{formatPhoneNumber(currentPhone)}</div>
           </div>
           <span className={styles['field-message']}>휴대폰 번호를 변경하시려면 아래 휴대폰 인증을 다시해주세요</span>
         </div>

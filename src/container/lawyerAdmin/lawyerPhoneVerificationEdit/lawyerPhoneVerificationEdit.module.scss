@@ -93,20 +93,14 @@
 @media (max-width: $breakpoint-desktop) {
   .phone-input-button {
     background-color: $color-green-01;
-    height: 3rem;
-    border-radius: 0.5rem;
-    padding: 0;
-    width: 6.75rem;
-    font-size: 1rem;
+    padding: 0.3125rem 0.875rem;
+    border-radius: 1.25rem;
+    font-size: 0.75rem;
 
     &:disabled {
       background-color: #e5e7eb;
       color: #9ca3af;
       cursor: not-allowed;
-    }
-
-    &:hover:not(:disabled) {
-      // background-color: darken($color-green-01, 5%);
     }
   }
 }
