@@ -93,6 +93,7 @@ export type LawyerProfileResponse = {
   lawyerContact: string
   lawyerLawfirmName: string
   lawyerLawfirmContact: string
+  lawyerBarExamType: string
   lawyerBarExamNumber: number
 }
 
@@ -105,6 +106,7 @@ export type LawyerProfileUpdateRequest = {
   verificationToken: string
   newLawfirmName: string
   newLawfirmContact: string
+  newBarExamType: string
   newBarExamNumber: number
 }
 

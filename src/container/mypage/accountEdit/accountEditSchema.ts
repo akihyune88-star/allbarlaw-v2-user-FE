@@ -29,6 +29,10 @@ export const accountEditSchema = z
 
     // 이메일
     email: z.string().email({ message: '이메일 형식에 맞지 않습니다.' }).optional().or(z.literal('')),
+
+    // 변호사 인증정보
+    lawyerBarExamType: z.string().optional(),
+    lawyerBarExamNumber: z.string().optional(),
   })
   .superRefine(({ confirmNewPassword, newPassword, currentPassword }, ctx) => {
     // 비밀번호 변경 시 검증

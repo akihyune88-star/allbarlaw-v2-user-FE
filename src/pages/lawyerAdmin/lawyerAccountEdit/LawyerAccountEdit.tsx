@@ -71,7 +71,8 @@ const LawyerAccountEdit = () => {
         verificationCode: '',
         lawyerFirm: lawyerProfile.lawyerLawfirmName || '',
         lawyerFirmContact: lawyerProfile.lawyerLawfirmContact || '',
-        lawyerExam: lawyerProfile.lawyerBarExamNumber?.toString() || '',
+        lawyerBarExamType: lawyerProfile.lawyerBarExamType || '',
+        lawyerBarExamNumber: lawyerProfile.lawyerBarExamNumber?.toString() || '',
       } as any)
     }
   }, [lawyerProfile, reset])
@@ -127,11 +128,19 @@ const LawyerAccountEdit = () => {
         updateData.newLawfirmContact = (data as any).lawyerFirmContact
       }
 
-      // 6. 출신시험 변경 체크
-      const isExamChange =
-        (data as any).lawyerExam && (data as any).lawyerExam !== lawyerProfile?.lawyerBarExamNumber?.toString()
-      if (isExamChange) {
-        updateData.newBarExamNumber = Number((data as any).lawyerExam)
+      // 6. 출신시험 유형 변경 체크
+      const isExamTypeChange =
+        (data as any).lawyerBarExamType && (data as any).lawyerBarExamType !== lawyerProfile?.lawyerBarExamType
+      if (isExamTypeChange) {
+        updateData.newBarExamType = (data as any).lawyerBarExamType
+      }
+
+      // 7. 출신시험 회차 변경 체크
+      const isExamNumberChange =
+        (data as any).lawyerBarExamNumber &&
+        (data as any).lawyerBarExamNumber !== lawyerProfile?.lawyerBarExamNumber?.toString()
+      if (isExamNumberChange) {
+        updateData.newBarExamNumber = Number((data as any).lawyerBarExamNumber)
       }
 
       // 변경할 항목이 없는 경우
@@ -141,7 +150,8 @@ const LawyerAccountEdit = () => {
         !isEmailChange &&
         !isFirmChange &&
         !isFirmContactChange &&
-        !isExamChange
+        !isExamTypeChange &&
+        !isExamNumberChange
       ) {
         alert('변경할 정보를 입력해주세요.')
         return
@@ -217,6 +227,8 @@ const LawyerAccountEdit = () => {
             errors={errors}
             currentPhone={lawyerProfile?.lawyerContact}
             currentFirmContact={lawyerProfile?.lawyerLawfirmContact}
+            currentBarExamType={lawyerProfile?.lawyerBarExamType}
+            currentBarExamNumber={lawyerProfile?.lawyerBarExamNumber}
             onPhoneVerification={handlePhoneVerification}
           />
           <EmailEditSection
