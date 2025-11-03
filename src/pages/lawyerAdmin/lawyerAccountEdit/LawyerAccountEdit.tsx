@@ -7,6 +7,7 @@ import styles from './lawyerAccountEdit.module.scss'
 import PasswordChangeSection from '@/container/mypage/passwordChangeSection/PasswordChangeSection'
 import EmailEditSection from '@/container/mypage/emailEditSection/EmailEditSection'
 import LawyerCertificationEdit from '@/container/lawyerAdmin/lawyerCertificationEdit/LawyerCertificationEdit'
+import LawyerPhoneVerificationEdit from '@/container/lawyerAdmin/lawyerPhoneVerificationEdit/LawyerPhoneVerificationEdit'
 import { useGetLawyerProfile, useUpdateLawyerProfile, useWithdrawLawyer } from '@/hooks/queries/useAuth'
 import { LOCAL } from '@/constants/local'
 import type { LawyerProfileUpdateRequest } from '@/types/authTypes'
@@ -94,14 +95,14 @@ const LawyerAccountEdit = () => {
       }
 
       // 2. 휴대폰 번호 변경 체크
-      const isPhoneChange = data.phoneNumber && data.verificationCode
+      const isPhoneChange = (data as any).lawyerPhone && (data as any).lawyerVerificationCode
       if (isPhoneChange) {
         const verificationToken = sessionStorage.getItem(LOCAL.VERIFICATION_TOKEN)
         if (!verificationToken) {
           alert('휴대폰 인증이 완료되지 않았습니다.')
           return
         }
-        updateData.newContact = data.phoneNumber
+        updateData.newContact = (data as any).lawyerPhone
         updateData.verificationToken = verificationToken
       }
 
@@ -116,20 +117,14 @@ const LawyerAccountEdit = () => {
       }
 
       // 4. 로펌명 변경 체크
-      console.log('lawyerFirm (입력값):', (data as any).lawyerFirm)
-      console.log('lawyerLawfirmName (기존값):', lawyerProfile?.lawyerLawfirmName)
       const isFirmChange = (data as any).lawyerFirm && (data as any).lawyerFirm !== lawyerProfile?.lawyerLawfirmName
-      console.log('isFirmChange:', isFirmChange)
       if (isFirmChange) {
         updateData.newLawfirmName = (data as any).lawyerFirm
       }
 
       // 5. 로펌 연락처 변경 체크
-      console.log('lawyerFirmContact (입력값):', (data as any).lawyerFirmContact)
-      console.log('lawyerLawfirmContact (기존값):', lawyerProfile?.lawyerLawfirmContact)
       const isFirmContactChange =
         (data as any).lawyerFirmContact && (data as any).lawyerFirmContact !== lawyerProfile?.lawyerLawfirmContact
-      console.log('isFirmContactChange:', isFirmContactChange)
       if (isFirmContactChange) {
         updateData.newLawfirmContact = (data as any).lawyerFirmContact
       }
@@ -183,11 +178,6 @@ const LawyerAccountEdit = () => {
     return { isValid }
   }
 
-  const handlePhoneVerification = () => {
-    // TODO: 휴대폰 본인인증 모달 또는 인증 프로세스 시작
-    alert('휴대폰 본인인증 기능은 준비 중입니다.')
-  }
-
   const handleWithdraw = () => {
     withdrawLawyer({ reason: withdrawReason })
   }
@@ -230,14 +220,13 @@ const LawyerAccountEdit = () => {
             onPasswordChecked={handlePasswordChecked}
             onCheckPassword={handleCheckPassword}
           />
+          <LawyerPhoneVerificationEdit currentPhone={lawyerProfile?.lawyerContact} />
           <LawyerCertificationEdit
             register={register as any}
             errors={errors}
-            currentPhone={lawyerProfile?.lawyerContact}
             currentFirmContact={lawyerProfile?.lawyerLawfirmContact}
             currentBarExamType={lawyerProfile?.lawyerBarExamType}
             currentBarExamNumber={lawyerProfile?.lawyerBarExamNumber}
-            onPhoneVerification={handlePhoneVerification}
           />
           <EmailEditSection
             register={register}

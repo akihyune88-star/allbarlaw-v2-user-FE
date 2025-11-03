@@ -3,27 +3,22 @@ import LabelInput from '@/components/labelInput/LabelInput'
 import { FieldErrors, UseFormRegister, Path, FieldValues } from 'react-hook-form'
 import Divider from '@/components/divider/Divider'
 import { useState, ChangeEvent, useEffect, useMemo } from 'react'
-import Button from '@/components/button/Button'
 import { useLawyerBarExam } from '@/hooks/queries/useLawyer'
 
 export type LawyerCertificationEditProps<T extends FieldValues> = {
   register: UseFormRegister<T>
   errors: FieldErrors<any>
-  currentPhone?: string
   currentFirmContact?: string
   currentBarExamType?: string
   currentBarExamNumber?: number
-  onPhoneVerification?: () => void
 }
 
 function LawyerCertificationEdit<T extends FieldValues>({
   register,
   errors,
-  currentPhone,
   currentFirmContact,
   currentBarExamType,
   currentBarExamNumber,
-  onPhoneVerification,
 }: LawyerCertificationEditProps<T>) {
   const [firmContact, setFirmContact] = useState('')
   const [selectedExamType, setSelectedExamType] = useState<string>(currentBarExamType || '')
@@ -131,19 +126,6 @@ function LawyerCertificationEdit<T extends FieldValues>({
       <h2 className={styles['lawyer-cert-title']}>변호사 인증정보</h2>
       <Divider padding={1} />
       <div className={styles['lawyer-cert-fields']}>
-        {/* 인증 휴대폰번호 (읽기 전용) */}
-        <div className={styles['phone-display-container']}>
-          <div className={styles['field-container']}>
-            <label className={styles['label']}>인증 휴대폰번호</label>
-            <div className={styles['text-value']}>{currentPhone ? formatPhoneNumber(currentPhone) : '-'}</div>
-          </div>
-          <span className={styles['field-message']}>휴대폰 번호를 변경하시려면 아래 휴대폰 인증을 다시해주세요</span>
-
-          <Button type='button' onClick={onPhoneVerification} className={styles['verification-button']}>
-            휴대폰 본인인증
-          </Button>
-        </div>
-
         <LabelInput
           label='소속(법인,회사)'
           placeholder='소속(법인,회사)을 입력하세요'
