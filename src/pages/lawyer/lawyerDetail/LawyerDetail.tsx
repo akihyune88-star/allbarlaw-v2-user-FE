@@ -44,6 +44,7 @@ const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
 
   const lawyerProfileImages = lawyerDetail?.lawyerProfileImages.map(image => image.imageUrl)
 
+  console.log(lawyerDetail?.statistics)
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
@@ -65,15 +66,15 @@ const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
           </button>
           <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(blogRef)}>
             <span>법률정보의 글</span>
-            <span>(10)</span>
+            <span>({lawyerDetail?.statistics.blogCaseCount})</span>
           </button>
           <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(videoRef)}>
             <span>법률영상</span>
-            <span>(10)</span>
+            <span>({lawyerDetail?.statistics.videoCount})</span>
           </button>
           <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(legalKnowledgeRef)}>
             <span>법률지식인</span>
-            <span>(10)</span>
+            <span>({lawyerDetail?.statistics.knowledgeAnswerCount})</span>
           </button>
         </section>
         <LawyerCareer

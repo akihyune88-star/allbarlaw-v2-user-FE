@@ -33,7 +33,7 @@ const LawyerActivity = ({ statistics, createdAt }: LawyerActivityProps) => {
             <td>
               {formatNumber(statistics?.totalSiteVisitCount)} / {formatNumber(statistics?.last30DaysSiteVisitCount)}
             </td>
-            <td>{formatNumber(statistics?.blogPostCount)}</td>
+            <td>{formatNumber(statistics?.blogCaseCount)}</td>
             <td>{formatNumber(statistics?.videoCount)}</td>
             <td>{formatNumber(statistics?.knowledgeAnswerCount)}</td>
           </tr>
