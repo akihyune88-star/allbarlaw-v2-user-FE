@@ -74,7 +74,7 @@ const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
           </button>
           <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(legalKnowledgeRef)}>
             <span>법률지식인</span>
-            <span>({lawyerDetail?.statistics.knowledgeAnswerCount})</span>
+            <span>({lawyerDetail?.statistics.consultationRequestCount})</span>
           </button>
         </section>
         <LawyerCareer

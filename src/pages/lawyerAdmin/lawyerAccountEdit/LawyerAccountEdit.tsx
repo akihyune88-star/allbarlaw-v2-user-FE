@@ -116,30 +116,39 @@ const LawyerAccountEdit = () => {
       }
 
       // 4. 로펌명 변경 체크
+      console.log('lawyerFirm (입력값):', (data as any).lawyerFirm)
+      console.log('lawyerLawfirmName (기존값):', lawyerProfile?.lawyerLawfirmName)
       const isFirmChange = (data as any).lawyerFirm && (data as any).lawyerFirm !== lawyerProfile?.lawyerLawfirmName
+      console.log('isFirmChange:', isFirmChange)
       if (isFirmChange) {
         updateData.newLawfirmName = (data as any).lawyerFirm
       }
 
       // 5. 로펌 연락처 변경 체크
+      console.log('lawyerFirmContact (입력값):', (data as any).lawyerFirmContact)
+      console.log('lawyerLawfirmContact (기존값):', lawyerProfile?.lawyerLawfirmContact)
       const isFirmContactChange =
         (data as any).lawyerFirmContact && (data as any).lawyerFirmContact !== lawyerProfile?.lawyerLawfirmContact
+      console.log('isFirmContactChange:', isFirmContactChange)
       if (isFirmContactChange) {
         updateData.newLawfirmContact = (data as any).lawyerFirmContact
       }
 
-      // 6. 출신시험 유형 변경 체크
+      // 6. 출신시험 유형 및 회차 변경 체크 (세트로 관리)
       const isExamTypeChange =
         (data as any).lawyerBarExamType && (data as any).lawyerBarExamType !== lawyerProfile?.lawyerBarExamType
-      if (isExamTypeChange) {
-        updateData.newBarExamType = (data as any).lawyerBarExamType
-      }
-
-      // 7. 출신시험 회차 변경 체크
       const isExamNumberChange =
         (data as any).lawyerBarExamNumber &&
         (data as any).lawyerBarExamNumber !== lawyerProfile?.lawyerBarExamNumber?.toString()
-      if (isExamNumberChange) {
+
+      // 출신시험 유형 또는 회차 중 하나라도 변경되면 둘 다 전송
+      const isExamChange = isExamTypeChange || isExamNumberChange
+      if (isExamChange) {
+        if (!(data as any).lawyerBarExamType || !(data as any).lawyerBarExamNumber) {
+          alert('출신시험 유형과 회차를 모두 선택해주세요.')
+          return
+        }
+        updateData.newBarExamType = (data as any).lawyerBarExamType
         updateData.newBarExamNumber = Number((data as any).lawyerBarExamNumber)
       }
 
@@ -150,8 +159,7 @@ const LawyerAccountEdit = () => {
         !isEmailChange &&
         !isFirmChange &&
         !isFirmContactChange &&
-        !isExamTypeChange &&
-        !isExamNumberChange
+        !isExamChange
       ) {
         alert('변경할 정보를 입력해주세요.')
         return

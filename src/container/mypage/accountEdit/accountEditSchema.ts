@@ -31,6 +31,8 @@ export const accountEditSchema = z
     email: z.string().email({ message: '이메일 형식에 맞지 않습니다.' }).optional().or(z.literal('')),
 
     // 변호사 인증정보
+    lawyerFirm: z.string().optional(),
+    lawyerFirmContact: z.string().optional(),
     lawyerBarExamType: z.string().optional(),
     lawyerBarExamNumber: z.string().optional(),
   })
