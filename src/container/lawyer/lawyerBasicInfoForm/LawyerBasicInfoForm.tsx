@@ -195,7 +195,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
           <TagInput
             tags={formData.tags}
             onChange={tags => onInputChange('tags', tags)}
-            placeholder='자신있는 분야, 관련 키워드를 입력 후 엔터를 눌러주세요'
+            placeholder='자신있는 분야, 관련 키워드를 입력 후 엔터 또는 쉼표를 눌러주세요'
             maxTags={20}
             disabled={false}
             isLoading={false}
