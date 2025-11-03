@@ -200,26 +200,32 @@ const BlogFeedContainer = () => {
         onToggle={handleTogglePlay}
         isPlaying={isPlaying}
       />
-      <div className={styles['slider-wrapper']}>
-        <div
-          className={styles['slider-track']}
-          style={{
-            transform: `translate3d(-${currentIndex * 100}%, 0, 0)`,
-            transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none',
-          }}
-        >
-          {/* 이전 슬라이드 (placeholder) */}
-          <div className={styles['slide']}>{renderBlogContent(currentBlogs)}</div>
+      {isMobile ? (
+        // 모바일: 슬라이더 없이 바로 블로그 리스트 표시
+        renderBlogContent(currentBlogs)
+      ) : (
+        // 데스크톱: 슬라이더 구조 유지
+        <div className={styles['slider-wrapper']}>
+          <div
+            className={styles['slider-track']}
+            style={{
+              transform: `translate3d(-${currentIndex * 100}%, 0, 0)`,
+              transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none',
+            }}
+          >
+            {/* 이전 슬라이드 (placeholder) */}
+            <div className={styles['slide']}>{renderBlogContent(currentBlogs)}</div>
 
-          {/* 현재 슬라이드 */}
-          <div className={styles['slide']}>{renderBlogContent(currentBlogs)}</div>
+            {/* 현재 슬라이드 */}
+            <div className={styles['slide']}>{renderBlogContent(currentBlogs)}</div>
 
-          {/* 다음 슬라이드 */}
-          <div className={styles['slide']}>
-            {nextBlogs.length > 0 ? renderBlogContent(nextBlogs) : renderBlogContent(currentBlogs)}
+            {/* 다음 슬라이드 */}
+            <div className={styles['slide']}>
+              {nextBlogs.length > 0 ? renderBlogContent(nextBlogs) : renderBlogContent(currentBlogs)}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   )
 }
