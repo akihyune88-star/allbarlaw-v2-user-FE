@@ -31,8 +31,9 @@ const HeaderNavigation = () => {
     const isLoggedIn = getDisplayLoginStatus(true)
 
     if (!isLoggedIn) {
-      // 로그인하지 않은 경우 바로 상담 요청 페이지로
-      navigate(ROUTER.REQUEST_BARO_TALK)
+      // 로그인하지 않은 경우 의도한 URL을 저장하고 로그인 페이지로 리다이렉트
+      sessionStorage.setItem('redirectAfterLogin', ROUTER.REQUEST_BARO_TALK)
+      navigate(ROUTER.AUTH)
       return
     }
 
