@@ -32,7 +32,6 @@ const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
   // detailData가 있으면 props 데이터 사용, 없으면 훅으로 조회한 데이터 사용
   const lawyerDetail = detailData || fetchedData
 
-  console.log(lawyerDetail)
   const scrollToSection = (ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }

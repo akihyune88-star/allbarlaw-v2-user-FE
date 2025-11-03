@@ -17,6 +17,9 @@ export interface BasicInfoFormData {
   addressDetail: string
   officePhone: string
   categories: { categoryId: number; subcategoryId: number | null }[]
+  blogUrl: string
+  youtubeUrl: string
+  instagramUrl: string
 }
 
 const initialFormData: BasicInfoFormData = {
@@ -33,6 +36,9 @@ const initialFormData: BasicInfoFormData = {
   addressDetail: '',
   officePhone: '',
   categories: [],
+  blogUrl: '',
+  youtubeUrl: '',
+  instagramUrl: '',
 }
 
 export const useBasicInfoForm = (
@@ -71,6 +77,9 @@ export const useBasicInfoForm = (
         addressDetail: lawyerBasicInfo.lawyerLawfirmAddressDetail || '',
         officePhone: formatPhoneNumber(lawyerBasicInfo.lawyerLawfirmContact || ''),
         categories: mappedCategories,
+        blogUrl: lawyerBasicInfo.lawyerBlogUrl || '',
+        youtubeUrl: lawyerBasicInfo.lawyerYoutubeUrl || '',
+        instagramUrl: lawyerBasicInfo.lawyerInstagramUrl || '',
       }
 
       setFormData(loadedData)
@@ -172,6 +181,9 @@ export const useBasicInfoForm = (
       formData.address !== initialData.address ||
       formData.addressDetail !== initialData.addressDetail ||
       formData.officePhone !== initialData.officePhone ||
+      formData.blogUrl !== initialData.blogUrl ||
+      formData.youtubeUrl !== initialData.youtubeUrl ||
+      formData.instagramUrl !== initialData.instagramUrl ||
       categoriesChanged ||
       tagsChanged
     )

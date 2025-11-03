@@ -174,12 +174,15 @@ export type LawyerBasicInfoEditRequest = {
   lawyerLawfirmName: string
   lawyerLawfirmAddress: string
   lawyerLawfirmAddressDetail: string
-  lawyerLawfirmContact: string
+  lawyerLawfirmContact?: string
+  lawyerBlogUrl?: string | null
+  lawyerInstagramUrl?: string | null
+  lawyerYoutubeUrl?: string | null
   lawyerSubcategories: {
     subcategoryId: number
     subcategoryName: string
   }[]
-  lawyerProfileImages: {
+  lawyerProfileImages?: {
     imageUrl: string
     displayOrder: number
   }[]
