@@ -19,6 +19,7 @@ const TagInput: React.FC<TagInputProps> = ({
   isLoading = false
 }) => {
   const [inputValue, setInputValue] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleAddTag = (value: string) => {
@@ -26,19 +27,43 @@ const TagInput: React.FC<TagInputProps> = ({
     if (!trimmedValue) return
 
     if (tags.length >= maxTags) {
-      alert(`최대 ${maxTags}개까지 등록 가능합니다.`)
+      setErrorMessage(`최대 ${maxTags}개까지 등록 가능합니다.`)
+      setTimeout(() => setErrorMessage(''), 3000)
       return
     }
 
-    if (!tags.includes(trimmedValue)) {
-      onChange([...tags, trimmedValue])
+    if (tags.includes(trimmedValue)) {
+      setErrorMessage('동일한 태그는 등록할 수 없습니다')
+      setTimeout(() => setErrorMessage(''), 3000)
+      setInputValue('')
+      return
     }
+
+    onChange([...tags, trimmedValue])
     setInputValue('')
+    setErrorMessage('')
   }
 
   const handleRemoveTag = (indexToRemove: number) => {
     if (disabled || isLoading) return
     onChange(tags.filter((_, index) => index !== indexToRemove))
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+
+    // 쉼표가 입력되면 태그 추가
+    if (value.includes(',')) {
+      const tagValue = value.replace(',', '').trim()
+      if (tagValue) {
+        handleAddTag(tagValue)
+      } else {
+        setInputValue('')
+      }
+      return
+    }
+
+    setInputValue(value)
   }
 
   const handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -75,13 +100,18 @@ const TagInput: React.FC<TagInputProps> = ({
           ref={inputRef}
           type='text'
           value={inputValue}
-          onChange={e => setInputValue(e.target.value)}
+          onChange={handleInputChange}
           onKeyPress={handleInputKeyPress}
           placeholder={getPlaceholder()}
           className={styles['tag-input']}
           disabled={tags.length >= maxTags || disabled || isLoading}
         />
       </div>
+      {errorMessage && (
+        <div style={{ color: '#ff4d4f', fontSize: '12px', marginTop: '4px' }}>
+          {errorMessage}
+        </div>
+      )}
     </div>
   )
 }
