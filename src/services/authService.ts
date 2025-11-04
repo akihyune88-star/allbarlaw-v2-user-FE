@@ -162,6 +162,15 @@ export const authService = {
       throw error
     }
   },
+  lawyerPasswordCheck: async (password: string) => {
+    try {
+      const response = await instance.post<{ isValid: boolean }>('/lawyer/check-password', { password })
+      return response.data
+    } catch (error) {
+      console.error('Failed to check lawyer password:', error)
+      throw error
+    }
+  },
   lawyerProfile: async () => {
     try {
       const response = await instance.get<LawyerProfileResponse>('/lawyer/profile')
