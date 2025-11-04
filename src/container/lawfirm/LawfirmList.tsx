@@ -24,6 +24,11 @@ const LawfirmList = ({ lawfirmList, isLoading, isFetchingNextPage, onClickItem }
       </header>
       {isMobile && <section className={styles['lawfirm-filter']}>필터</section>}
       <section className={styles['lawfirm-list']} aria-label='로펌 목록'>
+        {!isLoading && lawfirmList.length === 0 && (
+          <div className={styles['empty-state']}>
+            <p>등록된 로펌이 없습니다.</p>
+          </div>
+        )}
         {lawfirmList.map((lawfirm, idx) => {
           const imageList = lawfirm.lawfirmImages.map(image => image.lawfirmImageUrl)
           const hasImages = imageList && imageList.length > 0

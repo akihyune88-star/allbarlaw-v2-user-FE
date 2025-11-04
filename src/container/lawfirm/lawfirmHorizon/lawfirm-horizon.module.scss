@@ -18,6 +18,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+
+  @media (max-width: $breakpoint-desktop) {
+    width: 100%;
+  }
 }
 
 .info-header {
@@ -50,11 +54,16 @@
 }
 
 .info-description {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+
   h3 {
     font-weight: $font-weight-semibold;
     font-size: 1rem;
     line-height: 1.125rem;
     color: $color-text-black;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   p {
@@ -62,6 +71,9 @@
     line-height: 1.125rem;
     margin-top: 0.5rem;
     color: $color-text-black;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
   }
 }
 
@@ -116,6 +128,8 @@
       font-size: 0.8125rem;
       line-height: 1.125rem;
       color: $color-text-black;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
 
     p {
@@ -124,6 +138,8 @@
       line-height: 1.125rem;
       color: $color-text-black;
       word-break: keep-all;
+      overflow-wrap: break-word;
+      white-space: pre-wrap;
     }
   }
 }

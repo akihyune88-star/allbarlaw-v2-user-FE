@@ -41,6 +41,20 @@
   }
 }
 
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1.5rem;
+  text-align: center;
+
+  p {
+    color: $color-text-index;
+    font-size: 1rem;
+    font-weight: $font-weight-medium;
+  }
+}
+
 .loading-container {
   display: flex;
   justify-content: center;
@@ -106,5 +120,13 @@
 
   .loading-text {
     font-size: 0.8125rem;
+  }
+
+  .empty-state {
+    padding: 3rem 1rem;
+
+    p {
+      font-size: 0.875rem;
+    }
   }
 }
