@@ -3,6 +3,16 @@
   align-items: center;
   width: 100%;
   gap: 2rem;
+  overflow: visible;
+
+  > figure {
+    margin: 0 0 0 24px;
+    padding: 0;
+    display: block;
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+  }
 }
 
 .thumbnail {
@@ -11,6 +21,7 @@
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
+  display: block;
 }
 
 .lawfirm-info {
@@ -18,10 +29,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-
-  @media (max-width: $breakpoint-desktop) {
-    width: 100%;
-  }
+  min-width: 0;
 }
 
 .info-header {
@@ -85,14 +93,14 @@
 
 .header-wrapper {
   .thumbnail {
-    display: none;
+    display: none; // PC에서는 header-wrapper 안 썸네일 숨김
   }
 }
 
 @media (max-width: $breakpoint-desktop) {
   .lawfirm-horizon {
-    figure {
-      display: none;
+    > figure {
+      display: none; // 모바일에서는 figure 안 큰 이미지 숨김
     }
   }
 

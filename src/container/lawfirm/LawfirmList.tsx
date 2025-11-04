@@ -22,7 +22,12 @@ const LawfirmList = ({ lawfirmList, isLoading, isFetchingNextPage, onClickItem }
         {isMobile && <h3>로펌</h3>}
         <h2>{`분야별 특별한 로펌을 찾으신다면..\n여기서 찾아서 선택하고 상담을 진행하시면 해결 가능합니다.`}</h2>
       </header>
-      {isMobile && <section className={styles['lawfirm-filter']}>필터</section>}
+      {isMobile && (
+        <section className={styles['lawfirm-filter']}>
+          <button>필터</button>
+          <div></div>
+        </section>
+      )}
       <section className={styles['lawfirm-list']} aria-label='로펌 목록'>
         {!isLoading && lawfirmList.length === 0 && (
           <div className={styles['empty-state']}>
