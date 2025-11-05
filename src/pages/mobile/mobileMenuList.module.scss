@@ -39,7 +39,14 @@
 
     font-size: 0.8125rem;
     color: $color-text-index;
+    margin-bottom: 0.25rem; // 추가 4px로 총 24px gap 만들기
   }
+}
+
+.mobile-menu-list-header-button-container {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
 }
 
 .mobile-menu-list-header-button {
@@ -117,4 +124,47 @@
 .mobile-menu-list-header-title {
   font-size: 0.875rem;
   font-weight: $font-weight-semibold;
+}
+
+.mobile-menu-list-login-required {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $color-white;
+  padding: 1rem 1.3125rem;
+  border-radius: 0.5rem;
+  gap: 1.25rem;
+}
+
+.login-required-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: $font-weight-semibold;
+    color: $color-text-black;
+    margin: 0;
+    text-align: left;
+  }
+
+  p {
+    font-size: 0.8125rem;
+    color: $color-text-index;
+    margin: 0;
+    text-align: left;
+  }
+
+  button {
+    background-color: transparent;
+    color: $color-text-caption;
+    text-decoration: underline;
+
+    font-size: 0.8125rem;
+
+    margin-top: 1.25rem;
+  }
 }

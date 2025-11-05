@@ -34,6 +34,7 @@ import SocialCheck from '@/pages/auth/socialCheck/SocialCheck'
 import FaqLayout from '@/pages/support/faq/FaqLayout'
 import FaqListByCategory from '@/pages/support/faq/faqListByCategory/FaqListByCategory'
 import MainLayout from '@/pages/MainLayout'
+import HeaderlessLayout from '@/pages/HeaderlessLayout'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import {
   BaroTalkLawyerSelection,
@@ -318,12 +319,18 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: ROUTER.MOBILE_MENU_LIST,
-        element: <MobileMenuList />,
-      },
-      {
         path: ROUTER.ABOUT_MOBILE,
         element: <AboutAllbarlaw />,
+      },
+    ],
+  },
+  {
+    path: '',
+    element: <HeaderlessLayout />,
+    children: [
+      {
+        path: ROUTER.MOBILE_MENU_LIST,
+        element: <MobileMenuList />,
       },
     ],
   },
