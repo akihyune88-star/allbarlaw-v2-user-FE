@@ -26,6 +26,7 @@ const MobileVidoeSpotlight = ({ excludeIds, handleVideoClick }: MobileVidoeSpotl
             showBookmarkButton={false}
             lawyerName={video.lawyerName}
             lawfirmName={video.lawfirmName}
+            lawfirmNameBreak={true}
             onClick={() => handleVideoClick(video.subcategoryId, video.videoCaseId)}
           />
         </div>

@@ -17,15 +17,16 @@ type RecommenderVideoProps = {
   lawfirmName?: string
   onClick?: () => void
   className?: string
+  lawfirmNameBreak?: boolean
   style?: React.CSSProperties
 }
 
 const RecommenderVideo = ({
   videoUrl,
-  isShowTitle = true,
   title,
   description,
   isVideoKeep,
+  lawfirmNameBreak,
   videoCaseId,
   lawyerName,
   lawfirmName,
@@ -75,26 +76,28 @@ const RecommenderVideo = ({
           <img src={videoUrl} alt='recommender-video' className={styles.thumbnail} />
         </figure>
         <div className={styles['text-wrapper']}>
-          {isShowTitle && (
+          {title && (
             <header>
               <span className={styles['title']}>{title}</span>
+              {showBookmarkButton && (
+                <button onClick={handleVideoKeep} className={styles['bookmark-btn']}>
+                  <SvgIcon
+                    name='bookMark'
+                    style={{ flexShrink: 0, fill: _like ? COLOR.green_01 : '#fff', cursor: 'pointer' }}
+                    size={20}
+                  />
+                </button>
+              )}
             </header>
           )}
+          {description && <span className={styles['description']}>{description}</span>}
           <div className={styles['video-info']}>
             {lawyerName && (
-              <span className={styles['lawyer-info']}>
-                {lawyerName} 변호사 {lawfirmName && `[${lawfirmName}]`}{' '}
-              </span>
-            )}
-            {description && <span className={styles['description']}>{description}</span>}
-            {showBookmarkButton && (
-              <button onClick={handleVideoKeep} className={styles['bookmark-btn']}>
-                <SvgIcon
-                  name='bookMark'
-                  style={{ flexShrink: 0, fill: _like ? COLOR.green_01 : '#fff', cursor: 'pointer' }}
-                  size={20}
-                />
-              </button>
+              <div className={styles['lawyer-info']}>
+                <span>{lawyerName} 변호사</span>
+                {lawfirmNameBreak && <br className={styles['lawfirm-name-break']} />}
+                {lawfirmName && <span>[{lawfirmName}]</span>}
+              </div>
             )}
           </div>
         </div>

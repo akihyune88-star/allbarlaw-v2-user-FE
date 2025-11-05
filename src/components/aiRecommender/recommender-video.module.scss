@@ -54,7 +54,16 @@
   font-size: 1rem;
   line-height: 24px;
   color: $color-green-01;
+  display: flex;
+  gap: 0.25rem;
   @include ellipsis(2);
+}
+
+.lawfirm-name-break {
+  display: none;
+  @media (max-width: $breakpoint-desktop) {
+    display: block;
+  }
 }
 
 .bookmark-btn {
