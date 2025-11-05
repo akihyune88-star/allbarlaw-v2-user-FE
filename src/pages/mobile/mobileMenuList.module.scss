@@ -87,7 +87,11 @@
   padding: 0.9375rem 0;
   text-align: center;
   border-radius: 0.5rem;
+  color: $color-text-index;
   border: 1px solid $color-line-borderbox;
+
+  font-size: 0.875rem;
+  font-weight: $font-weight-semibold;
 }
 
 .mobile-menu-list-button-container {
@@ -124,6 +128,16 @@
 .mobile-menu-list-header-title {
   font-size: 0.875rem;
   font-weight: $font-weight-semibold;
+}
+
+.search-input-custom {
+  border: none;
+  border-radius: 2rem;
+  background-color: $color-white;
+
+  input {
+    border: none !important;
+  }
 }
 
 .mobile-menu-list-login-required {

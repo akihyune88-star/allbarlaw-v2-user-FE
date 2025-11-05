@@ -6,6 +6,7 @@ import SvgIcon from '@/components/SvgIcon'
 import { useCategory } from '@/hooks/queries/useCategory'
 import { CategoryInfo } from '@/types/categoryTypes'
 import { useGetUserProfile } from '@/hooks/queries/useAuth'
+import { COLOR } from '@/styles/color'
 
 const MobileMenuList = () => {
   const navigate = useNavigate()
@@ -51,15 +52,15 @@ const MobileMenuList = () => {
             </div>
             <div className={styles['mobile-menu-list-header-button']}>
               <button onClick={handleMyPage}>
-                <SvgIcon name='user' size={24} />
+                <SvgIcon name='user' size={24} color={COLOR.icon_gray_50} />
                 <span className={styles['icon-span']}>마이페이지</span>
               </button>
               <button onClick={handleChat}>
-                <SvgIcon name='talk' size={24} />
+                <SvgIcon name='talk' size={24} color={COLOR.icon_gray_50} />
                 <span className={styles['icon-span']}>상담</span>
               </button>
               <button onClick={handleMyPage}>
-                <SvgIcon name='bookMark' size={24} style={{ cursor: 'pointer' }} />
+                <SvgIcon name='bookMark' size={24} color={COLOR.icon_gray_50} style={{ cursor: 'pointer' }} />
                 <span className={styles['icon-span']}>찜리스트</span>
               </button>
             </div>
@@ -73,7 +74,7 @@ const MobileMenuList = () => {
             </div>
           </header>
         )}
-        <SearchInput />
+        <SearchInput className={styles['search-input-custom']} />
         <button className={styles['mobile-menu-list-button']}>올바로 소개</button>
         <div className={styles['mobile-menu-list-button-container']}>
           <button className={styles['mobile-menu-list-button']} onClick={handleNotice}>
