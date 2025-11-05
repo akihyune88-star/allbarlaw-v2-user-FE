@@ -95,7 +95,7 @@ const RecommenderVideo = ({
             {lawyerName && (
               <div className={styles['lawyer-info']}>
                 <span>{lawyerName} 변호사</span>
-                {lawfirmNameBreak && <br className={styles['lawfirm-name-break']} />}
+                <br className={styles['lawfirm-name-break']} />
                 {lawfirmName && <span>[{lawfirmName}]</span>}
               </div>
             )}
