@@ -254,3 +254,12 @@ export type PatchMessageResponse = {
   chatMessageUpdatedAt: string
   success: boolean
 }
+
+export interface consultationRequestItem {
+  consultationRequestTitle: string
+  consultationRequestFirstMessage: string
+}
+
+export interface ChangeConsultationContentRequest extends consultationRequestItem {
+  consultationRequestId: number
+}

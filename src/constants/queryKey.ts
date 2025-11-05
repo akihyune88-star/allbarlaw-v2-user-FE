@@ -29,6 +29,7 @@ export const QUERY_KEY = {
   BARO_TALK_CHAT_LIST: 'baroTalkChatList',
   BARO_TALK_LAWYER_LIST: 'baroTalkLawyerList',
   LAWYER_CHAT_LIST: 'lawyerChatList',
+  CONSULTATION_REQUEST_ITEM: 'consultationRequestItem',
 
   // 변호사
   LAWYER_LIST: 'lawyerList',
