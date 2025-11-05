@@ -98,7 +98,7 @@ export const baroTalkServices = {
   changeConsultationContent: async (request: ChangeConsultationContentRequest) => {
     const response = await instance.patch(`/consultation-requests/${request.consultationRequestId}`, {
       consultationRequestTitle: request.consultationRequestTitle,
-      consultationRequestSummaryContent: request.consultationRequestFirstMessage,
+      consultationRequestFirstMessage: request.consultationRequestFirstMessage,
     })
     return response.data
   },
