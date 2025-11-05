@@ -38,12 +38,21 @@ const MobileMenuList = () => {
     window.location.reload()
   }
 
+  const handleClose = () => {
+    navigate(-1)
+  }
+
   return (
     <main className={styles['mobile-menu-list']}>
       <section className={styles['mobile-menu-list-section']}>
         {isLoggedIn ? (
           <header className={styles['mobile-menu-list-header']}>
-            <h1>{userProfile?.userAccount || '올바로'}님 반갑습니다.</h1>
+            <div className={styles['header-top']}>
+              <h1>{userProfile?.userAccount || '올바로'}님 반갑습니다.</h1>
+              <button className={styles['close-button']} onClick={handleClose}>
+                ×
+              </button>
+            </div>
             <div className={styles['mobile-menu-list-header-button-container']}>
               <span>내정보 수정</span>
               <span onClick={handleLogout} style={{ cursor: 'pointer' }}>
