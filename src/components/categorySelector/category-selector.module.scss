@@ -219,8 +219,8 @@
   }
 
   .category-row {
-    gap: 0.5rem;
     padding: 0;
+    // gap은 동적으로 인라인 스타일로 적용됨
   }
 
   .icon-wrapper {

@@ -1,6 +1,6 @@
 import Tabs from '@/components/tabs/Tabs'
 import styles from './login.module.scss'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import SvgIcon from '@/components/SvgIcon'
 import { COLOR } from '@/styles/color'
 import SocialLoginButton from '@/container/auth/socialLoginButton/SocialLoginButton'
@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginFormData, defaultValues } from './loginSchema'
 import LabelInput from '@/components/labelInput/LabelInput'
 import { useLogin, useLawyerLogin } from '@/hooks/queries/useLogin'
+import { AlertModal } from '@/components/modal/Modal'
 
 import { getLawyerIdFromToken } from '@/utils/tokenUtils'
 
@@ -19,18 +20,9 @@ type AuthActionType = 'ID_FIND' | 'PASSWORD_RESET' | 'SIGNUP'
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState('/user')
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (errorMessage) {
-      const timer = setTimeout(() => {
-        setErrorMessage('')
-      }, 3000)
-      return () => clearTimeout(timer)
-    }
-    return undefined
-  }, [errorMessage])
 
   const {
     register,
@@ -70,6 +62,7 @@ const Login = () => {
     },
     onError: message => {
       setErrorMessage(message)
+      setIsErrorModalOpen(true)
     },
   })
 
@@ -104,6 +97,7 @@ const Login = () => {
     onError: message => {
       console.log('message', message)
       setErrorMessage(message)
+      setIsErrorModalOpen(true)
     },
   })
 
@@ -128,8 +122,6 @@ const Login = () => {
   }
 
   const onSubmit = async (data: LoginFormData) => {
-    setErrorMessage('')
-
     if (activeTab === '/user') {
       // 일반 사용자 로그인
       login({
@@ -145,6 +137,35 @@ const Login = () => {
         rememberMe: data.rememberMe,
       })
     }
+  }
+
+  const handleCloseErrorModal = () => {
+    setIsErrorModalOpen(false)
+    setErrorMessage('')
+  }
+
+  // \n 기준으로 메시지를 파싱하여 스타일 적용
+  const parseErrorMessage = (message: string) => {
+    if (!message) return null
+
+    const lines = message.split('\n')
+    return (
+      <>
+        {lines.map((line, index) => (
+          <div
+            key={index}
+            style={{
+              fontSize: index === 0 ? '1.1rem' : '0.9rem',
+              fontWeight: index === 0 ? 600 : 400,
+              color: index === 0 ? '#333' : '#666',
+              marginBottom: index < lines.length - 1 ? '8px' : 0,
+            }}
+          >
+            {line}
+          </div>
+        ))}
+      </>
+    )
   }
 
   const handleSignup = () => {
@@ -171,7 +192,6 @@ const Login = () => {
           <Tabs items={LOGIN_TABS} onChange={handleTabChange} initialPath={'/user'} />
         </div>
         <form className={styles['login-form-content']} onSubmit={handleSubmit(onSubmit)}>
-          {errorMessage && <div className={styles['error-message']}>{errorMessage}</div>}
           <div className={styles['login-form-input-container']}>
             <LabelInput
               label='아이디'
@@ -227,6 +247,8 @@ const Login = () => {
           )}
         </footer>
       </section>
+
+      <AlertModal isOpen={isErrorModalOpen} onClose={handleCloseErrorModal} message={parseErrorMessage(errorMessage)} />
     </div>
   )
 }

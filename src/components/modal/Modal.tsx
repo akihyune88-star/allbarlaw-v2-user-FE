@@ -102,7 +102,7 @@ const ModalFooter = ({ children, className }: ModalFooterProps) => {
 interface AlertModalProps {
   isOpen: boolean
   onClose: () => void
-  message: string
+  message: string | ReactNode
   confirmText?: string
   className?: string
 }
