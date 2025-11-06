@@ -1,0 +1,41 @@
+.about-desktop-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  width: 100%;
+  background-color: $color-white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2.3125rem 0 1.3125rem 0;
+  height: 6rem;
+
+  > :first-child {
+    margin-right: auto;
+    margin-left: calc((100vw - 80rem) / 2);
+  }
+
+  &-nav {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin-right: calc((100vw - 80rem) / 2);
+  }
+
+  &-nav-item {
+    width: 10rem;
+    font-size: 1rem;
+    font-weight: $font-weight-semibold;
+    color: $color-text-black;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}

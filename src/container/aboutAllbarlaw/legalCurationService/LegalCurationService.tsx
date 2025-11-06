@@ -2,8 +2,9 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import styles from './legalCurationService.module.scss'
 import { useCategory } from '@/hooks/queries/useCategory'
 import { useNavigate } from 'react-router-dom'
+import { forwardRef } from 'react'
 
-const LegalCurationService = () => {
+const LegalCurationService = forwardRef<HTMLDivElement>((_props, ref) => {
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
@@ -14,7 +15,7 @@ const LegalCurationService = () => {
   }
 
   return (
-    <section className={styles['legal-curation-service']}>
+    <section className={styles['legal-curation-service']} ref={ref}>
       <h2 className={styles['legal-curation-service-title']}>법률정보 큐레이션 서비스</h2>
       <article className={styles['legal-curation-service-article']}>
         <div className={styles['legal-curation-service-article-right']}>
@@ -46,6 +47,8 @@ const LegalCurationService = () => {
       </article>
     </section>
   )
-}
+})
+
+LegalCurationService.displayName = 'LegalCurationService'
 
 export default LegalCurationService
