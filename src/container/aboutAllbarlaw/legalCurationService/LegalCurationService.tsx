@@ -4,7 +4,7 @@ import { useCategory } from '@/hooks/queries/useCategory'
 import { useNavigate } from 'react-router-dom'
 import { forwardRef } from 'react'
 
-const LegalCurationService = forwardRef<HTMLDivElement>((props, ref) => {
+const LegalCurationService = forwardRef<HTMLDivElement>((_props, ref) => {
   const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
