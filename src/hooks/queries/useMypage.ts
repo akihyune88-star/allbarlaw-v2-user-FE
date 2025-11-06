@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { QUERY_KEY } from '@/constants/queryKey'
 import { BlogListRequest } from '@/types/blogTypes'
 import { mypageService } from '@/services/mypageServices'
