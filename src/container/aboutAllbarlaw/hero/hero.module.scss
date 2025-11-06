@@ -1,4 +1,4 @@
-.hero-header {
+.hero {
   width: 100%;
   background-color: $color-white;
   height: 100dvh;
@@ -8,37 +8,11 @@
   align-items: center;
   position: relative;
 
-  &-nav {
-    width: 80rem;
-    height: 6rem;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    padding: 2.3125rem 0 1.3125rem 0;
-
-    position: absolute;
-    top: 0;
-
-    &-list {
-      display: flex;
-      align-items: flex-end;
-      gap: 1.5rem;
-    }
-
-    &-list-item {
-      width: 10rem;
-      font-size: 1rem;
-      font-weight: $font-weight-semibold;
-      color: $color-text-black;
-      text-decoration: none;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
+  @media (max-width: $breakpoint-desktop) {
+    height: 39rem;
   }
 
-  .hero-header-content {
+  &-content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,26 +21,46 @@
     flex: 1;
     width: 100%;
 
+    @media (max-width: $breakpoint-desktop) {
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 2.5rem 0 2.5rem 1.25rem;
+    }
+
     div {
       display: flex;
       align-items: center;
 
       &:last-child {
-        .hero-header-image-container {
+        .hero-image-container {
           width: 180px;
           border-radius: 1.875rem;
         }
       }
+
+      @media (max-width: $breakpoint-desktop) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    &-line {
+      display: flex;
+      align-items: center;
+
+      @media (max-width: $breakpoint-desktop) {
+        flex-wrap: wrap;
+      }
     }
 
     span {
-      font-size: 4rem;
+      font-size: clamp(1.75rem, 4vw, 4rem);
       font-weight: $font-weight-bold;
       color: $color-text-black;
     }
   }
 
-  .hero-header-image-container {
+  .hero-image-container {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -76,13 +70,7 @@
   }
 
   @media (max-width: $breakpoint-desktop) {
-    height: 13.4375rem;
-
-    .hero-header-nav {
-      display: none;
-    }
-
-    .hero-header-image-container {
+    .hero-image-container {
       padding: 3.125rem 0 0 1.5rem;
       width: 100%;
     }
