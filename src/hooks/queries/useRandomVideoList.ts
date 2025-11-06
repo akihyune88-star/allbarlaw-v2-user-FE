@@ -9,9 +9,11 @@ export const useRandomVideoList = ({
   excludeIds,
   enabled = true,
 }: RandomVideoListRequest & { enabled?: boolean }) => {
+  const limitedExcludeIds = excludeIds ? excludeIds.slice(-20) : []
+
   const { data, isLoading, refetch } = useQuery({
-    queryKey: [QUERY_KEY.RANDOM_VIDEO_LIST, subcategoryId, take, excludeIds],
-    queryFn: () => videoService.getRandomVideoList({ subcategoryId, take, excludeIds }),
+    queryKey: [QUERY_KEY.RANDOM_VIDEO_LIST, subcategoryId, take, limitedExcludeIds],
+    queryFn: () => videoService.getRandomVideoList({ subcategoryId, take, excludeIds: limitedExcludeIds }),
     placeholderData: previousData => previousData, // 이전 데이터 유지로 깜빡임 방지
     enabled,
   })

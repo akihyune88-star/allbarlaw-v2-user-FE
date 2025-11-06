@@ -77,13 +77,7 @@ const HeroHeader = () => {
             )}
           </nav>
         </header>
-        <figure className={styles['hero-header-image-container']}>
-          <img
-            src={isMobile ? landingHeroMobile : landingHero}
-            alt='hero-header-image'
-            className={styles['hero-header-image']}
-          />
-        </figure>
+        <section></section>
       </section>
     </>
   )
