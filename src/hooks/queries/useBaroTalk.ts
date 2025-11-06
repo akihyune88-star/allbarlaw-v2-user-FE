@@ -178,8 +178,9 @@ export const useChangeConsultationStatus = ({ onSuccess, onError }: { onSuccess:
       consultationRequestStatus: ChatRoomStatus
     }) => baroTalkServices.changeConsultationStatus(consultationRequestId, consultationRequestStatus),
     onSuccess: () => {
-      onSuccess()
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_CONSULTATION_LIST] })
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONSULTATION_REQUEST_ITEM] })
+      onSuccess()
     },
     onError: () => {
       onError()
