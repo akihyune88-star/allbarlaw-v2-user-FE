@@ -8,58 +8,70 @@
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+}
 
-  h2 {
-    font-size: 1.25rem;
-    font-weight: $font-weight-extra-bold;
+// AI 요약 제목 (초록색)
+.summary-title {
+  font-size: 1.25rem;
+  font-weight: $font-weight-extra-bold;
+  color: $color-green-01;
+}
+
+// 일반 h2 제목
+.section-title {
+  font-size: 1.25rem;
+  font-weight: $font-weight-extra-bold;
+  color: $color-text-black;
+}
+
+// 요약 본문
+.summary {
+  font-size: 1.125rem;
+  line-height: 1.56;
+  letter-spacing: -0.0019rem;
+  white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+// 변호사 리스트
+.lawyer-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.lawyer-item {
+  position: relative;
+  padding-left: 10px;
+
+  &::before {
+    content: '•';
+    position: absolute;
+    left: -0.25rem;
+    top: 0.25rem;
     color: $color-text-black;
+    font-size: 1rem;
   }
+}
 
-  .summary {
-    font-size: 1.125rem;
-    line-height: 1.56;
-    letter-spacing: -0.0019rem;
-    white-space: pre-line;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-  }
+.lawyer-item-text {
+  font-size: 1.125rem;
+  line-height: 1.56;
+  letter-spacing: -0.0019rem;
+  word-break: keep-all;
+}
 
-  .lawyer-list {
-    list-style-type: none;
-    padding-left: 0;
-    margin: 0;
+// 태그 리스트
+.tag-list {
+  display: flex;
+  margin-top: 1rem;
+  gap: 1rem;
+}
 
-    .lawyer-item {
-      position: relative;
-      padding-left: 10px; /* 불릿+간격 공간 확보 */
-
-      &::before {
-        content: '•';
-        position: absolute;
-        left: 0.25rem;
-        color: $color-text-black;
-        font-size: 0.875rem;
-      }
-
-      span {
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-        word-break: keep-all;
-      }
-    }
-  }
-
-  .tag-list {
-    display: flex;
-    margin-top: 1rem;
-    gap: 1rem;
-
-    span {
-      font-size: 0.875rem;
-      color: $color-text-index;
-    }
-  }
+.tag-item {
+  font-size: 0.875rem;
+  color: $color-text-index;
 }
 
 .line-driver {
