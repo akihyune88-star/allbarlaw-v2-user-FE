@@ -26,7 +26,6 @@ const RecommenderVideo = ({
   title,
   description,
   isVideoKeep,
-  lawfirmNameBreak,
   videoCaseId,
   lawyerName,
   lawfirmName,
