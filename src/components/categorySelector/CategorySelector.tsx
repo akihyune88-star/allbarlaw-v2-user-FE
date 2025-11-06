@@ -33,7 +33,7 @@ const CategorySelector = ({
 
   // 모바일 분기 처리
   const isMobile = useMediaQuery('(max-width: 80rem)')
-  const { chunkSize: mobileChunkSize } = useCategoryRenderChunk({
+  const { chunkSize: mobileChunkSize, calculatedGap } = useCategoryRenderChunk({
     horizontalPadding: horizontalPadding,
   })
 
@@ -98,6 +98,7 @@ const CategorySelector = ({
               {/* 현재 그룹의 카테고리들 */}
               <div
                 className={`${styles['category-row']} ${isMobile && group.length === chunkSize ? styles.center : ''}`}
+                style={isMobile ? { gap: `${calculatedGap}px` } : undefined}
               >
                 {group.map(category => (
                   <div
