@@ -4,8 +4,6 @@ import { ROUTER } from '@/routes/routerConstant'
 import { useNavigate } from 'react-router-dom'
 import { MouseEvent } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import landingHero from '@/assets/imgs/landing-hero.webp'
-import landingHeroMobile from '@/assets/imgs/landing-hero-mobile.webp'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const HeroHeader = () => {
@@ -39,47 +37,56 @@ const HeroHeader = () => {
   }
 
   return (
-    <>
-      <section className={styles['hero-header']}>
-        <header className={styles['hero-header-nav']}>
-          <SvgIcon name='pcLogoLanding' />
-          <nav className={styles['hero-header-nav-list']}>
-            {linkList.map(item => (
-              <a
-                key={item.name}
-                href={item.href}
-                className={styles['hero-header-nav-list-item']}
-                onClick={e => handleNavClick(e, item.href)}
-              >
-                {item.name}
-              </a>
-            ))}
+    <main className={styles['hero-header']}>
+      <header className={styles['hero-header-nav']}>
+        <SvgIcon name='pcLogoLanding' />
+        <nav className={styles['hero-header-nav-list']}>
+          {linkList.map(item => (
+            <a
+              key={item.name}
+              href={item.href}
+              className={styles['hero-header-nav-list-item']}
+              onClick={e => handleNavClick(e, item.href)}
+            >
+              {item.name}
+            </a>
+          ))}
 
-            {/* 로그인 상태에 따른 조건부 렌더링 */}
-            {isLoggedIn ? (
+          {/* 로그인 상태에 따른 조건부 렌더링 */}
+          {isLoggedIn ? (
+            <a
+              href={ROUTER.MYPAGE}
+              className={styles['hero-header-nav-list-item']}
+              onClick={e => handleAuthClick(e, ROUTER.MYPAGE)}
+            >
+              마이페이지
+            </a>
+          ) : (
+            <>
               <a
-                href={ROUTER.MYPAGE}
+                href={ROUTER.LOGIN}
                 className={styles['hero-header-nav-list-item']}
-                onClick={e => handleAuthClick(e, ROUTER.MYPAGE)}
+                onClick={e => handleAuthClick(e, ROUTER.AUTH)}
               >
-                마이페이지
+                로그인/회원가입
               </a>
-            ) : (
-              <>
-                <a
-                  href={ROUTER.LOGIN}
-                  className={styles['hero-header-nav-list-item']}
-                  onClick={e => handleAuthClick(e, ROUTER.AUTH)}
-                >
-                  로그인/회원가입
-                </a>
-              </>
-            )}
-          </nav>
-        </header>
-        <section></section>
+            </>
+          )}
+        </nav>
+      </header>
+      <section className={styles['hero-header-content']}>
+        <div>
+          <span>누구나 법 앞에서</span>
+          <figure className={styles['hero-header-image-container']}></figure>
+          <span>평등할 수 있도록</span>
+        </div>
+        <div>
+          <span>정보의 격차가</span>
+          <figure className={styles['hero-header-image-container']}></figure>
+          <span>정의의 격차가 되지 않도록</span>
+        </div>
       </section>
-    </>
+    </main>
   )
 }
 

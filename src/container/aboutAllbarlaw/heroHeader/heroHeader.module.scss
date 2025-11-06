@@ -1,20 +1,25 @@
 .hero-header {
   width: 100%;
   background-color: $color-white;
-  height: 44.1875rem;
+  height: 100dvh;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 
   &-nav {
     width: 80rem;
     height: 6rem;
 
     display: flex;
+
     justify-content: space-between;
 
     padding: 2.3125rem 0 1.3125rem 0;
+
+    position: absolute;
+    top: 0;
 
     &-list {
       display: flex;
@@ -26,36 +31,48 @@
       width: 10rem;
       font-size: 1rem;
       font-weight: $font-weight-semibold;
-      color: $color-white;
+      color: $color-text-black;
       text-decoration: none;
       cursor: pointer;
       transition: opacity 0.2s;
+    }
+  }
 
-      &:hover {
-        color: $color-white;
-        opacity: 0.8;
-      }
+  .hero-header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-      &:visited {
-        color: $color-white;
-      }
+    flex: 1;
+    width: 100%;
 
-      &:active {
-        color: $color-white;
+    div {
+      display: flex;
+      align-items: center;
+
+      &:last-child {
+        .hero-header-image-container {
+          width: 180px;
+          border-radius: 1.875rem;
+        }
       }
+    }
+
+    span {
+      font-size: 4rem;
+      font-weight: $font-weight-bold;
+      color: $color-text-black;
     }
   }
 
   .hero-header-image-container {
-    padding-top: 6.875rem;
-    width: 80rem;
-  }
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: $color-bg-gray-01;
 
-  .hero-header-image {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    display: block;
+    margin: 0 0.75rem;
   }
 
   @media (max-width: $breakpoint-desktop) {
