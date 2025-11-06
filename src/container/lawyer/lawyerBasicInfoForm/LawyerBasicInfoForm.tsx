@@ -1,8 +1,7 @@
 import styles from './lawyerBasicInfoForm.module.scss'
 import { BasicInfoFormData } from '@/hooks/lawyerAdmin/useBasicInfoForm'
 import TagInput from '@/components/tag/TagInput'
-import AddressSearchModal from '@/components/addressSearchModal/AddressSearchModal'
-import { useAddressSearch } from '@/hooks/useAddressSearch'
+import { useAddressSearch, type AddressData } from '@/hooks/useAddressSearch'
 import { useState, useEffect, ChangeEvent } from 'react'
 
 interface LawyerBasicInfoFormProps {
@@ -12,7 +11,7 @@ interface LawyerBasicInfoFormProps {
 }
 
 const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInfoFormProps) => {
-  const { isOpen, openAddressSearch, closeAddressSearch } = useAddressSearch()
+  const { open: openAddressSearch } = useAddressSearch()
   const [phoneNumber, setPhoneNumber] = useState('')
   const [officePhone, setOfficePhone] = useState('')
 
@@ -25,8 +24,10 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
     setOfficePhone(formData.officePhone)
   }, [formData.officePhone])
 
-  const handleAddressComplete = (data: { address: string; zonecode: string }) => {
-    onInputChange('address', data.address)
+  const handleAddressSearch = () => {
+    openAddressSearch((data: AddressData) => {
+      onInputChange('address', data.address)
+    })
   }
 
   const formatPhoneNumber = (value: string) => {
@@ -300,7 +301,7 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
         </div>
         <div className={styles.inputCol}>
           <div className={styles.flexRow}>
-            <button type='button' className={styles.button} onClick={openAddressSearch}>
+            <button type='button' className={styles.button} onClick={handleAddressSearch}>
               주소 검색하기
             </button>
             <input
@@ -347,8 +348,6 @@ const LawyerBasicInfoForm = ({ formData, errors, onInputChange }: LawyerBasicInf
           </div>
         </div>
       </div>
-
-      <AddressSearchModal isOpen={isOpen} onClose={closeAddressSearch} onComplete={handleAddressComplete} />
     </section>
   )
 }

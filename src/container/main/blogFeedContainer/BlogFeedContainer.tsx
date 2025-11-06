@@ -81,8 +81,6 @@ const BlogFeedContainer = () => {
     excludeIds: currentExcludeIds,
   })
 
-  console.log('current', currentExcludeIds)
-
   // 다음 데이터 미리 fetching
   const nextExcludeIds = [...currentExcludeIds, ...currentBlogs.map(blog => blog.blogCaseId)]
 

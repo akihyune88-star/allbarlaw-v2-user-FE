@@ -39,6 +39,47 @@
 
     font-size: 0.8125rem;
     color: $color-text-index;
+    margin-bottom: 0.25rem; // 추가 4px로 총 24px gap 만들기
+  }
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: $color-text-black;
+  cursor: pointer;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &:active {
+    opacity: 0.6;
+  }
+}
+
+.mobile-menu-list-header-button-container {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+
+  span {
+    text-decoration: underline;
+    font-size: 0.8125rem;
+    font-weight: $font-weight-semibold;
+    color: $color-text-caption;
   }
 }
 
@@ -80,7 +121,11 @@
   padding: 0.9375rem 0;
   text-align: center;
   border-radius: 0.5rem;
+  color: $color-text-index;
   border: 1px solid $color-line-borderbox;
+
+  font-size: 0.875rem;
+  font-weight: $font-weight-semibold;
 }
 
 .mobile-menu-list-button-container {
@@ -117,4 +162,57 @@
 .mobile-menu-list-header-title {
   font-size: 0.875rem;
   font-weight: $font-weight-semibold;
+}
+
+.search-input-custom {
+  border: none;
+  border-radius: 2rem;
+  background-color: $color-white;
+
+  input {
+    border: none !important;
+  }
+}
+
+.mobile-menu-list-login-required {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $color-white;
+  padding: 1rem 1.3125rem;
+  border-radius: 0.5rem;
+  gap: 1.25rem;
+}
+
+.login-required-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: $font-weight-semibold;
+    color: $color-text-black;
+    margin: 0;
+    text-align: left;
+  }
+
+  p {
+    font-size: 0.8125rem;
+    color: $color-text-index;
+    margin: 0;
+    text-align: left;
+  }
+
+  button {
+    background-color: transparent;
+    color: $color-text-caption;
+    text-decoration: underline;
+
+    font-size: 0.8125rem;
+
+    margin-top: 1.25rem;
+  }
 }

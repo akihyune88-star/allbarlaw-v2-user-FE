@@ -123,6 +123,30 @@ export const usePasswordCheck = ({
   })
 }
 
+export const useLawyerPasswordCheck = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (_data: { isValid: boolean }) => void
+  onError: (_message: string) => void
+}) => {
+  return useMutation<{ isValid: boolean }, Error, { password: string }>({
+    mutationFn: async ({ password }) => {
+      const response = await authService.lawyerPasswordCheck(password)
+      return response
+    },
+    onSuccess: (data, _variables) => {
+      onSuccess?.(data)
+    },
+    onError: error => {
+      if (isAxiosError(error)) {
+        const errorMessage = getErrorMessage(error.response?.data.code)
+        onError?.(errorMessage)
+      }
+    },
+  })
+}
+
 export const useGetLawyerProfile = () => {
   return useQuery({
     queryKey: [QUERY_KEY.LAWYER_PROFILE],

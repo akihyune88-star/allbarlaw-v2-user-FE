@@ -11,6 +11,9 @@ import {
   LeaveChatRoomRequest,
   PatchMessageRequest,
   PatchMessageResponse,
+  consultationRequestItem,
+  ChangeConsultationContentRequest,
+  ChatRoomStatus,
 } from '@/types/baroTalkTypes'
 
 export const baroTalkServices = {
@@ -77,6 +80,25 @@ export const baroTalkServices = {
     const response = await instance.patch<PatchMessageResponse>(`/chat/message/${request.messageId}`, {
       messageContent: request.messageContent,
       userId: request.userId,
+    })
+    return response.data
+  },
+  getConsultationRequestList: async (consultationRequestId: number) => {
+    const response = await instance.get<consultationRequestItem>(`/consultation-requests/${consultationRequestId}`)
+    return response.data
+  },
+
+  changeConsultationStatus: async (consultationRequestId: number, consultationRequestStatus: ChatRoomStatus) => {
+    const response = await instance.patch(`/consultation-requests/${consultationRequestId}/status`, {
+      consultationRequestStatus,
+    })
+    return response.data
+  },
+
+  changeConsultationContent: async (request: ChangeConsultationContentRequest) => {
+    const response = await instance.patch(`/consultation-requests/${request.consultationRequestId}`, {
+      consultationRequestTitle: request.consultationRequestTitle,
+      consultationRequestFirstMessage: request.consultationRequestFirstMessage,
     })
     return response.data
   },

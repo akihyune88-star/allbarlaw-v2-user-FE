@@ -10,6 +10,8 @@ import {
   LeaveChatRoomRequest,
   PatchMessageRequest,
   PatchMessageResponse,
+  ChatRoomStatus,
+  ChangeConsultationContentRequest,
 } from '@/types/baroTalkTypes'
 import { QUERY_KEY } from '@/constants/queryKey'
 import { isAxiosError } from 'axios'
@@ -153,6 +155,55 @@ export const usePatchMessage = ({
         const errorMessage = getErrorMessage(error.response?.data.code)
         onError?.(errorMessage)
       }
+    },
+  })
+}
+
+export const useGetConsultationRequestItem = (consultationRequestId: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEY.CONSULTATION_REQUEST_ITEM, consultationRequestId],
+    queryFn: () => baroTalkServices.getConsultationRequestList(consultationRequestId),
+  })
+}
+
+export const useChangeConsultationStatus = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({
+      consultationRequestId,
+      consultationRequestStatus,
+    }: {
+      consultationRequestId: number
+      consultationRequestStatus: ChatRoomStatus
+    }) => baroTalkServices.changeConsultationStatus(consultationRequestId, consultationRequestStatus),
+    onSuccess: () => {
+      onSuccess()
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_CONSULTATION_LIST] })
+    },
+    onError: () => {
+      onError()
+    },
+  })
+}
+
+export const useChangeConsultationContent = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void
+  onError: () => void
+}) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (request: ChangeConsultationContentRequest) => baroTalkServices.changeConsultationContent(request),
+    onSuccess: () => {
+      onSuccess()
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_CONSULTATION_LIST] })
+    },
+    onError: () => {
+      onError()
     },
   })
 }

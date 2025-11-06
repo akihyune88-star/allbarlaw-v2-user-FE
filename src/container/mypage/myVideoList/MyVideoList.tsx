@@ -65,8 +65,10 @@ const MyVideoList = ({ sort }: { sort: 'asc' | 'desc' }) => {
               isVideoKeep={video.isKeep}
               key={video.videoCaseId}
               videoUrl={video.thumbnail}
-              isShowTitle={false}
-              description={video.title}
+              title={video.title}
+              lawyerName={video.lawyerName}
+              lawfirmName={video.lawfirmName}
+              description={video.summaryContent}
               onClick={() => handleVidoeDetail(video)}
             />
           ))}

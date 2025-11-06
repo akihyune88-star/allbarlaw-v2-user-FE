@@ -8,7 +8,12 @@ import PasswordChangeSection from '@/container/mypage/passwordChangeSection/Pass
 import EmailEditSection from '@/container/mypage/emailEditSection/EmailEditSection'
 import LawyerCertificationEdit from '@/container/lawyerAdmin/lawyerCertificationEdit/LawyerCertificationEdit'
 import LawyerPhoneVerificationEdit from '@/container/lawyerAdmin/lawyerPhoneVerificationEdit/LawyerPhoneVerificationEdit'
-import { useGetLawyerProfile, useUpdateLawyerProfile, useWithdrawLawyer } from '@/hooks/queries/useAuth'
+import {
+  useGetLawyerProfile,
+  useUpdateLawyerProfile,
+  useWithdrawLawyer,
+  useLawyerPasswordCheck,
+} from '@/hooks/queries/useAuth'
 import { LOCAL } from '@/constants/local'
 import type { LawyerProfileUpdateRequest } from '@/types/authTypes'
 import HeaderPortal from '@/components/headerPortal/HeaderPortal'
@@ -42,6 +47,15 @@ const LawyerAccountEdit = () => {
     },
     onError: (message: string) => {
       alert(message || '탈퇴 처리 중 오류가 발생했습니다.')
+    },
+  })
+
+  const { mutateAsync: checkPassword } = useLawyerPasswordCheck({
+    onSuccess: () => {
+      // 성공 처리는 handleCheckPassword에서
+    },
+    onError: (message: string) => {
+      alert(message || '비밀번호 확인에 실패했습니다.')
     },
   })
 
@@ -173,9 +187,12 @@ const LawyerAccountEdit = () => {
   }
 
   const handleCheckPassword = async (password: string): Promise<{ isValid: boolean }> => {
-    // TODO: 실제 비밀번호 확인 API로 교체
-    const isValid = typeof password === 'string' && password.length >= 8
-    return { isValid }
+    try {
+      const result = await checkPassword({ password })
+      return result
+    } catch {
+      return { isValid: false }
+    }
   }
 
   const handleWithdraw = () => {

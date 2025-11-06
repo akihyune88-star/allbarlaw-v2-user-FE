@@ -16,12 +16,6 @@ export type MyConsultationListResponse = {
   hasNextPage: boolean
 }
 
-export type ChangeConsultationContentRequest = {
-  consultationRequestId: number
-  knowledgeTitle: string
-  summaryContent: string
-}
-
 export type MypageCountResponse = {
   blogCaseCount: number
   videoCaseCount: number

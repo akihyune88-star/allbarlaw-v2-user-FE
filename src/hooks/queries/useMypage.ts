@@ -6,8 +6,7 @@ import { VideoListRequest } from '@/types/videoTypes'
 import { KnowledgeListRequest } from '@/types/knowledgeType'
 import { LawyerListRequest } from '@/types/lawyerTypes'
 import { LegalTermListRequest } from '@/types/legalTermTypes'
-import { ChangeConsultationContentRequest, MyConsultationListRequest } from '@/types/mypageTypes'
-import { ChatRoomStatus } from '@/types/baroTalkTypes'
+import { MyConsultationListRequest } from '@/types/mypageTypes'
 
 export const useGetMypageCount = ({ year, month }: { year: number; month: number }) => {
   return useQuery({
@@ -222,46 +221,4 @@ export const useInfiniteMyConsultationList = (request: Omit<MyConsultationListRe
     fetchNextPage,
     isFetchingNextPage,
   }
-}
-
-export const useChangeConsultationStatus = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: ({
-      consultationRequestId,
-      consultationRequestStatus,
-    }: {
-      consultationRequestId: number
-      consultationRequestStatus: ChatRoomStatus
-    }) => mypageService.changeConsultationStatus(consultationRequestId, consultationRequestStatus),
-    onSuccess: () => {
-      onSuccess()
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_CONSULTATION_LIST] })
-    },
-    onError: () => {
-      onError()
-    },
-  })
-}
-
-export const useChangeConsultationContent = ({
-  onSuccess,
-  onError,
-}: {
-  onSuccess: () => void
-  onError: () => void
-}) => {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: (request: ChangeConsultationContentRequest) => mypageService.changeConsultationContent(request),
-    onSuccess: () => {
-      onSuccess()
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_CONSULTATION_LIST] })
-    },
-    onError: () => {
-      onError()
-    },
-  })
 }

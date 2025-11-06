@@ -3,6 +3,16 @@
   align-items: center;
   width: 100%;
   gap: 2rem;
+  overflow: visible;
+
+  > figure {
+    margin: 0 0 0 24px;
+    padding: 0;
+    display: block;
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+  }
 }
 
 .thumbnail {
@@ -11,6 +21,7 @@
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
+  display: block;
 }
 
 .lawfirm-info {
@@ -18,6 +29,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  min-width: 0;
 }
 
 .info-header {
@@ -50,11 +62,16 @@
 }
 
 .info-description {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+
   h3 {
     font-weight: $font-weight-semibold;
     font-size: 1rem;
     line-height: 1.125rem;
     color: $color-text-black;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   p {
@@ -62,6 +79,9 @@
     line-height: 1.125rem;
     margin-top: 0.5rem;
     color: $color-text-black;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
   }
 }
 
@@ -73,14 +93,14 @@
 
 .header-wrapper {
   .thumbnail {
-    display: none;
+    display: none; // PC에서는 header-wrapper 안 썸네일 숨김
   }
 }
 
 @media (max-width: $breakpoint-desktop) {
   .lawfirm-horizon {
-    figure {
-      display: none;
+    > figure {
+      display: none; // 모바일에서는 figure 안 큰 이미지 숨김
     }
   }
 
@@ -116,6 +136,8 @@
       font-size: 0.8125rem;
       line-height: 1.125rem;
       color: $color-text-black;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
 
     p {
@@ -124,6 +146,8 @@
       line-height: 1.125rem;
       color: $color-text-black;
       word-break: keep-all;
+      overflow-wrap: break-word;
+      white-space: pre-wrap;
     }
   }
 }

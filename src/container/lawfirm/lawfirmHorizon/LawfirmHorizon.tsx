@@ -71,11 +71,11 @@ const LawfirmHorizon = ({
   }
 
   return (
-    <article className={`${styles['lawfirm-horizon']} ${className}`}>
+    <article className={styles['lawfirm-horizon']}>
       <figure>
         <img src={lawfirmThumbnail} alt={lawfirmName} className={styles.thumbnail} />
       </figure>
-      <div className={styles['lawfirm-info']}>
+      <div className={`${styles['lawfirm-info']} ${className}`}>
         <header className={styles['header-wrapper']}>
           <div className={styles['info-header']}>
             <h3 className={styles['lawfirm-name']}>{lawfirmName}</h3>
