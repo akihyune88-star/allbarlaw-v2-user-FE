@@ -14,14 +14,15 @@ interface UseFullpageScrollReturn {
 
 export const useFullpageScroll = ({
   nextSectionRef,
-  threshold = 500,
+  // _threshold = 500,
   scrollTimeout = 1500,
 }: UseFullpageScrollProps): UseFullpageScrollReturn => {
   const sectionRef = useRef<HTMLDivElement>(null)
   const [isScrolling, setIsScrolling] = useState(false)
   const [opacity, setOpacity] = useState(1)
+  const [scrollStep, setScrollStep] = useState(0) // 0: 초기, 1-3: 단계별, 4: 이동
   const scrollTimeoutRef = useRef<number | null>(null)
-  const deltaYRef = useRef<number>(0)
+  const lastScrollTime = useRef(0)
 
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
@@ -39,28 +40,36 @@ export const useFullpageScroll = ({
 
       // 현재 섹션이 화면에 보이는 상태
       if (isCurrentVisible) {
-        // 스크롤 이벤트 막기 (수동 제어)
-        e.preventDefault()
+        // 단계 애니메이션 진행 중에는 스크롤 막기
+        if (scrollStep < 3) {
+          e.preventDefault()
+        }
+
+        const now = Date.now()
+        // 100ms 디바운스 - 너무 빠른 연속 스크롤 방지
+        if (now - lastScrollTime.current < 100) return
+        lastScrollTime.current = now
 
         // 아래로 스크롤
         if (e.deltaY > 0) {
-          deltaYRef.current += e.deltaY
-
-          // 스크롤 진행도에 따라 opacity 계산 (0 ~ threshold 범위)
-          const calculatedOpacity = Math.max(0, 1 - deltaYRef.current / threshold)
-          setOpacity(calculatedOpacity)
-
-          // 임계값을 넘으면 다음 섹션으로 이동
-          if (deltaYRef.current > threshold) {
+          if (scrollStep < 3) {
+            // 1, 2, 3단계 - 스크롤 막고 단계만 진행
+            e.preventDefault()
+            const newStep = scrollStep + 1
+            setScrollStep(newStep)
+            setOpacity(1 - newStep / 3) // 0.66, 0.33, 0
+          } else if (scrollStep === 3) {
+            // 3단계 완료 후 한번 더 스크롤하면 다음 섹션으로 이동
+            e.preventDefault()
             setIsScrolling(true)
-            deltaYRef.current = 0
+            setScrollStep(0)
+            setOpacity(1)
 
             nextElement.scrollIntoView({
-              behavior: 'auto',
+              behavior: 'smooth',
               block: 'start',
             })
 
-            // 스크롤 완료 후 다시 활성화
             if (scrollTimeoutRef.current) {
               clearTimeout(scrollTimeoutRef.current)
             }
@@ -69,14 +78,12 @@ export const useFullpageScroll = ({
             }, scrollTimeout)
           }
         }
-        // 위로 스크롤
-        else if (e.deltaY < 0) {
-          deltaYRef.current += e.deltaY
-          deltaYRef.current = Math.max(0, deltaYRef.current) // 음수 방지
-
-          // 스크롤 진행도에 따라 opacity 계산 (다시 페이드 인)
-          const calculatedOpacity = Math.max(0, 1 - deltaYRef.current / threshold)
-          setOpacity(calculatedOpacity)
+        // 위로 스크롤 (리버스)
+        else if (e.deltaY < 0 && scrollStep > 0) {
+          e.preventDefault()
+          const newStep = scrollStep - 1
+          setScrollStep(newStep)
+          setOpacity(1 - newStep / 3) // 0.33, 0.66, 1
         }
       }
       // 다음 섹션이 화면 맨 위에 있고 위로 스크롤
@@ -84,7 +91,7 @@ export const useFullpageScroll = ({
         // 위로 스크롤 시 현재 섹션으로 돌아가기
         e.preventDefault()
         setIsScrolling(true)
-        deltaYRef.current = 0
+        setScrollStep(0)
         setOpacity(1)
 
         currentElement.scrollIntoView({
@@ -98,10 +105,6 @@ export const useFullpageScroll = ({
         scrollTimeoutRef.current = window.setTimeout(() => {
           setIsScrolling(false)
         }, scrollTimeout)
-      } else {
-        // 임계값 리셋
-        deltaYRef.current = 0
-        setOpacity(1)
       }
     }
 
@@ -113,7 +116,7 @@ export const useFullpageScroll = ({
         clearTimeout(scrollTimeoutRef.current)
       }
     }
-  }, [isScrolling, threshold, scrollTimeout, nextSectionRef])
+  }, [isScrolling, scrollStep, scrollTimeout, nextSectionRef])
 
   return {
     sectionRef,

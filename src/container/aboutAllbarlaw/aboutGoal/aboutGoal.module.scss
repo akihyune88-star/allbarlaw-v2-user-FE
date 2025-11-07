@@ -1,0 +1,108 @@
+.about-goal {
+  width: 100%;
+  height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: $color-bg-gray-03;
+
+  gap: clamp(1.5rem, 4vw, 3.75rem);
+
+  @media (max-width: calc($breakpoint-desktop + 1.25rem)) {
+    padding: 0 1.25rem;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    align-items: flex-start;
+    height: auto;
+
+    padding: 2.125rem 1.25rem;
+  }
+}
+
+.about-goal-title {
+  font-size: clamp(1rem, 4vw, 2rem);
+  font-weight: $font-weight-extra-bold;
+  color: $color-text-black;
+}
+
+.about-goal-image {
+  max-width: 80rem;
+  width: 100%;
+  aspect-ratio: 320 / 147;
+  border-radius: clamp(1.125rem, 4vw, 2.5rem);
+  overflow: hidden;
+  position: relative;
+
+  @media (max-width: $breakpoint-tablet) {
+    aspect-ratio: 167 / 116;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 10%;
+  }
+}
+
+.about-goal-text-wrapper {
+  position: absolute;
+  bottom: clamp(0.75rem, 4vw, 2rem);
+  left: clamp(1.375rem, 4vw, 3.875rem);
+  right: clamp(1.375rem, 4vw, 3.875rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.625rem;
+}
+
+.about-goal-image-title {
+  color: $color-white;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: $font-weight-extra-bold;
+  transition: transform 0.5s ease-out;
+
+  @media (min-width: calc($breakpoint-tablet + 1px)) {
+    transform: translateY(9rem);
+
+    &[data-moved='true'] {
+      transform: translateY(0);
+    }
+  }
+}
+
+.about-goal-description-inside {
+  color: $color-white;
+  font-size: clamp(0.875rem, 2vw, 1.25rem);
+  font-weight: $font-weight-regular;
+  line-height: clamp(1.25rem, 3vw, 2rem);
+  display: none;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+
+  @media (min-width: calc($breakpoint-tablet + 1px)) {
+    display: block;
+  }
+
+  &[data-visible='true'] {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.about-goal-description-outside {
+  max-width: 80rem;
+  width: 100%;
+  font-size: clamp(1rem, 4vw, 1.25rem);
+  font-weight: $font-weight-regular;
+  line-height: clamp(1.5rem, 4vw, 2rem);
+  color: $color-text-black;
+
+  @media (min-width: calc($breakpoint-tablet + 1px)) {
+    display: none;
+  }
+}

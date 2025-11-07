@@ -12,6 +12,8 @@ import video from './video.webp'
 import lawyerConsulting from './lawyer-consultation.webp'
 import lawyerExpertis from './lawyer-expertis.webp'
 import onboardingCoreValue from './onboarding-core-value.webp'
+import aboutGoal from './allbarlaw-goal-img.webp'
+import legalCurationService from './legal-curation-service.webp'
 
 export {
   guideBanner,
@@ -26,4 +28,6 @@ export {
   lawyerConsulting,
   lawyerExpertis,
   onboardingCoreValue,
+  aboutGoal,
+  legalCurationService,
 }

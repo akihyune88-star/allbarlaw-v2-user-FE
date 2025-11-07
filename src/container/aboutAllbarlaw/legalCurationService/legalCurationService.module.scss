@@ -1,120 +1,34 @@
 .legal-curation-service {
-  width: 100%;
-  height: 100%;
-
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  height: 100dvh;
   display: flex;
-  flex-direction: column;
-  // padding: 10.625rem 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
 
-  @media (max-width: $breakpoint-desktop) {
-    padding: 2.125rem 1.25rem;
+.legal-curation-service-image-wrapper {
+  width: 7.75rem; // 124px
+  height: calc(100vw * 707 / 1922); // 이미지의 높이 유지
+  overflow: hidden;
+  position: relative;
+  transition: width 0.5s ease-out;
+
+  &[data-expanded='true'] {
+    width: 100%;
   }
+}
 
-  &-title {
-    font-size: 1.5rem;
-    font-weight: $font-weight-extra-bold;
-    color: $color-green-01;
-
-    margin-bottom: 1.125rem;
-
-    @media (max-width: $breakpoint-desktop) {
-      font-size: 1.25rem;
-      margin-bottom: 0.75rem;
-    }
-  }
-
-  &-article {
-    display: flex;
-    flex-direction: row;
-    gap: 7.9375rem;
-
-    white-space: pre-line;
-
-    @media (max-width: $breakpoint-desktop) {
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    &-right {
-      font-size: 3rem;
-      font-weight: $font-weight-extra-bold;
-      line-height: 3.75rem;
-      color: $color-text-black;
-
-      @media (max-width: $breakpoint-desktop) {
-        font-size: 1.5rem;
-        line-height: 2rem;
-      }
-    }
-
-    &-right-description {
-      font-size: 1.25rem;
-      font-weight: $font-weight-semibold;
-      line-height: 2rem;
-      color: $color-text-black;
-
-      strong {
-        font-weight: $font-weight-extra-bold;
-      }
-
-      @media (max-width: $breakpoint-desktop) {
-        font-size: 1rem;
-        line-height: 1.5rem;
-      }
-    }
-  }
-
-  &-image {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1.6875rem 3.375rem; // 세로 27px, 가로 54px
-    margin-top: 3.3125rem;
-
-    @media (max-width: $breakpoint-desktop) {
-      gap: 2rem 1rem;
-      margin-top: 2rem;
-    }
-
-    &-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      gap: 1rem;
-
-      width: 5.875rem;
-      height: 7.0625rem;
-      padding-top: 1.25rem;
-
-      background-color: $color-bg-gray-03;
-
-      img {
-        width: 2rem;
-        height: 2rem;
-        object-fit: contain;
-      }
-
-      span {
-        font-size: 0.75rem;
-        font-weight: $font-weight-regular;
-        color: $color-text-index;
-      }
-
-      @media (max-width: $breakpoint-desktop) {
-        width: 3.375rem;
-        height: 5.25rem;
-
-        padding-top: 0.9375rem;
-        justify-content: space-between;
-
-        background-color: transparent;
-
-        img {
-          width: 1.5rem;
-          height: 1.5rem;
-        }
-      }
-    }
-  }
+.legal-curation-service-image {
+  width: 100vw;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
