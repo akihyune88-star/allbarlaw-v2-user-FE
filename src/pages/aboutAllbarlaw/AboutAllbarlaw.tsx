@@ -11,6 +11,7 @@ import AboutGoal from '@/container/aboutAllbarlaw/aboutGoal/AboutGoal'
 
 const AboutAllbarlaw = () => {
   const secondSectionRef = useRef<HTMLDivElement>(null)
+  const thirdSectionRef = useRef<HTMLDivElement>(null)
   const isMobile = useMediaQuery('(max-width: 37.5rem)')
 
   return (
@@ -18,8 +19,8 @@ const AboutAllbarlaw = () => {
       {isMobile ? <MobileHeader /> : <AboutDesktopHeader />}
       <main className={styles['inner-container']}>
         <Hero nextSectionRef={secondSectionRef} />
-        <AboutGoal />
-        <LegalCurationService ref={secondSectionRef} />
+        <AboutGoal ref={secondSectionRef} />
+        <LegalCurationService ref={thirdSectionRef} />
         <LegalResourceHighlight />
         <BrandIdentity />
       </main>
