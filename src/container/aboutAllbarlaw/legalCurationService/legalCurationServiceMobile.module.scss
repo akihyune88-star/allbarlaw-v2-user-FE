@@ -1,0 +1,66 @@
+.legal-curation-service {
+  width: 100%;
+  height: auto;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+
+  @media (max-width: 56.25rem) {
+    min-height: 0;
+    padding: 2rem 1rem;
+  }
+}
+
+.legal-curation-service-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 50rem;
+}
+
+.legal-curation-service-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+}
+
+.legal-curation-service-image-wrapper {
+  width: 100%;
+  aspect-ratio: 1922 / 707;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.legal-curation-service-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.legal-curation-service-text {
+  color: black;
+  // text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: bold;
+    line-height: 1.5;
+  }
+
+  p {
+    font-size: 1rem;
+    font-weight: $font-weight-semibold;
+    opacity: 0.8;
+    line-height: 1.6;
+  }
+}
