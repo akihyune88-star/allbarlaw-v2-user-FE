@@ -13,14 +13,33 @@
 }
 
 .legal-curation-service-image-wrapper {
-  width: 7.75rem; // 124px
-  height: calc(100vw * 707 / 1922); // 이미지의 높이 유지
+  width: 7.75rem; // 124px (step 0)
+  height: calc(100vw * 707 / 1922); // 이미지 비율 유지
+  max-height: 44.1875rem; // 707px
   overflow: hidden;
   position: relative;
-  transition: width 0.5s ease-out;
+  transition: width 0.5s ease-out, transform 0.5s ease-out, height 0.5s ease-out;
+}
 
-  &[data-expanded='true'] {
-    width: 100%;
+// step 1: 100vw 전체 확장
+.legal-curation-service-image-wrapper[data-expand-step='1'] {
+  width: 100vw;
+}
+
+// step 2: 677px 창문, 중앙 정렬
+.legal-curation-service-image-wrapper[data-expand-step='2'] {
+  // 화면이 1280px 이상: 677px 고정
+  // 화면이 작아지면: 비례해서 줄어듬
+  // 최소: 500px
+  width: 42.3125rem; // 677px (기본)
+  min-width: 31.25rem; // 500px
+  transform: translateX(0); // 중앙 정렬로 변경
+
+  @media (max-width: 80rem) {
+    // 80rem(1280px) 이하일 때만 vw 기반으로 변경
+    width: 53.28vw;
+    min-width: 31.25rem;
+    transform: translateX(0);
   }
 }
 
@@ -31,4 +50,82 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  transition: left 0.5s ease-out, transform 0.5s ease-out;
+}
+
+// step 2: 이미지 우측 끝이 wrapper 중앙에 오도록
+.legal-curation-service-image-wrapper[data-expand-step='2'] .legal-curation-service-image {
+  left: 50%;
+  transform: translateX(calc(-100% + 21.15625rem)); // 우측 끝이 중앙에 오도록 (677px의 절반)
+
+  @media (max-width: 80rem) {
+    transform: translateX(calc(-100% + 26.64vw)); // wrapper 너비의 절반
+  }
+}
+
+.legal-curation-service-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 2vw, 3rem); // 최소 1rem, 화면의 3%, 최대 3rem
+  width: 100%;
+  position: relative;
+}
+
+// step 1: 이미지 위 타이틀
+.legal-curation-service-title {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+  white-space: nowrap;
+  animation: fadeInDown 0.5s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+// step 2: 이미지 옆 텍스트
+.legal-curation-service-text {
+  flex-shrink: 0;
+  color: black;
+  animation: fadeInRight 0.5s ease-out;
+  gap: 3.75rem;
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-weight: bold;
+    line-height: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.125rem;
+    opacity: 0.8;
+    line-height: 1.6;
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
