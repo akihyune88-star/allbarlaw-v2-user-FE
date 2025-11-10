@@ -1,6 +1,6 @@
 .legal-resource-highlight-wrapper {
   width: 100vw;
-  height: 48.5rem;
+  height: 100dvh;
   margin-left: calc(-50vw + 50%);
   background-color: $color-bg-gray-03;
 }
@@ -139,8 +139,9 @@
 
         @media (max-width: $breakpoint-desktop) {
           padding: 0;
-          width: 3.875rem;
+          // width: 3.875rem;
           height: 2.25rem;
+          padding: 0 0.5rem;
 
           display: flex;
           align-items: center;

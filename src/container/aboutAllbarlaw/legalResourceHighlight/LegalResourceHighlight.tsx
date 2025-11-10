@@ -33,16 +33,16 @@ const LegalResourceHighlight = () => {
 
   const animationItem = [
     {
-      itemName: '영상',
+      itemName: '법률 영상',
       imgPath: video,
-      position: { top: '10%', left: '28%' },
+      position: { top: '25%', left: '30%' },
       mobilePosition: { top: '5%', left: '2%' },
       slideFrom: 'left',
     },
     {
       itemName: '지식인',
       imgPath: knowledge,
-      position: { top: '15%', right: '20%' },
+      position: { top: '30%', right: '15%' },
       mobilePosition: { top: '15%', right: '-5%' },
       slideFrom: 'right',
     },
@@ -54,19 +54,31 @@ const LegalResourceHighlight = () => {
       slideFrom: 'left',
     },
     {
-      itemName: '글',
+      itemName: '법률정보 글',
       imgPath: post,
-      position: { bottom: '1%', right: '25%' },
-      mobilePosition: { bottom: '1%', right: '3%' },
+      position: { bottom: '15%', right: '28%' },
+      mobilePosition: { bottom: '-10%', right: '3%' },
       slideFrom: 'right',
     },
   ]
 
+  // 중앙 컨텐츠 위치 설정
+  const contentPosition = {
+    top: '50%',
+    left: '50%',
+  }
+  const mobileContentPosition = {
+    top: '50%',
+    left: '50%',
+  }
+
   return (
     <div className={styles['legal-resource-highlight-wrapper']}>
       <div className={styles['legal-resource-highlight']}>
-        <h3 className={styles['legal-resource-highlight-subtitle']}>수 많은 정보</h3>
-        <h2 className={styles['legal-resource-highlight-title']}>나에게 필요한 법률정보</h2>
+        <h2 className={styles['legal-resource-highlight-title']}>
+          올바로에
+          <br />다 모아놨습니다.
+        </h2>
         <section className={styles['legal-resource-highlight-animation']} ref={sectionRef}>
           {animationItem.map((item, index) => {
             const currentPosition = isMobile ? item.mobilePosition : item.position
@@ -85,9 +97,12 @@ const LegalResourceHighlight = () => {
             )
           })}
 
-          <div className={styles['legal-resource-highlight-animation-content']}>
+          <div
+            className={styles['legal-resource-highlight-animation-content']}
+            style={isMobile ? mobileContentPosition : contentPosition}
+          >
             <p>
-              <strong>2,591</strong>개
+              <strong>5,900+</strong>건
             </p>
             <p>수많은 법률 정보</p>
           </div>
