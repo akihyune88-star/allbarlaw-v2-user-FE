@@ -38,6 +38,8 @@ const LegalResourceHighlight = () => {
       position: { top: '25%', left: '30%' },
       mobilePosition: { top: '5%', left: '2%' },
       slideFrom: 'left',
+      scale: 1, // 데스크톱 크기
+      mobileScale: 0.8, // 모바일에서 80% 크기
     },
     {
       itemName: '지식인',
@@ -45,6 +47,8 @@ const LegalResourceHighlight = () => {
       position: { top: '30%', right: '15%' },
       mobilePosition: { top: '15%', right: '-5%' },
       slideFrom: 'right',
+      scale: 1,
+      mobileScale: 0.8,
     },
     {
       itemName: '변호사',
@@ -52,6 +56,8 @@ const LegalResourceHighlight = () => {
       position: { bottom: '15%', left: '15%' },
       mobilePosition: { bottom: '3%', left: '2%' },
       slideFrom: 'left',
+      scale: 1,
+      mobileScale: 1, // 모바일에서도 100% 유지
     },
     {
       itemName: '법률정보 글',
@@ -59,6 +65,8 @@ const LegalResourceHighlight = () => {
       position: { bottom: '15%', right: '28%' },
       mobilePosition: { bottom: '-10%', right: '3%' },
       slideFrom: 'right',
+      scale: 1,
+      mobileScale: 0.5, // 모바일에서 70% 크기
     },
   ]
 
@@ -82,6 +90,7 @@ const LegalResourceHighlight = () => {
         <section className={styles['legal-resource-highlight-animation']} ref={sectionRef}>
           {animationItem.map((item, index) => {
             const currentPosition = isMobile ? item.mobilePosition : item.position
+            const currentScale = isMobile ? item.mobileScale : item.scale
 
             return (
               <div
@@ -89,7 +98,7 @@ const LegalResourceHighlight = () => {
                 className={`${styles['legal-resource-highlight-animation-item']} ${
                   item.itemName === '글' ? styles['post-item'] : ''
                 } ${isVisible ? styles[`slide-from-${item.slideFrom}`] : ''}`}
-                style={currentPosition}
+                style={{ ...currentPosition, transform: `scale(${currentScale})` }}
               >
                 <img src={item.imgPath} alt={item.itemName} />
                 <p>{item.itemName}</p>
