@@ -12,7 +12,7 @@ import AboutGoal from '@/container/aboutAllbarlaw/aboutGoal/AboutGoal'
 const AboutAllbarlaw = () => {
   const secondSectionRef = useRef<HTMLDivElement>(null)
   const thirdSectionRef = useRef<HTMLDivElement>(null)
-  const isMobile = useMediaQuery('(max-width: 37.5rem)')
+  const isMobile = useMediaQuery('(max-width: 901px)')
 
   return (
     <div className={styles['about-allbarlaw']}>

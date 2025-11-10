@@ -10,10 +10,6 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  @media (max-width: $breakpoint-tablet) {
-    margin-left: 0;
-    margin-right: 0;
-  }
 }
 
 .legal-curation-service-image-wrapper {
@@ -23,13 +19,6 @@
   overflow: hidden;
   position: relative;
   transition: width 0.5s ease-out, transform 0.5s ease-out, height 0.5s ease-out;
-
-  @media (max-width: 56.25rem) {
-    // 900px 이하일 때는 전체 이미지 표시
-    width: 100% !important;
-    height: auto;
-    aspect-ratio: 1922 / 707;
-  }
 }
 
 // step 1: 100vw 전체 확장
@@ -49,11 +38,6 @@
     min-width: 31.25rem;
     transform: translateX(0);
   }
-
-  @media (max-width: $breakpoint-tablet) {
-    width: 100%;
-    transform: translateX(0);
-  }
 }
 
 .legal-curation-service-image {
@@ -66,15 +50,6 @@
   transform: translateX(-50%);
   transition: left 0.5s ease-out, transform 0.5s ease-out;
   display: block; // inline 요소의 기본 여백 제거
-
-  @media (max-width: 56.25rem) {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    position: relative;
-    left: 0;
-    transform: none !important;
-  }
 }
 
 // step 2: 이미지 우측 끝이 wrapper 중앙에 오도록
@@ -85,11 +60,6 @@
   @media (max-width: 80rem) {
     transform: translateX(calc(-100% + 26.64vw)); // wrapper 너비의 절반
   }
-
-  @media (max-width: 56.25rem) {
-    left: 50%;
-    transform: translateX(-50%);
-  }
 }
 
 .legal-curation-service-content {
@@ -99,12 +69,6 @@
   gap: clamp(1rem, 2vw, 3rem); // 최소 1rem, 화면의 3%, 최대 3rem
   width: 100%;
   position: relative;
-
-  &[data-mobile='true'] {
-    flex-direction: column;
-    gap: 2rem;
-    padding: 0 1rem;
-  }
 }
 
 // step 1: 이미지 위 타이틀
@@ -118,13 +82,6 @@
   color: black;
   white-space: nowrap;
   animation: fadeInDown 0.5s ease-out;
-
-  .legal-curation-service-content[data-mobile='true'] & {
-    position: static;
-    transform: none;
-    animation: none;
-    margin-bottom: 1rem;
-  }
 }
 
 @keyframes fadeInDown {
@@ -146,12 +103,6 @@
   gap: 3.75rem;
   display: flex;
   flex-direction: column;
-
-  .legal-curation-service-content[data-mobile='true'] & {
-    animation: none;
-    width: 100%;
-    text-align: center;
-  }
 
   h2 {
     font-size: clamp(1.5rem, 2vw, 2rem);

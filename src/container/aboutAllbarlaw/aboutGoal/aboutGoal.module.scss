@@ -76,8 +76,8 @@
 
 .about-goal-description-inside {
   color: $color-white;
-  font-size: clamp(0.875rem, 2vw, 1.25rem);
-  font-weight: $font-weight-regular;
+  font-size: clamp(0.875rem, 2vw, 1.5rem);
+  font-weight: $font-weight-semibold;
   line-height: clamp(1.25rem, 3vw, 2rem);
   display: none;
   transform: translateY(100%);
@@ -98,9 +98,11 @@
   max-width: 80rem;
   width: 100%;
   font-size: clamp(1rem, 4vw, 1.25rem);
-  font-weight: $font-weight-regular;
-  line-height: clamp(1.5rem, 4vw, 2rem);
+  font-weight: $font-weight-semibold;
+  line-height: 1.5rem;
   color: $color-text-black;
+
+  word-break: keep-all;
 
   @media (min-width: calc($breakpoint-tablet + 1px)) {
     display: none;

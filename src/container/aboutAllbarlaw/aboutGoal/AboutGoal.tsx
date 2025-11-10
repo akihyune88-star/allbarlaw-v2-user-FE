@@ -82,10 +82,7 @@ const AboutGoal = forwardRef<HTMLDivElement>((_props, ref) => {
           <span className={styles['about-goal-image-title']} data-moved={titleMoved}>
             정확하고 유용한 법률 정보
           </span>
-          <p
-            className={styles['about-goal-description-inside']}
-            data-visible={descriptionVisible}
-          >
+          <p className={styles['about-goal-description-inside']} data-visible={descriptionVisible}>
             인터넷의 법률정보는 제한적이고 부정확해 실제로 유용한 정보를 찾기 어렵습니다. <br />내 사건에 대한 정확한
             정보가 있어야 해결책을 세우고 변호사 선임을 판단할 수 있지만, <br />
             현실에선 첫걸음부터 막힙니다. 올바로는 개인별로 꼭 필요한 법률 정보만 선별·제공해

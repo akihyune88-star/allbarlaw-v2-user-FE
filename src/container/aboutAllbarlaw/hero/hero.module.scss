@@ -39,7 +39,7 @@
       // 600px 이하에서 첫 번째 라인: "누구나 법앞에서" 줄바꿈,
       //그 다음 figure + "평등할 수 있도록" 같은 줄
       &:first-child {
-        @media (max-width: 37.5rem) {
+        @media (max-width: $breakpoint-tablet) {
           flex-wrap: wrap;
 
           span:first-child {
@@ -85,7 +85,7 @@
         }
       }
 
-      @media (max-width: $breakpoint-tablet) and (min-width: 37.6rem) {
+      @media (max-width: $breakpoint-tablet) and (min-width: calc($breakpoint-tablet + 1px)) {
         flex-direction: column;
         align-items: flex-start;
       }
