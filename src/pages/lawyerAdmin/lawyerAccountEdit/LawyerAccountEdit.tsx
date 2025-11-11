@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { accountEditSchema, type AccountEditFormData } from '@/container/mypage/accountEdit/accountEditSchema'
 import styles from './lawyerAccountEdit.module.scss'
 import PasswordChangeSection from '@/container/mypage/passwordChangeSection/PasswordChangeSection'
