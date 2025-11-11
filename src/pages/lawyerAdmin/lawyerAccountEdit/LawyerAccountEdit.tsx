@@ -22,6 +22,8 @@ import { ROUTER } from '@/routes/routerConstant'
 
 const LawyerAccountEdit = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const isMypage = location.pathname === '/mypage'
   const [isEmailError, setIsEmailError] = useState(false)
   const [_isPasswordError, setIsPasswordError] = useState(false)
   const [isPasswordChecked, setIsPasswordChecked] = useState(false)
@@ -252,6 +254,18 @@ const LawyerAccountEdit = () => {
             currentEmail={lawyerProfile?.lawyerEmail}
           />
         </form>
+        {isMypage && (
+          <div className={styles['account-edit-footer']}>
+            <button
+              type='button'
+              className={styles['account-edit-footer__button']}
+              onClick={handleSubmit(onSubmit)}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? '수정 진행 중...' : '정보변경'}
+            </button>
+          </div>
+        )}
       </main>
       <WithdrawModal
         isOpen={isWithdrawModalOpen}

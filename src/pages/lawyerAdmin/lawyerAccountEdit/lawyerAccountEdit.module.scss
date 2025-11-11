@@ -77,6 +77,34 @@
   font-weight: $font-weight-bold;
 }
 
+.account-edit-footer {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 1rem 0;
+  border-top: 1px solid $color-line-borderbox;
+}
+
+.account-edit-footer__button {
+  width: 100%;
+  height: 3.5rem;
+  font-size: 1.125rem;
+  font-weight: $font-weight-bold;
+  background-color: $color-green-01;
+  color: $color-white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
 @media (max-width: $breakpoint-desktop) {
   .account-edit {
     padding: 1.5rem 1rem;
@@ -89,6 +117,16 @@
 
   .account-edit-button {
     margin-top: 1.5rem;
+    height: 3rem;
+    font-size: 1rem;
+  }
+
+  .account-edit-footer {
+    margin-top: 1.5rem;
+    padding: 0.75rem 0;
+  }
+
+  .account-edit-footer__button {
     height: 3rem;
     font-size: 1rem;
   }
