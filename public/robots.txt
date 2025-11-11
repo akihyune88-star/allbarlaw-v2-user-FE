@@ -1,0 +1,15 @@
+# 올바로 robots.txt
+
+# 모든 검색엔진 허용
+User-agent: *
+Allow: /
+
+# Sitemap 위치
+Sitemap: https://www.allbarlaw.com/sitemap.xml
+
+# 크롤링 속도 조절 (선택사항)
+Crawl-delay: 1
+
+# 특정 경로 차단 (필요시)
+# Disallow: /admin/
+# Disallow: /api/
