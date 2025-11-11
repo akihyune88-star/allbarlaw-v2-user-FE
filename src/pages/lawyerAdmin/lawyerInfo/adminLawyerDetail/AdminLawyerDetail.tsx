@@ -13,7 +13,7 @@ const AdminLawyerDetail = () => {
   const lawyerName = lawyerDetailForMe?.lawyerName || ''
 
   const handleGoToUserPage = () => {
-    window.open(`https://v2.allbarlaw.com/search/lawyer/${lawyerDetailForMe?.lawyerId}`, '_blank')
+    window.open(`https://allbarlaw.com/search/lawyer/${lawyerDetailForMe?.lawyerId}`, '_blank')
   }
 
   const handleGoToEditPage = () => {
