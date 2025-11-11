@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { accountEditSchema, type AccountEditFormData } from '@/container/mypage/accountEdit/accountEditSchema'
 import styles from './lawyerAccountEdit.module.scss'
 import PasswordChangeSection from '@/container/mypage/passwordChangeSection/PasswordChangeSection'
@@ -22,6 +22,8 @@ import { ROUTER } from '@/routes/routerConstant'
 
 const LawyerAccountEdit = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const isMypage = location.pathname === '/mypage'
   const [isEmailError, setIsEmailError] = useState(false)
   const [_isPasswordError, setIsPasswordError] = useState(false)
   const [isPasswordChecked, setIsPasswordChecked] = useState(false)
@@ -252,6 +254,18 @@ const LawyerAccountEdit = () => {
             currentEmail={lawyerProfile?.lawyerEmail}
           />
         </form>
+        {isMypage && (
+          <div className={styles['account-edit-footer']}>
+            <button
+              type='button'
+              className={styles['account-edit-footer__button']}
+              onClick={handleSubmit(onSubmit)}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? '수정 진행 중...' : '정보변경'}
+            </button>
+          </div>
+        )}
       </main>
       <WithdrawModal
         isOpen={isWithdrawModalOpen}
