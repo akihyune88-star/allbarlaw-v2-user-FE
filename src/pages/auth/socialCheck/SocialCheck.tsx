@@ -4,11 +4,8 @@ import { useSocialAuth } from '@/hooks/useSocialAuth'
 
 const SocialCheck = () => {
   const { provider } = useParams()
-  console.log('🟢 SocialCheck 컴포넌트 렌더링')
-  console.log('- provider from params:', provider)
-  
+
   const { isValidProvider: isValid } = useSocialAuth(provider)
-  console.log('- isValid:', isValid)
 
   if (!isValid) {
     console.log('❌ 유효하지 않은 provider로 null 반환')
