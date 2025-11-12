@@ -1,0 +1,276 @@
+.hero-with-goal {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+}
+
+// Hero Section
+.hero {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+
+  @media (max-width: $breakpoint-tablet) {
+    height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    flex: 1;
+    width: 100%;
+
+    gap: clamp(0.5rem, 1vw, 2.5rem);
+
+    @media (max-width: 83.75rem) {
+      padding-left: 1.25rem;
+    }
+
+    @media (max-width: $breakpoint-tablet) {
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2.5rem 1.25rem;
+    }
+
+    &-line {
+      display: flex;
+      align-items: center;
+
+      &:first-child {
+        @media (max-width: $breakpoint-tablet) {
+          flex-wrap: wrap;
+
+          span:first-child {
+            flex-basis: 100%;
+            margin-bottom: 0.5rem;
+          }
+
+          figure {
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+          }
+
+          span:last-child {
+            flex: 1;
+          }
+        }
+      }
+
+      &:last-child {
+        @media (max-width: $breakpoint-tablet) {
+          flex-wrap: wrap;
+
+          span:first-child {
+            margin-right: 0.75rem;
+            margin-bottom: 0.5rem;
+          }
+
+          figure {
+            margin-right: 0;
+            margin-bottom: 0.5rem;
+          }
+
+          span:last-child {
+            flex-basis: 100%;
+          }
+        }
+      }
+
+      @media (max-width: $breakpoint-tablet) and (min-width: calc($breakpoint-tablet + 1px)) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    span {
+      font-size: clamp(1.75rem, 4vw, 4rem);
+      font-weight: $font-weight-extra-bold;
+      color: $color-text-black;
+
+      @media (max-width: $breakpoint-tablet) {
+        line-height: 1.7;
+      }
+    }
+
+    strong {
+      color: $color-green-01;
+    }
+  }
+
+  .mobile-break {
+    display: none;
+
+    @media (max-width: $breakpoint-tablet) {
+      display: block;
+    }
+  }
+
+  .cursor {
+    display: inline-block;
+    margin-left: 2px;
+    animation: blink 0.7s infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
+    }
+  }
+}
+
+// Hero image container - 인라인 원 (1-6단계)
+.hero-image-container {
+  display: inline-block;
+  background-color: $color-bg-gray-01;
+  margin: 0 0.75rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+
+  @media (max-width: 600px) {
+    margin: 0;
+  }
+}
+
+// Circle - 중앙에 absolute positioning (7단계부터)
+.hero-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $color-bg-gray-01;
+  overflow: hidden;
+}
+
+// AboutGoal Section
+.about-goal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: $color-bg-gray-03;
+
+  gap: clamp(1.5rem, 4vw, 3.75rem);
+
+  @media (max-width: calc($breakpoint-desktop + 1.25rem)) {
+    padding: 0 1.25rem;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    align-items: flex-start;
+    height: auto;
+
+    padding: 2.125rem 1.25rem;
+  }
+
+  &-title {
+    font-size: clamp(1rem, 4vw, 2rem);
+    font-weight: $font-weight-extra-bold;
+    color: $color-text-black;
+  }
+
+  &-image {
+    max-width: 80rem;
+    width: 100%;
+    aspect-ratio: 320 / 147;
+    border-radius: clamp(1.125rem, 4vw, 2.5rem);
+    overflow: hidden;
+    position: relative;
+
+    @media (max-width: $breakpoint-tablet) {
+      aspect-ratio: 167 / 116;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 10%;
+    }
+  }
+
+  &-text-wrapper {
+    position: absolute;
+    bottom: clamp(0.75rem, 4vw, 2rem);
+    left: clamp(1.375rem, 4vw, 3.875rem);
+    right: clamp(1.375rem, 4vw, 3.875rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.625rem;
+  }
+
+  &-image-title {
+    color: $color-white;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: $font-weight-extra-bold;
+    transition: transform 0.5s ease-out;
+
+    @media (min-width: calc($breakpoint-tablet + 1px)) {
+      transform: translateY(9rem);
+
+      &[data-moved='true'] {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  &-description-inside {
+    color: $color-white;
+    font-size: clamp(0.875rem, 2vw, 1.5rem);
+    font-weight: $font-weight-semibold;
+    line-height: clamp(1.25rem, 3vw, 2rem);
+    display: none;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+
+    @media (min-width: calc($breakpoint-tablet + 1px)) {
+      display: block;
+    }
+
+    &[data-visible='true'] {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  &-description-outside {
+    max-width: 80rem;
+    width: 100%;
+    font-size: clamp(1rem, 4vw, 1.25rem);
+    font-weight: $font-weight-semibold;
+    line-height: 1.5rem;
+    color: $color-text-black;
+
+    word-break: keep-all;
+
+    @media (min-width: calc($breakpoint-tablet + 1px)) {
+      display: none;
+    }
+  }
+}

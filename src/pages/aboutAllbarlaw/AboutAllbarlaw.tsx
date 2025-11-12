@@ -1,4 +1,4 @@
-import Hero from '@/container/aboutAllbarlaw/hero/Hero'
+import HeroWithGoal from '@/container/aboutAllbarlaw/heroWithGoal/HeroWithGoal'
 import styles from './about-allbarlaw.module.scss'
 import LegalCurationService from '@/container/aboutAllbarlaw/legalCurationService/LegalCurationService'
 import LegalResourceHighlight from '@/container/aboutAllbarlaw/legalResourceHighlight/LegalResourceHighlight'
@@ -7,11 +7,9 @@ import MobileHeader from '@/container/header/components/MobileHeader'
 import AboutDesktopHeader from '@/container/aboutAllbarlaw/aboutDesktopHeader/AboutDesktopHeader'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useRef } from 'react'
-import AboutGoal from '@/container/aboutAllbarlaw/aboutGoal/AboutGoal'
 import { Helmet } from 'react-helmet-async'
 
 const AboutAllbarlaw = () => {
-  const secondSectionRef = useRef<HTMLDivElement>(null)
   const thirdSectionRef = useRef<HTMLDivElement>(null)
   const isMobile = useMediaQuery('(max-width: 901px)')
 
@@ -35,8 +33,7 @@ const AboutAllbarlaw = () => {
       </Helmet>
       {isMobile ? <MobileHeader /> : <AboutDesktopHeader />}
       <main className={styles['inner-container']}>
-        <Hero nextSectionRef={secondSectionRef} />
-        <AboutGoal ref={secondSectionRef} />
+        <HeroWithGoal nextSectionRef={thirdSectionRef} />
         <LegalCurationService ref={thirdSectionRef} />
         <LegalResourceHighlight />
         <BrandIdentity />

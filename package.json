@@ -21,6 +21,7 @@
     "@types/react-youtube": "^7.6.2",
     "axios": "^1.9.0",
     "dayjs": "^1.11.13",
+    "gsap": "^3.13.0",
     "react": "^19.0.0",
     "react-daum-postcode": "^3.2.0",
     "react-dom": "^19.0.0",
