@@ -252,8 +252,9 @@
 }
 
 .legal-resource-highlight-slider {
-  width: 100%;
+  width: 100vw;
   height: 100dvh;
+  margin-left: calc(-50vw + 50%);
 
   display: flex;
   align-items: center;
@@ -270,8 +271,6 @@
 }
 
 .legal-resource-highlight-slider-content {
-  width: 80rem;
-
   display: flex;
   flex-direction: column;
   gap: clamp(2.8125rem, 4vw, 5.5rem);
