@@ -17,6 +17,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   const [expandWidth, setExpandWidth] = useState(false) // 가로 확장
   const [expandHeight, setExpandHeight] = useState(false) // 세로 확장
   const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0)
+  const [showGoalTitle, setShowGoalTitle] = useState(false) // 올바로의 목표 타이틀 표시
 
   // 타이핑 단계별 상태 (순차적 진행)
   const [typingStep, setTypingStep] = useState(0) // 0: 시작 전, 1: 첫 문장, 2: 두번째 문장, 3: 원 작게, 4: 원 크게, 5: 세번째 문장, 6: 완료
@@ -117,24 +118,31 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   // moveCircleToCenter가 true가 되면 순차적 애니메이션 시작
   useEffect(() => {
     if (moveCircleToCenter && circleStartPos) {
-      // 1단계: 중앙으로 이동 (0.8s)
-      requestAnimationFrame(() => {
+      // 1단계: 중앙으로 이동 (position fixed 전환 후 약간 대기)
+      const moveTimer = setTimeout(() => {
         setCircleMoving(true)
-      })
+      }, 50)
 
       // 2단계: 중앙 이동 완료 후 가로 확장 시작 (0.8s + 0.1s 대기)
       const widthTimer = setTimeout(() => {
         setExpandWidth(true)
-      }, 900)
+      }, 950)
 
-      // 3단계: 가로 확장 완료 후 바로 세로 확장 시작 (0.9s + 0.5s)
+      // 3단계: 가로 확장 완료 후 바로 세로 확장 시작 (0.95s + 0.5s)
       const heightTimer = setTimeout(() => {
         setExpandHeight(true)
-      }, 1400)
+      }, 1450)
+
+      // 4단계: 세로 확장 완료 후 타이틀 표시 (1.45s + 0.5s + 0.3s 대기)
+      const titleTimer = setTimeout(() => {
+        setShowGoalTitle(true)
+      }, 2250)
 
       return () => {
+        clearTimeout(moveTimer)
         clearTimeout(widthTimer)
         clearTimeout(heightTimer)
+        clearTimeout(titleTimer)
       }
     }
 
@@ -142,6 +150,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
       setCircleMoving(false)
       setExpandWidth(false)
       setExpandHeight(false)
+      setShowGoalTitle(false)
     }
   }, [moveCircleToCenter, circleStartPos])
 
