@@ -21,6 +21,10 @@
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: 0.875rem 1rem;
+  }
 }
 
 .arrowIconWrapper {
@@ -79,10 +83,6 @@
 
 // 반응형 디자인
 @media (max-width: 768px) {
-  .accordionHeader {
-    padding: 0.875rem 1rem;
-  }
-
   .contentWrapper {
     padding: 0 1rem 0.875rem;
   }

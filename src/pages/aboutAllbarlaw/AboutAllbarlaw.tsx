@@ -10,6 +10,7 @@ import { useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Footer from '@/components/footer/Footer'
 import UsageBannder from '@/container/aboutAllbarlaw/usageBanner/UsageBannder'
+import UserAboutFaqList from '@/container/aboutAllbarlaw/userAboutFaqList/UserAboutFaqList'
 
 const AboutAllbarlaw = () => {
   const thirdSectionRef = useRef<HTMLDivElement>(null)
@@ -40,7 +41,9 @@ const AboutAllbarlaw = () => {
           <LegalCurationService ref={thirdSectionRef} />
           <LegalResourceHighlight />
           <BrandIdentity />
+          <UserAboutFaqList />
           <UsageBannder />
+
           <Footer style={{ width: '100%' }} />
         </main>
       </div>

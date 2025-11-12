@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom'
 const FaqListByCategory = () => {
   const { categoryPath } = useParams()
   const { getFaqTypeName } = useReadFaqType()
-  console.log(categoryPath)
+
   const { faqList, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteFaqList({
     take: 10,
     cursor: 0,
