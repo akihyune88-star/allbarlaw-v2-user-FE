@@ -1,11 +1,11 @@
-import styles from './brandIdentity.module.scss'
+// import styles from './brandIdentity.module.scss'
 import BrandColors from './components/BrandColors'
 import CoreValues from './components/CoreValues'
 import LogoSystem from './components/LogoSystem'
 
 const BrandIdentity = () => {
   return (
-    <div className={styles['brand-identity']}>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       <CoreValues />
       <LogoSystem />
       <BrandColors />

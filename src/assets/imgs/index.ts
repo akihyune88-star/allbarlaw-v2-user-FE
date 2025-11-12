@@ -10,6 +10,8 @@ import baroTalk from './baro-talk.webp'
 import video from './video.webp'
 import knowledge from './knowledge.webp'
 
+import logoTypeGridSystem from './logo-type-grid-system.webp'
+
 import lawyerConsulting from './lawyer-consultation.webp'
 import lawyerExpertis from './lawyer-expertis.webp'
 import onboardingCoreValue from './onboarding-core-value.webp'
@@ -32,4 +34,5 @@ export {
   aboutGoal,
   legalCurationService,
   knowledge,
+  logoTypeGridSystem,
 }
