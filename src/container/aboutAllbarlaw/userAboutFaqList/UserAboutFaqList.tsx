@@ -25,6 +25,16 @@ const tabs = [
     path: 'all',
     name: '전체',
   },
+  {
+    faqTypeId: 2,
+    path: 'user',
+    name: '사용자',
+  },
+  {
+    faqTypeId: 3,
+    path: 'lawyer',
+    name: '변호사',
+  },
 ]
 
 const UserAboutFaqList = () => {
@@ -33,8 +43,8 @@ const UserAboutFaqList = () => {
   }
   return (
     <div className={styles['user-about-faq-list']}>
-      <h2 className={styles['section-title']}>FAQ</h2>
-      <Tabs items={tabs} onChange={() => {}} initialPath='all' />
+      <h2 className={styles['section-title']}>자주묻는 질문</h2>
+      <Tabs items={tabs} onChange={() => {}} initialPath='all' className={styles['tabs']} />
       <section className={styles['faq-list']}>
         <Accordion allowMultiple={true}>
           {faqList.map((faq: any, index: number) => (
