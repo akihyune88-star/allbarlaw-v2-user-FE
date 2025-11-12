@@ -1,6 +1,6 @@
 .hero-with-goal {
   width: 100%;
-  height: 700vh; // 스크롤 공간 확보
+  height: 1000vh; // 스크롤 공간 확보
   position: relative;
 }
 
@@ -340,5 +340,122 @@
 
   @media (max-width: $breakpoint-tablet) {
     display: block;
+  }
+}
+
+// LegalCurationService 섹션
+.legal-curation-section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 2vw, 3rem);
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+.legal-curation-image-wrapper {
+  width: 7.75rem; // 124px (step 0)
+  height: calc(100vw * 707 / 1922); // 이미지 비율 유지
+  max-height: 44.1875rem; // 707px
+  overflow: hidden;
+  position: relative;
+  transition: width 0.5s ease-out, transform 0.5s ease-out, height 0.5s ease-out;
+
+  &[data-expand-step='1'] {
+    width: 100vw;
+  }
+
+  &[data-expand-step='2'] {
+    width: 42.3125rem; // 677px (기본)
+    min-width: 31.25rem; // 500px
+    transform: translateX(0); // 중앙 정렬로 변경
+
+    @media (max-width: 80rem) {
+      width: 53.28vw;
+      min-width: 31.25rem;
+      transform: translateX(0);
+    }
+  }
+}
+
+.legal-curation-image {
+  width: 100vw;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  transition: left 0.5s ease-out, transform 0.5s ease-out;
+  display: block;
+}
+
+.legal-curation-image-wrapper[data-expand-step='2'] .legal-curation-image {
+  left: 50%;
+  transform: translateX(calc(-100% + 21.15625rem)); // 우측 끝이 중앙에 오도록
+
+  @media (max-width: 80rem) {
+    transform: translateX(calc(-100% + 26.64vw));
+  }
+}
+
+.legal-curation-title {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+  white-space: nowrap;
+  animation: fadeInDown 0.5s ease-out;
+}
+
+.legal-curation-text {
+  flex-shrink: 0;
+  color: black;
+  animation: fadeInRight 0.5s ease-out;
+  gap: 3.75rem;
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-weight: bold;
+    line-height: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.125rem;
+    opacity: 0.8;
+    line-height: 1.6;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

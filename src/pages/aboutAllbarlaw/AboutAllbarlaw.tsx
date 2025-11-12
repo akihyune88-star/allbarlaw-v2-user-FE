@@ -1,6 +1,5 @@
 import HeroWithGoal from '@/container/aboutAllbarlaw/heroWithGoal/HeroWithGoal'
 import styles from './about-allbarlaw.module.scss'
-import LegalCurationService from '@/container/aboutAllbarlaw/legalCurationService/LegalCurationService'
 import LegalResourceHighlight from '@/container/aboutAllbarlaw/legalResourceHighlight/LegalResourceHighlight'
 import BrandIdentity from '@/container/aboutAllbarlaw/brandIdentity/BrandIdentity'
 import MobileHeader from '@/container/header/components/MobileHeader'
@@ -38,7 +37,6 @@ const AboutAllbarlaw = () => {
         {isMobile ? <MobileHeader /> : <AboutDesktopHeader />}
         <main className={styles['inner-container']}>
           <HeroWithGoal nextSectionRef={thirdSectionRef} />
-          <LegalCurationService ref={thirdSectionRef} />
           <LegalResourceHighlight />
           <BrandIdentity />
           <UserAboutFaqList />

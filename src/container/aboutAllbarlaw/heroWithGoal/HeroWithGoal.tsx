@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useRef, useState, RefObject } from 'react'
 import styles from './heroWithGoal.module.scss'
 import { TypingText } from '@/components/TypingText'
-import { aboutAllbarlawGif, aboutGoal } from '@/assets/imgs'
+import { aboutAllbarlawGif, legalCurationService } from '@/assets/imgs'
 
 type HeroWithGoalProps = {
   nextSectionRef: RefObject<HTMLDivElement | null>
@@ -20,6 +20,11 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   const [showGoalTitle, setShowGoalTitle] = useState(false) // 올바로의 목표 타이틀 표시
   const [showGoalDescription, setShowGoalDescription] = useState(false) // 올바로의 목표 설명 표시
 
+  // LegalCurationService 애니메이션 상태
+  const [showLegalCuration, setShowLegalCuration] = useState(false) // LegalCurationService 섹션 표시
+  const [legalCurationTitle, setLegalCurationTitle] = useState(false) // 타이틀 표시
+  const [legalCurationText, setLegalCurationText] = useState(false) // 텍스트 표시
+
   // 타이핑 단계별 상태 (순차적 진행)
   const [typingStep, setTypingStep] = useState(0) // 0: 시작 전, 1: 첫 문장, 2: 두번째 문장, 3: 원 작게, 4: 원 크게, 5: 세번째 문장, 6: 완료
   const [typingComplete, setTypingComplete] = useState(false)
@@ -37,8 +42,16 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   const showSecondTextPart2 = typingStep >= 5 || typingComplete
 
   // 스크롤 기반 애니메이션 (타이핑 완료 후)
-  const fadeOutText = typingComplete && scrollProgress >= 0.15 // 텍스트 페이드아웃 시작
-  const moveCircleToCenter = typingComplete && scrollProgress >= 0.25 // 텍스트 완전히 사라진 후 서클 이동
+  // 전체 높이: 1000vh
+  // HeroWithGoal 애니메이션: 0% ~ 35% (0vh ~ 350vh)
+  const fadeOutText = typingComplete && scrollProgress >= 0.08 // 8% (80vh): 텍스트 페이드아웃 시작
+  const moveCircleToCenter = typingComplete && scrollProgress >= 0.12 // 12% (120vh): 서클 중앙 이동
+  const hideGoalSection = scrollProgress >= 0.35 // 35% (350vh): 올바로의 목표 섹션 페이드아웃
+
+  // LegalCurationService 애니메이션: 40% ~ 100% (400vh ~ 1000vh)
+  const showLegalCurationSection = scrollProgress >= 0.40 // 40% (400vh): LegalCurationService 섹션 표시
+  const expandLegalCurationToFull = scrollProgress >= 0.52 // 52% (520vh): 전체 너비로 확장
+  const shrinkLegalCurationToWindow = scrollProgress >= 0.68 // 68% (680vh): 677px 창문으로 축소
 
   // 타이핑 애니메이션 순차적 진행
   useEffect(() => {
@@ -106,11 +119,22 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
       setTimeout(() => {
         if (inlineCircleRef.current) {
           const rect = inlineCircleRef.current.getBoundingClientRect()
-          // 서클의 중앙 좌표 저장 (position: relative 상태에서)
-          setCircleStartPos({
+          const startPos = {
             top: rect.top + rect.height / 2,
             left: rect.left + rect.width / 2,
+          }
+          console.log('Circle start position saved (PC):', {
+            rectTop: rect.top,
+            rectLeft: rect.left,
+            rectWidth: rect.width,
+            rectHeight: rect.height,
+            calculatedTop: startPos.top,
+            calculatedLeft: startPos.left,
+            viewportWidth: window.innerWidth,
+            screenCenterX: window.innerWidth / 2,
+            screenCenterY: window.innerHeight / 2,
           })
+          setCircleStartPos(startPos)
         }
       }, 900)
     }
@@ -119,8 +143,14 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   // moveCircleToCenter가 true가 되면 순차적 애니메이션 시작
   useEffect(() => {
     if (moveCircleToCenter && circleStartPos) {
+      console.log('Animation starting - moveCircleToCenter triggered:', {
+        circleStartPos,
+        moveCircleToCenter,
+        scrollProgress,
+      })
       // 1단계: 중앙으로 이동 (position fixed 전환 후 약간 대기)
       const moveTimer = setTimeout(() => {
+        console.log('Setting circleMoving to true')
         setCircleMoving(true)
       }, 50)
 
@@ -151,9 +181,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
         clearTimeout(titleTimer)
         clearTimeout(descriptionTimer)
       }
-    }
-
-    if (!moveCircleToCenter) {
+    } else if (!moveCircleToCenter) {
       setCircleMoving(false)
       setExpandWidth(false)
       setExpandHeight(false)
@@ -273,6 +301,27 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           setTypingComplete(true)
         }
 
+        // LegalCurationService 섹션 표시 (40% 이상)
+        if (progress > 0.40 && !showLegalCuration) {
+          setShowLegalCuration(true)
+        } else if (progress <= 0.40 && showLegalCuration) {
+          setShowLegalCuration(false)
+        }
+
+        // LegalCurationService 타이틀 표시 (60% 이상)
+        if (progress > 0.60 && !legalCurationTitle) {
+          setLegalCurationTitle(true)
+        } else if (progress <= 0.60 && legalCurationTitle) {
+          setLegalCurationTitle(false)
+        }
+
+        // LegalCurationService 텍스트 표시 (75% 이상)
+        if (progress > 0.75 && !legalCurationText) {
+          setLegalCurationText(true)
+        } else if (progress <= 0.75 && legalCurationText) {
+          setLegalCurationText(false)
+        }
+
         // AboutGoal 텍스트 애니메이션 (90% 이상 스크롤 시)
         if (progress > 0.9 && !titleMoved) {
           setTitleMoved(true)
@@ -294,6 +343,9 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
       // 섹션 이전일 때
       else if (rect.top > 0) {
         setScrollProgress(0)
+        setShowLegalCuration(false)
+        setLegalCurationTitle(false)
+        setLegalCurationText(false)
         setTitleMoved(false)
         setDescriptionVisible(false)
       }
@@ -306,7 +358,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [titleMoved, descriptionVisible, typingComplete])
+  }, [showLegalCuration, legalCurationTitle, legalCurationText, titleMoved, descriptionVisible, typingComplete])
 
   return (
     <div ref={sectionRef} className={styles['hero-with-goal']}>
@@ -314,8 +366,8 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
       <main
         className={styles['hero']}
         style={{
-          opacity: scrollProgress < 1 ? 1 : 0,
-          pointerEvents: scrollProgress < 1 ? 'auto' : 'none',
+          opacity: !hideGoalSection ? 1 : 0,
+          pointerEvents: !hideGoalSection ? 'auto' : 'none',
           transition: 'opacity 0.8s ease',
         }}
       >
@@ -364,7 +416,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
                 height: getCircleHeight(),
                 borderRadius: getCircleBorderRadius(),
                 overflow: 'hidden',
-                margin: circleMoving ? 0 : undefined,
+                margin: moveCircleToCenter ? 0 : undefined,
                 position: moveCircleToCenter ? 'fixed' : 'relative',
                 top: moveCircleToCenter
                   ? circleMoving
@@ -463,6 +515,39 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           )
         })()}
       </main>
+
+      {/* LegalCurationService Section */}
+      <div
+        className={styles['legal-curation-section']}
+        style={{
+          opacity: showLegalCurationSection ? 1 : 0,
+          pointerEvents: showLegalCurationSection ? 'auto' : 'none',
+        }}
+      >
+          {legalCurationTitle && <div className={styles['legal-curation-title']}>의뢰인과 변호사와의 연결고리</div>}
+          <div
+            className={styles['legal-curation-image-wrapper']}
+            data-expand-step={shrinkLegalCurationToWindow ? '2' : expandLegalCurationToFull ? '1' : '0'}
+          >
+            <img src={legalCurationService} alt='legal-curation-service' className={styles['legal-curation-image']} />
+          </div>
+          {legalCurationText && (
+            <div className={styles['legal-curation-text']}>
+              <h2>
+                나에게 꼭 필요한
+                <br />
+                법률정보만 골라볼 순 없을까?
+              </h2>
+              <p>
+                세상에 똑같은 고민은 없기에
+                <br />
+                오직 나만을 위한 해결책이 필요합니다 <br />
+                수많은 올바로의 법률정보 속에서
+                <br />내 문제의 해결책을 찾아보시기 바랍니다.
+              </p>
+            </div>
+          )}
+        </div>
     </div>
   )
 })
