@@ -12,6 +12,7 @@ import knowledge from './knowledge.webp'
 
 import logoTypeGridSystem from './logo-type-grid-system.webp'
 import usageGuideBanner from './usage-guide-banner.webp'
+import aboutAllbarlawGif from './tenor_1.gif'
 
 import lawyerConsulting from './lawyer-consultation.webp'
 import lawyerExpertis from './lawyer-expertis.webp'
@@ -37,4 +38,5 @@ export {
   knowledge,
   logoTypeGridSystem,
   usageGuideBanner,
+  aboutAllbarlawGif,
 }
