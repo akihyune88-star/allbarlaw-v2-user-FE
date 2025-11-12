@@ -43,15 +43,42 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
 
   // 스크롤 기반 애니메이션 (타이핑 완료 후)
   // 전체 높이: 1000vh
-  // HeroWithGoal 애니메이션: 0% ~ 35% (0vh ~ 350vh)
+  // HeroWithGoal 애니메이션: 0% ~ 45% (0vh ~ 450vh) - 더 길게
   const fadeOutText = typingComplete && scrollProgress >= 0.08 // 8% (80vh): 텍스트 페이드아웃 시작
   const moveCircleToCenter = typingComplete && scrollProgress >= 0.12 // 12% (120vh): 서클 중앙 이동
-  const hideGoalSection = scrollProgress >= 0.35 // 35% (350vh): 올바로의 목표 섹션 페이드아웃
+  const hideGoalSection = scrollProgress >= 0.45 // 45% (450vh): 올바로의 목표 섹션 페이드아웃
 
-  // LegalCurationService 애니메이션: 40% ~ 100% (400vh ~ 1000vh)
-  const showLegalCurationSection = scrollProgress >= 0.40 // 40% (400vh): LegalCurationService 섹션 표시
-  const expandLegalCurationToFull = scrollProgress >= 0.52 // 52% (520vh): 전체 너비로 확장
-  const shrinkLegalCurationToWindow = scrollProgress >= 0.68 // 68% (680vh): 677px 창문으로 축소
+  // LegalCurationService 애니메이션: 50% ~ 100% (500vh ~ 1000vh) - 시작점을 뒤로
+  const showLegalCurationSection = scrollProgress >= 0.50 // 50% (500vh): LegalCurationService 섹션 표시
+
+  // 연속적인 애니메이션을 위한 진행도 계산 (0.50 ~ 0.90 사이를 0 ~ 1로 정규화)
+  const legalCurationProgress = Math.min(Math.max((scrollProgress - 0.50) / 0.40, 0), 1)
+
+  // 연속적인 width 계산
+  const getLegalCurationWidth = () => {
+    if (legalCurationProgress <= 0.3) {
+      // 0 ~ 0.3: 124px -> 100vw
+      const progress = legalCurationProgress / 0.3
+      return `calc(7.75rem + (100vw - 7.75rem) * ${progress})`
+    } else {
+      // 0.3 ~ 1.0: 100vw -> 677px
+      const progress = (legalCurationProgress - 0.3) / 0.7
+      return `calc(100vw - (100vw - 42.3125rem) * ${progress})`
+    }
+  }
+
+  // 연속적인 transform 계산 (이미지가 좌측으로 이동)
+  const getLegalCurationTransform = () => {
+    if (legalCurationProgress <= 0.3) {
+      // 0 ~ 0.3: 중앙 정렬
+      return 'translateX(-50%)'
+    } else {
+      // 0.3 ~ 1.0: 중앙에서 우측 정렬로
+      const progress = (legalCurationProgress - 0.3) / 0.7
+      // translateX(-50%) -> translateX(calc(-100% + 21.15625rem))
+      return `translateX(calc(-50% + (-50% + 21.15625rem) * ${progress}))`
+    }
+  }
 
   // 타이핑 애니메이션 순차적 진행
   useEffect(() => {
@@ -301,24 +328,24 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           setTypingComplete(true)
         }
 
-        // LegalCurationService 섹션 표시 (40% 이상)
-        if (progress > 0.40 && !showLegalCuration) {
+        // LegalCurationService 섹션 표시 (50% 이상)
+        if (progress > 0.50 && !showLegalCuration) {
           setShowLegalCuration(true)
-        } else if (progress <= 0.40 && showLegalCuration) {
+        } else if (progress <= 0.50 && showLegalCuration) {
           setShowLegalCuration(false)
         }
 
-        // LegalCurationService 타이틀 표시 (60% 이상)
-        if (progress > 0.60 && !legalCurationTitle) {
+        // LegalCurationService 타이틀 표시 (65% 이상)
+        if (progress > 0.65 && !legalCurationTitle) {
           setLegalCurationTitle(true)
-        } else if (progress <= 0.60 && legalCurationTitle) {
+        } else if (progress <= 0.65 && legalCurationTitle) {
           setLegalCurationTitle(false)
         }
 
-        // LegalCurationService 텍스트 표시 (75% 이상)
-        if (progress > 0.75 && !legalCurationText) {
+        // LegalCurationService 텍스트 표시 (80% 이상)
+        if (progress > 0.80 && !legalCurationText) {
           setLegalCurationText(true)
-        } else if (progress <= 0.75 && legalCurationText) {
+        } else if (progress <= 0.80 && legalCurationText) {
           setLegalCurationText(false)
         }
 
@@ -520,16 +547,25 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
       <div
         className={styles['legal-curation-section']}
         style={{
-          opacity: showLegalCurationSection ? 1 : 0,
-          pointerEvents: showLegalCurationSection ? 'auto' : 'none',
+          opacity: showLegalCurationSection && scrollProgress < 0.95 ? 1 : 0,
+          pointerEvents: showLegalCurationSection && scrollProgress < 0.95 ? 'auto' : 'none',
         }}
       >
           {legalCurationTitle && <div className={styles['legal-curation-title']}>의뢰인과 변호사와의 연결고리</div>}
           <div
             className={styles['legal-curation-image-wrapper']}
-            data-expand-step={shrinkLegalCurationToWindow ? '2' : expandLegalCurationToFull ? '1' : '0'}
+            style={{
+              width: getLegalCurationWidth(),
+            }}
           >
-            <img src={legalCurationService} alt='legal-curation-service' className={styles['legal-curation-image']} />
+            <img
+              src={legalCurationService}
+              alt='legal-curation-service'
+              className={styles['legal-curation-image']}
+              style={{
+                transform: getLegalCurationTransform(),
+              }}
+            />
           </div>
           {legalCurationText && (
             <div className={styles['legal-curation-text']}>
