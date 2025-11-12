@@ -158,13 +158,18 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   const getCircleWidth = () => {
     // 타이핑 중: 단계별 크기
     if (!typingComplete) {
-      if (expandCircle) return '180px' // 4단계: 180px로 확장
+      if (expandCircle) {
+        // 태블릿 이하: 90px, PC: 180px
+        return viewportWidth <= 768 ? '90px' : '180px'
+      }
       if (showCircle) return 'clamp(2rem, 10vw, 3.75rem)' // 3단계: 작은 크기
       return '0px'
     }
 
-    // 가로 확장 전: 180px 유지
-    if (!expandWidth) return '180px'
+    // 가로 확장 전: 태블릿 이하 90px, PC 180px
+    if (!expandWidth) {
+      return viewportWidth <= 768 ? '90px' : '180px'
+    }
 
     // 가로 확장 (state의 viewportWidth 사용)
     const tabletBreakpoint = 768
@@ -187,13 +192,18 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   const getCircleHeight = () => {
     // 타이핑 중: 단계별 크기
     if (!typingComplete) {
-      if (expandCircle) return '60px' // 4단계: 60px (180px 너비일 때)
+      if (expandCircle) {
+        // 태블릿 이하: 32px, PC: 60px
+        return viewportWidth <= 768 ? '32px' : '60px'
+      }
       if (showCircle) return 'clamp(2rem, 10vw, 3.75rem)' // 3단계: 작은 크기
       return '0px'
     }
 
-    // 세로 확장 전: 60px 유지
-    if (!expandHeight) return '60px'
+    // 세로 확장 전: 태블릿 이하 32px, PC 60px
+    if (!expandHeight) {
+      return viewportWidth <= 768 ? '32px' : '60px'
+    }
 
     // 세로 확장 (state의 viewportWidth 사용)
     const tabletBreakpoint = 768
@@ -346,7 +356,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
                 height: getCircleHeight(),
                 borderRadius: getCircleBorderRadius(),
                 overflow: 'hidden',
-                margin: moveCircleToCenter ? 0 : undefined,
+                margin: circleMoving ? 0 : undefined,
                 position: moveCircleToCenter ? 'fixed' : 'relative',
                 top: moveCircleToCenter
                   ? circleMoving
@@ -412,6 +422,37 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
             </span>
           </div>
         </section>
+
+        {/* 올바로의 목표 타이틀 (PC only, 이미지 위에 표시) */}
+        {showGoalTitle && viewportWidth > 768 && (() => {
+          const heightStr = getCircleHeight()
+          const heightValue = parseFloat(heightStr)
+          const topPosition = `calc(50% - ${heightValue / 2}px - 100px)`
+
+          return (
+            <div
+              style={{
+                position: 'fixed',
+                top: topPosition,
+                left: '50%',
+                transform: showGoalTitle
+                  ? 'translate(-50%, 0)'
+                  : 'translate(-50%, 20px)',
+                zIndex: 11,
+                fontFamily: 'SUIT',
+                fontWeight: 800,
+                fontSize: '32px',
+                lineHeight: '48px',
+                textAlign: 'center',
+                color: '#000',
+                opacity: showGoalTitle ? 1 : 0,
+                transition: 'opacity 0.5s ease, transform 0.5s ease',
+              }}
+            >
+              올바로의 목표
+            </div>
+          )
+        })()}
       </main>
     </div>
   )
