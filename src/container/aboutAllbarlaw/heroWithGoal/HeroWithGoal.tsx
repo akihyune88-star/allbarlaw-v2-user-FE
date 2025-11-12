@@ -18,6 +18,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   const [expandHeight, setExpandHeight] = useState(false) // 세로 확장
   const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0)
   const [showGoalTitle, setShowGoalTitle] = useState(false) // 올바로의 목표 타이틀 표시
+  const [showGoalDescription, setShowGoalDescription] = useState(false) // 올바로의 목표 설명 표시
 
   // 타이핑 단계별 상태 (순차적 진행)
   const [typingStep, setTypingStep] = useState(0) // 0: 시작 전, 1: 첫 문장, 2: 두번째 문장, 3: 원 작게, 4: 원 크게, 5: 세번째 문장, 6: 완료
@@ -108,7 +109,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           // 서클의 중앙 좌표 저장 (position: relative 상태에서)
           setCircleStartPos({
             top: rect.top + rect.height / 2,
-            left: rect.left + rect.width / 2
+            left: rect.left + rect.width / 2,
           })
         }
       }, 900)
@@ -138,11 +139,17 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
         setShowGoalTitle(true)
       }, 2250)
 
+      // 5단계: 타이틀 표시 완료 후 바로 description 표시 (2.25s + 0.5s)
+      const descriptionTimer = setTimeout(() => {
+        setShowGoalDescription(true)
+      }, 2750)
+
       return () => {
         clearTimeout(moveTimer)
         clearTimeout(widthTimer)
         clearTimeout(heightTimer)
         clearTimeout(titleTimer)
+        clearTimeout(descriptionTimer)
       }
     }
 
@@ -151,6 +158,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
       setExpandWidth(false)
       setExpandHeight(false)
       setShowGoalTitle(false)
+      setShowGoalDescription(false)
     }
   }, [moveCircleToCenter, circleStartPos])
 
@@ -362,15 +370,15 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
                   ? circleMoving
                     ? '50%'
                     : circleStartPos
-                      ? `${circleStartPos.top}px`
-                      : '50%'
+                    ? `${circleStartPos.top}px`
+                    : '50%'
                   : 'auto',
                 left: moveCircleToCenter
                   ? circleMoving
                     ? '50%'
                     : circleStartPos
-                      ? `${circleStartPos.left}px`
-                      : '50%'
+                    ? `${circleStartPos.left}px`
+                    : '50%'
                   : 'auto',
                 transform: moveCircleToCenter ? 'translate(-50%, -50%)' : 'none',
                 zIndex: moveCircleToCenter ? 10 : 'auto',
@@ -392,23 +400,32 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
                   transition: 'opacity 0.8s ease',
                 }}
               />
-              {/* 이미지 위에 텍스트 오버레이 */}
-              {scrollProgress >= 0.7 && (
-                <div className={styles['about-goal-text-wrapper']}>
-                  <span className={styles['about-goal-image-title']} data-moved={titleMoved}>
-                    정확하고 유용한 법률 정보
-                  </span>
-                  {descriptionVisible && (
-                    <p className={styles['about-goal-image-description']}>
-                      정확한 법률 정보는 불필요한 법적 분쟁을 예방하고,
-                      <br />
-                      문제 발생 시 적절한 대응을 가능하게 합니다.
-                      <br />
-                      올바로는 이를 위한 가장 빠르고 정확한 법률정보를 제공하겠습니다.
-                    </p>
-                  )}
+              {/* 올바로의 목표 타이틀 + Description (이미지 위에 표시) */}
+              <div
+                className={styles['goal-container']}
+                style={{
+                  transform: showGoalDescription
+                    ? viewportWidth <= 768 ? 'translate(-50%, -50%)' : 'translateY(0)'
+                    : viewportWidth <= 768 ? 'translate(-50%, calc(-50% + 30px))' : 'translateY(30px)',
+                  opacity: showGoalDescription ? 1 : 0,
+                }}
+              >
+                <div className={styles['goal-description-title']}>올바로의 목표</div>
+                <div className={styles['goal-description']}>
+                  법률 문제 해결을 위한 첫 걸음은
+                  <br /> 정확한 정보를 찾는 것입니다.
+                  <br /> <br />
+                  그래야 해결책을 세우고
+                  <br /> 제대로 된 변호사를 선임할 수 있죠. <br />
+                  <br />
+                  하지만 현실에선 첫 걸음부터 막힙니다. <br />
+                  무분별한 광고와 부정확한 정보로
+                  <br /> 모든 검색결과가 도배되어 있기 때문입니다. <br />
+                  <br />
+                  올바로는 올바른 법률정보만을 선별하여 제공해 <br />
+                  법률 정보의 비대칭을 해소하고자 합니다
                 </div>
-              )}
+              </div>
             </figure>
             <span style={{ opacity: fadeOutText ? 0 : 1, transition: 'opacity 0.8s ease' }}>
               <TypingText text='정의의 격차가 되지 않도록' isActive={showSecondTextPart2} speed={60}>
@@ -423,30 +440,22 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           </div>
         </section>
 
-        {/* 올바로의 목표 타이틀 (PC only, 이미지 위에 표시) */}
-        {showGoalTitle && viewportWidth > 768 && (() => {
+        {/* 올바로의 목표 타이틀 (이미지 위에 표시) */}
+        {(() => {
           const heightStr = getCircleHeight()
           const heightValue = parseFloat(heightStr)
-          const topPosition = `calc(50% - ${heightValue / 2}px - 100px)`
+
+          // PC: 이미지 위 100px, 모바일: 이미지 위 60px
+          const offset = viewportWidth <= 768 ? 60 : 100
+          const topPosition = `calc(50% - ${heightValue / 2}px - ${offset}px)`
 
           return (
             <div
+              className={styles['goal-title']}
               style={{
-                position: 'fixed',
                 top: topPosition,
-                left: '50%',
-                transform: showGoalTitle
-                  ? 'translate(-50%, 0)'
-                  : 'translate(-50%, 20px)',
-                zIndex: 11,
-                fontFamily: 'SUIT',
-                fontWeight: 800,
-                fontSize: '32px',
-                lineHeight: '48px',
-                textAlign: 'center',
-                color: '#000',
+                transform: showGoalTitle ? 'translate(-50%, 0)' : 'translate(-50%, 20px)',
                 opacity: showGoalTitle ? 1 : 0,
-                transition: 'opacity 0.5s ease, transform 0.5s ease',
               }}
             >
               올바로의 목표
