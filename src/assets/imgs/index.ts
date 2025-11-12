@@ -11,6 +11,7 @@ import video from './video.webp'
 import knowledge from './knowledge.webp'
 
 import logoTypeGridSystem from './logo-type-grid-system.webp'
+import usageGuideBanner from './usage-guide-banner.webp'
 
 import lawyerConsulting from './lawyer-consultation.webp'
 import lawyerExpertis from './lawyer-expertis.webp'
@@ -35,4 +36,5 @@ export {
   legalCurationService,
   knowledge,
   logoTypeGridSystem,
+  usageGuideBanner,
 }
