@@ -16,6 +16,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   const [circleMoving, setCircleMoving] = useState(false) // 중앙으로 이동 중인지
   const [expandWidth, setExpandWidth] = useState(false) // 가로 확장
   const [expandHeight, setExpandHeight] = useState(false) // 세로 확장
+  const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0)
 
   // 타이핑 단계별 상태 (순차적 진행)
   const [typingStep, setTypingStep] = useState(0) // 0: 시작 전, 1: 첫 문장, 2: 두번째 문장, 3: 원 작게, 4: 원 크게, 5: 세번째 문장, 6: 완료
@@ -86,6 +87,16 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
     }
   }, [])
 
+  // viewport width 추적 (반응형 대응)
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   // 타이핑 완료 후 서클이 180px로 확장되면 위치 저장
   useEffect(() => {
     if (typingComplete && expandCircle && !circleStartPos && inlineCircleRef.current) {
@@ -146,10 +157,22 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
     // 가로 확장 전: 180px 유지
     if (!expandWidth) return '180px'
 
-    // 가로 확장: 최대 1280px
-    const maxWidth = 1280
-    const viewportWidth = window.innerWidth
-    return `${Math.min(maxWidth, viewportWidth)}px`
+    // 가로 확장 (state의 viewportWidth 사용)
+    const tabletBreakpoint = 768
+    const desktopBreakpoint = 1280
+
+    // 태블릿 이하: 전체 화면
+    if (viewportWidth <= tabletBreakpoint) {
+      return '100vw'
+    }
+
+    // 1280px 이하: 양옆 1.25rem 여백
+    if (viewportWidth <= desktopBreakpoint + 20) {
+      return 'calc(100vw - 2.5rem)'
+    }
+
+    // 1280px 초과: 최대 1280px
+    return '1280px'
   }
 
   const getCircleHeight = () => {
@@ -163,12 +186,25 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
     // 세로 확장 전: 60px 유지
     if (!expandHeight) return '60px'
 
-    // 세로 확장: aspect-ratio 1280/588 유지
-    const maxWidth = 1280
-    const viewportWidth = window.innerWidth
-    const actualWidth = Math.min(maxWidth, viewportWidth)
+    // 세로 확장 (state의 viewportWidth 사용)
+    const tabletBreakpoint = 768
+    const desktopBreakpoint = 1280
     const aspectRatio = 1280 / 588
-    const height = actualWidth / aspectRatio
+
+    // 태블릿 이하: 전체 화면 높이
+    if (viewportWidth <= tabletBreakpoint) {
+      return '100vh'
+    }
+
+    // 1280px 이하: 너비에 맞춰 aspect-ratio 유지 (여백 고려)
+    if (viewportWidth <= desktopBreakpoint + 20) {
+      const actualWidth = viewportWidth - 40 // 2.5rem ≈ 40px
+      const height = actualWidth / aspectRatio
+      return `${height}px`
+    }
+
+    // 1280px 초과: 1280px 기준 aspect-ratio
+    const height = 1280 / aspectRatio
     return `${height}px`
   }
 
@@ -176,7 +212,14 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   const getCircleBorderRadius = () => {
     if (!typingComplete) return '30px'
     if (scrollProgress < 0.2) return '30px' // 초반은 원형
-    // 중반부터는 둥근 네모 (중앙 이동하면서 변경됨)
+
+    // 태블릿 이하에서 확장 완료 시: radius 없음 (state의 viewportWidth 사용)
+    const tabletBreakpoint = 768
+    if (viewportWidth <= tabletBreakpoint && expandHeight) {
+      return '0'
+    }
+
+    // 데스크탑: 둥근 네모
     return 'clamp(1.125rem, 4vw, 2.5rem)'
   }
 
