@@ -356,6 +356,10 @@
   gap: clamp(1rem, 2vw, 3rem);
   transition: opacity 0.8s ease;
   pointer-events: none;
+
+  @media (min-width: calc($breakpoint-tablet + 1px)) {
+    padding: 0 1.25rem;
+  }
 }
 
 .legal-curation-image-wrapper {
@@ -371,15 +375,8 @@
   }
 
   &[data-expand-step='2'] {
-    width: 42.3125rem; // 677px (기본)
-    min-width: 31.25rem; // 500px
-    transform: translateX(0); // 중앙 정렬로 변경
-
-    @media (max-width: 80rem) {
-      width: 53.28vw;
-      min-width: 31.25rem;
-      transform: translateX(0);
-    }
+    width: 100px;
+    // width: clamp(31.25rem, 42.3125rem, 53.28vw); // 677px (기본)
   }
 }
 
@@ -391,7 +388,7 @@
   left: 50%;
   top: 0;
   transform: translateX(-50%);
-  transition: left 0.5s ease-out, transform 0.5s ease-out;
+  transition: left 0.8s ease-out, transform 0.8s ease-out;
   display: block;
 }
 

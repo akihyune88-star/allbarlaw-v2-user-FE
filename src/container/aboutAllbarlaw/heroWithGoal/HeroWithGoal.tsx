@@ -53,32 +53,17 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   // LegalCurationService 애니메이션: 50% ~ 100% (500vh ~ 1000vh) - 시작점을 뒤로
   const showLegalCurationSection = scrollProgress >= 0.5 // 50% (500vh): LegalCurationService 섹션 표시
 
-  // 연속적인 애니메이션을 위한 진행도 계산 (0.50 ~ 0.90 사이를 0 ~ 1로 정규화)
-  const legalCurationProgress = Math.min(Math.max((scrollProgress - 0.5) / 0.4, 0), 1)
+  // LegalCurationService 자동 애니메이션 단계
+  const [legalCurationStep, setLegalCurationStep] = useState(0) // 0: 170px, 1: 전체확장, 2: 네모, 3: 우측배치
 
   // 연속적인 width 계산
   const getLegalCurationWidth = () => {
-    if (legalCurationProgress <= 0.3) {
-      // 0 ~ 0.3: 124px -> 100vw
-      const progress = legalCurationProgress / 0.3
-      return `calc(7.75rem + (100vw - 7.75rem) * ${progress})`
+    if (legalCurationStep === 0) {
+      return '170px' // 초기 170px
+    } else if (legalCurationStep === 1) {
+      return '100vw' // 전체 확장
     } else {
-      // 0.3 ~ 1.0: 100vw -> 677px
-      const progress = (legalCurationProgress - 0.3) / 0.7
-      return `calc(100vw - (100vw - 42.3125rem) * ${progress})`
-    }
-  }
-
-  // 연속적인 transform 계산 (이미지가 좌측으로 이동)
-  const getLegalCurationTransform = () => {
-    if (legalCurationProgress <= 0.3) {
-      // 0 ~ 0.3: 중앙 정렬
-      return 'translateX(-50%)'
-    } else {
-      // 0.3 ~ 1.0: 중앙에서 우측 정렬로
-      const progress = (legalCurationProgress - 0.3) / 0.7
-      // translateX(-50%) -> translateX(calc(-100% + 21.15625rem))
-      return `translateX(calc(-50% + (-50% + 21.15625rem) * ${progress}))`
+      return '45%' // 677px 네모 (step 2부터)
     }
   }
 
@@ -158,55 +143,61 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
     }
   }, [typingComplete, expandCircle, circleStartPos])
 
-  // moveCircleToCenter가 true가 되면 순차적 애니메이션 시작
+  // moveCircleToCenter가 true가 되면 순차적 애니메이션 시작 (한 번만 실행)
   useEffect(() => {
-    if (moveCircleToCenter && circleStartPos) {
-      console.log('Animation starting - moveCircleToCenter triggered:', {
-        circleStartPos,
-        moveCircleToCenter,
-        scrollProgress,
-      })
-      // 1단계: 중앙으로 이동 (position fixed 전환 후 약간 대기)
-      const moveTimer = setTimeout(() => {
-        console.log('Setting circleMoving to true')
-        setCircleMoving(true)
-      }, 50)
+    if (!moveCircleToCenter || !circleStartPos) return undefined
 
-      // 2단계: 중앙 이동 완료 후 가로 확장 시작 (0.8s + 0.1s 대기)
-      const widthTimer = setTimeout(() => {
-        setExpandWidth(true)
-      }, 950)
+    console.log('Animation starting - moveCircleToCenter triggered:', {
+      circleStartPos,
+      moveCircleToCenter,
+      scrollProgress,
+    })
 
-      // 3단계: 가로 확장 완료 후 바로 세로 확장 시작 (0.95s + 0.5s)
-      const heightTimer = setTimeout(() => {
-        setExpandHeight(true)
-      }, 1450)
+    // 1단계: 중앙으로 이동 (position fixed 전환 후 약간 대기)
+    const moveTimer = setTimeout(() => {
+      console.log('Setting circleMoving to true')
+      setCircleMoving(true)
+    }, 50)
 
-      // 4단계: 세로 확장 완료 후 타이틀 표시 (1.45s + 0.5s + 0.3s 대기)
-      const titleTimer = setTimeout(() => {
-        setShowGoalTitle(true)
-      }, 2250)
+    // 2단계: 중앙 이동 완료 후 가로 확장 시작 (0.8s + 0.1s 대기)
+    const widthTimer = setTimeout(() => {
+      setExpandWidth(true)
+    }, 950)
 
-      // 5단계: 타이틀 표시 완료 후 바로 description 표시 (2.25s + 0.5s)
-      const descriptionTimer = setTimeout(() => {
-        setShowGoalDescription(true)
-      }, 2750)
+    // 3단계: 가로 확장 완료 후 바로 세로 확장 시작 (0.95s + 0.5s)
+    const heightTimer = setTimeout(() => {
+      setExpandHeight(true)
+    }, 1450)
 
-      return () => {
-        clearTimeout(moveTimer)
-        clearTimeout(widthTimer)
-        clearTimeout(heightTimer)
-        clearTimeout(titleTimer)
-        clearTimeout(descriptionTimer)
-      }
-    } else if (!moveCircleToCenter) {
+    // 4단계: 세로 확장 완료 후 타이틀 표시 (1.45s + 0.5s + 0.3s 대기)
+    const titleTimer = setTimeout(() => {
+      setShowGoalTitle(true)
+    }, 2250)
+
+    // 5단계: 타이틀 표시 완료 후 바로 description 표시 (2.25s + 0.5s)
+    const descriptionTimer = setTimeout(() => {
+      setShowGoalDescription(true)
+    }, 2750)
+
+    return () => {
+      clearTimeout(moveTimer)
+      clearTimeout(widthTimer)
+      clearTimeout(heightTimer)
+      clearTimeout(titleTimer)
+      clearTimeout(descriptionTimer)
+    }
+  }, [moveCircleToCenter])
+
+  // moveCircleToCenter가 false가 되면 상태 초기화
+  useEffect(() => {
+    if (!moveCircleToCenter) {
       setCircleMoving(false)
       setExpandWidth(false)
       setExpandHeight(false)
       setShowGoalTitle(false)
       setShowGoalDescription(false)
     }
-  }, [moveCircleToCenter, circleStartPos])
+  }, [moveCircleToCenter])
 
   // 동그라미 크기 계산 (타이핑 단계 + 순차적 확장)
   const getCircleWidth = () => {
@@ -374,6 +365,47 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
     }
   }, [showLegalCuration, legalCurationTitle, legalCurationText, titleMoved, descriptionVisible, typingComplete])
 
+  // LegalCurationService 자동 순차 애니메이션
+  useEffect(() => {
+    if (!showLegalCuration) {
+      setLegalCurationStep(0)
+      setLegalCurationTitle(false)
+      setLegalCurationText(false)
+      return undefined
+    }
+
+    // 1단계: 170px에서 시작
+    setLegalCurationStep(0)
+
+    // 2단계: 전체 확장 (0.8초 후)
+    const step1Timer = setTimeout(() => {
+      setLegalCurationStep(1)
+    }, 800)
+
+    // 3단계: 네모로 축소 + 우측 이동 동시에 (1.6초 후)
+    const step2Timer = setTimeout(() => {
+      console.log('Setting legalCurationStep to 2')
+      setLegalCurationStep(2)
+    }, 1600)
+
+    // 4단계: 타이틀 표시 (2.4초 후)
+    const titleTimer = setTimeout(() => {
+      setLegalCurationTitle(true)
+    }, 2400)
+
+    // 5단계: 텍스트 표시 (3.2초 후)
+    const textTimer = setTimeout(() => {
+      setLegalCurationText(true)
+    }, 3200)
+
+    return () => {
+      clearTimeout(step1Timer)
+      clearTimeout(step2Timer)
+      clearTimeout(titleTimer)
+      clearTimeout(textTimer)
+    }
+  }, [showLegalCuration])
+
   return (
     <div ref={sectionRef} className={styles['hero-with-goal']}>
       {/* Hero Section - fixed positioning */}
@@ -540,23 +572,20 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
         style={{
           opacity: showLegalCurationSection && scrollProgress < 0.95 ? 1 : 0,
           pointerEvents: showLegalCurationSection && scrollProgress < 0.95 ? 'auto' : 'none',
+          justifyContent: legalCurationStep >= 2 ? 'flex-start' : 'center',
+          transition: 'justify-content 0.8s ease-out',
         }}
       >
         {legalCurationTitle && <div className={styles['legal-curation-title']}>의뢰인과 변호사와의 연결고리</div>}
         <div
           className={styles['legal-curation-image-wrapper']}
+          data-expand-step={legalCurationStep >= 2 ? '2' : legalCurationStep === 1 ? '1' : '0'}
           style={{
             width: getLegalCurationWidth(),
+            transition: 'width 0.8s ease-out',
           }}
         >
-          <img
-            src={legalCurationService}
-            alt='legal-curation-service'
-            className={styles['legal-curation-image']}
-            style={{
-              transform: getLegalCurationTransform(),
-            }}
-          />
+          <img src={legalCurationService} alt='legal-curation-service' className={styles['legal-curation-image']} />
         </div>
         {legalCurationText && (
           <div className={styles['legal-curation-text']}>
