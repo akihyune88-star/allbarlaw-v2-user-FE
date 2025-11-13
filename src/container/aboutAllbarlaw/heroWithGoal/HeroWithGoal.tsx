@@ -7,6 +7,8 @@ type HeroWithGoalProps = {
   nextSectionRef: RefObject<HTMLDivElement | null>
 }
 
+const TABLET_BREAKPOINT = 800
+
 const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectionRef: _nextSectionRef }, _ref) => {
   const sectionRef = useRef<HTMLDivElement>(null)
   const inlineCircleRef = useRef<HTMLElement>(null)
@@ -49,10 +51,10 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   const hideGoalSection = scrollProgress >= 0.45 // 45% (450vh): 올바로의 목표 섹션 페이드아웃
 
   // LegalCurationService 애니메이션: 50% ~ 100% (500vh ~ 1000vh) - 시작점을 뒤로
-  const showLegalCurationSection = scrollProgress >= 0.50 // 50% (500vh): LegalCurationService 섹션 표시
+  const showLegalCurationSection = scrollProgress >= 0.5 // 50% (500vh): LegalCurationService 섹션 표시
 
   // 연속적인 애니메이션을 위한 진행도 계산 (0.50 ~ 0.90 사이를 0 ~ 1로 정규화)
-  const legalCurationProgress = Math.min(Math.max((scrollProgress - 0.50) / 0.40, 0), 1)
+  const legalCurationProgress = Math.min(Math.max((scrollProgress - 0.5) / 0.4, 0), 1)
 
   // 연속적인 width 계산
   const getLegalCurationWidth = () => {
@@ -150,17 +152,6 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
             top: rect.top + rect.height / 2,
             left: rect.left + rect.width / 2,
           }
-          console.log('Circle start position saved (PC):', {
-            rectTop: rect.top,
-            rectLeft: rect.left,
-            rectWidth: rect.width,
-            rectHeight: rect.height,
-            calculatedTop: startPos.top,
-            calculatedLeft: startPos.left,
-            viewportWidth: window.innerWidth,
-            screenCenterX: window.innerWidth / 2,
-            screenCenterY: window.innerHeight / 2,
-          })
           setCircleStartPos(startPos)
         }
       }, 900)
@@ -223,7 +214,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
     if (!typingComplete) {
       if (expandCircle) {
         // 태블릿 이하: 90px, PC: 180px
-        return viewportWidth <= 768 ? '90px' : '180px'
+        return viewportWidth <= TABLET_BREAKPOINT ? '90px' : '180px'
       }
       if (showCircle) return 'clamp(2rem, 10vw, 3.75rem)' // 3단계: 작은 크기
       return '0px'
@@ -231,15 +222,14 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
 
     // 가로 확장 전: 태블릿 이하 90px, PC 180px
     if (!expandWidth) {
-      return viewportWidth <= 768 ? '90px' : '180px'
+      return viewportWidth <= TABLET_BREAKPOINT ? '90px' : '180px'
     }
 
     // 가로 확장 (state의 viewportWidth 사용)
-    const tabletBreakpoint = 768
     const desktopBreakpoint = 1280
 
     // 태블릿 이하: 전체 화면
-    if (viewportWidth <= tabletBreakpoint) {
+    if (viewportWidth <= TABLET_BREAKPOINT) {
       return '100vw'
     }
 
@@ -257,7 +247,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
     if (!typingComplete) {
       if (expandCircle) {
         // 태블릿 이하: 32px, PC: 60px
-        return viewportWidth <= 768 ? '32px' : '60px'
+        return viewportWidth <= TABLET_BREAKPOINT ? '32px' : '60px'
       }
       if (showCircle) return 'clamp(2rem, 10vw, 3.75rem)' // 3단계: 작은 크기
       return '0px'
@@ -265,16 +255,15 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
 
     // 세로 확장 전: 태블릿 이하 32px, PC 60px
     if (!expandHeight) {
-      return viewportWidth <= 768 ? '32px' : '60px'
+      return viewportWidth <= TABLET_BREAKPOINT ? '32px' : '60px'
     }
 
     // 세로 확장 (state의 viewportWidth 사용)
-    const tabletBreakpoint = 768
     const desktopBreakpoint = 1280
     const aspectRatio = 1280 / 588
 
     // 태블릿 이하: 전체 화면 높이
-    if (viewportWidth <= tabletBreakpoint) {
+    if (viewportWidth <= TABLET_BREAKPOINT) {
       return '100vh'
     }
 
@@ -295,9 +284,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
     if (!typingComplete) return '30px'
     if (scrollProgress < 0.2) return '30px' // 초반은 원형
 
-    // 태블릿 이하에서 확장 완료 시: radius 없음 (state의 viewportWidth 사용)
-    const tabletBreakpoint = 768
-    if (viewportWidth <= tabletBreakpoint && expandHeight) {
+    if (viewportWidth <= TABLET_BREAKPOINT && expandHeight) {
       return '0'
     }
 
@@ -329,9 +316,9 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
         }
 
         // LegalCurationService 섹션 표시 (50% 이상)
-        if (progress > 0.50 && !showLegalCuration) {
+        if (progress > 0.5 && !showLegalCuration) {
           setShowLegalCuration(true)
-        } else if (progress <= 0.50 && showLegalCuration) {
+        } else if (progress <= 0.5 && showLegalCuration) {
           setShowLegalCuration(false)
         }
 
@@ -343,9 +330,9 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
         }
 
         // LegalCurationService 텍스트 표시 (80% 이상)
-        if (progress > 0.80 && !legalCurationText) {
+        if (progress > 0.8 && !legalCurationText) {
           setLegalCurationText(true)
-        } else if (progress <= 0.80 && legalCurationText) {
+        } else if (progress <= 0.8 && legalCurationText) {
           setLegalCurationText(false)
         }
 
@@ -484,8 +471,12 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
                 className={styles['goal-container']}
                 style={{
                   transform: showGoalDescription
-                    ? viewportWidth <= 768 ? 'translate(-50%, -50%)' : 'translateY(0)'
-                    : viewportWidth <= 768 ? 'translate(-50%, calc(-50% + 30px))' : 'translateY(30px)',
+                    ? viewportWidth <= TABLET_BREAKPOINT
+                      ? 'translate(-50%, -50%)'
+                      : 'translateY(0)'
+                    : viewportWidth <= TABLET_BREAKPOINT
+                    ? 'translate(-50%, calc(-50% + 30px))'
+                    : 'translateY(30px)',
                   opacity: showGoalDescription ? 1 : 0,
                 }}
               >
@@ -524,8 +515,8 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           const heightStr = getCircleHeight()
           const heightValue = parseFloat(heightStr)
 
-          // PC: 이미지 위 100px, 모바일: 이미지 위 60px
-          const offset = viewportWidth <= 768 ? 60 : 100
+          // PC: 이미지 위 100px, 화면 높이에 따라 반응형
+          const offset = Math.max(50, window.innerHeight * 0.1)
           const topPosition = `calc(50% - ${heightValue / 2}px - ${offset}px)`
 
           return (
@@ -551,39 +542,39 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           pointerEvents: showLegalCurationSection && scrollProgress < 0.95 ? 'auto' : 'none',
         }}
       >
-          {legalCurationTitle && <div className={styles['legal-curation-title']}>의뢰인과 변호사와의 연결고리</div>}
-          <div
-            className={styles['legal-curation-image-wrapper']}
+        {legalCurationTitle && <div className={styles['legal-curation-title']}>의뢰인과 변호사와의 연결고리</div>}
+        <div
+          className={styles['legal-curation-image-wrapper']}
+          style={{
+            width: getLegalCurationWidth(),
+          }}
+        >
+          <img
+            src={legalCurationService}
+            alt='legal-curation-service'
+            className={styles['legal-curation-image']}
             style={{
-              width: getLegalCurationWidth(),
+              transform: getLegalCurationTransform(),
             }}
-          >
-            <img
-              src={legalCurationService}
-              alt='legal-curation-service'
-              className={styles['legal-curation-image']}
-              style={{
-                transform: getLegalCurationTransform(),
-              }}
-            />
-          </div>
-          {legalCurationText && (
-            <div className={styles['legal-curation-text']}>
-              <h2>
-                나에게 꼭 필요한
-                <br />
-                법률정보만 골라볼 순 없을까?
-              </h2>
-              <p>
-                세상에 똑같은 고민은 없기에
-                <br />
-                오직 나만을 위한 해결책이 필요합니다 <br />
-                수많은 올바로의 법률정보 속에서
-                <br />내 문제의 해결책을 찾아보시기 바랍니다.
-              </p>
-            </div>
-          )}
+          />
         </div>
+        {legalCurationText && (
+          <div className={styles['legal-curation-text']}>
+            <h2>
+              나에게 꼭 필요한
+              <br />
+              법률정보만 골라볼 순 없을까?
+            </h2>
+            <p>
+              세상에 똑같은 고민은 없기에
+              <br />
+              오직 나만을 위한 해결책이 필요합니다 <br />
+              수많은 올바로의 법률정보 속에서
+              <br />내 문제의 해결책을 찾아보시기 바랍니다.
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   )
 })
