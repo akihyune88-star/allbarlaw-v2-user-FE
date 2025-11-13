@@ -567,7 +567,8 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           data-expand-step={legalCurationStep >= 2 ? '2' : legalCurationStep === 1 ? '1' : '0'}
           style={{
             width: getLegalCurationWidth(),
-            transition: 'width 0.8s ease-out',
+            borderRadius: legalCurationStep === 0 ? '0' : '20px',
+            transition: 'width 0.8s ease-out, border-radius 0.8s ease-out',
           }}
         >
           <img src={legalCurationService} alt='legal-curation-service' className={styles['legal-curation-image']} />
