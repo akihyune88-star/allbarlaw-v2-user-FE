@@ -7,7 +7,7 @@ const animationItem = [
   {
     itemName: '법률 영상',
     imgPath: video,
-    position: { top: '25%', left: '30%' },
+    position: { top: '20%', left: '25%' },
     mobilePosition: { top: '5%', left: '2%' },
     slideFrom: 'left',
     scale: 1, // 데스크톱 크기
@@ -17,7 +17,7 @@ const animationItem = [
     itemName: '지식인',
     imgPath: baroTalk,
     position: { top: '30%', right: '15%' },
-    mobilePosition: { top: '15%', right: '-5%' },
+    mobilePosition: { top: '15%', right: '-10px' },
     slideFrom: 'right',
     scale: 1,
     mobileScale: 0.8,
@@ -34,8 +34,8 @@ const animationItem = [
   {
     itemName: '법률정보 글',
     imgPath: post,
-    position: { bottom: '15%', right: '28%' },
-    mobilePosition: { bottom: '-10%', right: '3%' },
+    position: { bottom: '10%', right: '28%' },
+    mobilePosition: { bottom: '-15%', right: '3%' },
     slideFrom: 'right',
     scale: 1,
     mobileScale: 0.5, // 모바일에서 70% 크기
@@ -69,6 +69,7 @@ const LegalResourceHighlight = () => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const sectionRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -76,6 +77,9 @@ const LegalResourceHighlight = () => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             setIsVisible(true)
+          } else {
+            setIsVisible(false)
+            setCount(0) // 섹션을 벗어나면 카운트 초기화
           }
         })
       },
@@ -92,6 +96,35 @@ const LegalResourceHighlight = () => {
       }
     }
   }, [])
+
+  // 카운팅 애니메이션
+  useEffect(() => {
+    if (!isVisible) return
+
+    const duration = 2000 // 2초 동안 애니메이션
+    const targetCount = 5900
+    const startTime = Date.now()
+
+    const animate = () => {
+      const now = Date.now()
+      const elapsed = now - startTime
+      const progress = Math.min(elapsed / duration, 1)
+
+      // easeOutCubic 이징 함수 (부드러운 감속)
+      const easeProgress = 1 - Math.pow(1 - progress, 3)
+      const currentCount = Math.floor(easeProgress * targetCount)
+
+      setCount(currentCount)
+
+      if (progress < 1) {
+        requestAnimationFrame(animate)
+      } else {
+        setCount(targetCount) // 정확히 5900으로 마무리
+      }
+    }
+
+    requestAnimationFrame(animate)
+  }, [isVisible])
 
   // 중앙 컨텐츠 위치 설정
   const contentPosition = {
@@ -122,7 +155,10 @@ const LegalResourceHighlight = () => {
                   className={`${styles['legal-resource-highlight-animation-item']} ${
                     item.itemName === '글' ? styles['post-item'] : ''
                   } ${isVisible ? styles[`slide-from-${item.slideFrom}`] : ''}`}
-                  style={{ ...currentPosition, transform: `scale(${currentScale})` }}
+                  style={{
+                    ...currentPosition,
+                    ...(currentScale !== 1 && { transform: `scale(${currentScale})` }),
+                  }}
                 >
                   <img src={item.imgPath} alt={item.itemName} />
                   <p>{item.itemName}</p>
@@ -135,7 +171,7 @@ const LegalResourceHighlight = () => {
               style={isMobile ? mobileContentPosition : contentPosition}
             >
               <p>
-                <strong>5,900+</strong>건
+                <strong>{count.toLocaleString()}+</strong>건
               </p>
               <p>수많은 법률 정보</p>
             </div>
@@ -166,9 +202,7 @@ const LegalResourceHighlight = () => {
                     className={styles['legal-resource-highlight-slider-content-item-img-mobile']}
                   />
                 </div>
-                <p className={styles['legal-resource-highlight-slider-content-item-description']}>
-                  {item.content}
-                </p>
+                <p className={styles['legal-resource-highlight-slider-content-item-description']}>{item.content}</p>
               </li>
             ))}
           </ul>

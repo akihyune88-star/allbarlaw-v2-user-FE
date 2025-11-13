@@ -111,9 +111,17 @@
 
       &:nth-child(4) {
         transition-delay: 0.4s;
+
         &.slide-from-right {
           animation: floatingFast 2.8s ease-in-out infinite;
           animation-delay: 1.5s;
+        }
+
+        @media (max-width: 27.5rem) {
+          // transform: scale(0.7) !important;
+
+          width: 40%;
+          height: 40%;
         }
       }
 
