@@ -358,7 +358,7 @@
   pointer-events: none;
 
   @media (min-width: calc($breakpoint-tablet + 1px)) {
-    padding: 0 1.25rem;
+    padding: 0 calc((100vw - 80rem) / 2);
   }
 
   @media (max-width: $breakpoint-tablet) {
