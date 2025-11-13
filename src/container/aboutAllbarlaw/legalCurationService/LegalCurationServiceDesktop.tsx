@@ -3,65 +3,68 @@ import styles from './legalCurationServiceDesktop.module.scss'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 
 const LegalCurationServiceDesktop = forwardRef<HTMLDivElement>((_props, ref) => {
-  const [expandStep, setExpandStep] = useState(0) // 0: 124px, 1: 100vw, 2: 677px
   const sectionRef = useRef<HTMLDivElement>(null)
-  const lastScrollTime = useRef(0)
+  const [scrollProgress, setScrollProgress] = useState(0) // 0-1 사이의 값
+  const [showTitle, setShowTitle] = useState(false)
+  const [showText, setShowText] = useState(false)
+
+  // 스크롤 기반 애니메이션 단계
+  const expandToFullWidth = scrollProgress >= 0.2 // 20%에서 전체 너비로 확장
+  const shrinkToWindow = scrollProgress >= 0.5 // 50%에서 677px 창문으로 축소
 
   useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (!sectionRef.current) return
+    const handleScroll = () => {
+      const currentElement = sectionRef.current
+      if (!currentElement) return
 
-      const rect = sectionRef.current.getBoundingClientRect()
-      const isVisible = rect.top < window.innerHeight && rect.bottom > 0
+      const rect = currentElement.getBoundingClientRect()
+      const sectionHeight = currentElement.offsetHeight
+      const viewportHeight = window.innerHeight
 
-      if (!isVisible) return
-
-      // 500ms 디바운스
-      const now = Date.now()
-      if (now - lastScrollTime.current < 500) {
-        e.preventDefault()
-        return
+      // 섹션 이전일 때 (아직 화면에 들어오지 않음)
+      if (rect.top >= viewportHeight) {
+        setScrollProgress(0)
+        setShowTitle(false)
+        setShowText(false)
       }
+      // 섹션이 화면에 보이는 경우에만 진행도 계산
+      else if (rect.top <= 0 && rect.bottom > viewportHeight) {
+        // 스크롤 진행도 계산 (0-1 사이 값)
+        const scrolled = Math.abs(rect.top)
+        const progress = Math.min(scrolled / (sectionHeight - viewportHeight), 1)
+        setScrollProgress(progress)
 
-      // 아래로 스크롤
-      if (e.deltaY > 0) {
-        if (expandStep === 0) {
-          // 124px → 100vw
-          e.preventDefault()
-          lastScrollTime.current = now
-          setExpandStep(1)
-        } else if (expandStep === 1) {
-          // 100vw → 677px
-          e.preventDefault()
-          lastScrollTime.current = now
-          setExpandStep(2)
-        } else if (expandStep === 2) {
-          // Step 2에서는 섹션이 화면 최상단에 있을 때만 다음으로 이동
-          if (rect.top >= 0) {
-            // 아직 최상단에 있으면 스크롤 차단하지 않음 (자연스럽게 다음 섹션으로)
-          }
+        // 타이틀 표시 (30% 진행)
+        if (progress > 0.3 && !showTitle) {
+          setShowTitle(true)
+        } else if (progress <= 0.3 && showTitle) {
+          setShowTitle(false)
+        }
+
+        // 텍스트 표시 (60% 진행)
+        if (progress > 0.6 && !showText) {
+          setShowText(true)
+        } else if (progress <= 0.6 && showText) {
+          setShowText(false)
         }
       }
-      // 위로 스크롤 (리버스)
-      else if (e.deltaY < 0 && expandStep > 0) {
-        e.preventDefault()
-        lastScrollTime.current = now
-        if (expandStep === 2) {
-          // 677px → 100vw
-          setExpandStep(1)
-        } else if (expandStep === 1) {
-          // 100vw → 124px
-          setExpandStep(0)
-        }
+      // 섹션을 지나쳤을 때
+      else if (rect.bottom <= 0) {
+        setScrollProgress(1)
       }
     }
 
-    window.addEventListener('wheel', handleWheel, { passive: false })
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    // 초기 로드 시에도 실행
+    handleScroll()
 
     return () => {
-      window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('scroll', handleScroll)
     }
-  }, [expandStep])
+  }, [showTitle, showText])
+
+  // expandStep 계산 (기존 SCSS와 호환)
+  const expandStep = shrinkToWindow ? 2 : expandToFullWidth ? 1 : 0
 
   return (
     <section
@@ -78,8 +81,15 @@ const LegalCurationServiceDesktop = forwardRef<HTMLDivElement>((_props, ref) => 
         }
       }}
     >
-      <div className={styles['legal-curation-service-content']} data-expand-step={String(expandStep)}>
-        {expandStep >= 1 && <div className={styles['legal-curation-service-title']}>의뢰인과 변호사와의 연결고리</div>}
+      <div
+        className={styles['legal-curation-service-content']}
+        data-expand-step={String(expandStep)}
+        style={{
+          opacity: scrollProgress < 1 ? 1 : 0,
+          pointerEvents: scrollProgress < 1 ? 'auto' : 'none',
+        }}
+      >
+        {showTitle && <div className={styles['legal-curation-service-title']}>의뢰인과 변호사와의 연결고리</div>}
         <div className={styles['legal-curation-service-image-wrapper']} data-expand-step={String(expandStep)}>
           <img
             src={legalCurationService}
@@ -87,7 +97,7 @@ const LegalCurationServiceDesktop = forwardRef<HTMLDivElement>((_props, ref) => 
             className={styles['legal-curation-service-image']}
           />
         </div>
-        {expandStep === 2 && (
+        {showText && (
           <div className={styles['legal-curation-service-text']}>
             <h2>
               나에게 꼭 필요한

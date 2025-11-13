@@ -43,8 +43,10 @@ import drag from '@/assets/svgs/drag.svg?react'
 import play from '@/assets/svgs/play.svg?react'
 import eyeOff from '@/assets/svgs/eye-off.svg?react'
 import eye from '@/assets/svgs/eye.svg?react'
+import logoTypeGridSystem from '@/assets/svgs/logo-type-grid-system.svg?react'
 
 export {
+  logoTypeGridSystem,
   eyeOff,
   eye,
   react,

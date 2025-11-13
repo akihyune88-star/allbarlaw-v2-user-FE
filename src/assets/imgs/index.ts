@@ -6,8 +6,13 @@ import lawyerAdminLogo from './lawyer-admin-logo.webp'
 
 import lawyer from './lawyer.webp'
 import post from './post.webp'
-import knowledge from './knowledge.webp'
+import baroTalk from './baro-talk.webp'
 import video from './video.webp'
+import knowledge from './knowledge.webp'
+
+import logoTypeGridSystem from './logo-type-grid-system.webp'
+import usageGuideBanner from './usage-guide-banner.webp'
+import aboutAllbarlawGif from './tenor_1.gif'
 
 import lawyerConsulting from './lawyer-consultation.webp'
 import lawyerExpertis from './lawyer-expertis.webp'
@@ -23,11 +28,15 @@ export {
   lawyerAdminLogo,
   lawyer,
   post,
-  knowledge,
+  baroTalk,
   video,
   lawyerConsulting,
   lawyerExpertis,
   onboardingCoreValue,
   aboutGoal,
   legalCurationService,
+  knowledge,
+  logoTypeGridSystem,
+  usageGuideBanner,
+  aboutAllbarlawGif,
 }
