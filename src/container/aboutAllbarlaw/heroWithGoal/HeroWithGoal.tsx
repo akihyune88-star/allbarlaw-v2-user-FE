@@ -47,7 +47,8 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   // 전체 높이: 1000vh
   // HeroWithGoal 애니메이션: 0% ~ 45% (0vh ~ 450vh) - 더 길게
   const fadeOutText = typingComplete && scrollProgress >= 0.08 // 8% (80vh): 텍스트 페이드아웃 시작
-  const moveCircleToCenter = typingComplete && scrollProgress >= 0.12 // 12% (120vh): 서클 중앙 이동
+  // 12% (120vh): 서클 중앙 이동 (위치 저장 후에만)
+  const moveCircleToCenter = typingComplete && scrollProgress >= 0.12 && circleStartPos !== null
   const hideGoalSection = scrollProgress >= 0.45 // 45% (450vh): 올바로의 목표 섹션 페이드아웃
 
   // LegalCurationService 애니메이션: 50% ~ 100% (500vh ~ 1000vh) - 시작점을 뒤로
