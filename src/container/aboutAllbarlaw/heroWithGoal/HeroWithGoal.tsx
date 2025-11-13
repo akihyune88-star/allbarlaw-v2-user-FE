@@ -59,6 +59,11 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
 
   // 연속적인 width 계산
   const getLegalCurationWidth = () => {
+    // 모바일: 처음부터 최종 크기, PC: 단계별 애니메이션
+    if (viewportWidth <= TABLET_BREAKPOINT) {
+      return 'calc(100vw - 40px)' // 모바일은 항상 최종 크기
+    }
+
     if (legalCurationStep === 0) {
       return '170px' // 초기 170px
     } else if (legalCurationStep === 1) {
@@ -561,19 +566,21 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           transition: 'opacity 0.8s ease-out, justify-content 0.8s ease-out',
         }}
       >
-        {legalCurationTitle && <div className={styles['legal-curation-title']}>의뢰인과 변호사와의 연결고리</div>}
+        {(viewportWidth <= TABLET_BREAKPOINT || legalCurationTitle) && (
+          <div className={styles['legal-curation-title']}>의뢰인과 변호사와의 연결고리</div>
+        )}
         <div
           className={styles['legal-curation-image-wrapper']}
           data-expand-step={legalCurationStep >= 2 ? '2' : legalCurationStep === 1 ? '1' : '0'}
           style={{
             width: getLegalCurationWidth(),
-            borderRadius: legalCurationStep === 0 ? '0' : '20px',
-            transition: 'width 0.8s ease-out, border-radius 0.8s ease-out',
+            borderRadius: '0',
+            transition: 'width 0.8s ease-out',
           }}
         >
           <img src={legalCurationService} alt='legal-curation-service' className={styles['legal-curation-image']} />
         </div>
-        {legalCurationText && (
+        {(viewportWidth <= TABLET_BREAKPOINT || legalCurationText) && (
           <div className={styles['legal-curation-text']}>
             <h2>
               나에게 꼭 필요한
