@@ -314,20 +314,6 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           setShowLegalCuration(false)
         }
 
-        // LegalCurationService 타이틀 표시 (65% 이상)
-        if (progress > 0.65 && !legalCurationTitle) {
-          setLegalCurationTitle(true)
-        } else if (progress <= 0.65 && legalCurationTitle) {
-          setLegalCurationTitle(false)
-        }
-
-        // LegalCurationService 텍스트 표시 (80% 이상)
-        if (progress > 0.8 && !legalCurationText) {
-          setLegalCurationText(true)
-        } else if (progress <= 0.8 && legalCurationText) {
-          setLegalCurationText(false)
-        }
-
         // AboutGoal 텍스트 애니메이션 (90% 이상 스크롤 시)
         if (progress > 0.9 && !titleMoved) {
           setTitleMoved(true)
@@ -350,8 +336,6 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
       else if (rect.top > 0) {
         setScrollProgress(0)
         setShowLegalCuration(false)
-        setLegalCurationTitle(false)
-        setLegalCurationText(false)
         setTitleMoved(false)
         setDescriptionVisible(false)
       }
@@ -364,7 +348,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [showLegalCuration, legalCurationTitle, legalCurationText, titleMoved, descriptionVisible, typingComplete])
+  }, [showLegalCuration, titleMoved, descriptionVisible, typingComplete])
 
   // LegalCurationService 자동 순차 애니메이션
   useEffect(() => {
@@ -383,21 +367,21 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
       setLegalCurationStep(1)
     }, 800)
 
-    // 3단계: 네모로 축소 + 우측 이동 동시에 (1.6초 후)
+    // 3단계: 네모로 축소 + 좌측 이동 동시에 (1.6초 후)
     const step2Timer = setTimeout(() => {
       console.log('Setting legalCurationStep to 2')
       setLegalCurationStep(2)
     }, 1600)
 
-    // 4단계: 타이틀 표시 (2.4초 후)
+    // 4단계: 타이틀 표시 (2.4초 후 - 이동 완료 직후)
     const titleTimer = setTimeout(() => {
       setLegalCurationTitle(true)
     }, 2400)
 
-    // 5단계: 텍스트 표시 (3.2초 후)
+    // 5단계: 텍스트 표시 (2.6초 후 - 타이틀 0.2초 후)
     const textTimer = setTimeout(() => {
       setLegalCurationText(true)
-    }, 3200)
+    }, 2600)
 
     return () => {
       clearTimeout(step1Timer)
@@ -574,7 +558,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           opacity: showLegalCurationSection && scrollProgress < 0.95 ? 1 : 0,
           pointerEvents: showLegalCurationSection && scrollProgress < 0.95 ? 'auto' : 'none',
           justifyContent: legalCurationStep >= 2 ? 'flex-start' : 'center',
-          transition: 'justify-content 0.8s ease-out',
+          transition: 'opacity 0.8s ease-out, justify-content 0.8s ease-out',
         }}
       >
         {legalCurationTitle && <div className={styles['legal-curation-title']}>의뢰인과 변호사와의 연결고리</div>}
