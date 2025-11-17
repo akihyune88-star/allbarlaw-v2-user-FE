@@ -44,15 +44,14 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   const showSecondTextPart2 = typingStep >= 5 || typingComplete
 
   // 스크롤 기반 애니메이션 (타이핑 완료 후)
-  // 전체 높이: 1000vh
-  // HeroWithGoal 애니메이션: 0% ~ 45% (0vh ~ 450vh) - 더 길게
-  const fadeOutText = typingComplete && scrollProgress >= 0.08 // 8% (80vh): 텍스트 페이드아웃 시작
-  // 12% (120vh): 서클 중앙 이동 (위치 저장 후에만)
-  const moveCircleToCenter = typingComplete && scrollProgress >= 0.12 && circleStartPos !== null
-  const hideGoalSection = scrollProgress >= 0.45 // 45% (450vh): 올바로의 목표 섹션 페이드아웃
+  // 전체 높이: 700vh
+  // HeroWithGoal 애니메이션: 0% ~ 50% (0vh ~ 350vh) - 여유있게
+  const fadeOutText = typingComplete && scrollProgress >= 0.1 // 10% (70vh): 텍스트 페이드아웃 시작
+  // 15% (105vh): 서클 중앙 이동 (위치 저장 후에만)
+  const moveCircleToCenter = typingComplete && scrollProgress >= 0.15 && circleStartPos !== null
+  const hideGoalSection = scrollProgress >= 0.5 // 50% (350vh): 올바로의 목표 섹션 페이드아웃
 
-  // LegalCurationService 애니메이션: 50% ~ 100% (500vh ~ 1000vh) - 시작점을 뒤로
-  const showLegalCurationSection = scrollProgress >= 0.5 // 50% (500vh): LegalCurationService 섹션 표시
+  // LegalCurationService 애니메이션: 60% ~ 100% (420vh ~ 700vh) - 텀을 늘림
 
   // LegalCurationService 자동 애니메이션 단계
   const [legalCurationStep, setLegalCurationStep] = useState(0) // 0: 170px, 1: 전체확장, 2: 네모, 3: 우측배치
@@ -312,24 +311,24 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
           setTypingComplete(true)
         }
 
-        // LegalCurationService 섹션 표시 (50% 이상)
-        if (progress > 0.5 && !showLegalCuration) {
+        // LegalCurationService 섹션 표시 (60% 이상)
+        if (progress > 0.6 && !showLegalCuration) {
           setShowLegalCuration(true)
-        } else if (progress <= 0.5 && showLegalCuration) {
+        } else if (progress <= 0.6 && showLegalCuration) {
           setShowLegalCuration(false)
         }
 
-        // AboutGoal 텍스트 애니메이션 (90% 이상 스크롤 시)
-        if (progress > 0.9 && !titleMoved) {
+        // AboutGoal 텍스트 애니메이션 (80% 이상 스크롤 시)
+        if (progress > 0.8 && !titleMoved) {
           setTitleMoved(true)
-        } else if (progress <= 0.9 && titleMoved) {
+        } else if (progress <= 0.8 && titleMoved) {
           setTitleMoved(false)
         }
 
-        // Description 표시 (95% 이상 스크롤 시)
-        if (progress > 0.95 && !descriptionVisible) {
+        // Description 표시 (85% 이상 스크롤 시)
+        if (progress > 0.85 && !descriptionVisible) {
           setDescriptionVisible(true)
-        } else if (progress <= 0.95 && descriptionVisible) {
+        } else if (progress <= 0.85 && descriptionVisible) {
           setDescriptionVisible(false)
         }
       }
@@ -560,8 +559,8 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
       <div
         className={styles['legal-curation-section']}
         style={{
-          opacity: showLegalCurationSection && scrollProgress < 0.95 ? 1 : 0,
-          pointerEvents: showLegalCurationSection && scrollProgress < 0.95 ? 'auto' : 'none',
+          opacity: showLegalCuration && scrollProgress < 0.95 ? 1 : 0,
+          pointerEvents: showLegalCuration && scrollProgress < 0.95 ? 'auto' : 'none',
           justifyContent: legalCurationStep >= 2 ? 'flex-start' : 'center',
           transition: 'opacity 0.8s ease-out, justify-content 0.8s ease-out',
         }}
