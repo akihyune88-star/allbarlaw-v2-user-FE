@@ -36,7 +36,7 @@ const AdminLawyerDetail = () => {
         </div>
       </HeaderPortal>
       <main className={styles.container}>
-        <LawyerDetail detailData={lawyerDetailForMe} />
+        <LawyerDetail detailData={lawyerDetailForMe} isAdmin={true} />
       </main>
     </>
   )

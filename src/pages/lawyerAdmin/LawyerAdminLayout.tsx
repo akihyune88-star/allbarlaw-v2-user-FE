@@ -7,6 +7,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { ROUTER } from '@/routes/routerConstant'
 import { useChatSocket } from '@/hooks/useChatSocket'
 import { useSetChatStatus, useIsConnected } from '@/stores/socketStore'
+import { useAuth } from '@/contexts/AuthContext'
 
 // 채팅 페이지에서만 소켓을 연결하는 컴포넌트
 const ChatSocketProvider = () => {
@@ -41,6 +42,7 @@ const LawyerAdminLayout = () => {
   const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(null)
   const navigate = useNavigate()
   const location = useLocation()
+  const { logout } = useAuth()
 
   // URL 경로에 따라 선택된 카테고리 자동 업데이트
   useEffect(() => {
@@ -73,6 +75,10 @@ const LawyerAdminLayout = () => {
   const handleMainCategoryClick = (id: number) => {
     setSelectedMainCategory(selectedMainCategory === id ? null : id)
   }
+  const handleLogout = () => {
+    logout()
+    setTimeout(() => navigate('/'), 0)
+  }
 
   const handleSubcategoryClick = (id: number) => {
     setSelectedSubcategory(id)
@@ -97,6 +103,9 @@ const LawyerAdminLayout = () => {
         break
       case 7:
         navigate(ROUTER.LAWYER_ADMIN_ACCOUNT_EDIT)
+        break
+      case 8:
+        handleLogout()
         break
     }
   }
@@ -200,6 +209,12 @@ const categories: CategoryList = [
       {
         subcategoryId: 7,
         subcategoryName: '회원정보/비밀번호 변경',
+        isUncategorized: false,
+        categoryId: 4,
+      },
+      {
+        subcategoryId: 8,
+        subcategoryName: '로그아웃',
         isUncategorized: false,
         categoryId: 4,
       },

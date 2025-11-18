@@ -8,7 +8,7 @@ function MainLayout() {
       <MainSideBar />
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
         <Outlet />
-        <Footer style={{ paddingTop: 44 }} />
+        <Footer />
       </div>
     </div>
   )

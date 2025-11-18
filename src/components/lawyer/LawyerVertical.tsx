@@ -133,13 +133,11 @@ const LawyerVertical = ({
               />
             )}
           </div>
-          {tags && (
-            <div className={styles['tag-list']}>
-              {tags.map(tagItem => (
-                <Tag tag={tagItem.name} key={tagItem.id} onClick={() => handleTagClick(tagItem)} />
-              ))}
-            </div>
-          )}
+          <div className={styles['tag-list']}>
+            {tags && tags.map(tagItem => (
+              <Tag tag={tagItem.name} key={tagItem.id} onClick={() => handleTagClick(tagItem)} />
+            ))}
+          </div>
         </div>
       </div>
       <footer>{footer}</footer>

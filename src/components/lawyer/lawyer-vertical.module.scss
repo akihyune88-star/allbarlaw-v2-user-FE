@@ -31,6 +31,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    min-height: 24px; // 소셜링크 아이콘 높이만큼 최소 높이 확보
 
     cursor: pointer;
 
