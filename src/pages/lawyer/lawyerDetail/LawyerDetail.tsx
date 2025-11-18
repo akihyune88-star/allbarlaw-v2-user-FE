@@ -15,9 +15,10 @@ import { LawyerDetailResponse } from '@/types/lawyerTypes'
 
 interface LawyerDetailProps {
   detailData?: LawyerDetailResponse
+  isAdmin?: boolean
 }
 
-const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
+const LawyerDetail = ({ detailData, isAdmin = false }: LawyerDetailProps) => {
   const careerRef = useRef<HTMLElement>(null)
   const blogRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLElement>(null)
@@ -44,7 +45,6 @@ const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
 
   const lawyerProfileImages = lawyerDetail?.lawyerProfileImages.map(image => image.imageUrl)
 
-  console.log(lawyerDetail?.statistics)
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
@@ -109,6 +109,7 @@ const LawyerDetail = ({ detailData }: LawyerDetailProps) => {
           lawyerLawfirm={lawyerDetail?.lawfirmName ?? ''}
           lawyerProfileImage={lawyerProfileImages ?? []}
           lawyerIsKeep={lawyerDetail?.isKeep!}
+          isAdmin={isAdmin}
           recommendationLegalTerm={recommendationLegalTerm || []}
         />
       </aside>

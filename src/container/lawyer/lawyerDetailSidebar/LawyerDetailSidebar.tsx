@@ -17,6 +17,7 @@ type LawyerDetailSidebarProps = {
   lawyerProfileImage: string[]
   lawyerIsKeep: boolean
   recommendationLegalTerm: RecommendationLegalTerm[]
+  isAdmin?: boolean
 }
 
 const LawyerDetailSidebar = ({
@@ -26,6 +27,7 @@ const LawyerDetailSidebar = ({
   lawyerProfileImage,
   lawyerIsKeep,
   recommendationLegalTerm,
+  isAdmin = false,
 }: LawyerDetailSidebarProps) => {
   const [isKeep, setIsKeep] = useState(lawyerIsKeep)
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -92,7 +94,7 @@ const LawyerDetailSidebar = ({
         saveHandler={saveHandler}
         shareHandler={shareHandler}
         isKeep={isKeep}
-        isShare={true}
+        isShare={isAdmin ? false : true}
       />
       {recommendationLegalTerm.length > 0 && <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />}
     </div>
