@@ -1,7 +1,8 @@
 import { forwardRef, useEffect, useRef, useState, RefObject } from 'react'
 import styles from './heroWithGoal.module.scss'
 import { TypingText } from '@/components/TypingText'
-import { aboutAllbarlawGif, legalCurationService } from '@/assets/imgs'
+import { legalCurationService } from '@/assets/imgs'
+import allbarlawGoalImg from '@/assets/imgs/allbarlaw-goal-img.webp'
 
 type HeroWithGoalProps = {
   nextSectionRef: RefObject<HTMLDivElement | null>
@@ -476,7 +477,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
               }}
             >
               <img
-                src={aboutAllbarlawGif}
+                src={allbarlawGoalImg}
                 alt='about-goal'
                 style={{
                   width: '100%',
