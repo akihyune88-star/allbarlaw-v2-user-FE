@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useRef, useState, RefObject } from 'react'
 import styles from './heroWithGoal.module.scss'
 import { TypingText } from '@/components/TypingText'
 import { legalCurationService } from '@/assets/imgs'
-import allbarlawGoalImg from '@/assets/imgs/allbarlaw-goal-img.webp'
+import allbarlawGoalVideo from '@/assets/video/allbarlaw-goal-video.mp4'
 
 type HeroWithGoalProps = {
   nextSectionRef: RefObject<HTMLDivElement | null>
@@ -476,15 +476,17 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
                   : 'opacity 0.3s ease, width 0.5s ease, height 0.5s ease, border-radius 0.5s ease',
               }}
             >
-              <img
-                src={allbarlawGoalImg}
-                alt='about-goal'
+              <video
+                src={allbarlawGoalVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
                 style={{
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
                   objectPosition: 'center 10%',
-                  // opacity: scrollProgress >= 0.7 ? 1 : 0,
                   transition: 'opacity 0.8s ease',
                 }}
               />
