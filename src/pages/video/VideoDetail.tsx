@@ -130,54 +130,53 @@ const VideoDetail = () => {
           {showLoading ? (
             <AILoading title='AI가 해당 비디오의 정보를 분석중입니다.' />
           ) : (
-            <div>
+            <div className={styles['video-detail-content']} style={{ paddingRight: isMobile ? '0' : '1.5rem' }}>
+              <VideoSummary summary={data?.summaryContent || ''} />
               <VideoPlayerContainer videoUrl={data?.source} tags={data?.tags} className={styles['mobile-no-padding']} />
-              <div className={styles['video-detail-content']} style={{ paddingRight: isMobile ? '0' : '1.5rem' }}>
-                <VidoeInfo
-                  channelThumbnail={data?.channelThumbnail || ''}
-                  channelName={data?.channelName || ''}
-                  handleName={data?.handleName || ''}
-                  subscriberCount={data?.subscriberCount || 0}
-                  channelDescription={data?.channelDescription || ''}
-                  source={data?.source || ''}
-                />
-                <VideoSummary summary={data?.summaryContent || ''} />
-                {!isMobile ? (
-                  <>
-                    <ContentsRecommender
-                      showDivider={false}
-                      title='AI 추천영상'
-                      contents={
-                        <AiVideoRecommender
-                          videoList={recommendationVideo || []}
-                          subcategoryId={data?.subcategoryId || 0}
-                        />
-                      }
-                    />
-                  </>
-                ) : (
-                  <div className={styles['video-detail-mobile-side']}>
-                    <LawyerHorizon
-                      className={styles['lawyer-horizon']}
-                      lawyerId={data?.lawyerId || 0}
-                      name={data?.lawyerName || ''}
-                      lawfirm={data?.lawfirmName || ''}
-                      profileImage={data?.lawyerProfileImage || ''}
-                      buttonComponent={
-                        <div className={styles['lawyer-contact-btn-wrapper']}>
-                          <button onClick={() => handleLawyerClick(data?.lawyerId || 0)}>변호사 정보</button>
-                          <button>바로톡</button>
-                        </div>
-                      }
-                    />
-                    <AiVideoCarousel subcategoryId={data?.subcategoryId || 'all'} take={3} />
-                    <RecommendationLawyer />
-                    {recommendationLegalTerm && recommendationLegalTerm.length > 0 && (
-                      <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
-                    )}
-                  </div>
-                )}
-              </div>
+
+              <VidoeInfo
+                channelThumbnail={data?.channelThumbnail || ''}
+                channelName={data?.channelName || ''}
+                handleName={data?.handleName || ''}
+                subscriberCount={data?.subscriberCount || 0}
+                channelDescription={data?.channelDescription || ''}
+                source={data?.source || ''}
+              />
+              {!isMobile ? (
+                <>
+                  <ContentsRecommender
+                    showDivider={false}
+                    title='AI 추천영상'
+                    contents={
+                      <AiVideoRecommender
+                        videoList={recommendationVideo || []}
+                        subcategoryId={data?.subcategoryId || 0}
+                      />
+                    }
+                  />
+                </>
+              ) : (
+                <div className={styles['video-detail-mobile-side']}>
+                  <LawyerHorizon
+                    className={styles['lawyer-horizon']}
+                    lawyerId={data?.lawyerId || 0}
+                    name={data?.lawyerName || ''}
+                    lawfirm={data?.lawfirmName || ''}
+                    profileImage={data?.lawyerProfileImage || ''}
+                    buttonComponent={
+                      <div className={styles['lawyer-contact-btn-wrapper']}>
+                        <button onClick={() => handleLawyerClick(data?.lawyerId || 0)}>변호사 정보</button>
+                        <button>바로톡</button>
+                      </div>
+                    }
+                  />
+                  <AiVideoCarousel subcategoryId={data?.subcategoryId || 'all'} take={3} />
+                  <RecommendationLawyer />
+                  {recommendationLegalTerm && recommendationLegalTerm.length > 0 && (
+                    <LegalTermWidget lagalTermList={recommendationLegalTerm || []} />
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
