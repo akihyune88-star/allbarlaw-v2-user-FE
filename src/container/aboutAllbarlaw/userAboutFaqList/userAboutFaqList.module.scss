@@ -37,7 +37,6 @@
   padding: 0.625rem 1.125rem;
   flex: 1;
   min-width: 0;
-
   font-size: 1.125rem;
 
   @media (max-width: $breakpoint-tablet) {
@@ -56,6 +55,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    @media (max-width: $breakpoint-tablet) {
+      padding: 0;
+      white-space: pre-line;
+    }
   }
 }
 
