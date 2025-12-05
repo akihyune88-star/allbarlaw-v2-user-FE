@@ -30,14 +30,6 @@
   }
 }
 
-.faq-list {
-  padding: 1.5rem;
-
-  @media (max-width: $breakpoint-tablet) {
-    padding: 1.25rem;
-  }
-}
-
 .faq-title {
   display: flex;
   align-items: center;
@@ -69,6 +61,8 @@
 
 .faq-content {
   margin-top: 0.5rem;
+
+  line-height: 1;
 
   font-size: 0.9375rem;
   white-space: pre-line;
