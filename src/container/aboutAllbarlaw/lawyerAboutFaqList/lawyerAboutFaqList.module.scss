@@ -1,0 +1,27 @@
+@import '@/styles/variables.scss';
+
+.lawyer-about-faq-list {
+  background-color: $color-white;
+  padding: 1.5rem;
+
+  border-radius: 0.5rem;
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: 1.25rem;
+  }
+}
+
+.section-title {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: $font-weight-extra-bold;
+  line-height: 1.5;
+  letter-spacing: 0;
+
+  padding: 1.625rem;
+
+  color: $color-green-01;
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: 1rem 0;
+  }
+}
