@@ -28,7 +28,7 @@ const LegalTermVideoList = ({ videoList, termsName }: { videoList: VideoCase[]; 
   return (
     <div className={styles.container}>
       <header className={`${styles['list-header']} ${styles['video']}`}>
-        <h3>법률영상</h3>
+        <h3>변호사의 영상</h3>
         {videoList.length > 0 && (
           <button onClick={handleMore}>
             <span>더보기</span>
@@ -39,7 +39,7 @@ const LegalTermVideoList = ({ videoList, termsName }: { videoList: VideoCase[]; 
       {!isMobile && videoList.length > 0 && <Divider padding={24} />}
       <section className={styles['list-section']}>
         {videoList.length === 0 ? (
-          <EmptyState message='등록된 법률 영상이 없습니다.' />
+          <EmptyState message='등록된 변호사의 영상이 없습니다.' />
         ) : (
           videoList.map((video, index) =>
             isMobile ? (

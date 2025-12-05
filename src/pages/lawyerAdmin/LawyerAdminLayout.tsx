@@ -172,7 +172,7 @@ const categories: CategoryList = [
       },
       {
         subcategoryId: 4,
-        subcategoryName: '법률영상',
+        subcategoryName: '변호사의 영상',
         isUncategorized: false,
         categoryId: 2,
       },

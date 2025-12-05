@@ -57,7 +57,7 @@ const LawyerActivity = ({ statistics, createdAt }: LawyerActivityProps) => {
             <td>{formatNumber(statistics?.blogPostCount)}</td>
           </tr>
           <tr>
-            <th>법률 영상</th>
+            <th>변호사의 영상</th>
             <td>{formatNumber(statistics?.videoCount)}</td>
           </tr>
           <tr>

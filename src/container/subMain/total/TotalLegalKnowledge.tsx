@@ -43,11 +43,11 @@ const TotalLegalKnowledge = () => {
     <section className={styles.container}>
       <aside className={styles.aside}>
         {isMobile ? (
-          <ArticleHeader title='최신 법률지식인' totalBlogCount={21321} recentBlogCount={1314} type='total' />
+          <ArticleHeader title='최신 법률 지식인' totalBlogCount={21321} recentBlogCount={1314} type='total' />
         ) : (
           <>
             <div className={styles.aside__header}>
-              <h3 className={styles[`aside__header-title`]}>{`최신 \n법률지식인`}</h3>
+              <h3 className={styles[`aside__header-title`]}>{`최신 \n법률 지식인`}</h3>
               <span className={styles['aside__header-count']}>
                 전체 {knowledgeTotalCount || 0}상담
                 <br />
