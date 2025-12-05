@@ -152,7 +152,7 @@ const LawyerBlogEditor = () => {
     <>
       <HeaderPortal>
         <div className={styles['header-portal']}>
-          <h1 className={styles['header-title']}>블로그글 등록</h1>
+          <h1 className={styles['header-title']}>법률정보의 글 등록</h1>
           <div className={styles['header-buttons']}>
             <button type='button' className={styles['header-button-cancel']} onClick={handleCancel}>
               취소
@@ -169,7 +169,7 @@ const LawyerBlogEditor = () => {
         </div>
       </HeaderPortal>
       <div className={styles['lawyer-blog-editor']}>
-        <h1 className={styles['blog-editor-title']}>블로그글 입력</h1>
+        <h1 className={styles['blog-editor-title']}>법률정보의 글 입력</h1>
         <section className={styles['blog-editor-section']}>
           <div className={styles['blog-editor-row-form']}>
             <h2>카테고리</h2>
