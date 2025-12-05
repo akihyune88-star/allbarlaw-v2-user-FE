@@ -4,8 +4,9 @@ import AccountEdit from '@/container/mypage/accountEdit/AccountEdit'
 import LawyerAccountEdit from '@/pages/lawyerAdmin/lawyerAccountEdit/LawyerAccountEdit'
 import MypageHeader from '@/container/mypage/mypageHeader/MypageHeader'
 import { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import { ROUTER } from '@/routes/routerConstant'
 
 const TABS = ['keepList', 'chatList', 'accountEdit']
 
@@ -17,8 +18,13 @@ const Mypage = () => {
   const currentDate = new Date()
   const [year, setYear] = useState(currentDate.getFullYear())
   const [month, setMonth] = useState(currentDate.getMonth() + 1)
+  const navigate = useNavigate()
 
   const handleTabClick = (tab: string) => {
+    if (isLawyer && tab === 'accountEdit') {
+      navigate(`${ROUTER.LAWYER_ADMIN_ACCOUNT_EDIT}`)
+      return
+    }
     setTab(tab)
   }
 
@@ -43,7 +49,7 @@ const Mypage = () => {
         ) : tab === 'chatList' ? (
           <ChatList sort={sortOrder} year={year} month={month} onYearChange={setYear} onMonthChange={setMonth} />
         ) : tab === 'accountEdit' ? (
-          isLawyer ? <LawyerAccountEdit /> : <AccountEdit />
+          <AccountEdit />
         ) : null}
       </section>
     </div>

@@ -1,0 +1,114 @@
+.paginated-faq-list {
+  width: 100%;
+}
+
+.faq-list {
+  width: 100%;
+}
+
+.faq-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.125rem;
+  flex: 1;
+  min-width: 0;
+  font-size: 1.125rem;
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: 0;
+  }
+
+  strong {
+    font-weight: 700;
+    color: $color-green-01;
+    flex-shrink: 0;
+  }
+
+  span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @media (max-width: $breakpoint-tablet) {
+      padding: 0;
+      white-space: pre-line;
+    }
+  }
+}
+
+.faq-title-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.faq-content {
+  margin-top: 0.5rem;
+  line-height: 1.5;
+  font-size: 0.9375rem;
+  white-space: pre-line;
+}
+
+// 페이지네이션 스타일
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+
+.pagination-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid $color-icon-gray-50;
+  border-radius: 0.25rem;
+  background-color: transparent;
+  color: $color-text-black;
+  font-size: 0.875rem;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: $color-green-01;
+    border-color: $color-green-01;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+}
+
+.pagination-number {
+  min-width: 2.5rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: transparent;
+  color: $color-icon-gray-50;
+  font-size: 0.875rem;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+
+  &.active {
+    color: $color-green-01;
+    border-color: $color-green-01;
+    font-weight: $font-weight-bold;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    min-width: 2rem;
+    padding: 0.375rem;
+    font-size: 0.8125rem;
+  }
+}

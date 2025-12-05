@@ -98,41 +98,37 @@ const LegalKnowledgeDetail = () => {
 
       <div className={`detail-body ${styles['detail-body-gap']}`}>
         <div className={styles['detail-content-container']}>
-          {showLoading ? (
-            <AILoading title='AI가 해당 법률 지식인의 분석중입니다.' />
-          ) : (
-            <div className={styles['detail-content-container-inner']}>
-              <ConsultationContentCard
-                content={data?.knowledgeDescription}
-                tags={data?.tags}
-                lastAnswerTime={data?.lastMessageAt ? getRelativeTimeString(data.lastMessageAt) : ''}
-                onShare={handleShare}
-                onSave={handleSave}
-                isKeep={isKeep}
+          <div className={styles['detail-content-container-inner']}>
+            <ConsultationContentCard
+              content={data?.knowledgeDescription}
+              tags={data?.tags}
+              lastAnswerTime={data?.lastMessageAt ? getRelativeTimeString(data.lastMessageAt) : ''}
+              onShare={handleShare}
+              onSave={handleSave}
+              isKeep={isKeep}
+            />
+            {data?.lawyers && <LawyerResponse lawyers={data?.lawyers} isBaroTalk={true} />}
+            {isMobile && (
+              <ContentsRecommender
+                isRefresh={true}
+                title='최근 답변이 많은 변호사입니다.'
+                contents={
+                  <div className={styles['lawyer-list']}>
+                    {data?.lawyers.map(lawyer => (
+                      <LawyerHorizon
+                        key={lawyer.lawyerId}
+                        lawyerId={lawyer.lawyerId}
+                        name={lawyer.lawyerName}
+                        profileImage={lawyer.lawyerProfileImage}
+                        description={lawyer.lawfirmName}
+                        size='x-small'
+                      />
+                    ))}
+                  </div>
+                }
               />
-              {data?.lawyers && <LawyerResponse lawyers={data?.lawyers} isBaroTalk={true} />}
-              {isMobile && (
-                <ContentsRecommender
-                  isRefresh={true}
-                  title='최근 답변이 많은 변호사입니다.'
-                  contents={
-                    <div className={styles['lawyer-list']}>
-                      {data?.lawyers.map(lawyer => (
-                        <LawyerHorizon
-                          key={lawyer.lawyerId}
-                          lawyerId={lawyer.lawyerId}
-                          name={lawyer.lawyerName}
-                          profileImage={lawyer.lawyerProfileImage}
-                          description={lawyer.lawfirmName}
-                          size='x-small'
-                        />
-                      ))}
-                    </div>
-                  }
-                />
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
         {!isMobile && (
           <section style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: 250 }}>

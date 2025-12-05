@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useRef, useState, RefObject } from 'react'
 import styles from './heroWithGoal.module.scss'
 import { TypingText } from '@/components/TypingText'
 import { legalCurationService } from '@/assets/imgs'
-import allbarlawGoalImg from '@/assets/imgs/allbarlaw-goal-img.webp'
+import allbarlawGoalVideo from '@/assets/video/allbarlaw-goal-video.mp4'
 
 type HeroWithGoalProps = {
   nextSectionRef: RefObject<HTMLDivElement | null>
@@ -22,6 +22,7 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
   const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0)
   const [showGoalTitle, setShowGoalTitle] = useState(false) // 올바로의 목표 타이틀 표시
   const [showGoalDescription, setShowGoalDescription] = useState(false) // 올바로의 목표 설명 표시
+  const [videoLoaded, setVideoLoaded] = useState(false) // 비디오 로드 완료 여부
 
   // LegalCurationService 애니메이션 상태
   const [showLegalCuration, setShowLegalCuration] = useState(false) // LegalCurationService 섹션 표시
@@ -132,10 +133,10 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // 타이핑 완료 후 서클이 180px로 확장되면 위치 저장
+  // 타이핑 완료 후 서클이 180px로 확장되면 위치 저장 (비디오 로드 완료 후에만)
   useEffect(() => {
-    if (typingComplete && expandCircle && !circleStartPos && inlineCircleRef.current) {
-      // 서클 확장 애니메이션이 끝날 때까지 대기 (transition 시간 0.8s + 여유)
+    if (typingComplete && expandCircle && videoLoaded && !circleStartPos && inlineCircleRef.current) {
+      // 서클 확장 애니메이션이 끝날 때까지 대기 (transition 시간 0.8s + 여유, 모바일 고려하여 증가)
       setTimeout(() => {
         if (inlineCircleRef.current) {
           const rect = inlineCircleRef.current.getBoundingClientRect()
@@ -144,10 +145,11 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
             left: rect.left + rect.width / 2,
           }
           setCircleStartPos(startPos)
+          console.log('Circle start position saved:', startPos)
         }
-      }, 900)
+      }, 1200)
     }
-  }, [typingComplete, expandCircle, circleStartPos])
+  }, [typingComplete, expandCircle, videoLoaded, circleStartPos])
 
   // moveCircleToCenter가 true가 되면 순차적 애니메이션 시작 (한 번만 실행)
   useEffect(() => {
@@ -476,15 +478,29 @@ const HeroWithGoal = forwardRef<HTMLDivElement, HeroWithGoalProps>(({ nextSectio
                   : 'opacity 0.3s ease, width 0.5s ease, height 0.5s ease, border-radius 0.5s ease',
               }}
             >
-              <img
-                src={allbarlawGoalImg}
-                alt='about-goal'
+              <video
+                src={allbarlawGoalVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                onLoadedMetadata={() => {
+                  console.log('Video metadata loaded')
+                  setVideoLoaded(true)
+                }}
+                onLoadedData={() => {
+                  console.log('Video data loaded')
+                  setVideoLoaded(true)
+                }}
+                onCanPlay={() => {
+                  console.log('Video can play')
+                  setVideoLoaded(true)
+                }}
                 style={{
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
                   objectPosition: 'center 10%',
-                  // opacity: scrollProgress >= 0.7 ? 1 : 0,
                   transition: 'opacity 0.8s ease',
                 }}
               />

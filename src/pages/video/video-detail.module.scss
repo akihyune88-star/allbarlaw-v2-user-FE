@@ -4,15 +4,14 @@
   gap: 1.5rem;
   width: 100%;
 
-  margin-top: 2.3125rem;
+  // margin-top: 2.3125rem;
 }
 
 // 모바일에서 부모 패딩을 무시하는 클래스 - 외부에서 주입
 .mobile-no-padding {
   @media (max-width: 80rem) {
     padding: 0.5rem 0;
-    // 강제로 viewport 전체 너비 사용
-    margin-top: -1.25rem;
+    // 강제로 viewport 전체 너비 사용f
     margin-left: calc(-50vw + 50%) !important;
     margin-right: calc(-50vw + 50%) !important;
     width: 100vw !important;
