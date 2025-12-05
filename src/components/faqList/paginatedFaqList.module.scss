@@ -65,7 +65,7 @@
   padding: 0.5rem 1rem;
   border: 1px solid $color-icon-gray-50;
   border-radius: 0.25rem;
-  background-color: $color-white;
+  background-color: transparent;
   color: $color-text-black;
   font-size: 0.875rem;
   font-weight: $font-weight-medium;
@@ -74,7 +74,6 @@
 
   &:hover:not(:disabled) {
     background-color: $color-green-01;
-    color: $color-white;
     border-color: $color-green-01;
   }
 
@@ -93,8 +92,8 @@
   min-width: 2.5rem;
   padding: 0.5rem;
   border-radius: 0.25rem;
-  background-color: $color-white;
-  color: $color-text-black;
+  background-color: transparent;
+  color: $color-icon-gray-50;
   font-size: 0.875rem;
   font-weight: $font-weight-medium;
   cursor: pointer;
