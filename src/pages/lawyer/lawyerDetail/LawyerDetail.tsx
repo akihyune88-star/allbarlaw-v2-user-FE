@@ -69,11 +69,11 @@ const LawyerDetail = ({ detailData, isAdmin = false }: LawyerDetailProps) => {
             <span>({lawyerDetail?.statistics.blogCaseCount})</span>
           </button>
           <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(videoRef)}>
-            <span>법률영상</span>
+            <span>변호사의 영상</span>
             <span>({lawyerDetail?.statistics.videoCount})</span>
           </button>
           <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(legalKnowledgeRef)}>
-            <span>법률지식인</span>
+            <span>법률 지식인</span>
             <span>({lawyerDetail?.statistics.consultationRequestCount})</span>
           </button>
         </section>

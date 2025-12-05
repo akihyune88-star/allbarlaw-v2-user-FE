@@ -23,7 +23,7 @@ const TotalSearchVideoList = ({ searchResults, query: _query }: TotalSearchVideo
 
   return (
     <div className={styles['total-search-video-list']}>
-      <SearchSectionHeader title='법률 영상' onClickMore={handleClickMore} />
+      <SearchSectionHeader title='변호사의 영상' onClickMore={handleClickMore} />
       {searchResults.length === 0 ? (
         <EmptyState message='검색 결과가 없습니다.' />
       ) : (

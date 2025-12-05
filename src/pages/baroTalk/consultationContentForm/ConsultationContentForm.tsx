@@ -67,7 +67,7 @@ const ConsultationContentForm = () => {
     <div className='form-container'>
       <RequestHeader
         title='법률 상담하기'
-        description={isMobile ? '채팅상담 및 답변내용은 법률지식인에 공개될 수 있습니다.' : ''}
+        description={isMobile ? '채팅상담 및 답변내용은 법률 지식인에 공개될 수 있습니다.' : ''}
       />
       <div className={styles['form-body-gap']}>
         <div className={styles['content-wrapper']}>
