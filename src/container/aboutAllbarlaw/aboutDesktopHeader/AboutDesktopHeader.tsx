@@ -68,7 +68,7 @@ const AboutDesktopHeader = () => {
         transition: 'transform 0.3s ease-in-out',
       }}
     >
-      <SvgIcon name='pcLogoLanding' />
+      <SvgIcon name='pcLogoHorizon' onClick={() => navigate(ROUTER.MAIN)} />
       <nav className={styles['about-desktop-header-nav']}>
         {linkList.map(item => (
           <a

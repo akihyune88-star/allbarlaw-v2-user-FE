@@ -1,6 +1,4 @@
-import AILoading from '@/components/aiLoading/AILoading'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
-import { useDelayedLoading } from '@/hooks'
 import { useGetKnowledgeDetail } from '@/hooks/queries/useGetKnowledgeDetail'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useParams } from 'react-router-dom'
@@ -10,7 +8,6 @@ import LawyerResponse from '@/container/legalKnowledge/LawyerResponse'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import { getRelativeTimeString } from '@/utils/date'
-// import { generateRandomLawyers } from '@/utils/mockDataGenerator'
 import { useState } from 'react'
 import { useKnowledgeKeep } from '@/hooks/queries/useGetKnowledgeList'
 import { copyUrlToClipboard } from '@/utils/clipboard'
@@ -26,7 +23,7 @@ import ConfirmModal from '@/components/modal/ConfirmModal'
 const LegalKnowledgeDetail = () => {
   const { knowledgeId } = useParams<{ knowledgeId: string }>()
   const navigate = useNavigate()
-  const { showLoading } = useDelayedLoading({ delay: 3000 })
+  // const { showLoading } = useDelayedLoading({ delay: 3000 })
 
   const isMobile = useMediaQuery('(max-width: 80rem)')
 

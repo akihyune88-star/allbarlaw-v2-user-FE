@@ -1,7 +1,6 @@
 import ChatList from '@/container/mypage/myChatList/MyChatList'
 import KeepList from '@/container/mypage/keepList/KeepList'
 import AccountEdit from '@/container/mypage/accountEdit/AccountEdit'
-import LawyerAccountEdit from '@/pages/lawyerAdmin/lawyerAccountEdit/LawyerAccountEdit'
 import MypageHeader from '@/container/mypage/mypageHeader/MypageHeader'
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'

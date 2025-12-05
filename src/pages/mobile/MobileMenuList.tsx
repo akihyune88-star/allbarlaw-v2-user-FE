@@ -84,7 +84,9 @@ const MobileMenuList = () => {
           </header>
         )}
         <SearchInput className={styles['search-input-custom']} />
-        <button className={styles['mobile-menu-list-button']}>올바로 소개</button>
+        <button className={styles['mobile-menu-list-button']} onClick={() => navigate(ROUTER.ABOUT)}>
+          올바로 소개
+        </button>
         <div className={styles['mobile-menu-list-button-container']}>
           <button className={styles['mobile-menu-list-button']} onClick={handleNotice}>
             공지사항

@@ -51,7 +51,7 @@ const LawyerOnboardingHeader = () => {
       >
         {/* 데스크톱 헤더 */}
         <header className={styles['hero-header-nav']}>
-          <SvgIcon name='pcLogoLanding' />
+          <SvgIcon name='pcLogoLanding' onClick={() => navigate(ROUTER.MAIN)} />
           <nav className={styles['hero-header-nav-list']}>
             {linkList.map(item => (
               <a

@@ -1,6 +1,5 @@
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import styles from './aboutGoal.module.scss'
-import { aboutGoal } from '@/assets/imgs'
 
 const AboutGoal = forwardRef<HTMLDivElement>((_props, ref) => {
   const [titleMoved, setTitleMoved] = useState(false)
@@ -77,7 +76,7 @@ const AboutGoal = forwardRef<HTMLDivElement>((_props, ref) => {
     <div className={styles['about-goal']} ref={ref}>
       <h2 className={styles['about-goal-title']}>올바로의 목표</h2>
       <figure className={styles['about-goal-image']} ref={figureRef}>
-        <img src={aboutGoal} alt='about-goal' />
+        {/* <img src={allbarlawGoalImg} alt='about-goal' /> */}
         <div className={styles['about-goal-text-wrapper']}>
           <span className={styles['about-goal-image-title']} data-moved={titleMoved}>
             정확하고 유용한 법률 정보
