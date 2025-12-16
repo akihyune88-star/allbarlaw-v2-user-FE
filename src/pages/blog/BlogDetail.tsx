@@ -10,7 +10,8 @@ import { useGetBlogDetail } from '@/hooks/queries/useGetBlogDetail'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDelayedLoading } from '@/hooks'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
-import DetailHeader, { FontSizeLevel } from '@/components/detailHeader/DetailHeader'
+import DetailHeader from '@/components/detailHeader/DetailHeader'
+import { useFontSizeStore, type FontSizeLevel } from '@/stores/fontSizeStore'
 import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
 import React, { useState, useEffect } from 'react'
 import { COLOR } from '@/styles/color'
@@ -58,7 +59,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
   const [isKeep, setIsKeep] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
-  const [fontSize, setFontSize] = useState<FontSizeLevel>('sm')
+  const { fontSize, setFontSize } = useFontSizeStore()
   const navigate = useNavigate()
 
   const { isLoggedIn } = useAuth()
@@ -140,9 +141,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
 
   const handleBlogLink = () => window.open(data?.source || '', '_blank')
 
-  const handleFontSizeChange = (size: FontSizeLevel) => {
-    setFontSize(size)
-  } 
+  const handleFontSizeChange = (size: FontSizeLevel) => setFontSize(size)
 
   return (
     <div className={`detail-container ${className}`}>
@@ -163,7 +162,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
             <AILoading title='AI가 해당 블로그의 포스팅글을 분석중입니다.' />
           ) : (
             <>
-              <BlogDetailContents summaryContents={data?.summaryContent || ''} tagList={data?.tags || []} />
+              <BlogDetailContents summaryContents={data?.summaryContent || ''} tagList={data?.tags || []} lawyerName={data?.lawyerName} />
               <BlogNavigationBar
                 isKeep={isKeep}
                 onSave={handleSave}

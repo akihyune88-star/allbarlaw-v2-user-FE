@@ -3,8 +3,7 @@ import styles from '@/components/detailHeader/detail-header.module.scss'
 import Button from '../button/Button'
 import SvgIcon from '../SvgIcon'
 import { COLOR } from '@/styles/color'
-
-export type FontSizeLevel = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+import type { FontSizeLevel } from '@/stores/fontSizeStore'
 
 type DetailHeaderProps = {
   title: string
@@ -38,7 +37,6 @@ const DetailHeader = ({
 
   const handleFontSizeSelect = (size: FontSizeLevel) => {
     onFontSizeChange?.(size)
-    setFontSizeOpen(false)
   }
 
   // 외부 클릭 시 팝오버 닫기
