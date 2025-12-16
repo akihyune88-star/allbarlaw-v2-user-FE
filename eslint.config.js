@@ -6,6 +6,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import * as tseslint from '@typescript-eslint/eslint-plugin'
 import * as tsParser from '@typescript-eslint/parser'
 import prettierPlugin from 'eslint-plugin-prettier'
+import prettierConfig from 'eslint-config-prettier'
 import testingLibrary from 'eslint-plugin-testing-library'
 import jestDom from 'eslint-plugin-jest-dom'
 import reactPlugin from 'eslint-plugin-react'
@@ -111,4 +112,5 @@ export default [
       'import/no-unresolved': 'off',
     },
   },
+  prettierConfig,
 ]

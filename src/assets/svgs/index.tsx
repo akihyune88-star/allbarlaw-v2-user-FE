@@ -45,6 +45,7 @@ import eyeOff from '@/assets/svgs/eye-off.svg?react'
 import eye from '@/assets/svgs/eye.svg?react'
 import logoTypeGridSystem from '@/assets/svgs/logo-type-grid-system.svg?react'
 import cancle from '@/assets/svgs/cancle.svg?react'
+import textSize from '@/assets/svgs/text-size.svg?react'
 
 export {
   logoTypeGridSystem,
@@ -94,4 +95,5 @@ export {
   user,
   human,
   drag,
+  textSize,
 }

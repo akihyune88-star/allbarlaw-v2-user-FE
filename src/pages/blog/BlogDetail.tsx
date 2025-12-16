@@ -10,7 +10,7 @@ import { useGetBlogDetail } from '@/hooks/queries/useGetBlogDetail'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDelayedLoading } from '@/hooks'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
-import DetailHeader from '@/components/detailHeader/DetailHeader'
+import DetailHeader, { FontSizeLevel } from '@/components/detailHeader/DetailHeader'
 import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
 import React, { useState, useEffect } from 'react'
 import { COLOR } from '@/styles/color'
@@ -28,9 +28,10 @@ type BlogNavigationBarProps = {
   onSave: () => void
   onShare: () => void
   onBlogLink: () => void
+  onFontSizeChange: (size: FontSizeLevel) => void
 }
 
-const BlogNavigationBar = ({ isKeep, onSave, onShare, onBlogLink }: BlogNavigationBarProps) => {
+const BlogNavigationBar = ({ isKeep, onSave, onShare, onBlogLink, onFontSizeChange }: BlogNavigationBarProps) => {
   return (
     <div className={styles['blog-navigation-bar']}>
       <button className={styles['blog-link-btn']} onClick={onBlogLink}>
@@ -42,7 +43,7 @@ const BlogNavigationBar = ({ isKeep, onSave, onShare, onBlogLink }: BlogNavigati
           <SvgIcon name='share' size={16} style={{ cursor: 'pointer' }} />
         </Button>
         <Button variant='save' onClick={onSave}>
-          저장{' '}
+          저장
           <SvgIcon name='save' size={16} fill={isKeep ? COLOR.icon_darkgreen : 'none'} style={{ cursor: 'pointer' }} />
         </Button>
       </div>
@@ -57,6 +58,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
   const [isKeep, setIsKeep] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
+  const [fontSize, setFontSize] = useState<FontSizeLevel>('sm')
   const navigate = useNavigate()
 
   const { isLoggedIn } = useAuth()
@@ -136,13 +138,15 @@ const BlogDetail = ({ className }: { className?: string }) => {
     }
   }
 
-  const handleBlogLink = () => {
-    window.open(data?.source || '', '_blank')
-  }
+  const handleBlogLink = () => window.open(data?.source || '', '_blank')
+
+  const handleFontSizeChange = (size: FontSizeLevel) => {
+    setFontSize(size)
+  } 
 
   return (
     <div className={`detail-container ${className}`}>
-      <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
+      <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} onFontSizeChange={handleFontSizeChange} fontSize={fontSize} isKeep={isKeep} />
 
       <ConfirmModal
         isOpen={showLoginModal}
@@ -165,6 +169,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
                 onSave={handleSave}
                 onShare={handleShare}
                 onBlogLink={handleBlogLink}
+                onFontSizeChange={handleFontSizeChange}
               />
               {!isMobile ? (
                 <div style={{ width: 798 }}>
