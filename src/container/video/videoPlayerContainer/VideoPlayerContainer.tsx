@@ -1,16 +1,14 @@
 import YoutubePlayer from '@/components/youtubePlayer/YoutubePlayer'
 import { extractYouTubeVideoId } from '@/utils/youtubeUtils'
 import styles from './video-player-container.module.scss'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 type VideoPlayerContainerProps = {
   videoUrl?: string
-  tags?: string[]
   className?: string
   maxWidth?: string | number
 }
 
-const VideoPlayerContainer = ({ videoUrl, tags = [], className, maxWidth }: VideoPlayerContainerProps) => {
+const VideoPlayerContainer = ({ videoUrl, className, maxWidth }: VideoPlayerContainerProps) => {
   // 비디오 URL 유효성 검사
   const isValidVideoUrl = videoUrl && extractYouTubeVideoId(videoUrl)
 
@@ -20,8 +18,6 @@ const VideoPlayerContainer = ({ videoUrl, tags = [], className, maxWidth }: Vide
   // 클래스명 조합 - 외부 className이 뒤에 와서 더 높은 우선순위를 가짐
   const wrapperClassName = `${styles['video-player-wrapper']} ${className || ''}`.trim()
 
-  const isMobile = useMediaQuery('(max-width: 80rem)')
-
   // 에러 상태일 때 표시할 컴포넌트
   if (!isValidVideoUrl) {
     return (
@@ -29,13 +25,6 @@ const VideoPlayerContainer = ({ videoUrl, tags = [], className, maxWidth }: Vide
         <div className={styles['video-error']}>
           {!videoUrl ? '비디오를 불러올 수 없습니다.' : '유효하지 않은 YouTube 링크입니다.'}
         </div>
-        {tags.length > 0 && (
-          <div className={styles['video-tag-list']}>
-            {tags.map(tag => (
-              <span key={tag}>#{tag}</span>
-            ))}
-          </div>
-        )}
       </div>
     )
   }
@@ -45,16 +34,6 @@ const VideoPlayerContainer = ({ videoUrl, tags = [], className, maxWidth }: Vide
       <div className={styles['video-player-container']}>
         <YoutubePlayer url={videoUrl} />
       </div>
-      {tags.length > 0 ||
-        (!isMobile && (
-          <div className={styles['video-tag-list']}>
-            {tags.map(tag => (
-              <div key={tag} className={styles['video-tag-item']}>
-                #{tag}
-              </div>
-            ))}
-          </div>
-        ))}
     </div>
   )
 }

@@ -23,6 +23,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import ConfirmModal from '@/components/modal/ConfirmModal'
 import { ROUTER } from '@/routes/routerConstant'
 import { useRandomVideoList } from '@/hooks/queries/useRandomVideoList'
+import TagSection from '@/components/tagSection'
 
 const VideoDetail = () => {
   const { videoId } = useParams<{ videoId: string }>()
@@ -35,6 +36,7 @@ const VideoDetail = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
 
   const { isLoggedIn } = useAuth()
+  console.log('tags', data?.tags)
 
   // videoId가 변경될 때마다 로딩 다시 시작
   useEffect(() => {
@@ -131,8 +133,9 @@ const VideoDetail = () => {
             <AILoading title='AI가 해당 비디오의 정보를 분석중입니다.' />
           ) : (
             <div className={styles['video-detail-content']} style={{ paddingRight: isMobile ? '0' : '1.5rem' }}>
-              <VideoSummary summary={data?.summaryContent || ''} />
-              <VideoPlayerContainer videoUrl={data?.source} tags={data?.tags} className={styles['mobile-no-padding']} />
+              <VideoSummary summary={data?.summaryContent || ''} lawyerName={data?.lawyerName || ''} />
+              <TagSection tags={data?.tags || []} title='관련태그' />
+              <VideoPlayerContainer videoUrl={data?.source} className={styles['mobile-no-padding']} />
 
               <VidoeInfo
                 channelThumbnail={data?.channelThumbnail || ''}
