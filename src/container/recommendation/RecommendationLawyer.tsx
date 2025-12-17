@@ -27,7 +27,6 @@ const RecommendationLawyer = ({
   const navigate = useNavigate()
   const { data: recommendationLawyer } = useRecommendationLawyer(take)
   const { visibleItems, rotateNext } = useChunkedRotate(recommendationLawyer ?? [], chunkSize)
-  console.log('recommendationLawyer', recommendationLawyer)
 
   return (
     <ContentsRecommender

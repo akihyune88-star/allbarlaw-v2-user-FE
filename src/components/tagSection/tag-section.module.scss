@@ -1,0 +1,43 @@
+.tag-section {
+  width: 100%;
+  padding: 1.5rem;
+  background-color: $color-white;
+  border-radius: 0.5rem;
+}
+
+.tag-section-title {
+  font-size: 1.25rem;
+  font-weight: $font-weight-extra-bold;
+  color: $color-text-black;
+  margin: 0;
+}
+
+.tag-section-divider {
+  border: none;
+  border-top: 1px solid $color-line-divider;
+  margin: 1rem 0;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tag-item {
+  font-size: 0.875rem;
+  color: $color-text-index;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  font-weight: $font-weight-regular;
+
+  &:hover {
+    color: $color-green-01;
+  }
+}

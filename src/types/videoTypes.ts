@@ -1,3 +1,4 @@
+import { Tag } from './lawyerTypes'
 import { SortType } from './sortTypes'
 
 export type VideoCountRequest = {
@@ -54,7 +55,7 @@ export type VideoDetailResponse = VideoCase & {
   channelDescription: string
   subscriberCount: number
   lawyerProfileImage: string
-  tags: string[]
+  tags: Tag[]
 }
 
 export type VideoKeepResponse = {

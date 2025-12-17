@@ -54,7 +54,7 @@ export type RandomBlogListResponse = {
 
 export type BlogDetailResponse = BlogCase & {
   source: string
-  tags: string[]
+  tags: Tag[]
 }
 
 export type BlogKeepResponse = {

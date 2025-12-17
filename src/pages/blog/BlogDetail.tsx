@@ -11,6 +11,8 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDelayedLoading } from '@/hooks'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
+import { useFontSizeStore, type FontSizeLevel } from '@/stores/fontSizeStore'
+import { useSearchStore } from '@/stores/searchStore'
 import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
 import React, { useState, useEffect } from 'react'
 import { COLOR } from '@/styles/color'
@@ -22,6 +24,7 @@ import { LOCAL } from '@/constants/local'
 import { ROUTER } from '@/routes/routerConstant'
 import { useAuth } from '@/contexts/AuthContext'
 import ConfirmModal from '@/components/modal/ConfirmModal'
+import TagSection from '@/components/tagSection'
 
 type BlogNavigationBarProps = {
   isKeep: boolean
@@ -42,7 +45,7 @@ const BlogNavigationBar = ({ isKeep, onSave, onShare, onBlogLink }: BlogNavigati
           <SvgIcon name='share' size={16} style={{ cursor: 'pointer' }} />
         </Button>
         <Button variant='save' onClick={onSave}>
-          저장{' '}
+          저장
           <SvgIcon name='save' size={16} fill={isKeep ? COLOR.icon_darkgreen : 'none'} style={{ cursor: 'pointer' }} />
         </Button>
       </div>
@@ -57,6 +60,8 @@ const BlogDetail = ({ className }: { className?: string }) => {
   const { data } = useGetBlogDetail({ blogCaseId: Number(blogCaseId) })
   const [isKeep, setIsKeep] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
+  const { fontSize, setFontSize } = useFontSizeStore()
+  const { setSearchQuery } = useSearchStore()
   const navigate = useNavigate()
 
   const { isLoggedIn } = useAuth()
@@ -136,13 +141,25 @@ const BlogDetail = ({ className }: { className?: string }) => {
     }
   }
 
-  const handleBlogLink = () => {
-    window.open(data?.source || '', '_blank')
+  const handleBlogLink = () => window.open(data?.source || '', '_blank')
+
+  const handleTagClick = (tag: string) => {
+    setSearchQuery(tag)
+    navigate(ROUTER.SEARCH_MAIN)
   }
+
+  const handleFontSizeChange = (size: FontSizeLevel) => setFontSize(size)
 
   return (
     <div className={`detail-container ${className}`}>
-      <DetailHeader title={data?.title || ''} onShare={handleShare} onSave={handleSave} isKeep={isKeep} />
+      <DetailHeader
+        title={data?.title || ''}
+        onShare={handleShare}
+        onSave={handleSave}
+        onFontSizeChange={handleFontSizeChange}
+        fontSize={fontSize}
+        isKeep={isKeep}
+      />
 
       <ConfirmModal
         isOpen={showLoginModal}
@@ -159,7 +176,13 @@ const BlogDetail = ({ className }: { className?: string }) => {
             <AILoading title='AI가 해당 블로그의 포스팅글을 분석중입니다.' />
           ) : (
             <>
-              <BlogDetailContents summaryContents={data?.summaryContent || ''} tagList={data?.tags || []} />
+              <BlogDetailContents summaryContents={data?.summaryContent || ''} lawyerName={data?.lawyerName} />
+              <TagSection
+                title='관련 태그'
+                tags={data?.tags || []}
+                onTagClick={handleTagClick}
+                className={`${styles['detail-tag-section']}`}
+              />
               <BlogNavigationBar
                 isKeep={isKeep}
                 onSave={handleSave}

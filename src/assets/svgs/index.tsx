@@ -45,6 +45,10 @@ import eyeOff from '@/assets/svgs/eye-off.svg?react'
 import eye from '@/assets/svgs/eye.svg?react'
 import logoTypeGridSystem from '@/assets/svgs/logo-type-grid-system.svg?react'
 import cancle from '@/assets/svgs/cancle.svg?react'
+import textSize from '@/assets/svgs/text-size.svg?react'
+import aiBubble from '@/assets/svgs/ai-bubble.svg?react'
+import aiLight from '@/assets/svgs/ai-light.svg?react'
+import aiCheck from '@/assets/svgs/ai-check.svg?react'
 
 export {
   logoTypeGridSystem,
@@ -94,4 +98,8 @@ export {
   user,
   human,
   drag,
+  textSize,
+  aiBubble,
+  aiLight,
+  aiCheck,
 }

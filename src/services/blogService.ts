@@ -64,7 +64,6 @@ export const blogService = {
   getBlogDetail: async (request: BlogDetailRequest) => {
     try {
       const response = await instance.get<BlogDetailResponse>(`/blog-case/detail/${request.blogCaseId}`)
-
       return response.data
     } catch (error) {
       console.error('Failed to fetch blog detail:', error)

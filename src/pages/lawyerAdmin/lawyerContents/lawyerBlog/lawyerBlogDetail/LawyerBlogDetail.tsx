@@ -101,7 +101,6 @@ const LawyerBlogDetail = () => {
         <DetailHeader title={data?.title || ''} className={styles['lawyer-blog-detail-header']} />
         <BlogDetailContents
           summaryContents={data?.summaryContent || ''}
-          tagList={data?.tags || []}
           className={styles['lawyer-blog-detail-contents']}
         />
         <BlogNavigationBar isKeep={isKeep} onSave={handleSave} onShare={handleShare} onBlogLink={handleBlogLink} />
