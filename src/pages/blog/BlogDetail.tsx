@@ -12,7 +12,6 @@ import { useDelayedLoading } from '@/hooks'
 import LawyerHorizon from '@/components/lawyer/LawyerHorizon'
 import DetailHeader from '@/components/detailHeader/DetailHeader'
 import { useFontSizeStore, type FontSizeLevel } from '@/stores/fontSizeStore'
-import { useSearchStore } from '@/stores/searchStore'
 import { useBlogKeep } from '@/hooks/queries/useGetBlogList'
 import React, { useState, useEffect } from 'react'
 import { COLOR } from '@/styles/color'
@@ -61,7 +60,6 @@ const BlogDetail = ({ className }: { className?: string }) => {
   const [isKeep, setIsKeep] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const { fontSize, setFontSize } = useFontSizeStore()
-  const { setSearchQuery } = useSearchStore()
   const navigate = useNavigate()
 
   const { isLoggedIn } = useAuth()
@@ -143,11 +141,6 @@ const BlogDetail = ({ className }: { className?: string }) => {
 
   const handleBlogLink = () => window.open(data?.source || '', '_blank')
 
-  const handleTagClick = (tag: string) => {
-    setSearchQuery(tag)
-    navigate(ROUTER.SEARCH_MAIN)
-  }
-
   const handleFontSizeChange = (size: FontSizeLevel) => setFontSize(size)
 
   return (
@@ -177,12 +170,7 @@ const BlogDetail = ({ className }: { className?: string }) => {
           ) : (
             <>
               <BlogDetailContents summaryContents={data?.summaryContent || ''} lawyerName={data?.lawyerName} />
-              <TagSection
-                title='관련 태그'
-                tags={data?.tags || []}
-                onTagClick={handleTagClick}
-                className={`${styles['detail-tag-section']}`}
-              />
+              <TagSection title='관련 태그' tags={data?.tags || []} className={`${styles['detail-tag-section']}`} />
               <BlogNavigationBar
                 isKeep={isKeep}
                 onSave={handleSave}
