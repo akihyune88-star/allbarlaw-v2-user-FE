@@ -73,6 +73,10 @@
   font-weight: 700;
   letter-spacing: -0.0019rem;
   word-break: keep-all;
+
+  @media (max-width: $breakpoint-desktop) {
+    font-weight: $font-weight-regular;
+  }
 }
 
 // 변호사 선임의 필요성 섹션 리스트 (dot bullet)
@@ -97,6 +101,10 @@
   font-weight: 700;
   letter-spacing: -0.0019rem;
   word-break: keep-all;
+
+  @media (max-width: $breakpoint-desktop) {
+    font-weight: $font-weight-regular;
+  }
 }
 
 .line-driver {
@@ -113,6 +121,10 @@
   letter-spacing: 0;
   color: $color-text-index;
   white-space: pre-line;
+
+  @media (max-width: $breakpoint-desktop) {
+    font-weight: $font-weight-regular;
+  }
 }
 
 // 폰트 사이즈 레벨별 스타일
