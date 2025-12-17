@@ -36,7 +36,6 @@ const VideoDetail = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
 
   const { isLoggedIn } = useAuth()
-  console.log('tags', data?.tags)
 
   // videoId가 변경될 때마다 로딩 다시 시작
   useEffect(() => {
