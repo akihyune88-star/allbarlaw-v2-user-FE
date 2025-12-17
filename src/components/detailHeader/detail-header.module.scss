@@ -34,6 +34,10 @@
   border-radius: 0.5rem;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
 
+  @media (max-width: $breakpoint-desktop) {
+    left: -8.5rem;
+  }
+
   // 말풍선 삼각형
   &::before {
     content: '';
