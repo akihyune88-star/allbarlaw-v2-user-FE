@@ -7,7 +7,6 @@ import ProgressButton from '@/components/progressButton/ProgressButton'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import BaroTalkLawyersList from '@/container/baroTalk/BaroTalkLawyersList'
-import { noticeInputMockData } from '@/constants/baroTalkMockData'
 import { ROUTER } from '@/routes/routerConstant'
 import { useCreateBaroTalk, useGetBaroTalkLawyerList } from '@/hooks/queries/useBaroTalk'
 import { useBaroTalkStore } from '@/store/baroTalkStore'
@@ -17,6 +16,7 @@ import { LOCAL } from '@/constants/local'
 import { useLawyer, useLawyers } from '@/hooks/queries/useLawyer'
 import { getTemporaryItem, removeTemporaryItem, setTemporaryItem } from '@/utils/temporaryStorage'
 import { Lawyer } from '@/types/lawyerTypes'
+import { BAROTALK_NOTICE } from '@/constants/terms'
 
 const BaroTalkLawyerSelection = () => {
   const navigate = useNavigate()
@@ -236,8 +236,9 @@ const BaroTalkLawyerSelection = () => {
           <Input
             title='상담 신청시 필수 안내사항 입니다.'
             className={styles['notice-input']}
-            placeholder={noticeInputMockData}
+            placeholder={BAROTALK_NOTICE}
             textAreaStyle={{ fontSize: isMobile ? 12 : 14 }}
+            textAreaHeight={250}
             footerChildren={
               <CheckBoxGroup
                 options={[{ value: 'notice', label: '질문 유의사항을 모두 확인했으며, 동의합니다.' }]}
