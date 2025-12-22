@@ -1,0 +1,146 @@
+.termsModal {
+  max-width: 800px;
+  width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.termsBody {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.termsContent {
+  line-height: 1.8;
+  font-size: 14px;
+  color: #333;
+  word-break: keep-all;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #d1d5db;
+    color: #1a365d;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem;
+    color: #2d3748;
+  }
+
+  p {
+    margin: 0.75rem 0;
+    text-align: justify;
+  }
+
+  ol {
+    padding-left: 0;
+    margin: 0.75rem 0;
+    list-style: none;
+    counter-reset: item;
+
+    > li {
+      margin: 0.5rem 0;
+      counter-increment: item;
+      position: relative;
+      padding-left: 1.4rem;
+
+      &::before {
+        content: counter(item);
+        position: absolute;
+        left: 0;
+        top: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 0.85rem;
+        height: 0.85rem;
+        border: 1px solid #1a365d;
+        border-radius: 50%;
+        font-size: 9px;
+        font-weight: 600;
+        color: #1a365d;
+      }
+
+      ul {
+        margin: 0.5rem 0;
+        padding-left: 1.25rem;
+
+        li {
+          margin: 0.25rem 0;
+          list-style-type: none;
+          padding-left: 0;
+
+          &::before {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  ul {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+
+    li {
+      margin: 0.25rem 0;
+    }
+  }
+
+  strong {
+    font-weight: 600;
+    color: #1a202c;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 13px;
+
+    th,
+    td {
+      border: 1px solid #d1d5db;
+      padding: 0.75rem;
+      text-align: left;
+      word-break: keep-all;
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 600;
+      color: #1a365d;
+    }
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+  }
+}
+
+.closeButton {
+  padding: 0.75rem 2rem;
+  background-color: #1a365d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #2d4a7c;
+  }
+}

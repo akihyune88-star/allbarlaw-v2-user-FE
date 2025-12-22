@@ -8,6 +8,7 @@ interface ConsultationInputProps {
   placeholder?: string
   style?: React.CSSProperties
   textAreaStyle?: React.CSSProperties
+  textAreaHeight?: string | number
   className?: string
   disabled?: boolean
   value?: string
@@ -25,14 +26,20 @@ const Input = ({
   value,
   onChange,
   textAreaStyle,
+  textAreaHeight,
 }: ConsultationInputProps) => {
+  const containerStyle: React.CSSProperties = {
+    ...textAreaStyle,
+    ...(textAreaHeight ? { height: textAreaHeight, flex: 'none' } : {}),
+  }
+
   return (
     <div className={`${styles['input-wrapper']} ${className || ''}`} style={style}>
       <header className={styles['header']}>
         <h2 className={styles['title']}>{title}</h2>
         {headerChildren}
       </header>
-      <div className={styles['input-container']} style={textAreaStyle}>
+      <div className={styles['input-container']} style={containerStyle}>
         <textarea placeholder={placeholder} value={value} onChange={onChange} disabled={disabled} />
       </div>
       {footerChildren && <footer className={styles['footer']}>{footerChildren}</footer>}

@@ -35,7 +35,7 @@ const ProgressButton = ({
           </Button>
           <div style={{ display: 'flex', gap: 10 }}>
             {onPrev && (
-              <Button variant='normal' onClick={onCancel} className={styles['prev-button']}>
+              <Button variant='normal' onClick={onPrev} className={styles['prev-button']}>
                 이전
               </Button>
             )}
@@ -57,7 +57,7 @@ const ProgressButton = ({
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
           {onPrev && (
-            <Button variant='normal' onClick={onCancel} className={styles['prev-button']}>
+            <Button variant='normal' onClick={onPrev} className={styles['prev-button']}>
               이전
             </Button>
           )}
