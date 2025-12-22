@@ -17,6 +17,7 @@ type LawyerDetailSidebarProps = {
   lawyerProfileImage: string[]
   lawyerIsKeep: boolean
   recommendationLegalTerm: RecommendationLegalTerm[]
+  socialUrls?: { blogUrl?: string; instagramUrl?: string; youtubeUrl?: string }
   isAdmin?: boolean
 }
 
@@ -28,6 +29,7 @@ const LawyerDetailSidebar = ({
   lawyerIsKeep,
   recommendationLegalTerm,
   isAdmin = false,
+  socialUrls,
 }: LawyerDetailSidebarProps) => {
   const [isKeep, setIsKeep] = useState(lawyerIsKeep)
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -64,9 +66,7 @@ const LawyerDetailSidebar = ({
     navigate(ROUTER.AUTH)
   }
 
-  const shareHandler = () => {
-    copyUrlToClipboard()
-  }
+  const shareHandler = () => copyUrlToClipboard()
 
   return (
     <div className={styles['lawyer-detail-sidebar']}>
@@ -84,9 +84,9 @@ const LawyerDetailSidebar = ({
         type={2}
         name={lawyerName}
         lawfirm={lawyerLawfirm}
-        blogUrl='https://www.naver.com'
-        youtubeUrl='https://www.youtube.com'
-        instagramUrl='https://www.instagram.com'
+        blogUrl={socialUrls?.naverUrl}
+        youtubeUrl={socialUrls?.youtubeUrl}
+        instagramUrl={socialUrls?.instagramUrl}
         profileImage={lawyerProfileImage}
         className={styles['lawyer-vertical-container']}
         profileImageWidth='100%'

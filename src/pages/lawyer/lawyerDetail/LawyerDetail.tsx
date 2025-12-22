@@ -110,6 +110,11 @@ const LawyerDetail = ({ detailData, isAdmin = false }: LawyerDetailProps) => {
           lawyerProfileImage={lawyerProfileImages ?? []}
           lawyerIsKeep={lawyerDetail?.isKeep!}
           isAdmin={isAdmin}
+          socialUrls={{
+            blogUrl: lawyerDetail?.lawyerBlogUrl,
+            instagramUrl: lawyerDetail?.lawyerInstagramUrl,
+            youtubeUrl: lawyerDetail?.lawyerYoutubeUrl,
+          }}
           recommendationLegalTerm={recommendationLegalTerm || []}
         />
       </aside>

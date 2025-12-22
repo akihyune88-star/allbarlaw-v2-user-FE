@@ -85,6 +85,9 @@ export type LawyerDetailResponse = {
   lawyerDescription: string
   lawfirmName: string
   lawyerProfileImage: string
+  lawyerYoutubeUrl?: string
+  lawyerInstagramUrl?: string
+  lawyerBlogUrl?: string
   isKeep: boolean
   lawyerProfileImages: {
     createdAt: string
