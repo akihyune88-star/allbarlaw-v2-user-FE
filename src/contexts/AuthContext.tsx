@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode, useMemo, useRef, useCallback } from 'react'
 import { LOCAL } from '@/constants/local'
 import { UserInfo } from '@/types/authTypes'
 
@@ -17,6 +17,14 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
+
+// BroadcastChannel 메시지 타입
+type SessionSyncMessage =
+  | { type: 'REQUEST_SESSION' }
+  | { type: 'SESSION_DATA'; token: string; userInfo: UserInfo }
+  | { type: 'LOGOUT' }
+
+const SESSION_CHANNEL_NAME = 'allbarlaw_session_sync'
 
 // JWT 토큰 디코드 함수
 const decodeToken = (token: string) => {
@@ -66,13 +74,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLawyer, setIsLawyer] = useState(false)
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const channelRef = useRef<BroadcastChannel | null>(null)
 
   // userKeyId를 useMemo로 캐싱
   const userKeyId = useMemo(() => {
     return getUserIdFromToken()
   }, [isLoggedIn]) // 로그인 상태가 변경될 때만 재계산
 
-  const checkLoginStatus = () => {
+  // 세션 브로드캐스트 (다른 탭에 세션 전송)
+  const broadcastSession = useCallback((token: string, userInfo: UserInfo) => {
+    if (channelRef.current) {
+      const message: SessionSyncMessage = { type: 'SESSION_DATA', token, userInfo }
+      channelRef.current.postMessage(message)
+    }
+  }, [])
+
+  // 로그아웃 브로드캐스트
+  const broadcastLogout = useCallback(() => {
+    if (channelRef.current) {
+      const message: SessionSyncMessage = { type: 'LOGOUT' }
+      channelRef.current.postMessage(message)
+    }
+  }, [])
+
+  const checkLoginStatus = useCallback(() => {
     const hasToken = !!(localStorage.getItem(LOCAL.TOKEN) || sessionStorage.getItem(LOCAL.TOKEN))
     const storedUserInfo = localStorage.getItem(LOCAL.USER_INFO)
 
@@ -94,9 +119,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUserInfo(null)
     }
     setIsLoading(false)
-  }
+  }, [])
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem(LOCAL.TOKEN)
     sessionStorage.removeItem(LOCAL.TOKEN)
     localStorage.removeItem(LOCAL.USER_INFO)
@@ -104,15 +129,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLawyer(false)
     setUserInfo(null)
     setIsLoading(false)
-  }
+    broadcastLogout()
+  }, [broadcastLogout])
 
-  const handleSetUserInfo = (userInfo: UserInfo) => {
+  const handleSetUserInfo = useCallback((userInfo: UserInfo) => {
     setUserInfo(userInfo)
     setIsLoggedIn(true)
     setIsLawyer(userInfo.userType === 'lawyer')
     localStorage.setItem(LOCAL.USER_INFO, JSON.stringify(userInfo))
     setIsLoading(false)
-  }
+
+    // sessionStorage에 토큰이 있으면 다른 탭에 브로드캐스트
+    const sessionToken = sessionStorage.getItem(LOCAL.TOKEN)
+    if (sessionToken) {
+      broadcastSession(sessionToken, userInfo)
+    }
+  }, [broadcastSession])
 
   // 메인 레이아웃에서 사용할 함수
   // 변경: 변호사도 메인 레이아웃에서 로그인 상태 표시 (요구사항 3번)
@@ -131,8 +163,63 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   useEffect(() => {
-    // 초기 로딩을 더 빠르게 처리
+    // BroadcastChannel 초기화
+    channelRef.current = new BroadcastChannel(SESSION_CHANNEL_NAME)
+
+    const handleMessage = (event: MessageEvent<SessionSyncMessage>) => {
+      const message = event.data
+
+      switch (message.type) {
+        case 'REQUEST_SESSION': {
+          // 다른 탭에서 세션 요청 시, 현재 탭에 세션이 있으면 전송
+          const token = sessionStorage.getItem(LOCAL.TOKEN)
+          const storedUserInfo = localStorage.getItem(LOCAL.USER_INFO)
+          if (token && storedUserInfo) {
+            try {
+              const parsedUserInfo: UserInfo = JSON.parse(storedUserInfo)
+              broadcastSession(token, parsedUserInfo)
+            } catch (error) {
+              console.error('Failed to broadcast session:', error)
+            }
+          }
+          break
+        }
+        case 'SESSION_DATA': {
+          // 다른 탭에서 세션 데이터 수신 시, 현재 탭에 저장
+          if (!sessionStorage.getItem(LOCAL.TOKEN)) {
+            sessionStorage.setItem(LOCAL.TOKEN, message.token)
+            localStorage.setItem(LOCAL.USER_INFO, JSON.stringify(message.userInfo))
+            setUserInfo(message.userInfo)
+            setIsLoggedIn(true)
+            setIsLawyer(message.userInfo.userType === 'lawyer')
+            setIsLoading(false)
+          }
+          break
+        }
+        case 'LOGOUT': {
+          // 다른 탭에서 로그아웃 시, 현재 탭도 로그아웃
+          sessionStorage.removeItem(LOCAL.TOKEN)
+          localStorage.removeItem(LOCAL.USER_INFO)
+          setIsLoggedIn(false)
+          setIsLawyer(false)
+          setUserInfo(null)
+          break
+        }
+      }
+    }
+
+    channelRef.current.addEventListener('message', handleMessage)
+
+    // 초기 로딩
     checkLoginStatus()
+
+    // 현재 탭에 세션이 없으면 다른 탭에 요청
+    const hasLocalToken = localStorage.getItem(LOCAL.TOKEN)
+    const hasSessionToken = sessionStorage.getItem(LOCAL.TOKEN)
+    if (!hasLocalToken && !hasSessionToken) {
+      const requestMessage: SessionSyncMessage = { type: 'REQUEST_SESSION' }
+      channelRef.current.postMessage(requestMessage)
+    }
 
     const handleStorageChange = () => {
       checkLoginStatus()
@@ -141,8 +228,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     return () => {
       window.removeEventListener('storage', handleStorageChange)
+      channelRef.current?.removeEventListener('message', handleMessage)
+      channelRef.current?.close()
     }
-  }, [])
+  }, [checkLoginStatus, broadcastSession])
 
   return (
     <AuthContext.Provider
