@@ -28,6 +28,9 @@ const Modal = ({ isOpen, onClose, children, className, type = 'default' }: Modal
   const scrollYRef = useRef(0)
 
   useEffect(() => {
+    // alert 타입은 스크롤 잠금 불필요
+    if (type === 'alert') return
+
     if (isOpen) {
       // 현재 스크롤 위치를 ref에 저장
       scrollYRef.current = window.scrollY
@@ -48,7 +51,7 @@ const Modal = ({ isOpen, onClose, children, className, type = 'default' }: Modal
         window.scrollTo(0, scrollYRef.current)
       }
     }
-  }, [isOpen])
+  }, [isOpen, type])
 
   if (!isOpen) return null
 
