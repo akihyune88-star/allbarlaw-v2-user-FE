@@ -19,6 +19,7 @@ const Footer = ({ className, style }: FooterProps) => {
 
   const handleOpenTerms = (e: MouseEvent, type: TermsType) => {
     e.preventDefault()
+    e.stopPropagation()
     setTermsType(type)
     setTermsModalOpen(true)
   }
@@ -49,13 +50,13 @@ const Footer = ({ className, style }: FooterProps) => {
           본 웹사이트에서 취득한 정보로 인해 직간접적인 손해를 입었다고 하더라도 올바로는 어떠한 법적 책임을 지지 않습니다.`}
         </p>
         <div style={{ display: 'flex', gap: 8 }}>
-          <button onClick={(e) => handleOpenTerms(e, 'privacy')}>개인정보처리방침</button>
+          <button type="button" onClick={(e) => handleOpenTerms(e, 'privacy')}>개인정보처리방침</button>
           <span className={styles.divider}> | </span>
-          <button onClick={(e) => handleOpenTerms(e, 'terms')}>이용약관</button>
+          <button type="button" onClick={(e) => handleOpenTerms(e, 'terms')}>이용약관</button>
         </div>
         <strong>Allbarlaw Co., Ltd. All Rights Reserved.</strong>
       </section>
-      <TermsModal isOpen={termsModalOpen} onClose={() => setTermsModalOpen(false)} type={termsType} />
+      <TermsModal isOpen={termsModalOpen} onClose={() => setTermsModalOpen(false)} type={termsType} onTypeChange={setTermsType} />
     </div>
   )
 }

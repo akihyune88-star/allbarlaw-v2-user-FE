@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode, useEffect } from 'react'
+import React, { createContext, useContext, ReactNode, useEffect, useRef } from 'react'
 import styles from './modal.module.scss'
 
 interface ModalContextType {
@@ -25,18 +25,28 @@ interface ModalProps {
 }
 
 const Modal = ({ isOpen, onClose, children, className, type = 'default' }: ModalProps) => {
+  const scrollYRef = useRef(0)
+
   useEffect(() => {
     if (isOpen) {
-      // 모달이 열릴 때 body 스크롤 막기
+      // 현재 스크롤 위치를 ref에 저장
+      scrollYRef.current = window.scrollY
+      // 모달이 열릴 때 body 고정
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollYRef.current}px`
+      document.body.style.width = '100%'
       document.body.style.overflow = 'hidden'
-    } else {
-      // 모달이 닫힐 때 body 스크롤 복원
-      document.body.style.overflow = ''
     }
 
-    // 컴포넌트 언마운트 시 스크롤 복원
+    // 컴포넌트 언마운트 또는 isOpen이 false가 될 때 스크롤 복원
     return () => {
-      document.body.style.overflow = ''
+      if (document.body.style.position === 'fixed') {
+        document.body.style.position = ''
+        document.body.style.top = ''
+        document.body.style.width = ''
+        document.body.style.overflow = ''
+        window.scrollTo(0, scrollYRef.current)
+      }
     }
   }, [isOpen])
 
