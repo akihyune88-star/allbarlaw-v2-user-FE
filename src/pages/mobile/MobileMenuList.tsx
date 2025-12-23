@@ -7,10 +7,19 @@ import { useCategory } from '@/hooks/queries/useCategory'
 import { CategoryInfo } from '@/types/categoryTypes'
 import { useGetUserProfile } from '@/hooks/queries/useAuth'
 import { COLOR } from '@/styles/color'
+import { useGetBaroTalkChatList } from '@/hooks/queries/useBaroTalk'
+import { useGetMypageCount } from '@/hooks/queries/useMypage'
 
 const MobileMenuList = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const { data: mypageCount } = useGetMypageCount({ year: new Date().getFullYear(), month: new Date().getMonth() + 1 })
+
+  const totalKeepCount = mypageCount
+    ? Object.entries(mypageCount)
+        .filter(([key]) => key !== 'consultationRequestCount')
+        .reduce((sum, [, value]) => sum + ((value as number) || 0), 0)
+    : 0
 
   const handleMyPage = () => navigate(ROUTER.MYPAGE)
   const handleChat = () => navigate(ROUTER.CHAT)
@@ -22,6 +31,10 @@ const MobileMenuList = () => {
 
   const accessToken = localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken')
   const isLoggedIn = !!accessToken
+
+  // 채팅 목록 조회 (로그인 상태일 때만)
+  const { data: chatListData } = useGetBaroTalkChatList({}, { enabled: isLoggedIn })
+  const chatCount = chatListData?.pages?.[0]?.total ?? 0
 
   const handleCategory = (category: CategoryInfo) => {
     navigate(`/${category.subcategories[0].subcategoryId}`)
@@ -38,9 +51,7 @@ const MobileMenuList = () => {
     window.location.reload()
   }
 
-  const handleClose = () => {
-    navigate(-1)
-  }
+  const handleClose = () => navigate(-1)
 
   return (
     <main className={styles['mobile-menu-list']}>
@@ -67,10 +78,12 @@ const MobileMenuList = () => {
               <button onClick={handleChat}>
                 <SvgIcon name='talk' size={24} color={COLOR.icon_gray_50} />
                 <span className={styles['icon-span']}>상담</span>
+                <span className={styles['count-span']}>{chatCount.toLocaleString()}</span>
               </button>
               <button onClick={handleMyPage}>
                 <SvgIcon name='bookMark' size={24} color={COLOR.icon_gray_50} style={{ cursor: 'pointer' }} />
-                <span className={styles['icon-span']}>찜리스트</span>
+                <span className={styles['icon-span']}>Keep</span>
+                <span className={styles['count-span']}>+{totalKeepCount.toLocaleString()}</span>
               </button>
             </div>
           </header>
