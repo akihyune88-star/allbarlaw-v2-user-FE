@@ -33,4 +33,5 @@ const ContentsRecommender = ({
   )
 }
 
+export { styles as contentsRecommenderStyles }
 export default ContentsRecommender

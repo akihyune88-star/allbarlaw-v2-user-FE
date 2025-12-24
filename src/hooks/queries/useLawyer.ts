@@ -26,7 +26,15 @@ export const useLawyerList = (request: LawyerListRequest) => {
 
 export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' | 'cursorId'>) => {
   return useInfiniteQuery({
-    queryKey: [QUERY_KEY.LAWYER_LIST, 'infinite', request.subcategoryId, request.orderBy],
+    queryKey: [
+      QUERY_KEY.LAWYER_LIST,
+      'infinite',
+      request.subcategoryId,
+      request.orderBy,
+      request.region,
+      request.gender,
+      request.achievementId,
+    ],
     queryFn: ({ pageParam }) => {
       return lawyerService.getLawyerList({
         ...request,
@@ -36,6 +44,8 @@ export const useInfiniteLawyerList = (request: Omit<LawyerListRequest, 'cursor' 
     },
     enabled: request.subcategoryId !== undefined,
     initialPageParam: undefined as undefined | { cursor: number; cursorId: number },
+    staleTime: 0,
+    gcTime: 0,
     getNextPageParam: lastPage => {
       if (!lastPage.hasNextPage) return undefined
       return {
