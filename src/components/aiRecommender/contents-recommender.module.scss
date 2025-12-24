@@ -4,6 +4,10 @@
 
   border-radius: 0.5rem;
   border: 1px solid rgba(32, 191, 98, 0.3);
+
+  &.noBorder {
+    border: none;
+  }
 }
 
 .header {

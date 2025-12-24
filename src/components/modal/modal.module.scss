@@ -60,6 +60,10 @@
   padding: 24px;
   overflow-y: auto;
   flex: 1;
+
+  &.noPadding {
+    padding: 0;
+  }
 }
 
 .footer {
@@ -69,6 +73,38 @@
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+
+  &.filterFooter {
+    background-color: white;
+    border-top: none;
+    padding-top: 0;
+  }
+}
+
+.filterCancelButton {
+  flex: 1;
+  padding: 12px 20px;
+  background-color: white;
+  color: #333;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+}
+
+.filterConfirmButton {
+  flex: 1.5;
+  padding: 12px 20px;
+  background-color: #59c47c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
 }
 
 // Alert 모달 스타일

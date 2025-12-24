@@ -22,6 +22,7 @@ interface LawyerListProps {
   sortCase: SortType
   onChangeSort: (_key: SortType) => void
   onClickItem: (_lawyerId: number) => void
+  onFilterClick?: () => void
 }
 
 const LawyerList = ({
@@ -32,6 +33,7 @@ const LawyerList = ({
   sortCase,
   onChangeSort,
   onClickItem,
+  onFilterClick,
 }: LawyerListProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
   const navigate = useNavigate()
@@ -79,6 +81,12 @@ const LawyerList = ({
           recentBlogCount={lawyerRecentCount}
         />
       </header>
+      {isMobile && (
+        <section className={styles['lawyer-filter']}>
+          <button onClick={onFilterClick}>필터</button>
+          <SvgIcon name='arrowSmall' onClick={onFilterClick} />
+        </section>
+      )}
       <section className={styles['lawyer-list-wrapper']}>
         {lawyerList.length === 0 ? (
           <div className={styles['empty-state']}>

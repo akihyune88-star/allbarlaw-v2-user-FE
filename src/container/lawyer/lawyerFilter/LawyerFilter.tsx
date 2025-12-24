@@ -9,9 +9,10 @@ import { LawyerListFilter } from '@/types/lawyerTypes'
 type LawyerFilterProps = {
   filter: LawyerListFilter
   onFilterChange: (filter: LawyerListFilter) => void
+  className?: string
 }
 
-const LawyerFilter = ({ filter, onFilterChange }: LawyerFilterProps) => {
+const LawyerFilter = ({ filter, onFilterChange, className }: LawyerFilterProps) => {
   const handleOrderByChange = (orderBy: string) => {
     onFilterChange({ ...filter, orderBy: orderBy as LawyerListFilter['orderBy'] })
   }
@@ -24,10 +25,14 @@ const LawyerFilter = ({ filter, onFilterChange }: LawyerFilterProps) => {
     onFilterChange({ ...filter, gender: gender as LawyerListFilter['gender'] })
   }
 
+  const handleReset = () => onFilterChange({ orderBy: 'careerDesc', region: 'all', gender: 'all' })
+
   return (
     <ContentsRecommender
       title='필터 검색'
       isRefresh={true}
+      onRefresh={handleReset}
+      className={className}
       contents={
         <div className={styles['lawyer-filter']}>
           <FilterSection

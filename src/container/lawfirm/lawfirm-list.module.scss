@@ -95,6 +95,12 @@
 
   .lawfirm-filter {
     padding: 1.875rem 0 1rem 0;
+    display: flex;
+    gap: 4px;
+
+    button {
+      background-color: transparent;
+    }
   }
 
   .lawfirm-list {

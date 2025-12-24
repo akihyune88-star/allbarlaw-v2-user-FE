@@ -139,4 +139,5 @@ Modal.Header = ModalHeader
 Modal.Body = ModalBody
 Modal.Footer = ModalFooter
 
+export { styles as modalStyles }
 export default Modal

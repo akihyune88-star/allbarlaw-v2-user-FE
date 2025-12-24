@@ -5,15 +5,17 @@ import Divider from '@/components/divider/Divider'
 import LawfirmHorizon from './lawfirmHorizon/LawfirmHorizon'
 import { Fragment } from 'react/jsx-runtime'
 import { Lawfirm } from '@/types/lawfirmType'
+import SvgIcon from '@/components/SvgIcon'
 
 interface LawfirmListProps {
   lawfirmList: Lawfirm[]
   isLoading: boolean
   isFetchingNextPage: boolean
   onClickItem?: (_lawfirmId: number) => void
+  onFilterClick?: () => void
 }
 
-const LawfirmList = ({ lawfirmList, isLoading, isFetchingNextPage, onClickItem }: LawfirmListProps) => {
+const LawfirmList = ({ lawfirmList, isLoading, isFetchingNextPage, onClickItem, onFilterClick }: LawfirmListProps) => {
   const isMobile = useMediaQuery('(max-width: 80rem)')
 
   return (
@@ -24,8 +26,8 @@ const LawfirmList = ({ lawfirmList, isLoading, isFetchingNextPage, onClickItem }
       </header>
       {isMobile && (
         <section className={styles['lawfirm-filter']}>
-          <button>필터</button>
-          <div></div>
+          <button onClick={onFilterClick}>필터</button>
+          <SvgIcon name='arrowSmall' />
         </section>
       )}
       <section className={styles['lawfirm-list']} aria-label='로펌 목록'>

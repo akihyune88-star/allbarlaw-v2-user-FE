@@ -5,10 +5,6 @@ type FilterCase = {
 
 export const LAWFIRM_SORT_FILTER_CASE: FilterCase[] = [
   {
-    filterName: '전체',
-    sortType: 'all',
-  },
-  {
     filterName: '인기 로펌',
     sortType: 'viewCount',
   },

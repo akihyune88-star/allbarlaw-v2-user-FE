@@ -16,14 +16,15 @@ type LawfirmFilterProps = {
       recentDays: 'all' | '7' | '30'
     }>
   >
+  className?: string
 }
 
-const LawfirmFilter = ({ filter, setFilter }: LawfirmFilterProps) => {
+const LawfirmFilter = ({ filter, setFilter, className }: LawfirmFilterProps) => {
   const handleOrderByChange = (sortType: string) => {
     // 정렬 필터에서 '전체'를 선택하면 orderBy를 undefined로 설정
     setFilter(prev => ({
       ...prev,
-      orderBy: sortType === 'all' ? undefined : sortType as SortType
+      orderBy: sortType === 'all' ? undefined : (sortType as SortType),
     }))
   }
 
@@ -32,7 +33,7 @@ const LawfirmFilter = ({ filter, setFilter }: LawfirmFilterProps) => {
   }
 
   const handleReset = () => {
-    setFilter({ orderBy: 'createdAt', recentDays: 'all' })
+    setFilter({ orderBy: 'viewCount', recentDays: 'all' })
   }
 
   return (
@@ -40,6 +41,7 @@ const LawfirmFilter = ({ filter, setFilter }: LawfirmFilterProps) => {
       title='필터 검색'
       isRefresh={true}
       onRefresh={handleReset}
+      className={className}
       contents={
         <div className={styles['lawfirm-filter']}>
           <FilterSection

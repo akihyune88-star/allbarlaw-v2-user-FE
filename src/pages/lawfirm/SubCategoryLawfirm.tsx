@@ -7,14 +7,19 @@ import { useMemo, useState } from 'react'
 import { SortType } from '@/types/sortTypes'
 import LegalTermWidget from '@/components/legalTermWidget/LegalTermWidget'
 import { useRecommendationLegalTerm } from '@/hooks/queries/useRecommendation'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import Modal, { modalStyles } from '@/components/modal/Modal'
+import { contentsRecommenderStyles } from '@/components/aiRecommender/ContentsRecommender'
 
 const SubcategoryLawfirmLayout = () => {
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
+  const isMobile = useMediaQuery('(max-width: 80rem)')
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
   const [filter, setFilter] = useState<{
     orderBy?: SortType
     recentDays: 'all' | '7' | '30'
   }>({
-    orderBy: undefined,
+    orderBy: 'viewCount',
     recentDays: 'all',
   })
 
@@ -40,7 +45,12 @@ const SubcategoryLawfirmLayout = () => {
   return (
     <main className='sub-main-container'>
       <section className='contents-section'>
-        <LawfirmList lawfirmList={lawfirmList} isLoading={isLoading} isFetchingNextPage={isFetchingNextPage} />
+        <LawfirmList
+          lawfirmList={lawfirmList}
+          isLoading={isLoading}
+          isFetchingNextPage={isFetchingNextPage}
+          onFilterClick={() => setIsFilterModalOpen(true)}
+        />
       </section>
       <aside className='aside' style={{ width: '250px', flexShrink: 0 }}>
         <LawfirmFilter filter={filter} setFilter={setFilter} />
@@ -48,6 +58,29 @@ const SubcategoryLawfirmLayout = () => {
           <LegalTermWidget lagalTermList={recommendationLegalTerm ?? []} />
         )}
       </aside>
+      {isMobile && (
+        <Modal isOpen={isFilterModalOpen} onClose={() => setIsFilterModalOpen(false)}>
+          <Modal.Body className={modalStyles.noPadding}>
+            <LawfirmFilter filter={filter} setFilter={setFilter} className={contentsRecommenderStyles.noBorder} />
+          </Modal.Body>
+          <Modal.Footer className={modalStyles.filterFooter}>
+            <button
+              type='button'
+              className={modalStyles.filterCancelButton}
+              onClick={() => setIsFilterModalOpen(false)}
+            >
+              닫기
+            </button>
+            <button
+              type='button'
+              className={modalStyles.filterConfirmButton}
+              onClick={() => setIsFilterModalOpen(false)}
+            >
+              {lawfirmList.length}개의 조건검색
+            </button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </main>
   )
 }
