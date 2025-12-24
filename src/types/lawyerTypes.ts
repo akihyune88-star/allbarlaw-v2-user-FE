@@ -31,15 +31,32 @@ export type AIRecommenderLawyerItem = Pick<
   'lawyerId' | 'lawfirmName' | 'lawyerName' | 'lawyerProfileImage' | 'tags' | 'lawyerDescription'
 >
 
-export type LawyerListRequest = {
+export interface LawyerListFilter {
+  orderBy?: 'careerDesc' | 'careerAsc' | 'createdAtAsc' | 'createdAtDesc'
+  gender?: '0' | '1' | 'all'
+  achievementId?: 'all'
+  region?:
+    | 'all'
+    | '서울'
+    | '대전'
+    | '대구'
+    | '부산'
+    | '울산'
+    | '제주'
+    | '경기도'
+    | '충청북도'
+    | '충청남도'
+    | '경상남도'
+    | '경상북도'
+    | '전라남도'
+    | '전라북도'
+}
+
+export interface LawyerListRequest extends LawyerListFilter {
   subcategoryId?: number | 'all'
   take?: number
   cursor?: number
   cursorId?: number
-  orderBy?: SortType
-  gender?: number | 'all'
-  achievementId?: 'all'
-  sort?: 'asc' | 'desc'
 }
 
 export type LawyerListResponse = {

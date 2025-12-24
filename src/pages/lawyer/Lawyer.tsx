@@ -3,16 +3,24 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInfiniteLawyerList } from '@/hooks/queries/useLawyer'
 import { SortType } from '@/types/sortTypes'
+import LawyerFilter from '@/container/lawyer/lawyerFilter/LawyerFilter'
+import { LawyerListFilter } from '@/types/lawyerTypes'
 
 const LawyerLayout = () => {
   const navigate = useNavigate()
   const { subcategoryId } = useParams<{ subcategoryId: string }>()
   const [sortCase, setSortCase] = useState<SortType>('createdAt')
 
+  const [filter, setFilter] = useState<LawyerListFilter>({
+    orderBy: 'careerDesc',
+    gender: 'all',
+    achievementId: 'all',
+    region: 'all',
+  })
+
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = useInfiniteLawyerList({
     subcategoryId: Number(subcategoryId),
-    orderBy: sortCase,
-    achievementId: 'all',
+    ...filter,
   })
 
   const lawyerList = data?.lawyerList || []
@@ -35,7 +43,7 @@ const LawyerLayout = () => {
         />
       </section>
       <aside className='aside'>
-        <section>여긴 필터만 들어가면됨</section>
+        <LawyerFilter filter={filter} onFilterChange={setFilter} />
       </aside>
     </main>
   )

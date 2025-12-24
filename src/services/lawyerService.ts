@@ -23,7 +23,7 @@ import {
 
 export const lawyerService = {
   getLawyerList: async (request: LawyerListRequest) => {
-    const { subcategoryId, take, cursor, cursorId, orderBy, gender, achievementId } = request
+    const { subcategoryId, take, cursor, cursorId, orderBy, gender, achievementId, region } = request
 
     const params = new URLSearchParams()
     if (subcategoryId !== undefined) params.append('subcategoryId', subcategoryId.toString())
@@ -33,6 +33,7 @@ export const lawyerService = {
     if (orderBy !== undefined) params.append('orderBy', orderBy)
     if (gender !== undefined) params.append('gender', gender.toString())
     if (achievementId !== undefined) params.append('achievementId', achievementId)
+    if (region !== undefined) params.append('region', region)
 
     const queryString = params.toString()
     const url = `/lawyer/list/${subcategoryId}${queryString ? `?${queryString}` : ''}`
