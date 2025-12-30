@@ -16,7 +16,7 @@ const LawyerListAlternative = () => {
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteLawyerList({
     subcategoryId: Number(subcategoryId),
-    orderBy: 'createdAt',
+    orderBy: 'createdAtAsc',
     achievementId: 'all',
   })
 

@@ -1,6 +1,5 @@
 import { BlogCase } from './blogTypes'
 import { KnowledgeItem } from './knowledgeType'
-import { SortType } from './sortTypes'
 import { VideoCase } from './videoTypes'
 
 export type SocialLink = {
@@ -57,6 +56,7 @@ export interface LawyerListRequest extends LawyerListFilter {
   take?: number
   cursor?: number
   cursorId?: number
+  sort?: 'asc' | 'desc'
 }
 
 export type LawyerListResponse = {
