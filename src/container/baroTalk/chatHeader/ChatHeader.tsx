@@ -154,12 +154,11 @@ const ChatHeader = ({
             </span>
           </div>
         )}
-        <button
-          className={styles['chat-end-button']}
-          onClick={isLawyer ? handleReport : handleEndChat}
-        >
-          {isLawyer ? '신고 하기' : '상담 끝내기'}
-        </button>
+        {!isLawyer && (
+          <button className={styles['chat-end-button']} onClick={handleEndChat}>
+            상담 끝내기
+          </button>
+        )}
       </section>
     </header>
   )
