@@ -12,7 +12,6 @@ const KeepSidebar = ({ buttonList, activeButton, setActiveButton, count }: KeepS
   const countList = [
     count?.blogCaseCount || 0,
     count?.videoCaseCount || 0,
-    count?.knowledgeCount || 0,
     count?.lawyerCount || 0,
     count?.legalTermCount || 0,
   ]

@@ -1,10 +1,8 @@
 import styles from './lawyer-detail.module.scss'
-// import LawyerAchievements from '@/container/lawyer/lawyerAchievements/LawyerAchievements'
 import LawyerActivity from '@/container/lawyer/lawyerActivity/LawyerActivity'
 import LawyerBlog from '@/container/lawyer/lawyerBlog/LawyerBlog'
 import LawyerCareer from '@/container/lawyer/lawyerCareer/LawyerCareer'
 import LawyerDetailSidebar from '@/container/lawyer/lawyerDetailSidebar/LawyerDetailSidebar'
-import LawyerLegalKnowledge from '@/container/lawyer/lawyerLegalKnowledge/LawyerLegalKnowledge'
 import LawyerProfile from '@/container/lawyer/lawyerProfile/LawyerProfile'
 import LawyerVideo from '@/container/lawyer/lawyerVideo/LawyerVideo'
 import { useLawyerDetail } from '@/hooks/queries/useLawyer'
@@ -22,7 +20,7 @@ const LawyerDetail = ({ detailData, isAdmin = false }: LawyerDetailProps) => {
   const careerRef = useRef<HTMLElement>(null)
   const blogRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLElement>(null)
-  const legalKnowledgeRef = useRef<HTMLElement>(null)
+
   const { lawyerId } = useParams()
 
   // props로 데이터가 넘어오면 그것을 사용, 아니면 훅으로 조회
@@ -59,7 +57,6 @@ const LawyerDetail = ({ detailData, isAdmin = false }: LawyerDetailProps) => {
           tags={lawyerDetail?.tags ?? []}
         />
         <LawyerActivity statistics={lawyerDetail?.statistics ?? null} createdAt={lawyerDetail?.createdAt ?? ''} />
-        {/* <LawyerAchievements achievements={lawyerDetail?.achievements ?? []} /> */}
         <section className={styles['lawyer-detail__button-container']}>
           <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(careerRef)}>
             이력사항 및 활동사항
@@ -71,10 +68,6 @@ const LawyerDetail = ({ detailData, isAdmin = false }: LawyerDetailProps) => {
           <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(videoRef)}>
             <span>변호사의 영상</span>
             <span>({lawyerDetail?.statistics.videoCount})</span>
-          </button>
-          <button className={styles['lawyer-detail__button']} onClick={() => scrollToSection(legalKnowledgeRef)}>
-            <span>법률 지식인</span>
-            <span>({lawyerDetail?.statistics.consultationRequestCount})</span>
           </button>
         </section>
         <LawyerCareer
@@ -94,12 +87,6 @@ const LawyerDetail = ({ detailData, isAdmin = false }: LawyerDetailProps) => {
           lawyerId={lawyerDetail?.lawyerId ?? Number(lawyerId)}
           lawyerName={lawyerDetail?.lawyerName ?? ''}
           className={styles['lawyer-detail__video-section']}
-        />
-        <LawyerLegalKnowledge
-          ref={legalKnowledgeRef}
-          knowledgeList={lawyerDetail?.consultationRequests ?? []}
-          lawyerId={lawyerDetail?.lawyerId ?? Number(lawyerId)}
-          lawyerName={lawyerDetail?.lawyerName ?? ''}
         />
       </section>
       <aside className='aside'>

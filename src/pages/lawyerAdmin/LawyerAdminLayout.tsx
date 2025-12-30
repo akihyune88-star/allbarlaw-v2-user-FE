@@ -95,9 +95,9 @@ const LawyerAdminLayout = () => {
       case 4:
         navigate(ROUTER.LAWYER_ADMIN_CONTENT_VIDEO)
         break
-      case 5:
-        navigate(ROUTER.LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE)
-        break
+      // case 5:
+      //   navigate(ROUTER.LAWYER_ADMIN_CONTENT_LEGAL_KNOWLEDGE)
+      //   break
       case 6:
         navigate(ROUTER.LAWYER_ADMIN_CHAT_LIST)
         break
@@ -176,12 +176,12 @@ const categories: CategoryList = [
         isUncategorized: false,
         categoryId: 2,
       },
-      {
-        subcategoryId: 5,
-        subcategoryName: '법률 지식인',
-        isUncategorized: false,
-        categoryId: 2,
-      },
+      // {
+      //   subcategoryId: 5,
+      //   subcategoryName: '법률 지식인',
+      //   isUncategorized: false,
+      //   categoryId: 2,
+      // },
     ],
   },
   {

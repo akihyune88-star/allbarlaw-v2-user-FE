@@ -149,10 +149,6 @@ const router = createBrowserRouter([
                 element: <VideoLayout />,
               },
               {
-                path: 'legal-knowledge',
-                element: <LegalKnowledgeLayout />,
-              },
-              {
                 path: 'lawyer',
                 element: <LawyerLayout />,
               },
@@ -174,11 +170,6 @@ const router = createBrowserRouter([
             path: ':subcategoryId/video/:videoId',
             element: <VideoDetail />,
           },
-          {
-            path: ':subcategoryId/legal-knowledge/:knowledgeId',
-            element: <LegalKnowledgeDetail />,
-          },
-          // baroTalk - 일반 유저만 접근 가능
           {
             path: ROUTER.REQUEST_BARO_TALK,
             element: (
@@ -255,10 +246,6 @@ const router = createBrowserRouter([
                 element: <SearchVideo />,
               },
               {
-                path: 'legal-knowledge',
-                element: <SearchLegalKnowledge />,
-              },
-              {
                 path: 'lawyer',
                 element: <SearchLawyer />,
               },
@@ -271,10 +258,6 @@ const router = createBrowserRouter([
           {
             path: '/search/video/:videoId',
             element: <VideoDetail />,
-          },
-          {
-            path: '/search/legal-knowledge/:knowledgeId',
-            element: <LegalKnowledgeDetail />,
           },
           {
             path: '/search/lawyer/:lawyerId',

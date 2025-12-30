@@ -5,10 +5,9 @@ import MyBlogList from '../myBlogList/MyBlogList'
 import MyVideoList from '../myVideoList/MyVideoList'
 import MyLegalDictionary from '../myLegalDictionary/MyLegalDictionary'
 import MyLawyer from '../myLawyer/MyLawyer'
-import MyLegalKnowledgeList from '../myLegalKnowledgeList/MyLegalKnowledgeList'
 import { useGetMypageCount } from '@/hooks/queries/useMypage'
 
-const buttonList = ['법률정보의 글', '변호사의 영상', '법률 지식인', '변호사', '법률 사전']
+const buttonList = ['법률정보의 글', '변호사의 영상', '변호사', '법률 사전']
 
 const KeepList = ({ sortOrder, year, month }: { sortOrder: 'asc' | 'desc'; year: number; month: number }) => {
   const [activeButton, setActiveButton] = useState(buttonList[0])
@@ -22,10 +21,8 @@ const KeepList = ({ sortOrder, year, month }: { sortOrder: 'asc' | 'desc'; year:
       case buttonList[1]:
         return <MyVideoList sort={sortOrder} />
       case buttonList[2]:
-        return <MyLegalKnowledgeList sort={sortOrder} />
-      case buttonList[3]:
         return <MyLawyer sort={sortOrder} />
-      case buttonList[4]:
+      case buttonList[3]:
         return <MyLegalDictionary sort={sortOrder} />
       default:
         return <MyBlogList sort={sortOrder} />
