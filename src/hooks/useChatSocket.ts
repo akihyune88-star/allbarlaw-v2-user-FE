@@ -646,6 +646,17 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       // 현재 채팅방의 상태 변경인지 확인
       if (data.chatRoomId === chatRoomId) {
         setChatStatus(data.chatRoomStatus)
+
+        // roomInfo도 함께 업데이트
+        const currentRoomInfo = useSocketStore.getState().roomInfo
+        if (currentRoomInfo && currentRoomInfo.chatRoomId === data.chatRoomId) {
+          setRoomInfo({
+            ...currentRoomInfo,
+            chatRoomStatus: data.chatRoomStatus,
+          })
+          console.log(`✅ [SOCKET] roomInfo 상태도 ${data.chatRoomStatus}로 업데이트됨`)
+        }
+
         console.log(`✅ [SOCKET] 채팅방 ${data.chatRoomId} 상태가 ${data.chatRoomStatus}로 변경됨`)
       } else {
         console.log(`⚠️ [SOCKET] 다른 채팅방의 상태 변경 이벤트 (현재: ${chatRoomId}, 이벤트: ${data.chatRoomId})`)
