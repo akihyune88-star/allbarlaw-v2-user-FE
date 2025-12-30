@@ -16,11 +16,11 @@ export const SUB_MENU_LIST = [
     itemWidth: 98,
     path: ROUTER.VIDEO,
   },
-  {
-    name: '법률 지식인',
-    itemWidth: 84,
-    path: ROUTER.LEGAL_KNOWLEDGE,
-  },
+  // {
+  //   name: '법률 지식인',
+  //   itemWidth: 84,
+  //   path: ROUTER.LEGAL_KNOWLEDGE,
+  // },
   {
     name: '변호사',
     itemWidth: 84,

@@ -43,10 +43,6 @@ const ChatHeader = ({
     }
   }
 
-  const handleReport = () => {
-    alert('신고하기 화면 기획이 필요합니다')
-  }
-
   const handleLawyerInfo = () => {
     if (lawyerId) {
       // 새 창으로 변호사 상세 페이지 열기
@@ -154,12 +150,11 @@ const ChatHeader = ({
             </span>
           </div>
         )}
-        <button
-          className={styles['chat-end-button']}
-          onClick={isLawyer ? handleReport : handleEndChat}
-        >
-          {isLawyer ? '신고 하기' : '상담 끝내기'}
-        </button>
+        {!isLawyer && (
+          <button className={styles['chat-end-button']} onClick={handleEndChat}>
+            상담 끝내기
+          </button>
+        )}
       </section>
     </header>
   )

@@ -13,7 +13,7 @@ const BaroTalkBanner = () => {
   const handleChatHistory = () => {
     navigate(ROUTER.MYPAGE, {
       state: {
-        tab: 'chatHistory',
+        tab: 'chatList',
       },
     })
   }

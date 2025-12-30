@@ -4,7 +4,6 @@ import styles from './legal-term-detail.module.scss'
 import LegalTermDefinition from '@/container/legalTermDetail/LegalTermDefinition'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import LegalTermBlogList from '@/container/legalTermDetail/LegalTermBlogList'
-import LegalTermKnowledgeList from '@/container/legalTermDetail/LegalTermKnowledgeList'
 import LegalTermVideoList from '@/container/legalTermDetail/LegalTermVideoList'
 import ContentsRecommender from '@/components/aiRecommender/ContentsRecommender'
 import {
@@ -69,10 +68,6 @@ const LegalTermDetail = () => {
           {isMobile && <PcTotalContentsHeader amount={legalTermDetail?.viewCount || 0} />}
           <LegalTermBlogList
             blogList={legalTermDetail?.relatedContent?.blogCases || []}
-            termsName={legalTermDetail?.koreanName || ''}
-          />
-          <LegalTermKnowledgeList
-            knowledgeList={legalTermDetail?.relatedContent?.knowledgeAnswers || []}
             termsName={legalTermDetail?.koreanName || ''}
           />
           <LegalTermVideoList

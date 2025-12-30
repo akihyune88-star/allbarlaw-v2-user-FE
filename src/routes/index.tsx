@@ -7,22 +7,18 @@ import SubMain from '@/pages/subMain/SubMain'
 import BlogDetail from '@/pages/blog/BlogDetail'
 import VideoLayout from '@/pages/video/video/Video'
 import VideoDetail from '@/pages/video/VideoDetail'
-import LegalKnowledgeLayout from '@/pages/legalKnowledge/LegalKnowledge'
 import LawyerLayout from '@/pages/lawyer/Lawyer'
 import SubcategoryLawfirmLayout from '@/pages/lawfirm/SubCategoryLawfirm'
 import TotalSubMain from '@/pages/subMain/TotalSubMain'
 import LegalDictionary from '@/pages/legalDictionary/LegalDictionary'
 import AboutAllbarlaw from '@/pages/aboutAllbarlaw/AboutAllbarlaw'
 import SearchMain from '@/pages/search/main/SearchMain'
-//법률백과사전
 import DictionaryMain from '@/pages/legalDictionary/DictionaryMain'
 import MobileMenuList from '@/pages/mobile/MobileMenuList'
-import LegalKnowledgeDetail from '@/pages/legalKnowledge/LegalKnowledgeDetail'
 import TotalSearch from '@/pages/search/totalSearch/TotalSearch'
 import SearchBlog from '@/pages/search/searchBlog/SearchBlog'
 import SearchVideo from '@/pages/search/searchVideo/SearchVideo'
 import NoticeLayout from '@/pages/support/notice/NoticeLayout'
-import SearchLegalKnowledge from '@/pages/search/searchLegalKnowledge/SearchLegalKnowledge'
 import SearchLawyer from '@/pages/search/searchLawyer/SearchLawyer'
 import NoticeListByCategory from '@/pages/support/notice/noticeListByCategory/NoticeListByCategory'
 import NoticeDetail from '@/pages/support/notice/noticeDetail/NoticeDetail'
@@ -149,10 +145,6 @@ const router = createBrowserRouter([
                 element: <VideoLayout />,
               },
               {
-                path: 'legal-knowledge',
-                element: <LegalKnowledgeLayout />,
-              },
-              {
                 path: 'lawyer',
                 element: <LawyerLayout />,
               },
@@ -174,11 +166,6 @@ const router = createBrowserRouter([
             path: ':subcategoryId/video/:videoId',
             element: <VideoDetail />,
           },
-          {
-            path: ':subcategoryId/legal-knowledge/:knowledgeId',
-            element: <LegalKnowledgeDetail />,
-          },
-          // baroTalk - 일반 유저만 접근 가능
           {
             path: ROUTER.REQUEST_BARO_TALK,
             element: (
@@ -255,10 +242,6 @@ const router = createBrowserRouter([
                 element: <SearchVideo />,
               },
               {
-                path: 'legal-knowledge',
-                element: <SearchLegalKnowledge />,
-              },
-              {
                 path: 'lawyer',
                 element: <SearchLawyer />,
               },
@@ -271,10 +254,6 @@ const router = createBrowserRouter([
           {
             path: '/search/video/:videoId',
             element: <VideoDetail />,
-          },
-          {
-            path: '/search/legal-knowledge/:knowledgeId',
-            element: <LegalKnowledgeDetail />,
           },
           {
             path: '/search/lawyer/:lawyerId',
