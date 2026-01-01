@@ -501,10 +501,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
       console.log('✅ [SOCKET] 현재 방과 일치하는 userLeft 이벤트 처리:', eventChatRoomId)
 
-      // 시스템 메시지 생성
-      const messageContent = '유저가 채팅을 종료하였습니다.'
-
-      // 채팅 상태 업데이트
+      // 채팅 상태 업데이트 (PARTIAL_LEFT로 변경하면 renderPartialLeftChat()이 안내 메시지를 표시함)
       setChatStatus('PARTIAL_LEFT')
 
       // roomInfo도 함께 업데이트
@@ -513,31 +510,12 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
         chatRoomStatus: 'PARTIAL_LEFT',
       })
 
-      // 시스템 메시지 생성
-      const leaveMessage: ChatMessage = {
-        chatMessageId: Date.now(),
-        chatMessageContent: messageContent,
-        chatMessageSenderType: 'LAWYER', // 시스템 메시지
-        chatMessageSenderId: 0,
-        chatMessageCreatedAt: new Date().toISOString(),
-      }
-
-      // 메시지 추가 (이벤트 데이터의 chatRoomId 사용)
-      console.log('💾 [SOCKET] 시스템 메시지 추가:', { chatRoomId: eventChatRoomId, messageContent })
-      addMessageToRoom(eventChatRoomId, leaveMessage)
-
-      // 변호사 채팅 리스트 업데이트 (변호사인 경우에만)
+      // 변호사 채팅 리스트 업데이트 (변호사인 경우에만) - 상태만 변경, 마지막 메시지는 유지
       if (isLawyer) {
         console.log('📋 [SOCKET] 변호사 채팅 리스트 업데이트: 유저가 나감')
         const updateSingleChatRoom = useSocketStore.getState().updateSingleChatRoom
         updateSingleChatRoom(eventChatRoomId, {
           chatRoomStatus: 'PARTIAL_LEFT',
-          chatRoomLastMessage: {
-            chatMessageId: leaveMessage.chatMessageId,
-            chatMessageContent: messageContent,
-            chatMessageSenderType: 'LAWYER',
-            chatMessageCreatedAt: leaveMessage.chatMessageCreatedAt,
-          },
         })
       }
     }
