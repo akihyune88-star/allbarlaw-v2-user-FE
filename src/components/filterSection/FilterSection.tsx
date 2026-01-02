@@ -20,7 +20,15 @@ const FilterSection = ({ title, filterList, onClick, activeValue }: FilterSectio
     <section>
       <header className={styles['filter-header']}>
         <h4>{title}</h4>
-        <SvgIcon name='arrowSmall' size={16} onClick={handleToggleMenu} />
+        <SvgIcon
+          name='arrowSmall'
+          size={16}
+          onClick={handleToggleMenu}
+          style={{
+            cursor: 'pointer',
+            transform: menuOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+          }}
+        />
       </header>
       {menuOpen && (
         <div className={styles['main-filter-list']}>
@@ -30,8 +38,7 @@ const FilterSection = ({ title, filterList, onClick, activeValue }: FilterSectio
               tag={filter.filterName}
               onClick={() => onClick(filter.sortType)}
               className={
-                filter.sortType === activeValue ||
-                (filter.sortType === 'all' && activeValue === undefined)
+                filter.sortType === activeValue || (filter.sortType === 'all' && activeValue === undefined)
                   ? styles['active-tag']
                   : ''
               }
