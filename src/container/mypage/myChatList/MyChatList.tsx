@@ -230,7 +230,7 @@ const MyChatList = ({ sort, year, month, onYearChange, onMonthChange }: MyChatLi
                         description={consultation.summaryContent}
                         time={new Date(consultation.lastMessageAt)}
                         lawyerList={consultation.lawyers}
-                        knowledgeKeep={consultation.isKeep}
+                        isShowKeep={false}
                         isLastAnswer={true}
                       />
                       <footer className={styles['myChatListList-item-footer']}>
