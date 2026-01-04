@@ -198,6 +198,11 @@ export const useBasicInfoForm = (
     )
   }
 
+  // 데이터 초기화 상태 리셋 (저장 성공 후 호출)
+  const resetInitialized = () => {
+    setIsDataInitialized(false)
+  }
+
   return {
     formData,
     errors,
@@ -208,5 +213,6 @@ export const useBasicInfoForm = (
     handleCategoryChange,
     getFormData,
     hasChanges,
+    resetInitialized,
   }
 }
