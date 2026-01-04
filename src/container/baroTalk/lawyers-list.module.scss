@@ -61,6 +61,12 @@
     &:last-child {
       border-bottom: none;
     }
+
+    // LawyerHorizon 내부 콘텐츠 영역 width 확장 (specificity 높임)
+    &:not(#_) > div:last-of-type {
+      max-width: none;
+      flex: 1;
+    }
   }
 }
 

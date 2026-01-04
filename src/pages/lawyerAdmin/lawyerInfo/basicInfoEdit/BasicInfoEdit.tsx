@@ -16,6 +16,16 @@ import { LOCAL } from '@/constants/local'
 import { useToast } from '@/hooks/useToast'
 import { ToastContainer } from '@/components/toast/Toast'
 
+// URL에 프로토콜이 없으면 http:// 추가
+const addHttpProtocol = (url: string | null | undefined): string | null => {
+  if (!url || url.trim() === '') return null
+  const trimmedUrl = url.trim()
+  if (trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://')) {
+    return trimmedUrl
+  }
+  return `http://${trimmedUrl}`
+}
+
 const BasicInfoEdit = () => {
   const navigate = useNavigate()
   const lawyerId = getLawyerIdFromToken(sessionStorage.getItem(LOCAL.TOKEN) || localStorage.getItem(LOCAL.TOKEN) || '')
@@ -34,6 +44,7 @@ const BasicInfoEdit = () => {
     handleCategoryChange,
     getFormData,
     hasChanges,
+    resetInitialized,
   } = useBasicInfoForm(lawyerBasicInfo, categoryList)
 
   const { profileImages, handleImageDelete, handleImageUpload, getImageData } = useProfileImageManager(lawyerBasicInfo)
@@ -67,6 +78,7 @@ const BasicInfoEdit = () => {
   const { mutate: updateBasicInfo, isPending } = useLawyerBasicInfoEdit({
     onSuccess: () => {
       success('기본 정보가 성공적으로 수정되었습니다.')
+      resetInitialized() // 새 데이터로 폼 업데이트를 위해 초기화 상태 리셋
     },
     onError: () => {
       error('기본 정보 수정에 실패했습니다. 다시 시도해주세요.')
@@ -95,9 +107,9 @@ const BasicInfoEdit = () => {
         lawyerLawfirmAddress: formDataToSubmit.address,
         lawyerLawfirmAddressDetail: formDataToSubmit.addressDetail || '',
         lawyerLawfirmContact: formDataToSubmit.officePhone,
-        lawyerBlogUrl: formDataToSubmit.blogUrl || null,
-        lawyerYoutubeUrl: formDataToSubmit.youtubeUrl || null,
-        lawyerInstagramUrl: formDataToSubmit.instagramUrl || null,
+        lawyerBlogUrl: addHttpProtocol(formDataToSubmit.blogUrl),
+        lawyerYoutubeUrl: addHttpProtocol(formDataToSubmit.youtubeUrl),
+        lawyerInstagramUrl: addHttpProtocol(formDataToSubmit.instagramUrl),
         lawyerSubcategories: formDataToSubmit.categories.map(cat => ({
           subcategoryId: cat.subcategoryId ?? 0,
           subcategoryName:
