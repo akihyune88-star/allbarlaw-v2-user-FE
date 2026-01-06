@@ -44,6 +44,9 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
   const { getUserIdFromToken } = useAuth()
   const userId = getUserIdFromToken()
 
+  // 변호사 프로필 이미지 추출
+  const lawyerProfileImage = roomInfo?.chatRoomLawyer?.lawyerProfileImage || undefined
+
   const [message, setMessage] = useState('')
   const [editingMessageId, setEditingMessageId] = useState<number | null>(null)
   const [editingContent, setEditingContent] = useState('')
@@ -346,7 +349,7 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
                     direction={isMyMessage ? 'right' : 'left'}
                     color={isMyMessage ? COLOR.green_01 : COLOR.white}
                     colorText={isMyMessage ? COLOR.white : COLOR.black}
-                    profileImage={msg.chatMessageSenderType === 'LAWYER' ? 'https://picsum.photos/200/300' : undefined}
+                    profileImage={msg.chatMessageSenderType === 'LAWYER' ? lawyerProfileImage : undefined}
                     isRead={isReadByOther}
                     showReadStatus={isMyMessage}
                     status={msg.status || 'sent'}
@@ -453,7 +456,7 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
                   direction={isMyMessage ? 'right' : 'left'}
                   color={isMyMessage ? COLOR.green_01 : COLOR.white}
                   colorText={isMyMessage ? COLOR.white : COLOR.black}
-                  profileImage={msg.chatMessageSenderType === 'LAWYER' ? 'https://picsum.photos/200/300' : undefined}
+                  profileImage={msg.chatMessageSenderType === 'LAWYER' ? lawyerProfileImage : undefined}
                   // 읽음 상태 관련 props
                   isRead={isReadByOther} // 상대방이 읽었는지 여부
                   showReadStatus={isMyMessage} // 내가 보낸 메시지만 읽음 상태 표시
