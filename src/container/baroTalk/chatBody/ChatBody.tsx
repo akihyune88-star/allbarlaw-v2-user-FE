@@ -203,22 +203,29 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
   )
 
   const renderActiveChat = () => (
-    <InputBox
-      icon={<SvgIcon name='send' />}
-      value={message}
-      onChange={handleChangeMessage}
-      onKeyDown={handleKeyPress}
-      onIconClick={handleSendMessage}
-      disabled={!isConnected || userLeft}
-      className={styles['chat-input']}
-      style={
-        fixedInputBar
-          ? { position: 'absolute', bottom: 0, left: 0, right: 0, height: '3rem', minHeight: '3rem', backgroundColor: 'white', zIndex: 10 }
-          : type === 'LAWYER'
-          ? { height: '3rem', minHeight: '3rem' }
-          : undefined
-      }
-    />
+    <>
+      {isLawyer && (
+        <p className={styles['lawyer-notice']}>
+          의뢰인에게 첫답변을 보낼경우, 법률 지식인에 노출될 수 있습니다. 신중하고 상세하게 답변 부탁드립니다.
+        </p>
+      )}
+      <InputBox
+        icon={<SvgIcon name='send' />}
+        value={message}
+        onChange={handleChangeMessage}
+        onKeyDown={handleKeyPress}
+        onIconClick={handleSendMessage}
+        disabled={!isConnected || userLeft}
+        className={styles['chat-input']}
+        style={
+          fixedInputBar
+            ? { position: 'absolute', bottom: 0, left: 0, right: 0, height: '3rem', minHeight: '3rem', backgroundColor: 'white', zIndex: 10 }
+            : type === 'LAWYER'
+            ? { height: '3rem', minHeight: '3rem' }
+            : undefined
+        }
+      />
+    </>
   )
 
   const renderWaitingChat = () => (
@@ -252,10 +259,10 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
   // fixedInputBar 모드일 때 완전히 다른 레이아웃
   if (fixedInputBar) {
     return (
-      <div style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minHeight: 0 }}>
         <div
           ref={chatBodyRef}
-          style={{ flex: 1, overflowY: 'auto', padding: '1rem', paddingBottom: '5rem' }}
+          style={{ flex: 1, overflowY: 'auto', padding: '1rem', minHeight: 0 }}
         >
           {messages.length === 0 ? (
             <div className={styles['empty-messages']}>
@@ -383,7 +390,12 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
             })
           )}
         </div>
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'white', zIndex: 10, padding: '0.5rem 1rem' }}>
+        <div style={{ flexShrink: 0, backgroundColor: 'white', padding: '0.5rem 1rem', borderTop: '1px solid #eee' }}>
+          {isLawyer && (
+            <p className={styles['lawyer-notice']}>
+              의뢰인에게 첫답변을 보낼경우, 법률 지식인에 노출될 수 있습니다. 신중하고 상세하게 답변 부탁드립니다.
+            </p>
+          )}
           <InputBox
             icon={<SvgIcon name='send' />}
             value={message}
@@ -392,7 +404,7 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
             onIconClick={handleSendMessage}
             disabled={!isConnected || userLeft}
             className={styles['chat-input']}
-            style={{ height: '3rem', minHeight: '3rem', margin: 0 }}
+            style={{ height: '3rem', minHeight: '3rem', margin: 0, position: 'static' }}
           />
         </div>
       </div>
