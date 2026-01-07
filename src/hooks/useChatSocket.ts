@@ -697,7 +697,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     socket.on('userLeft', handleUserLeft)
     socket.on('leaveRoomSuccess', handleLeaveRoomSuccess)
     socket.on('leaveRoomError', handleLeaveRoomError)
-    socket.on('chatRoomUpdate', handleChatRoomUpdate)
+    socket.on('chatRoomUpdated', handleChatRoomUpdate)
 
     // 사용자 상태 관련 이벤트
     socket.on('userStatusResponse', handleUserStatusResponse)
@@ -726,7 +726,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       socket.off('userLeft', handleUserLeft)
       socket.off('leaveRoomSuccess', handleLeaveRoomSuccess)
       socket.off('leaveRoomError', handleLeaveRoomError)
-      socket.off('chatRoomUpdate', handleChatRoomUpdate)
+      socket.off('chatRoomUpdated', handleChatRoomUpdate)
 
       // 사용자 상태 관련 이벤트 정리
       socket.off('userStatusResponse', handleUserStatusResponse)
