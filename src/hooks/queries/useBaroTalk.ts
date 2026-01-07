@@ -31,6 +31,7 @@ export const useCreateBaroTalk = (options?: UseCreateBaroTalkOptions) => {
     mutationFn: (request: CreateBaroTalkRequest) => baroTalkServices.createBaroTalk(userId!, request),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.BARO_TALK_CHAT_LIST] })
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_CONSULTATION_LIST] })
       options?.onSuccess?.()
     },
     onError: (error: Error) => {
