@@ -360,7 +360,6 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
 
       console.log('✅ [SOCKET] 메시지 추가:', { roomId: messageChatRoomId, messageId: message.chatMessageId })
       addMessageToRoom(messageChatRoomId, message)
-      updateChatRoomLastMessage(messageChatRoomId, message)
 
       // 상대방 메시지 자동 읽음 처리
       const timeoutId = setTimeout(() => {
@@ -663,6 +662,30 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       }
     }
 
+    // 채팅방 업데이트 이벤트 처리 (채팅 리스트 마지막 메시지 업데이트용)
+    const handleChatRoomUpdate = (data: {
+      chatRoomId: number
+      chatRoomLastMessage: {
+        chatMessageId: number
+        chatMessageContent: string
+        chatMessageSenderType: 'USER' | 'LAWYER'
+        chatMessageCreatedAt: string
+      }
+    }) => {
+      console.log('📬 [SOCKET] chatRoomUpdate 이벤트 수신:', data)
+
+      if (data.chatRoomId && data.chatRoomLastMessage) {
+        updateChatRoomLastMessage(data.chatRoomId, {
+          chatMessageId: data.chatRoomLastMessage.chatMessageId,
+          chatMessageContent: data.chatRoomLastMessage.chatMessageContent,
+          chatMessageSenderType: data.chatRoomLastMessage.chatMessageSenderType,
+          chatMessageCreatedAt: data.chatRoomLastMessage.chatMessageCreatedAt,
+          chatMessageSenderId: 0,
+        })
+        console.log(`✅ [SOCKET] 채팅방 ${data.chatRoomId} 마지막 메시지 업데이트 완료`)
+      }
+    }
+
     // 이벤트 리스너 등록
     socket.on('joinRoomSuccess', handleJoinRoomSuccess)
     socket.on('joinRoomError', handleJoinRoomError)
@@ -674,6 +697,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     socket.on('userLeft', handleUserLeft)
     socket.on('leaveRoomSuccess', handleLeaveRoomSuccess)
     socket.on('leaveRoomError', handleLeaveRoomError)
+    socket.on('chatRoomUpdated', handleChatRoomUpdate)
 
     // 사용자 상태 관련 이벤트
     socket.on('userStatusResponse', handleUserStatusResponse)
@@ -702,6 +726,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       socket.off('userLeft', handleUserLeft)
       socket.off('leaveRoomSuccess', handleLeaveRoomSuccess)
       socket.off('leaveRoomError', handleLeaveRoomError)
+      socket.off('chatRoomUpdated', handleChatRoomUpdate)
 
       // 사용자 상태 관련 이벤트 정리
       socket.off('userStatusResponse', handleUserStatusResponse)
