@@ -24,6 +24,7 @@ export type KnowledgeItem = {
   summaryContent: string
   lastMessageAt: string
   isKeep: boolean
+  isHidden?: boolean
   chatRoomStatus: ChatRoomStatus
   subcategoryId: number
   lawyers: {

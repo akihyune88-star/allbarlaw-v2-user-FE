@@ -95,6 +95,13 @@ export const baroTalkServices = {
     return response.data
   },
 
+  changeConsultationHidden: async (consultationRequestId: number, consultationRequestIsHidden: boolean) => {
+    const response = await instance.patch(`/consultation-requests/${consultationRequestId}/hidden`, {
+      consultationRequestIsHidden,
+    })
+    return response.data
+  },
+
   changeConsultationContent: async (request: ChangeConsultationContentRequest) => {
     const response = await instance.patch(`/consultation-requests/${request.consultationRequestId}`, {
       consultationRequestTitle: request.consultationRequestTitle,
