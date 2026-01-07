@@ -1,12 +1,17 @@
 .chat-list {
   background-color: $color-white;
   border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 .chat-list-header {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  flex-shrink: 0;
 
   padding: 1.5rem;
 
@@ -45,7 +50,28 @@
 }
 
 .chat-list-wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   padding-bottom: 1.5rem;
+
+  // 스크롤바 스타일 (얇고 깔끔하게)
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.25);
+    }
+  }
 }
 
 .lawyer-chat-item {
