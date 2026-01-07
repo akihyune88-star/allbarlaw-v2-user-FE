@@ -10,6 +10,7 @@ import Modal, { AlertModal } from '@/components/modal/Modal'
 import { useNavigate } from 'react-router-dom'
 import {
   useChangeConsultationContent,
+  useChangeConsultationHidden,
   useChangeConsultationStatus,
   useGetConsultationRequestItem,
 } from '@/hooks/queries/useBaroTalk'
@@ -116,6 +117,16 @@ const MyChatList = ({ sort, year, month, onYearChange, onMonthChange }: MyChatLi
     sort,
   })
 
+  const { mutate: changeConsultationHidden } = useChangeConsultationHidden({
+    onSuccess: () => {
+      setAlertMessage('변경이 완료되었습니다.')
+      setAlertOpen(true)
+    },
+    onError: () => {
+      setAlertMessage('변경에 실패했습니다. 다시 시도해주세요.')
+      setAlertOpen(true)
+    },
+  })
   const { mutate: changeConsultationStatus } = useChangeConsultationStatus({
     onSuccess: () => {
       setAlertMessage('변경이 완료되었습니다.')
@@ -157,8 +168,8 @@ const MyChatList = ({ sort, year, month, onYearChange, onMonthChange }: MyChatLi
     setDeleteTargetId(null)
   }
 
-  const handleHideConsultation = (consultationRequestId: number) => {
-    changeConsultationStatus({ consultationRequestId, consultationRequestStatus: 'HIDE' })
+  const handleHideConsultation = (consultationRequestId: number, isHidden: boolean) => {
+    changeConsultationHidden({ consultationRequestId, consultationRequestIsHidden: !isHidden })
   }
 
   const handleEditConsultation = (KnowledgeId: number) => {
@@ -253,9 +264,9 @@ const MyChatList = ({ sort, year, month, onYearChange, onMonthChange }: MyChatLi
                             type='button'
                             aria-label='상담 비공개 설정'
                             disabled={!isEdit}
-                            onClick={() => handleHideConsultation(consultation.knowledgeId)}
+                            onClick={() => handleHideConsultation(consultation.knowledgeId, consultation.isHidden)}
                           >
-                            {consultation.chatRoomStatus === 'HIDE' ? '공개' : '비공개'}
+                            {consultation.isHidden ? '비공개' : '공개'}
                           </button>
                           <button
                             type='button'

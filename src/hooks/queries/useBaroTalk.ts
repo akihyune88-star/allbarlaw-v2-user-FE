@@ -189,6 +189,28 @@ export const useChangeConsultationStatus = ({ onSuccess, onError }: { onSuccess:
   })
 }
 
+export const useChangeConsultationHidden = ({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({
+      consultationRequestId,
+      consultationRequestIsHidden,
+    }: {
+      consultationRequestId: number
+      consultationRequestIsHidden: boolean
+    }) => baroTalkServices.changeConsultationHidden(consultationRequestId, consultationRequestIsHidden),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_CONSULTATION_LIST] })
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CONSULTATION_REQUEST_ITEM] })
+      onSuccess()
+    },
+    onError: () => {
+      onError()
+    },
+  })
+}
+
 export const useChangeConsultationContent = ({
   onSuccess,
   onError,
