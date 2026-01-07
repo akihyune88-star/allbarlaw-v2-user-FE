@@ -266,7 +266,7 @@ const MyChatList = ({ sort, year, month, onYearChange, onMonthChange }: MyChatLi
                             disabled={!isEdit}
                             onClick={() => handleHideConsultation(consultation.knowledgeId, consultation.isHidden)}
                           >
-                            {consultation.isHidden ? '비공개' : '공개'}
+                            {consultation.isHidden ? '공개' : '비공개'}
                           </button>
                           <button
                             type='button'
