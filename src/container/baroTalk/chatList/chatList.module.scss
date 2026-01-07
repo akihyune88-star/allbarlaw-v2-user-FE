@@ -143,6 +143,8 @@
 @media (max-width: $breakpoint-desktop) {
   .chat-list {
     background-color: $color-bg-gray-02;
+    height: auto;
+    overflow: visible;
   }
 
   .chat-list-header {
@@ -184,6 +186,7 @@
 
   .chat-list-wrapper {
     padding: 1rem 1.25rem;
+    overflow-y: visible;
   }
 
   .chat-list-content {
