@@ -59,7 +59,7 @@ const ArticleHeader = ({
     if (isMobile) {
       return (
         <nav className={styles['nav-list']} aria-label='블로그 정렬'>
-          <span className={`${styles.allButton}`}>전체 {totalBlogCount?.toLocaleString()}개</span>
+          <span className={`${styles.allButton}`}>전체 {(totalBlogCount ?? 0).toLocaleString()}개</span>
           <ul className={styles['sort-case']}>
             {SORT_CASE.map((item: SortItem) => {
               if (item.name === '전체') {
@@ -89,7 +89,7 @@ const ArticleHeader = ({
                 className={activeKey === item.key ? styles.active : ''}
                 style={{ cursor: item.name === '전체' ? 'default' : 'pointer' }}
               >
-                {item.name === '전체' ? `${item.name} ${totalBlogCount?.toLocaleString()}개` : item.name}
+                {item.name === '전체' ? `${item.name} ${(totalBlogCount ?? 0).toLocaleString()}개` : item.name}
               </li>
             ))}
           </ul>
@@ -107,7 +107,7 @@ const ArticleHeader = ({
         {type === 'total' && (
           <div className={styles['total-count']}>
             <p>
-              전체 {totalBlogCount?.toLocaleString()}개 / 최근 한달 {recentBlogCount?.toLocaleString()}개
+              전체 {(totalBlogCount ?? 0).toLocaleString()}개 / 최근 한달 {(recentBlogCount ?? 0).toLocaleString()}개
             </p>
             <button className='total-view-button' onClick={onClickTotalView}>
               <span>전체보기</span>
