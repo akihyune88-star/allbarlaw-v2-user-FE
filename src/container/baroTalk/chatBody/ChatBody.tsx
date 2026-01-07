@@ -188,7 +188,7 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
 
   const renderPartialLeftChat = () => (
     <div className={styles['chat-partial-left']}>
-      <p>상대방이 채팅을 종료했습니다. 채팅을 종료하라면 상담 끝내기 버튼을 눌러주세요.</p>
+      <p className={styles['user-left-notice']}>상대방이 채팅을 종료했습니다. 채팅창을 종료해주세요.</p>
       <InputBox
         icon={<SvgIcon name='send' />}
         value={message}
@@ -291,11 +291,13 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
               const isEditing = editingMessageId === msg.chatMessageId
 
               // 수정하기 버튼 표시 조건: 변호사가 보낸 메시지 + CONSULTING 상태 + 유저가 아직 읽지 않음
-              const showEditButton =
-                isLawyer &&
-                isMyMessage &&
-                chatStatus === 'CONSULTING' &&
-                !msg.chatMessageIsRead
+              // TODO: 버튼 임시 숨김 처리 (기능은 유지)
+              const showEditButton = false
+              // const showEditButton =
+              //   isLawyer &&
+              //   isMyMessage &&
+              //   chatStatus === 'CONSULTING' &&
+              //   !msg.chatMessageIsRead
 
               // 수정 중인 메시지는 입력창으로 표시
               if (isEditing) {
@@ -391,7 +393,12 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
           )}
         </div>
         <div style={{ flexShrink: 0, backgroundColor: 'white', padding: '0.5rem 1rem', borderTop: '1px solid #eee' }}>
-          {isLawyer && (
+          {(chatStatus === 'PARTIAL_LEFT' || userLeft) && (
+            <p className={styles['user-left-notice']}>
+              상대방이 채팅을 종료했습니다. 채팅창을 종료해주세요.
+            </p>
+          )}
+          {isLawyer && chatStatus !== 'PARTIAL_LEFT' && !userLeft && (
             <p className={styles['lawyer-notice']}>
               의뢰인에게 첫답변을 보낼경우, 법률 지식인에 노출될 수 있습니다. 신중하고 상세하게 답변 부탁드립니다.
             </p>
@@ -402,9 +409,7 @@ const ChatBody = ({ chatRoomId, type = 'USER', userLeft, isLawyer, fixedInputBar
             onChange={handleChangeMessage}
             onKeyDown={handleKeyPress}
             onIconClick={handleSendMessage}
-            disabled={!isConnected || userLeft}
-            className={styles['chat-input']}
-            style={{ height: '3rem', minHeight: '3rem', margin: 0, position: 'static' }}
+            disabled={!isConnected || userLeft || chatStatus === 'PARTIAL_LEFT'}
           />
         </div>
       </div>

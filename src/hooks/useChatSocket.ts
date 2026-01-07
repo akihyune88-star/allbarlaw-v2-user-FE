@@ -211,6 +211,12 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
     // chatRoomId가 변경되면 joinRoomAttemptedRef 리셋
     joinRoomAttemptedRef.current = false
 
+    // 방 전환 시 이전 방의 chatStatus 초기화 (깜빡임 방지)
+    if (chatRoomId) {
+      setChatStatus('PENDING')
+      setRoomInfo(null)
+    }
+
     if (chatRoomId && socket && socket.connected) {
       const joinRoomRequest: JoinRoomRequest = {
         chatRoomId: chatRoomId,
@@ -222,7 +228,7 @@ export const useChatSocket = ({ chatRoomId, setChatStatus }: UseChatSocketProps)
       socket.emit('joinRoom', joinRoomRequest)
       joinRoomAttemptedRef.current = true
     }
-  }, [chatRoomId, socket])
+  }, [chatRoomId, socket, setChatStatus, setRoomInfo])
 
   // 소켓 연결 상태를 전역 상태에 반영
   useEffect(() => {
