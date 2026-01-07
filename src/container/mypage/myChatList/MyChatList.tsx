@@ -168,8 +168,8 @@ const MyChatList = ({ sort, year, month, onYearChange, onMonthChange }: MyChatLi
     setDeleteTargetId(null)
   }
 
-  const handleHideConsultation = (consultationRequestId: number, isHidden: boolean) => {
-    changeConsultationHidden({ consultationRequestId, consultationRequestIsHidden: !isHidden })
+  const handleHideConsultation = (consultationRequestId: number, isHidden?: boolean) => {
+    changeConsultationHidden({ consultationRequestId, consultationRequestIsHidden: !(isHidden ?? false) })
   }
 
   const handleEditConsultation = (KnowledgeId: number) => {
