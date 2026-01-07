@@ -75,15 +75,31 @@ const ChatList = ({ onChatRoomClick }: ChatListProps) => {
   const chatRooms = useChatRooms()
   const setChatRooms = useSetChatRooms()
 
-  // React Query로 초기 데이터만 로드
+  // React Query로 데이터 로드
   const {
     data: chatPages,
     isLoading,
     error,
+    fetchNextPage,
+    isFetchingNextPage,
   } = useGetBaroTalkChatList({
     chatRoomOrderBy: 'lastMessageAt',
     chatRoomSort: 'desc',
   })
+
+  // totalPages만큼 모든 페이지 불러오기
+  useEffect(() => {
+    if (!chatPages || chatPages.pages.length === 0 || isFetchingNextPage) return
+
+    const lastPage = chatPages.pages[chatPages.pages.length - 1]
+    const currentPageCount = chatPages.pages.length
+    const { totalPages } = lastPage
+
+    if (currentPageCount < totalPages) {
+      console.log(`📜 [ChatList] 다음 페이지 로드: ${currentPageCount + 1}/${totalPages}`)
+      fetchNextPage()
+    }
+  }, [chatPages, isFetchingNextPage, fetchNextPage])
 
   // React Query 데이터를 Zustand에 동기화
   useEffect(() => {
@@ -137,20 +153,26 @@ const ChatList = ({ onChatRoomClick }: ChatListProps) => {
           {chatRooms.length === 0 ? (
             <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>채팅방이 없습니다</div>
           ) : (
-            chatRooms.map((chatRoom: ChatRoom, index: number) => {
-              return (
-                <div key={chatRoom.chatRoomId} onClick={() => onChatRoomClick(chatRoom.chatRoomId)}>
-                  <LawyerChatItem
-                    name={chatRoom.chatRoomLawyer.lawyerName}
-                    profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
-                    lastMessage={chatRoom.chatRoomLastMessage?.chatMessageContent || '메시지 없음'}
-                    lastMessageTime={chatRoom.chatRoomLastMessage?.chatMessageCreatedAt || new Date().toISOString()}
-                    partnerOnlineStatus={chatRoom.partnerOnlineStatus || 'offline'}
-                  />
-                  {index !== chatRooms.length - 1 && <Divider padding={0} />}
-                </div>
-              )
-            })
+            <>
+              {chatRooms.map((chatRoom: ChatRoom, index: number) => {
+                return (
+                  <div key={chatRoom.chatRoomId} onClick={() => onChatRoomClick(chatRoom.chatRoomId)}>
+                    <LawyerChatItem
+                      name={chatRoom.chatRoomLawyer.lawyerName}
+                      profileImage={chatRoom.chatRoomLawyer.lawyerProfileImage}
+                      lastMessage={chatRoom.chatRoomLastMessage?.chatMessageContent || '메시지 없음'}
+                      lastMessageTime={chatRoom.chatRoomLastMessage?.chatMessageCreatedAt || new Date().toISOString()}
+                      partnerOnlineStatus={chatRoom.partnerOnlineStatus || 'offline'}
+                    />
+                    {index !== chatRooms.length - 1 && <Divider padding={0} />}
+                  </div>
+                )
+              })}
+              {/* 추가 로딩 인디케이터 */}
+              {isFetchingNextPage && (
+                <div style={{ padding: '1rem', textAlign: 'center', color: '#666' }}>불러오는 중...</div>
+              )}
+            </>
           )}
         </div>
       </section>
