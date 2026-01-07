@@ -92,12 +92,17 @@ const ChatHeader = ({
         )}
       </div>
 
-      {/* 모바일용 오른쪽: 변호사 정보 버튼 */}
+      {/* 모바일용 오른쪽: 변호사 정보 버튼 + 상담 끝내기 버튼 */}
       <div className={styles['header-actions']}>
         {!isLawyer && (
-          <button className={styles['lawyer-info-button-mobile']} onClick={handleLawyerInfo}>
-            변호사 정보
-          </button>
+          <>
+            <button className={styles['lawyer-info-button-mobile']} onClick={handleLawyerInfo}>
+              변호사 정보
+            </button>
+            <button className={styles['chat-end-button-mobile']} onClick={handleEndChat}>
+              상담 끝내기
+            </button>
+          </>
         )}
       </div>
 
