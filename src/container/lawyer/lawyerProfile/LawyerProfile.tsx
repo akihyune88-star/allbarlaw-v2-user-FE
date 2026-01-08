@@ -51,6 +51,11 @@ const LawyerProfile = ({
     setIsOpen(true)
   }
 
+  const handleOpenLocationModal = () => {
+    setModalMessage(lawyerAdress)
+    setIsOpen(true)
+  }
+
   const handleTagClick = (tag: string) => {
     setSearchQuery(tag)
     navigate(`/search/lawyer?q=${tag}`)
@@ -89,7 +94,7 @@ const LawyerProfile = ({
                 <button type='button' aria-label='변호사 연락처 보기' onClick={handleOpenContactModal}>
                   연락처 보기
                 </button>
-                <button type='button' aria-label='사무소 위치 보기'>
+                <button type='button' aria-label='사무소 위치 보기' onClick={handleOpenLocationModal}>
                   위치 보기
                 </button>
               </nav>
