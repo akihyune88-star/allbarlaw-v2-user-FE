@@ -165,6 +165,7 @@ const BlogFeedContainer = () => {
               className={styles['main-blog-item']}
               lawyerInfo={{
                 name: blogs[0].lawyerName || '',
+                lawfirmName: blogs[0]?.lawfirmName || '',
                 profileImageUrl: blogs[0].lawyerProfileImage || '',
               }}
               onClick={() => handleBlogClick(blogs[0].subcategoryId, blogs[0].blogCaseId)}
