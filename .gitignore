@@ -25,3 +25,7 @@ dist
 docs
 
 CLAUDE.md
+SEARCH_SYSTEM_REFERENCE.md
+socketCodeStructure.md
+TIL-SCSS-Module-Issue.md
+chatApi.md
